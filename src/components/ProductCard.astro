@@ -36,5 +36,6 @@ const series = t.series[p.style as 'structure'];
   .sub { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; font-size: var(--fs-sm); }
   .series { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
   .price { color: var(--cyan); white-space: nowrap; }
+  @media (hover: none) { .hover { display: none; } .card:hover .art { transform: none; box-shadow: var(--frame-shadow); } .card:hover .art img { filter: none; } }
   @media (max-width: 420px) { .name { font-size: var(--fs-sm); } .meta, .sub { flex-direction: column; gap: 4px; } }
 </style>

@@ -17,9 +17,9 @@ const t = T[lang].series;
     {SERIES.map((s, si) => (
       <div class="series">
         <SeriesHeader lang={lang} series={s} />
-        <div class="grid">
-          {productsBySeries(s.key).slice(0, 3).map((p, i) => (
-            <ProductCard product={p} lang={lang} eager={si === 0} delay={i * 100} />
+        <div class="grid rail">
+          {productsBySeries(s.key).map((p, i) => (
+            <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={Math.min(i, 2) * 100} />
           ))}
         </div>
       </div>
@@ -42,6 +42,6 @@ const t = T[lang].series;
   .all { display: flex; justify-content: center; margin-top: var(--space-block); }
   .custom { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: var(--space-md); padding: clamp(36px, 4vw, 56px) clamp(24px, 4vw, 48px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); }
   .custom p { margin: 0; font: 300 clamp(15px, 1.4vw, 19px)/1.5 var(--f-display); color: var(--ice); max-width: 40ch; }
-  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } .grid > :global(:nth-child(3)) { display: none; } }
+  @media (min-width: 861px) { .grid > :global(:nth-child(n + 4)) { display: none; } }
   @media (max-width: 420px) { .grid { gap: 12px; } }
 </style>
