@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
-import { T, homeHref, collectionHref, altHref, type Lang } from '../i18n';
+import { T, homeHref, collectionHref, altHref, seriesShort, type Lang } from '../i18n';
+import { SERIES } from '../data/products.js';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].nav;
@@ -13,10 +14,11 @@ const links = [
   [`${home}#faq`, t.faq],
 ];
 const path = Astro.url.pathname;
+const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
 ---
 <header class="nav" id="nav">
   <div class="wrap inner">
-    <a href={home} aria-label="Rezonanca"><Logo /></a>
+    <a href={home} aria-label="Rezonanca" class="home"><Logo /></a>
     <nav aria-label="Main">
       {links.map(([href, label]) => <a href={href} class:list={{ on: href === path }}>{label}</a>)}
     </nav>
@@ -27,19 +29,61 @@ const path = Astro.url.pathname;
         <a href={altHref(path, 'en')} class:list={{ on: lang === 'en' }} hreflang="en">EN</a>
       </div>
       <button class="btn btn--solid cta" data-order>{t.cta}</button>
+      <button class="burger" id="burger" aria-label={menuLabel} aria-expanded="false" aria-controls="menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="menu" id="menu" hidden>
+    <div class="wrap menu-inner">
+      <p class="label">{menuLabel}</p>
+      <ol class="primary">
+        {links.map(([href, label], i) => (
+          <li style={`--i:${i}`}><a href={href}><span class="mono">0{i + 1}</span>{label}</a></li>
+        ))}
+      </ol>
+      <div class="series mono">
+        {SERIES.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
+      </div>
+      <div class="menu-foot">
+        <div class="lang mono">
+          <a href={altHref(path, 'sr')} class:list={{ on: lang === 'sr' }} hreflang="sr">СР</a>
+          <span>/</span>
+          <a href={altHref(path, 'en')} class:list={{ on: lang === 'en' }} hreflang="en">EN</a>
+        </div>
+        <button class="btn btn--solid" data-order>{t.cta} <span class="arrow">→</span></button>
+      </div>
     </div>
   </div>
 </header>
 <script>
   const nav = document.getElementById('nav')!;
+  const burger = document.getElementById('burger')!;
+  const menu = document.getElementById('menu')!;
   const onScroll = () => nav.classList.toggle('scrolled', scrollY > 40);
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  const setOpen = (open: boolean) => {
+    burger.setAttribute('aria-expanded', String(open));
+    nav.classList.toggle('open', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    if (open) { menu.hidden = false; requestAnimationFrame(() => menu.classList.add('in')); }
+    else { menu.classList.remove('in'); setTimeout(() => { if (!nav.classList.contains('open')) menu.hidden = true; }, 350); }
+  };
+  burger.addEventListener('click', () => setOpen(burger.getAttribute('aria-expanded') !== 'true'));
+  // Close on any link/button inside (anchors, order button) and on Escape.
+  menu.addEventListener('click', (e) => { if ((e.target as Element).closest('a, button')) setOpen(false); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  addEventListener('resize', () => { if (innerWidth > 980 && nav.classList.contains('open')) setOpen(false); });
 </script>
 <style>
   .nav { position: fixed; inset: 0 0 auto; z-index: 50; transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s; border-bottom: 1px solid transparent; }
   .nav.scrolled { background: rgba(1, 3, 10, 0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: var(--line); }
-  .inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
+  /* backdrop-filter would make the fixed menu relative to the header, so drop it while open. */
+  .nav.open { backdrop-filter: none; -webkit-backdrop-filter: none; background: transparent; border-color: transparent; }
+  .inner { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
   nav { display: flex; gap: 30px; }
   nav a { font: 500 var(--fs-xs)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); transition: color 0.3s; }
   nav a:hover, nav a.on { color: var(--cyan); }
@@ -48,6 +92,35 @@ const path = Astro.url.pathname;
   .lang a.on { color: var(--cyan); }
   .lang a:hover { color: var(--ice); }
   .cta { padding: 10px 16px; font-size: var(--fs-2xs); }
-  @media (max-width: 980px) { nav { display: none; } }
-  @media (max-width: 480px) { .cta { display: none; } }
+
+  /* Hamburger: two thin lines that cross into an X. */
+  .burger { display: none; position: relative; width: 40px; height: 40px; margin-right: -8px; padding: 0; background: none; border: none; cursor: pointer; }
+  .burger span { position: absolute; left: 10px; right: 10px; height: 1px; background: var(--ice); transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), top 0.35s; }
+  .burger span:first-child { top: 16px; }
+  .burger span:last-child { top: 23px; left: 16px; }
+  .open .burger span:first-child { top: 20px; transform: rotate(45deg); }
+  .open .burger span:last-child { top: 20px; left: 10px; transform: rotate(-45deg); }
+
+  /* Full-screen menu overlay. */
+  .menu { position: fixed; inset: 0; z-index: 1; background: rgba(1, 3, 10, 0.97); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); opacity: 0; transition: opacity 0.35s; overflow-y: auto; }
+  .menu.in { opacity: 1; }
+  .menu-inner { min-height: 100%; display: flex; flex-direction: column; padding-top: 112px; padding-bottom: 40px; }
+  .primary { list-style: none; padding: 0; margin: 28px 0 0; border-top: 1px solid var(--line); }
+  .primary li { border-bottom: 1px solid var(--line); opacity: 0; transform: translateY(12px); transition: opacity 0.5s, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i) * 50ms + 80ms); }
+  .menu.in .primary li { opacity: 1; transform: none; }
+  .primary a { display: flex; align-items: baseline; gap: 18px; padding: 20px 0; font: 300 clamp(22px, 6vw, 32px)/1.1 var(--f-display); color: var(--ice); letter-spacing: 0.02em; }
+  .primary a:active { color: var(--cyan); }
+  .primary .mono { font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-ui); }
+  .series { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 32px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
+  .series a:active { color: var(--cyan); }
+  .menu-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 40px; }
+
+  @media (max-width: 980px) {
+    nav { display: none; }
+    .burger { display: block; }
+    .right .lang { display: none; }
+  }
+  @media (max-width: 480px) { .right .cta { display: none; } }
+  @media (min-width: 981px) { .menu { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .menu, .primary li, .burger span { transition: none; } }
 </style>
