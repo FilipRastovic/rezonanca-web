@@ -3,7 +3,7 @@ import { T, type Lang } from '../i18n';
 interface Props { lang: Lang; series: string }
 const { lang, series } = Astro.props;
 const t = T[lang];
-const sections = t.seriesMath[series as 'structure'] ?? [];
+const sections = [...(t.seriesMath[series as 'structure'] ?? []), ...(t.noise.uses.includes(series) ? [{ t: t.noise.t, d: t.noise.d, f: t.noise.f }] : [])];
 ---
 {sections.length > 0 && (
   <section class="math grid-bg">
@@ -27,7 +27,7 @@ const sections = t.seriesMath[series as 'structure'] ?? [];
 )}
 <style>
   .math { background-color: var(--bg-0); border-top: 1px solid var(--line); }
-  .cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-col); }
+  .cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gap-col); }
   .card { display: flex; flex-direction: column; padding: clamp(28px, 3vw, 44px) clamp(24px, 2.4vw, 36px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); --c: var(--cyan); }
   .n { font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-label); }
   h3 { margin-top: 20px; }

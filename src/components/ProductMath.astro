@@ -2,8 +2,8 @@
 // "The maths behind this piece": the real equations, parameters and measurements
 // recorded by the generator while rendering this exact product (src/data/math/<slug>.json).
 import { T, type Lang } from '../i18n';
-interface Props { lang: Lang; slug: string }
-const { lang, slug } = Astro.props;
+interface Props { lang: Lang; slug: string; style: string }
+const { lang, slug, style } = Astro.props;
 const t = T[lang].math;
 const all = import.meta.glob('../data/math/*.json', { eager: true, import: 'default' }) as Record<string, any>;
 const m = all[`../data/math/${slug}.json`];
@@ -29,7 +29,8 @@ if (m) {
     reading = t.interp.signal(show(param('partials')));
   }
 }
-const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params] : [];
+const usesNoise = !!m && T[lang].noise.uses.includes(m.style ?? style);
+const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ...(usesNoise ? [['noise', T[lang].noise.param]] : [])] : [];
 ---
 {m && (
   <section class="pm grid-bg">
@@ -52,10 +53,11 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params] : 
           <span class="k mono">{t.stats}</span>
           <dl>{m.stats.map(([k, v]: [string, unknown]) => <div><dt>{label(k)}</dt><dd>{show(v)}</dd></div>)}</dl>
         </div>
-        {reading && (
+        {(reading || usesNoise) && (
           <div class="block read">
             <span class="k mono">{t.read}</span>
-            <p>{reading}</p>
+            {reading && <p>{reading}</p>}
+            {usesNoise && <p class="noise">{T[lang].noise.d}</p>}
           </div>
         )}
       </div>
@@ -78,6 +80,8 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params] : 
   dt.sym { text-transform: none; font-size: var(--fs-body); letter-spacing: 0; color: var(--cyan); }
   dd { margin: 0; font: 400 var(--fs-sm)/1.5 var(--f-mono); color: var(--ice); text-align: right; overflow-wrap: anywhere; }
   .read { grid-column: 1 / -1; }
+  .read p.noise:not(:first-of-type) { margin-top: 20px; }
+  .read p.noise { font: 400 var(--fs-sm)/1.75 var(--f-body); color: var(--text); }
   .read p { margin: 0; font: 300 clamp(15px, 1.4vw, 19px)/1.6 var(--f-display); color: var(--ice); max-width: 70ch; }
   @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
 </style>

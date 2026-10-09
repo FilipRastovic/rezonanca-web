@@ -1,0 +1,42 @@
+---
+// Timeline: the history behind a series (plus Perlin noise where the series uses it).
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang; series: string; compact?: boolean }
+const { lang, series, compact = false } = Astro.props;
+const t = T[lang];
+const usesNoise = t.noise.uses.includes(series);
+const own = t.history[series as 'structure'] ?? [];
+const groups = [{ title: t.series[series as 'structure'].name.split(' · ')[lang === 'sr' ? 0 : 1] ?? '', items: own }];
+if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });
+---
+<section class:list={['hist', { compact }]}>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label" data-reveal>{t.history.label}</p>
+      <h2 data-reveal>{t.history.title}</h2>
+    </div>
+    <div class="groups">
+      {groups.map((g) => (
+        <div class="group" data-reveal>
+          <h3 class="mono">{g.title}</h3>
+          <ol>
+            {g.items.map((it) => (
+              <li><span class="y">{it.y}</span><p>{it.t}</p></li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .hist { background: linear-gradient(var(--bg-0), var(--bg-1)); border-top: 1px solid var(--line); }
+  .hist.compact { padding: var(--space-block) 0; }
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md) var(--gap-col); }
+  h3 { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); font-weight: 500; margin-bottom: 24px; }
+  ol { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--line-strong); }
+  li { position: relative; padding: 0 0 28px 28px; }
+  li::before { content: ''; position: absolute; left: -4px; top: 6px; width: 7px; height: 7px; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .y { font: 300 clamp(20px, 2vw, 28px)/1 var(--f-display); color: var(--ice); }
+  p { margin: 10px 0 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.75; max-width: 52ch; }
+</style>

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ProductCard from './ProductCard.astro';
 import ProductMath from './ProductMath.astro';
+import History from './History.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad } from '../data/products.js';
 import { SHOP, SIZES, FORMATS, FRAMES, PRICES, formatPrice } from '../config';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -145,7 +146,8 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
     </div>
   </section>
 
-  <ProductMath lang={lang} slug={p.slug} />
+  <ProductMath lang={lang} slug={p.slug} style={p.style} />
+  <History lang={lang} series={p.style} compact />
 
   <section class="related">
     <div class="wrap">

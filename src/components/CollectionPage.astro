@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ProductCard from './ProductCard.astro';
 import SeriesHeader from './SeriesHeader.astro';
 import SeriesMath from './SeriesMath.astro';
+import History from './History.astro';
 import { SERIES, PRODUCTS, productsBySeries } from '../data/products.js';
 import { T, homeHref, collectionHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; seriesSlug?: string }
@@ -50,6 +51,7 @@ const description = info ? info.desc : t.collection.lead;
     </div>
   </section>
   {current && <SeriesMath lang={lang} series={current.key} />}
+  {current && <History lang={lang} series={current.key} />}
 </Base>
 <style>
   .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
