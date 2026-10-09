@@ -39,8 +39,8 @@ const t = T[lang].formats;
 </section>
 <style>
   section { background: linear-gradient(var(--bg-0), var(--bg-1)); }
-  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-  .card { position: relative; display: flex; flex-direction: column; padding: 30px 24px 26px; background: var(--bg-card); border: 1px solid var(--line); transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 1.8vw, 28px); }
+  .card { position: relative; display: flex; flex-direction: column; padding: clamp(28px, 2.6vw, 40px) clamp(22px, 2vw, 32px); background: var(--bg-card); border: 1px solid var(--line); transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s; }
   .card:hover { border-color: var(--line-strong); transform: translateY(-6px); }
   .card.featured { border-color: var(--cyan); box-shadow: var(--glow); background: linear-gradient(180deg, rgba(35, 105, 255, 0.14), var(--bg-card) 60%); }
   .badge { position: absolute; top: -11px; left: 24px; padding: 5px 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; background: var(--cyan); color: var(--bg-0); font-weight: 700; }
@@ -54,7 +54,7 @@ const t = T[lang].formats;
   .price .mono { font-size: var(--fs-xs); color: var(--muted); }
   .price strong { font: 500 var(--fs-price)/1 var(--f-display); color: var(--ice); }
   .card .btn { margin-top: 20px; justify-content: center; }
-  .get { margin-top: clamp(48px, 6vw, 80px); padding: clamp(28px, 4vw, 48px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start; }
+  .get { margin-top: var(--space-block); padding: clamp(32px, 5vw, 72px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start; }
   .get h3 { font-size: var(--fs-h2); }
   .get ul { margin: 0; grid-template-columns: 1fr 1fr; gap: 14px 32px; }
   .get li { color: var(--text); font-size: var(--fs-body); }

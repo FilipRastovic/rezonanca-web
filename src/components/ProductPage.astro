@@ -196,11 +196,11 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
 </script>
 
 <style>
-  .product { padding: 120px 0 clamp(64px, 8vw, 112px); background-color: var(--bg-0); }
+  .product { padding: clamp(120px, 12vw, 168px) 0 var(--space-section); background-color: var(--bg-0); }
   .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
   .crumbs a:hover { color: var(--cyan); }
   .crumbs [aria-current] { color: var(--ice); }
-  .layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: start; }
+  .layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(40px, 7vw, 120px); align-items: start; }
 
   .main { margin: 0; position: relative; aspect-ratio: 3 / 4; background-color: #000; border: 1px solid var(--line); padding: 0; overflow: hidden; display: grid; place-items: center; --l: 22px; }
   .main img { width: 100%; height: 100%; object-fit: cover; }
@@ -255,11 +255,11 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
   dt { color: var(--muted); } dd { margin: 4px 0 0; color: var(--ice); }
 
   .related { background: linear-gradient(var(--bg-0), var(--bg-1)); }
-  .rel-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 36px; }
+  .rel-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(36px, 4vw, 64px); }
   .rel-head h2 { margin: 0; font-size: var(--fs-h2); }
   .more { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 32px); }
-  .other-label { margin-top: clamp(56px, 7vw, 88px); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
+  .other-label { margin-top: var(--space-block); }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
   .chips a { padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; }
   .chips a:hover { border-color: var(--cyan); color: var(--cyan); }

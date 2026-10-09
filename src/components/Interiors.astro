@@ -28,7 +28,7 @@ const scenes = (['living', 'studio', 'hall'] as const).map((k) => ({ k, ...t.sce
 </section>
 <style>
   section { background-color: var(--bg-0); }
-  .scenes { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.4vw, 32px); }
+  .scenes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-col); }
   .scene { position: relative; margin: 0; overflow: hidden; border: 1px solid var(--line); }
   .scene.wide { grid-column: 1 / -1; }
   .scene img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1); }

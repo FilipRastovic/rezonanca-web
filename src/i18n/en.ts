@@ -3,16 +3,16 @@ import type sr from './sr';
 const en: typeof sr = {
   htmlLang: 'en',
   meta: {
-    title: 'Rezonanca - generative posters. Sound, frozen in light.',
+    title: 'Rezonanca - code art. Sound, frozen in light.',
     description:
-      'Generative art posters made from waveforms. Every piece is born from a unique signal that will never repeat. Printed in Serbia, pay on delivery.',
+      'Art made with code. Every piece is written in JavaScript, line by line, from a unique signal that will never repeat. Printed in Serbia, pay on delivery.',
   },
   nav: { collection: 'Collection', series: 'Series', interiors: 'In space', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
     label: 'SIGNAL 00 // RECEIVING',
     title: 'РЕЗОНАНЦА',
     tagline: 'Sound, frozen in light.',
-    lead: 'Generative posters born from signals that will never repeat. For a wall you don’t decorate - you tune it.',
+    lead: 'Pictures made with code, from signals that will never repeat. For a wall you don’t decorate - you tune it.',
     primary: 'Explore the collection',
     secondary: 'Order a poster',
     readout: ['FREQUENCY', 'COORDINATES', 'STATUS'],
@@ -25,6 +25,7 @@ const en: typeof sr = {
     body: [
       'Somewhere in the silence between two stations, in the hiss of a distant pulsar, in the tremor of a string before it fades - there is a shape. Invisible. Fleeting. Yours.',
       'Rezonanca catches it. Every poster begins with a single number - a seed - and a set of rules, a design grammar, by which the signal builds its own form: branching, twisting, raising towers of light. Same number, same piece. Another number - an entirely new world. None ever repeat.',
+      'No artificial intelligence. Every piece is a program - hundreds of lines of JavaScript (p5.js) we wrote by hand. Code doesn’t guess or copy: it draws exactly what we told it to, every line in its place.',
       'This isn’t decoration. It’s a frequency you hang on your wall - and it answers back every time you look.',
     ],
     pillars: [
@@ -65,7 +66,7 @@ const en: typeof sr = {
     works: 'works',
     no: 'NO.',
     order: 'Order',
-    custom: 'Don’t see your signal? We’ll generate a new one just for you - from your number, date or coordinates.',
+    custom: 'Don’t see your signal? We’ll code a new one just for you - from your number, date or coordinates.',
     customCta: 'Request a one-of-one',
   },
   interiors: {
@@ -98,7 +99,7 @@ const en: typeof sr = {
     label: '05 // ORDERING',
     title: 'From signal to wall in four steps.',
     steps: [
-      { t: 'Choose a signal', d: 'Pick a piece from the collection or request a brand-new one, generated just for you.' },
+      { t: 'Choose a signal', d: 'Pick a piece from the collection or request a brand-new one, drawn in code just for you.' },
       { t: 'Send your order', d: 'Format, size, address. No payment on the site, no account.' },
       { t: 'We confirm', d: 'We get back to you within 24 hours to confirm details and production time.' },
       { t: 'It arrives', d: 'We print, pack and ship by courier. You pay on delivery.' },
@@ -108,10 +109,11 @@ const en: typeof sr = {
     label: '06 // FAQ',
     title: 'Before you tune in.',
     items: [
+      { q: 'Is this AI art?', a: 'No. Every piece is written in code - JavaScript and the p5.js library - a program we built ourselves. No artificial intelligence, no one else’s images: just maths, sound and light. Whoever writes the program is the author of the picture.' },
       { q: 'How do I pay?', a: 'Cash on delivery to the courier, or bank transfer once we confirm your order. No card details are ever entered on the site.' },
       { q: 'How long does it take?', a: 'Prints 3–5 business days, framed and metal 7–10 business days. Delivery across Serbia takes 1–2 days.' },
-      { q: 'Is every poster really unique?', a: 'Yes. Each piece is generated from a unique number - a seed. Limited editions are printed in at most 50 copies, then the signal goes dark forever.' },
-      { q: 'Can I get a piece from my own number or date?', a: 'Of course. Send us a birthday, an anniversary or the coordinates of a place you love - we’ll generate a signal that is only yours.' },
+      { q: 'Is every poster really unique?', a: 'Yes. Our code draws each piece from a unique number - a seed. Limited editions are printed in at most 50 copies, then the signal goes dark forever.' },
+      { q: 'Can I get a piece from my own number or date?', a: 'Of course. Send us a birthday, an anniversary or the coordinates of a place you love - we’ll draw a signal that is only yours.' },
       { q: 'Do you ship abroad?', a: 'We currently ship across Serbia and the region. For other countries, write to us and we’ll work it out.' },
       { q: 'What if I’m not happy?', a: 'If a piece arrives damaged, we replace it, no questions asked. Send us a photo within 7 days.' },
     ],
@@ -143,7 +145,7 @@ const en: typeof sr = {
     trust: ['Pay on delivery', 'Printed in Serbia', '300 DPI giclée', 'Safe packaging'],
     gallery: ['Poster', 'In a room', 'Detail'],
     about: 'About the piece',
-    aboutGen: 'Generated from seed',
+    aboutGen: 'Drawn in code from seed',
     style: 'Series',
     variant: 'Variant',
     palette: 'Palette',
@@ -164,7 +166,7 @@ const en: typeof sr = {
     storm: 'Storm', drift: 'Drift', turbulent: 'Turbulent', shatter: 'Shatter',
   },
   footer: {
-    tagline: 'Generative art. Printed in Serbia.',
+    tagline: 'Code art. Written in code, printed in Serbia.',
     rights: 'All rights reserved.',
     contact: 'Contact',
   },

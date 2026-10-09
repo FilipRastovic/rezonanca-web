@@ -32,7 +32,7 @@ const detailPng = (slug) => path.join(TMP, `${slug}-detail.png`);
 // 1. Render with the existing exporter: 80 DPI per language, 150 DPI once for detail crops.
 const jobs = [];
 for (const p of products) {
-  const base = { seed: p.seed, style: p.style, variant: p.variant, palette: p.palette };
+  const base = { seed: p.seed, style: p.style, variant: p.variant, palette: p.palette, boost: p.boost };
   for (const [lang, code] of Object.entries(LANGS)) jobs.push({ ...base, lang: code, dpi: 80, name: `${p.slug}-${lang}` });
   jobs.push({ ...base, lang: 'sr-cyrl', dpi: 150, name: `${p.slug}-detail` });
 }

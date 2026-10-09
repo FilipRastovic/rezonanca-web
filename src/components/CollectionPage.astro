@@ -50,7 +50,7 @@ const description = info ? info.desc : t.collection.lead;
   </section>
 </Base>
 <style>
-  .top { padding: 140px 0 48px; background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
   .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
   .crumbs a:hover { color: var(--cyan); }
   .crumbs [aria-current] { color: var(--ice); }
@@ -61,9 +61,9 @@ const description = info ? info.desc : t.collection.lead;
   .chips a:hover { border-color: var(--line-strong); color: var(--ice); }
   .chips a.on { border-color: var(--cyan); background: rgba(80, 230, 255, 0.08); color: var(--cyan); }
   .chips i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
-  .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: clamp(48px, 6vw, 80px); }
-  .series + .series { margin-top: clamp(72px, 9vw, 120px); }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 2.6vw, 36px) clamp(16px, 2.4vw, 32px); }
+  .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: var(--space-head); }
+  .series + .series { margin-top: var(--space-block); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
   @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 420px) { .grid { gap: 20px 12px; } }
 </style>
