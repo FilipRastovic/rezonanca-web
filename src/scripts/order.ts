@@ -1,6 +1,6 @@
 // Order form: opens from any [data-order] button, keeps the price live and
-// submits to Web3Forms (emails the order). No payment is taken on the site.
-type Config = { prices: Record<string, Record<string, number>>; shipping: number; key: string; email: string; lang: 'sr' | 'en'; shop: string };
+// submits to FormSubmit (emails the order). No payment is taken on the site.
+type Config = { prices: Record<string, Record<string, number>>; shipping: number; inbox: string; email: string; lang: 'sr' | 'en'; shop: string };
 
 export function initOrder(dialog: HTMLDialogElement) {
   const form = dialog.querySelector('form')!;
@@ -64,12 +64,13 @@ export function initOrder(dialog: HTMLDialogElement) {
 
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     if (data.botcheck) return;
+    const { botcheck, terms, ...fields } = data;
     const payload = {
-      access_key: cfg.key,
-      subject: `${cfg.shop} - ${poster.selectedOptions[0].text.trim()} / ${format.selectedOptions[0].text} / ${size.value} cm`,
-      from_name: data.name,
-      replyto: data.email,
-      ...data,
+      _subject: `${cfg.shop} - ${poster.selectedOptions[0].text.trim()} / ${format.selectedOptions[0].text} / ${size.value} cm`,
+      _template: 'table',
+      _replyto: data.email,
+      ...fields,
+      terms_accepted: terms ? 'yes' : 'no',
       poster_name: poster.selectedOptions[0].text.trim(),
       shipping: money(cfg.shipping),
       total: total.textContent,
@@ -79,18 +80,18 @@ export function initOrder(dialog: HTMLDialogElement) {
     submit.disabled = true;
     submit.firstChild!.textContent = submit.dataset.sending! + ' ';
     try {
-      if (cfg.key === 'TODO') {
+      if (!cfg.inbox) {
         console.info('[order demo]', payload);
         await new Promise((r) => setTimeout(r, 700));
         status.textContent = `${msgs.success} ${msgs.demo}`;
       } else {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        const res = await fetch(`https://formsubmit.co/ajax/${cfg.inbox}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(payload),
         });
         const json = await res.json();
-        if (!json.success) throw new Error(json.message);
+        if (String(json.success) !== 'true') throw new Error(json.message);
         status.textContent = msgs.success!;
       }
       form.reset();

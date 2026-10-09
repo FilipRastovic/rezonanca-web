@@ -8,7 +8,7 @@ const t = T[lang].order;
 const f = T[lang].formats.items;
 const s = T[lang].series;
 const groups = SERIES.map(({ key }) => ({ label: s[key as 'structure'].name, items: PRODUCTS.filter((p) => p.style === key) }));
-const cfg = JSON.stringify({ prices: PRICES, shipping: SHOP.shipping, key: SHOP.web3formsKey, email: SHOP.email, lang, shop: SHOP.name });
+const cfg = JSON.stringify({ prices: PRICES, shipping: SHOP.shipping, inbox: SHOP.orderInbox, email: SHOP.email, lang, shop: SHOP.name });
 ---
 <dialog id="order" class="modal" aria-labelledby="order-title">
   <form class="sheet corners" novalidate data-config={cfg}>

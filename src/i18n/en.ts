@@ -327,7 +327,7 @@ const en: typeof sr = {
     submit: 'Send order',
     sending: 'Sending...',
     success: 'Signal received. We’ll get back to you within 24 hours to confirm your order.',
-    demo: '(Demo mode - set web3formsKey in src/config.ts)',
+    demo: '(Demo mode - set orderInbox in src/config.ts)',
     error: 'Something interrupted the transmission. Try again or email us at',
     close: 'Close',
     required: 'Required',

@@ -1,7 +1,7 @@
 # Резонанца — website
 
 Static Astro site for the Rezonanca generative poster shop. Serbian Cyrillic at `/`, English at `/en/`.
-Orders are emailed via Web3Forms — no payments on the site (pouzećem / bank transfer).
+Orders are emailed via FormSubmit (formsubmit.co) — no payments on the site (pouzećem / bank transfer).
 
 ```bash
 npm run dev       # http://localhost:4321
@@ -11,8 +11,8 @@ npm run shots     # desktop/mobile screenshots of the built site → screenshots
 ```
 
 ## Before going live
-1. Get a free access key at https://web3forms.com (register the email that should receive orders).
-2. Edit `src/config.ts`: `web3formsKey`, `email`, `phone`, `instagram`, prices.
+1. Click "Activate" in the first FormSubmit email (sent on the first order to `orderInbox`), then swap the email for FormSubmit's random alias.
+2. Edit `src/config.ts`: prices, `instagram` when it exists.
 3. Set the real domain in `astro.config.mjs` (`site`).
 
 ## Pages
