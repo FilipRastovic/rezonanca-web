@@ -20,7 +20,7 @@ const en: typeof sr = {
     scroll: 'Scroll',
   },
   manifesto: {
-    label: '01 // MANIFESTO',
+    label: '02 // MANIFESTO',
     lines: ['Every sound', 'leaves a trace.', 'We catch it.'],
     body: [
       'Somewhere in the silence between two stations, in the hiss of a distant pulsar, in the tremor of a string before it fades - there is a shape. Invisible. Fleeting. Yours.',
@@ -35,7 +35,7 @@ const en: typeof sr = {
     ],
   },
   series: {
-    label: '02 // SERIES',
+    label: '01 // SERIES',
     title: 'Five series. Thirty signals.',
     structure: {
       name: 'Структура · Structure',
