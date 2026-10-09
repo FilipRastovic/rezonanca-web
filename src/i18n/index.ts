@@ -15,9 +15,17 @@ export const homeHref = (lang: Lang) => (lang === 'sr' ? '/' : '/en/');
 export const collectionHref = (lang: Lang, series?: string) =>
   `${lang === 'sr' ? '/kolekcija/' : '/en/collection/'}${series ? `${series}/` : ''}`;
 export const productHref = (lang: Lang, slug: string) => `${lang === 'sr' ? '' : '/en'}/poster/${slug}/`;
-// The same page in the other language.
+export const legalHref = (lang: Lang, page: 'terms' | 'privacy') =>
+  lang === 'sr' ? (page === 'terms' ? '/uslovi/' : '/privatnost/') : `/en/${page}/`;
+// The same page in the other language. Pairs: Serbian path prefix <-> English path prefix (after /en).
+const PAIRS: [string, string][] = [['/kolekcija/', '/collection/'], ['/uslovi/', '/terms/'], ['/privatnost/', '/privacy/']];
 export const altHref = (path: string, to: Lang) => {
-  const sr = path.replace(/^\/en(\/|$)/, '/').replace(/^\/collection\//, '/kolekcija/');
-  if (to === 'sr') return sr;
-  return ('/en' + sr.replace(/^\/kolekcija\//, '/collection/')).replace(/\/+$/, '/') ;
+  const isEn = path === '/en' || path.startsWith('/en/');
+  let rest = isEn ? path.slice(3) || '/' : path;
+  for (const [srP, enP] of PAIRS) {
+    const [from, into] = isEn ? [enP, srP] : [srP, enP];
+    if (rest.startsWith(from)) { rest = into + rest.slice(from.length); break; }
+  }
+  if (to === 'sr') return isEn ? rest : path;
+  return isEn ? path : '/en' + rest;
 };

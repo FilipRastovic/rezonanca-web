@@ -1,6 +1,6 @@
 // Order form: opens from any [data-order] button, keeps the price live and
 // submits to Web3Forms (emails the order). No payment is taken on the site.
-type Config = { prices: Record<string, Record<string, number>>; key: string; email: string; lang: 'sr' | 'en'; shop: string };
+type Config = { prices: Record<string, Record<string, number>>; shipping: number; key: string; email: string; lang: 'sr' | 'en'; shop: string };
 
 export function initOrder(dialog: HTMLDialogElement) {
   const form = dialog.querySelector('form')!;
@@ -23,7 +23,7 @@ export function initOrder(dialog: HTMLDialogElement) {
     if (opt?.dataset.img) img.src = opt.dataset.img;
     frameRow.hidden = !['framed', 'edition'].includes(format.value);
     const q = Math.max(1, Math.min(20, parseInt(qty.value, 10) || 1));
-    total.textContent = money(cfg.prices[format.value][size.value] * q);
+    total.textContent = money(cfg.prices[format.value][size.value] * q + cfg.shipping);
   };
   form.addEventListener('change', update);
   form.addEventListener('input', update);
@@ -51,7 +51,7 @@ export function initOrder(dialog: HTMLDialogElement) {
     status.classList.remove('err');
     let firstBad: HTMLElement | null = null;
     for (const el of form.querySelectorAll<HTMLInputElement>('input[required], select[required]')) {
-      const bad = !el.checkValidity() || !el.value.trim();
+      const bad = el.type === 'checkbox' ? !el.checked : !el.checkValidity() || !el.value.trim();
       el.setAttribute('aria-invalid', String(bad));
       if (bad && !firstBad) firstBad = el;
     }
@@ -71,6 +71,7 @@ export function initOrder(dialog: HTMLDialogElement) {
       replyto: data.email,
       ...data,
       poster_name: poster.selectedOptions[0].text.trim(),
+      shipping: money(cfg.shipping),
       total: total.textContent,
       language: cfg.lang,
     };

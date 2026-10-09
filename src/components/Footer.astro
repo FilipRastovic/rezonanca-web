@@ -1,8 +1,8 @@
 ---
 import Logo from './Logo.astro';
-import { SHOP } from '../config';
+import { SHOP, SELLER } from '../config';
 import { SERIES } from '../data/products.js';
-import { T, collectionHref, seriesShort, type Lang } from '../i18n';
+import { T, collectionHref, seriesShort, legalHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].footer;
@@ -22,8 +22,12 @@ const t = T[lang].footer;
       <span class="k">{t.contact}</span>
       <a href={`mailto:${SHOP.email}`}>{SHOP.email}</a>
       <a href={`tel:${SHOP.phone.replace(/\s/g, '')}`}>{SHOP.phone}</a>
-      <a href={SHOP.instagram} rel="noopener" target="_blank">Instagram ↗</a>
+      {SHOP.instagram && <a href={SHOP.instagram} rel="noopener" target="_blank">Instagram ↗</a>}
     </div>
+  </div>
+  <div class="wrap legal mono">
+    <span>{SELLER.name} · МБ {SELLER.mb} · ПИБ {SELLER.pib} · {SELLER.address}</span>
+    <span class="links"><a href={legalHref(lang, 'terms')}>{T[lang].legal.terms.title}</a><a href={legalHref(lang, 'privacy')}>{T[lang].legal.privacy.title}</a></span>
   </div>
   <div class="wrap bottom mono">
     <span>© {new Date().getFullYear()} Rezonanca. {t.rights}</span>
@@ -38,5 +42,8 @@ const t = T[lang].footer;
   .contact { display: flex; flex-direction: column; gap: 10px; font-size: var(--fs-sm); }
   .contact .k { color: var(--cyan); font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; }
   .contact a:hover { color: var(--cyan); }
-  .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.14em; }
+  .legal { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; margin-top: 56px; font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.08em; }
+  .legal .links { display: flex; gap: 20px; }
+  .legal a:hover { color: var(--cyan); }
+  .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding-top: 24px; border-top: 1px solid var(--line); font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.14em; }
 </style>

@@ -209,6 +209,9 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
 
   .main { margin: 0; position: relative; aspect-ratio: 3 / 4; background-color: #000; border: 1px solid var(--line); padding: 0; overflow: hidden; display: grid; place-items: center; --l: 22px; }
   .main img { width: 100%; height: 100%; object-fit: cover; }
+  /* The poster view is shown framed, like the cards. */
+  .main[data-fit='poster'] { aspect-ratio: auto; padding: var(--mat-pad); background: var(--mat); border: 8px solid var(--frame); box-shadow: var(--frame-shadow); }
+  .main[data-fit='poster'] img { aspect-ratio: 3 / 4; height: auto; }
   .main[data-fit='wide'] { aspect-ratio: 16 / 10; }
   .main[data-fit='square'] { aspect-ratio: 1; }
   .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }

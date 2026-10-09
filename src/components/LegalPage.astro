@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { LEGAL, UPDATED } from '../data/legal';
+import { T, homeHref, type Lang } from '../i18n';
+interface Props { lang: Lang; page: 'terms' | 'privacy' }
+const { lang, page } = Astro.props;
+const doc = LEGAL[lang][page];
+---
+<Base lang={lang} title={`${doc.title} | Резонанца`} description={doc.sections[0].p[0]}>
+  <section class="legal grid-bg">
+    <div class="wrap narrow">
+      <nav class="crumbs mono"><a href={homeHref(lang)}>{T[lang].product.home}</a><span>/</span><span aria-current="page">{doc.title}</span></nav>
+      <h1>{doc.title}</h1>
+      <p class="upd mono">{LEGAL[lang].updated}: {UPDATED}</p>
+      {doc.sections.map((s, i) => (
+        <div class="sec">
+          <h2><span class="mono">{String(i + 1).padStart(2, '0')}</span>{s.h}</h2>
+          {s.p.map((x) => <p>{x}</p>)}
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+<style>
+  .legal { padding-top: clamp(140px, 14vw, 200px); background-color: var(--bg-0); }
+  .narrow { max-width: calc(820px + 2 * var(--gutter)); }
+  .crumbs { display: flex; gap: 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover { color: var(--cyan); }
+  h1 { font-size: var(--fs-h1); }
+  .upd { margin: 16px 0 0; font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.12em; }
+  .sec { margin-top: var(--space-md); padding-top: 32px; border-top: 1px solid var(--line); }
+  h2 { display: flex; gap: 18px; align-items: baseline; font-size: var(--fs-h3); max-width: none; margin: 0; }
+  h2 .mono { font-size: var(--fs-2xs); color: var(--cyan); }
+  p { margin: 16px 0 0; color: var(--text); font-size: var(--fs-body); line-height: 1.8; }
+</style>

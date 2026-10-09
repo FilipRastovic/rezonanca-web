@@ -1,14 +1,14 @@
 ---
 import { PRODUCTS, SERIES, pad } from '../data/products.js';
 import { SHOP, SIZES, FORMATS, FRAMES, PRICES } from '../config';
-import { T, type Lang } from '../i18n';
+import { T, legalHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].order;
 const f = T[lang].formats.items;
 const s = T[lang].series;
 const groups = SERIES.map(({ key }) => ({ label: s[key as 'structure'].name, items: PRODUCTS.filter((p) => p.style === key) }));
-const cfg = JSON.stringify({ prices: PRICES, key: SHOP.web3formsKey, email: SHOP.email, lang, shop: SHOP.name });
+const cfg = JSON.stringify({ prices: PRICES, shipping: SHOP.shipping, key: SHOP.web3formsKey, email: SHOP.email, lang, shop: SHOP.name });
 ---
 <dialog id="order" class="modal" aria-labelledby="order-title">
   <form class="sheet corners" novalidate data-config={cfg}>
@@ -73,6 +73,8 @@ const cfg = JSON.stringify({ prices: PRICES, key: SHOP.web3formsKey, email: SHOP
         </fieldset>
         <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
+        <label class="radio agree full"><input type="checkbox" name="terms" required value="yes" />
+          <span>{lang === 'sr' ? 'Прихватам ' : 'I accept the '}<a href={legalHref(lang, 'terms')} target="_blank">{T[lang].legal.terms.title.toLowerCase()}</a>{lang === 'sr' ? ' и ' : ' and '}<a href={legalHref(lang, 'privacy')} target="_blank">{T[lang].legal.privacy.title.toLowerCase()}</a></span></label>
         <p class="status full" role="status" aria-live="polite"></p>
         <button class="btn btn--solid submit full" type="submit" data-label={t.submit} data-sending={t.sending}>{t.submit} <span class="arrow">→</span></button>
       </div>
@@ -114,6 +116,9 @@ const cfg = JSON.stringify({ prices: PRICES, key: SHOP.web3formsKey, email: SHOP
   .radio { flex-direction: row; align-items: center; gap: 10px; font: 400 var(--fs-body)/1 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--ice); cursor: pointer; }
   .radio input { width: 18px; height: 18px; accent-color: var(--cyan); }
   .hp { display: none; }
+  .agree { font-size: var(--fs-sm); line-height: 1.5; }
+  .agree a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+  .agree input[aria-invalid='true'] { outline: 1px solid #ff5f7a; }
   .status { margin: 0; min-height: 1.2em; font-size: var(--fs-body); color: var(--cyan); }
   .status.err { color: #ff8da0; }
   .submit { justify-content: center; padding: 18px; }
