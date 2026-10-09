@@ -15,7 +15,7 @@ const series = seriesOf(p)!;
 const info = t.series[p.style as 'structure'];
 const seriesName = seriesShort(lang, p.style);
 const name = p.name[lang];
-const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug).slice(0, 3);
+const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug);
 const others = SERIES.filter((s) => s.key !== p.style);
 const fmt = t.formats.items;
 
@@ -155,7 +155,7 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
         <h2>{tp.related}</h2>
         <a class="more mono" href={collectionHref(lang, series.slug)}>{t.series.viewAll} →</a>
       </div>
-      <div class="grid">
+      <div class="grid rail">
         {related.map((r, i) => <ProductCard product={r} lang={lang} delay={i * 90} />)}
       </div>
       <p class="label other-label">{tp.otherSeries}</p>
@@ -267,6 +267,7 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
   .rel-head h2 { margin: 0; font-size: var(--fs-h2); }
   .more { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
+  @media (min-width: 861px) { .grid > :global(:nth-child(n + 4)) { display: none; } }
   .other-label { margin-top: var(--space-block); }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
   .chips a { padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; }
@@ -275,8 +276,6 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
   @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; }
     .info { position: static; }
-    .grid { grid-template-columns: repeat(2, 1fr); }
-    .grid > :global(:nth-child(3)) { display: none; }
   }
   @media (max-width: 420px) { .formats { grid-template-columns: 1fr; } .trust { grid-template-columns: 1fr; } }
 </style>

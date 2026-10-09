@@ -68,6 +68,6 @@ const description = info ? info.desc : t.collection.lead;
   .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: var(--space-head); }
   .series + .series { margin-top: var(--space-block); }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
-  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
   @media (max-width: 420px) { .grid { gap: 20px 12px; } }
 </style>
