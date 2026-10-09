@@ -145,7 +145,7 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
 .btn:hover .arrow { transform: translateX(4px); }
 
 /* Product rail: horizontal scroll row, all widths. 3 cards visible on desktop, 1 on mobile. */
-.rail { --rail-gap: var(--gap-col); display: flex !important; gap: var(--rail-gap) !important; overflow-x: auto; scroll-snap-type: x mandatory;
+.rail { --rail-gap: var(--gap-col); display: flex !important; gap: var(--rail-gap) !important; overflow-x: auto; overflow-y: hidden; /* vertical wheel must scroll the page, not the row */ scroll-snap-type: x mandatory;
   scroll-behavior: smooth; scrollbar-width: none; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
   padding: 8px 2px 24px; margin: -8px -2px 0; }
 .rail::-webkit-scrollbar { display: none; }
