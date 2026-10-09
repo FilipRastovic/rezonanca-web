@@ -1,0 +1,23 @@
+{
+  "name": "rezonanca-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "assets": "node scripts/render-assets.mjs",
+    "shots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
+    "astro": "^5.18.2"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^23.11.1",
+    "sharp": "^0.33.5"
+  }
+}

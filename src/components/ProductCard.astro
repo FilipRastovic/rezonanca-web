@@ -1,0 +1,39 @@
+---
+import { PRICES, formatPrice } from '../config';
+import { pad } from '../data/products.js';
+import { T, productHref, seriesShort, type Lang } from '../i18n';
+interface Props { product: any; lang: Lang; eager?: boolean; delay?: number }
+const { product: p, lang, eager = false, delay = 0 } = Astro.props;
+const t = T[lang];
+const series = t.series[p.style as 'structure'];
+---
+<a class="card" href={productHref(lang, p.slug)} data-reveal style={`transition-delay:${delay}ms`}>
+  <span class="art">
+    <img src={`/posters/${p.slug}-${lang}.webp`} alt={`${series.name} - ${p.name[lang]}`} width="900" height="1200" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <span class="hover mono">{t.card.view} →</span>
+  </span>
+  <span class="meta">
+    <span class="name">{p.name[lang]}</span>
+    <span class="no mono">{t.product.no} {pad(p.seed)}</span>
+  </span>
+  <span class="sub">
+    <span class="mono series">{seriesShort(lang, p.style)} · {t.variants[p.variant as 'burst']}</span>
+    <span class="price">{t.card.from} {formatPrice(PRICES.print['30x40'], lang)}</span>
+  </span>
+</a>
+<style>
+  .card { display: block; color: inherit; }
+  .art { position: relative; display: block; border: 1px solid var(--line); background: #000; overflow: hidden; transition: border-color 0.5s, box-shadow 0.5s, transform 0.5s; }
+  .art img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.6s; }
+  .card:hover .art { border-color: var(--line-strong); box-shadow: var(--glow); transform: translateY(-6px); }
+  .card:hover .art img { transform: scale(1.04); filter: brightness(1.15) saturate(1.1); }
+  .hover { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px; font-size: var(--fs-xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--bg-0); background: var(--cyan); transform: translateY(100%); transition: transform 0.4s; }
+  .card:hover .hover, .card:focus-visible .hover { transform: none; }
+  .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 14px; }
+  .name { font: 500 var(--fs-name)/1.3 var(--f-display); color: var(--ice); }
+  .no { font-size: var(--fs-2xs); color: var(--muted); white-space: nowrap; }
+  .sub { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; font-size: var(--fs-sm); }
+  .series { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
+  .price { color: var(--cyan); white-space: nowrap; }
+  @media (max-width: 420px) { .name { font-size: var(--fs-sm); } .meta, .sub { flex-direction: column; gap: 4px; } }
+</style>

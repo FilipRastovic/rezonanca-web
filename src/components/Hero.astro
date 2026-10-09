@@ -1,0 +1,90 @@
+---
+import { T, collectionHref, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].hero;
+const coords = lang === 'sr' ? '44,8125°С  20,4612°И' : '44.8125°N  20.4612°E';
+---
+<section class="hero" aria-label={t.title}>
+  <div class="canvas" id="hero-canvas" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"></div>
+
+  <div class="frame corners" aria-hidden="true"></div>
+
+  <div class="wrap content">
+    <p class="label">{t.label}</p>
+    <h1 class="title" aria-label={t.title}>
+      {[...t.title].map((ch, i) => <span style={`--i:${i}`}>{ch}</span>)}
+    </h1>
+    <p class="tagline">{t.tagline}</p>
+    <p class="lead">{t.lead}</p>
+    <div class="actions">
+      <a class="btn btn--solid" href={collectionHref(lang)}>{t.primary} <span class="arrow">→</span></a>
+      <button class="btn" data-order>{t.secondary}</button>
+    </div>
+  </div>
+
+  <div class="wrap readout mono" aria-hidden="true">
+    <div><span class="k">{t.readout[0]}</span><span id="hero-freq">432.00 Hz</span></div>
+    <div><span class="k">{t.readout[1]}</span><span>{coords}</span></div>
+    <div><span class="k">{t.readout[2]}</span><span class="live"><i></i>{t.status}</span></div>
+  </div>
+
+  <a class="scroll mono" href="#manifesto">{t.scroll}<span></span></a>
+</section>
+
+<script>
+  // p5 is ~800 KB, so it loads in its own chunk after the page is interactive.
+  const host = document.getElementById('hero-canvas')!;
+  const freq = document.getElementById('hero-freq')!;
+  const sep = document.documentElement.lang.startsWith('sr') ? ',' : '.';
+  import('../scripts/hero').then(({ mountHero }) =>
+    mountHero(host, (f) => { freq.textContent = `${f.toFixed(2).replace('.', sep)} Hz`; }));
+</script>
+
+<style>
+  .hero { position: relative; min-height: 100svh; padding: 0; display: flex; flex-direction: column; justify-content: center; overflow: hidden; background: #020611; }
+  .canvas { position: absolute; inset: 0; }
+  .canvas :global(canvas) { display: block; }
+  .veil {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 60% 70%, rgba(35, 105, 255, 0.16), transparent 70%),
+      linear-gradient(180deg, rgba(1, 3, 10, 0.9) 0%, rgba(1, 3, 10, 0.2) 38%, transparent 60%, rgba(1, 3, 10, 0.75) 100%),
+      linear-gradient(90deg, rgba(1, 3, 10, 0.88) 0%, rgba(1, 3, 10, 0.55) 35%, transparent 62%);
+  }
+  .frame { position: absolute; inset: 92px var(--gutter) 28px; --l: 22px; pointer-events: none; opacity: 0.8; }
+  .content { position: relative; z-index: 2; padding-top: 120px; padding-bottom: 200px; }
+  .title { display: flex; flex-wrap: nowrap; white-space: nowrap; margin: 22px 0 0; font-size: var(--fs-display); font-weight: 600; line-height: 1; letter-spacing: 0.1em; text-shadow: 0 0 40px rgba(80, 230, 255, 0.35), 0 0 120px rgba(35, 105, 255, 0.35); }
+  .title span { display: inline-block; animation: tune 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i) * 70ms + 200ms); }
+  @keyframes tune {
+    0% { opacity: 0; filter: blur(14px); transform: translateY(0.25em) scaleY(1.6); }
+    60% { opacity: 1; filter: blur(0); }
+    100% { opacity: 1; filter: blur(0); transform: none; }
+  }
+  .tagline { margin: 28px 0 0; font: 300 clamp(14px, 1.3vw, 18px)/1.4 var(--f-display); letter-spacing: 0.04em; color: var(--cyan); text-shadow: var(--glow); }
+  .lead { margin: 16px 0 0; max-width: 42ch; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  .readout { position: absolute; z-index: 2; left: 0; right: 0; bottom: 64px; display: flex; gap: clamp(20px, 5vw, 64px); flex-wrap: wrap; font-size: var(--fs-xs); color: var(--ice); }
+  .readout div { display: flex; flex-direction: column; gap: 6px; }
+  .readout .k { color: var(--muted); font-size: var(--fs-2xs); letter-spacing: 0.24em; }
+  .live { display: inline-flex; align-items: center; gap: 8px; color: var(--cyan); }
+  .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: blink 1.4s infinite; }
+  @keyframes blink { 50% { opacity: 0.2; } }
+
+  .scroll { position: absolute; z-index: 2; right: calc(var(--gutter) + 24px); bottom: 64px; display: flex; align-items: center; gap: 12px; font-size: var(--fs-2xs); letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; }
+  .scroll span { width: 1px; height: 56px; background: linear-gradient(var(--cyan), transparent); animation: drop 2s infinite; }
+  @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  @media (max-width: 700px) {
+    .content { padding-top: 110px; padding-bottom: 180px; }
+    .actions { gap: 10px; margin-top: 28px; }
+    .actions :global(.btn) { padding: 12px 14px; font-size: var(--fs-2xs); letter-spacing: 0.18em; }
+    .readout { bottom: 44px; gap: 16px 28px; }
+    .readout div:nth-child(2) { display: none; }
+    .scroll { display: none; }
+    .frame { inset: 84px 10px 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .title span, .live i, .scroll span { animation: none; } }
+</style>

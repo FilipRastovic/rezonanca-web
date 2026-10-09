@@ -1,0 +1,38 @@
+---
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].faq;
+---
+<section id="faq">
+  <div class="wrap cols">
+    <div class="section-head">
+      <p class="label" data-reveal>{t.label}</p>
+      <h2 data-reveal>{t.title}</h2>
+    </div>
+    <div class="list" data-reveal>
+      {t.items.map((it, i) => (
+        <details name="faq" open={i === 0}>
+          <summary><span class="mono">Q.0{i + 1}</span>{it.q}<i aria-hidden="true"></i></summary>
+          <p>{it.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  section { background-color: var(--bg-0); }
+  .cols { display: grid; grid-template-columns: 1fr 1.5fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+  details { border-bottom: 1px solid var(--line); }
+  details:first-child { border-top: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 20px; padding: 24px 0; font: 400 var(--fs-h3)/1.4 var(--f-display); color: var(--ice); transition: color 0.3s; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--cyan); }
+  summary .mono { font-size: var(--fs-2xs); color: var(--muted); flex: none; }
+  summary i { margin-left: auto; flex: none; position: relative; width: 14px; height: 14px; }
+  summary i::before, summary i::after { content: ''; position: absolute; left: 0; top: 6.5px; width: 14px; height: 1px; background: var(--cyan); transition: transform 0.3s; }
+  summary i::after { transform: rotate(90deg); }
+  details[open] summary i::after { transform: none; }
+  details p { margin: 0 0 24px 56px; color: var(--text); max-width: 60ch; }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } details p { margin-left: 0; } }
+</style>

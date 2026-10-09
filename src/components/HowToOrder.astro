@@ -1,0 +1,34 @@
+---
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].how;
+---
+<section id="how" class="grid-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label" data-reveal>{t.label}</p>
+      <h2 data-reveal>{t.title}</h2>
+    </div>
+    <ol class="steps">
+      {t.steps.map((s, i) => (
+        <li data-reveal style={`transition-delay:${i * 120}ms`}>
+          <span class="n">0{i + 1}</span>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  section { background-color: var(--bg-1); }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+  li { position: relative; padding: 40px 28px 8px 0; }
+  li::before { content: ''; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; background: var(--cyan); box-shadow: 0 0 14px var(--cyan); }
+  .n { font: 300 clamp(36px, 3.6vw, 52px)/1 var(--f-display); color: transparent; -webkit-text-stroke: 1px var(--line-strong); }
+  h3 { margin-top: 20px; }
+  p { color: var(--muted); margin: 12px 0 0; font-size: var(--fs-body); }
+  @media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; row-gap: 24px; } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+</style>

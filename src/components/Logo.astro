@@ -1,0 +1,12 @@
+---
+interface Props { size?: number }
+const { size = 12 } = Astro.props;
+---
+<span class="logo" style={`--s:${size}px`}>
+  <svg viewBox="0 0 40 20" aria-hidden="true"><path d="M1 12h6l2.5-6 4 13 4-18 4 15 3-7 2.5 4H39" /></svg>
+  <span>РЕЗОНАНЦА</span>
+</span>
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 10px; font: 600 var(--s)/1 var(--f-display); letter-spacing: 0.3em; color: var(--ice); }
+  svg { width: calc(var(--s) * 2.4); height: calc(var(--s) * 1.2); fill: none; stroke: var(--cyan); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(80,230,255,.6)); }
+</style>

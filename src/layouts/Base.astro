@@ -1,0 +1,60 @@
+---
+import '@fontsource/unbounded/300.css';
+import '@fontsource/unbounded/400.css';
+import '@fontsource/unbounded/500.css';
+import '@fontsource/unbounded/600.css';
+import '@fontsource/unbounded/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import OrderModal from '../components/OrderModal.astro';
+import { T, altHref, type Lang } from '../i18n';
+
+interface Props { lang: Lang; title?: string; description?: string; image?: string }
+const { lang } = Astro.props;
+const t = T[lang];
+const title = Astro.props.title ?? t.meta.title;
+const description = Astro.props.description ?? t.meta.description;
+const image = new URL(Astro.props.image ?? `/og-${lang}.jpg`, Astro.site);
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site);
+---
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#01030a" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="sr" href={new URL(altHref(path, 'sr'), Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(altHref(path, 'en'), Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <slot name="head" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <Nav lang={lang} />
+    <main><slot /></main>
+    <Footer lang={lang} />
+    <OrderModal lang={lang} />
+    <script>
+      // Scroll reveal.
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      }, { rootMargin: '0px 0px -10% 0px' });
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

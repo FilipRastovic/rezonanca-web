@@ -1,0 +1,27 @@
+---
+import { T, collectionHref, type Lang } from '../i18n';
+import { productsBySeries } from '../data/products.js';
+interface Props { lang: Lang; series: { key: string; slug: string }; link?: boolean; as?: 'h1' | 'h3' }
+const { lang, series, link = true, as: Tag = 'h3' } = Astro.props;
+const t = T[lang].series;
+const info = t[series.key as 'structure'];
+const n = productsBySeries(series.key).length;
+---
+<header class="series-head" data-reveal>
+  <span class="code mono">{info.code} · {n} {t.works}</span>
+  <Tag class="name">{info.name}</Tag>
+  <div class="side">
+    <p>{info.desc}</p>
+    {link && <a class="more mono" href={collectionHref(lang, series.slug)}>{t.viewAll} →</a>}
+  </div>
+</header>
+<style>
+  .series-head { display: grid; grid-template-columns: auto 1fr; gap: 8px 40px; align-items: end; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .code { grid-column: 1 / -1; font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-label); }
+  .name { font: 400 clamp(24px, 2.8vw, 38px)/1.15 var(--f-display); letter-spacing: 0.06em; color: var(--ice); margin: 0; }
+  .side { justify-self: end; max-width: 52ch; }
+  .side p { margin: 0; color: var(--muted); }
+  .more { display: inline-block; margin-top: 12px; font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
+  .more:hover { color: var(--ice); }
+  @media (max-width: 860px) { .series-head { grid-template-columns: 1fr; } .side { justify-self: start; } }
+</style>

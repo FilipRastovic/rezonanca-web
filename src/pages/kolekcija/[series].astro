@@ -1,0 +1,6 @@
+---
+import CollectionPage from '../../components/CollectionPage.astro';
+import { SERIES } from '../../data/products.js';
+export const getStaticPaths = () => SERIES.map((s) => ({ params: { series: s.slug } }));
+---
+<CollectionPage lang="sr" seriesSlug={Astro.params.series} />

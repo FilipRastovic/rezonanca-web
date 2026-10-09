@@ -1,0 +1,47 @@
+---
+import ProductCard from './ProductCard.astro';
+import SeriesHeader from './SeriesHeader.astro';
+import { SERIES, productsBySeries } from '../data/products.js';
+import { T, collectionHref, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].series;
+---
+<section id="series">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label" data-reveal>{t.label}</p>
+      <h2 data-reveal>{t.title}</h2>
+    </div>
+
+    {SERIES.map((s, si) => (
+      <div class="series">
+        <SeriesHeader lang={lang} series={s} />
+        <div class="grid">
+          {productsBySeries(s.key).slice(0, 3).map((p, i) => (
+            <ProductCard product={p} lang={lang} eager={si === 0} delay={i * 100} />
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <div class="all" data-reveal>
+      <a class="btn btn--solid" href={collectionHref(lang)}>{T[lang].hero.primary} <span class="arrow">→</span></a>
+    </div>
+
+    <div class="custom corners" data-reveal>
+      <p>{t.custom}</p>
+      <button class="btn" data-order data-poster="custom">{t.customCta} <span class="arrow">→</span></button>
+    </div>
+  </div>
+</section>
+<style>
+  section { background: linear-gradient(var(--bg-0), var(--bg-1) 50%, var(--bg-0)); }
+  .series + .series { margin-top: clamp(72px, 9vw, 120px); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 32px); }
+  .all { display: flex; justify-content: center; margin-top: clamp(56px, 7vw, 96px); }
+  .custom { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: clamp(56px, 7vw, 96px); padding: 36px clamp(24px, 4vw, 48px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); }
+  .custom p { margin: 0; font: 300 clamp(15px, 1.4vw, 19px)/1.5 var(--f-display); color: var(--ice); max-width: 40ch; }
+  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } .grid > :global(:nth-child(3)) { display: none; } }
+  @media (max-width: 420px) { .grid { gap: 12px; } }
+</style>

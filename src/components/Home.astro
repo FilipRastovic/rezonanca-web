@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Manifesto from './Manifesto.astro';
+import Series from './Series.astro';
+import Interiors from './Interiors.astro';
+import Formats from './Formats.astro';
+import HowToOrder from './HowToOrder.astro';
+import Faq from './Faq.astro';
+import FinalCta from './FinalCta.astro';
+import type { Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<Base lang={lang}>
+  <Hero lang={lang} />
+  <Manifesto lang={lang} />
+  <Series lang={lang} />
+  <Interiors lang={lang} />
+  <Formats lang={lang} />
+  <HowToOrder lang={lang} />
+  <Faq lang={lang} />
+  <FinalCta lang={lang} />
+</Base>

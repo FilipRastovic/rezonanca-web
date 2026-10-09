@@ -1,0 +1,7 @@
+.asset-cache/
+node_modules/
+dist/
+.astro/
+screenshots/
+.backup/
+.DS_Store

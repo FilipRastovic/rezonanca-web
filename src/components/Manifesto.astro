@@ -1,0 +1,49 @@
+---
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].manifesto;
+---
+<section id="manifesto" class="grid-bg">
+  <div class="wrap">
+    <p class="label" data-reveal>{t.label}</p>
+    <h2 class="big">
+      {t.lines.map((line, i) => <span data-reveal style={`transition-delay:${i * 140}ms`} class:list={{ hl: i === t.lines.length - 1 }}>{line}</span>)}
+    </h2>
+    <div class="cols">
+      <svg class="wave" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 60 L120 60 L135 40 L150 85 L165 20 L180 100 L195 30 L210 80 L225 50 L240 65 L255 58 L600 60" />
+      </svg>
+      <div class="body">
+        {t.body.map((p, i) => <p data-reveal style={`transition-delay:${i * 120}ms`}>{p}</p>)}
+      </div>
+    </div>
+    <div class="pillars">
+      {t.pillars.map((pl, i) => (
+        <article class="pillar corners" data-reveal style={`transition-delay:${i * 120}ms`}>
+          <span class="k mono">0{i + 1} // {pl.k}</span>
+          <h3>{pl.t}</h3>
+          <p>{pl.d}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  section { background-color: var(--bg-0); }
+  .big { max-width: none; font-size: clamp(28px, 4.4vw, 64px); line-height: 1.12; font-weight: 300; margin-top: 28px; }
+  .big span { display: block; }
+  .big .hl { background: linear-gradient(90deg, var(--cyan), var(--blue) 70%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 28px rgba(80, 230, 255, 0.35)); }
+  .cols { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 6vw, 96px); margin-top: clamp(48px, 7vw, 96px); align-items: start; }
+  .wave { width: 100%; height: 120px; fill: none; stroke: var(--cyan); stroke-width: 1.5; filter: drop-shadow(0 0 8px rgba(80, 230, 255, 0.7)); stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 4s ease forwards 0.5s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .body p { margin: 0 0 22px; font-size: var(--fs-lead); color: var(--text); }
+  .body p:first-child { color: var(--ice); }
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: clamp(56px, 8vw, 112px); }
+  .pillar { padding: 32px 28px 30px; background-color: rgba(5, 12, 28, 0.7); border: 1px solid var(--line); --c: var(--cyan); transition: border-color 0.4s, transform 0.4s; }
+  .pillar:hover { border-color: var(--line-strong); transform: translateY(-4px); }
+  .pillar .k { font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-label); }
+  .pillar h3 { margin-top: 22px; font-size: var(--fs-h3); }
+  .pillar p { margin: 14px 0 0; color: var(--muted); font-size: var(--fs-body); }
+  @media (max-width: 860px) { .cols, .pillars { grid-template-columns: 1fr; } .wave { height: 80px; } }
+</style>

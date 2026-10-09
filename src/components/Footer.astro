@@ -1,0 +1,42 @@
+---
+import Logo from './Logo.astro';
+import { SHOP } from '../config';
+import { SERIES } from '../data/products.js';
+import { T, collectionHref, seriesShort, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].footer;
+---
+<footer>
+  <div class="wrap grid">
+    <div>
+      <Logo size={18} />
+      <p>{t.tagline}</p>
+    </div>
+    <div class="contact mono">
+      <span class="k">{T[lang].nav.collection}</span>
+      <a href={collectionHref(lang)}>{T[lang].collection.all}</a>
+      {SERIES.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
+    </div>
+    <div class="contact mono">
+      <span class="k">{t.contact}</span>
+      <a href={`mailto:${SHOP.email}`}>{SHOP.email}</a>
+      <a href={`tel:${SHOP.phone.replace(/\s/g, '')}`}>{SHOP.phone}</a>
+      <a href={SHOP.instagram} rel="noopener" target="_blank">Instagram ↗</a>
+    </div>
+  </div>
+  <div class="wrap bottom mono">
+    <span>© {new Date().getFullYear()} Rezonanca. {t.rights}</span>
+    <span>{lang === 'sr' ? '44,8125°С 20,4612°И // БЕОГРАД' : '44.8125°N 20.4612°E // BELGRADE'}</span>
+  </div>
+</footer>
+<style>
+  footer { border-top: 1px solid var(--line); padding: 64px 0 32px; background: linear-gradient(var(--bg-0), #000); }
+  .grid { display: flex; justify-content: space-between; gap: 40px 64px; flex-wrap: wrap; }
+  .grid > div:first-child { margin-right: auto; }
+  p { color: var(--muted); margin: 16px 0 0; }
+  .contact { display: flex; flex-direction: column; gap: 10px; font-size: var(--fs-sm); }
+  .contact .k { color: var(--cyan); font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; }
+  .contact a:hover { color: var(--cyan); }
+  .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.14em; }
+</style>
