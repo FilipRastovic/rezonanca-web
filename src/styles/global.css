@@ -144,12 +144,21 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
 .btn .arrow { transition: transform 0.3s; }
 .btn:hover .arrow { transform: translateX(4px); }
 
-/* Product rail: grid on desktop, horizontal swipe row on mobile. */
+/* Product rail: horizontal scroll row, all widths. 3 cards visible on desktop, 1 on mobile. */
+.rail { --rail-gap: var(--gap-col); display: flex !important; gap: var(--rail-gap) !important; overflow-x: auto; scroll-snap-type: x mandatory;
+  scroll-behavior: smooth; scrollbar-width: none; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+  padding: 8px 2px 24px; margin: -8px -2px 0; }
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { flex: 0 0 calc((100% - 2 * var(--rail-gap)) / 3); scroll-snap-align: start; display: block !important; min-width: 0; }
+.rail-nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+.rail-nav button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); background: rgba(5, 12, 28, 0.6);
+  color: var(--ice); font: 400 16px/1 var(--f-mono); cursor: pointer; transition: border-color 0.3s, color 0.3s, opacity 0.3s; }
+.rail-nav button:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+.rail-nav button:disabled { opacity: 0.25; cursor: default; }
+.rail-nav .count { margin-right: auto; font: 400 var(--fs-2xs)/1 var(--f-mono); letter-spacing: var(--track-ui); color: var(--muted); }
 @media (max-width: 860px) {
-  .rail { display: flex !important; gap: 14px !important; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
-    margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter) 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; }
-  .rail::-webkit-scrollbar { display: none; }
-  .rail > * { flex: 0 0 calc(100vw - 2 * var(--gutter)); scroll-snap-align: start; scroll-snap-stop: always; display: block !important; }
+  .rail { --rail-gap: 14px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .rail > * { flex-basis: calc(100vw - 2 * var(--gutter)); scroll-snap-stop: always; }
 }
 
 section { position: relative; padding: var(--space-section) 0; }

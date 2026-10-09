@@ -55,6 +55,33 @@ const canonical = new URL(path, Astro.site);
         for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       }, { rootMargin: '0px 0px -10% 0px' });
       document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+      // Rails: prev/next arrows + position counter under every horizontal product row.
+      document.querySelectorAll<HTMLElement>('.rail').forEach((rail) => {
+        const nav = document.createElement('div');
+        nav.className = 'rail-nav';
+        nav.innerHTML = '<span class="count"></span><button type="button" aria-label="←">←</button><button type="button" aria-label="→">→</button>';
+        rail.after(nav);
+        const [prev, next] = nav.querySelectorAll('button');
+        const count = nav.querySelector('.count')!;
+        const items = () => [...rail.children] as HTMLElement[];
+        const step = () => (items()[0]?.getBoundingClientRect().width ?? 300) + parseFloat(getComputedStyle(rail).columnGap || '0');
+        const update = () => {
+          const max = rail.scrollWidth - rail.clientWidth - 2;
+          prev.disabled = rail.scrollLeft <= 2;
+          next.disabled = rail.scrollLeft >= max;
+          nav.hidden = max <= 0;
+          const first = Math.round(rail.scrollLeft / step()) + 1;
+          const visible = Math.max(1, Math.round(rail.clientWidth / step()));
+          const total = items().length;
+          count.textContent = `${String(first).padStart(2, '0')}${visible > 1 ? '–' + String(Math.min(total, first + visible - 1)).padStart(2, '0') : ''} / ${String(total).padStart(2, '0')}`;
+        };
+        prev.addEventListener('click', () => rail.scrollBy({ left: -step() }));
+        next.addEventListener('click', () => rail.scrollBy({ left: step() }));
+        rail.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+        addEventListener('resize', update);
+        update();
+      });
     </script>
   </body>
 </html>
