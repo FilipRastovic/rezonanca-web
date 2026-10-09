@@ -7,6 +7,7 @@ const { lang } = Astro.props;
 const t = T[lang].nav;
 const home = homeHref(lang);
 const links = [
+  [home, t.home],
   [collectionHref(lang), t.collection],
   [`${home}#interiors`, t.interiors],
   [`${home}#formats`, t.formats],

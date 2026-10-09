@@ -7,7 +7,7 @@ const en: typeof sr = {
     description:
       'Art made with code. Every piece is written in JavaScript, line by line, from a unique signal that will never repeat. Printed in Serbia, pay on delivery.',
   },
-  nav: { collection: 'Collection', series: 'Series', interiors: 'In space', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
+  nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In space', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
     label: 'SIGNAL 00 // RECEIVING',
     title: 'РЕЗОНАНЦА',
