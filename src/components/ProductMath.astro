@@ -1,0 +1,83 @@
+---
+// "The maths behind this piece": the real equations, parameters and measurements
+// recorded by the generator while rendering this exact product (src/data/math/<slug>.json).
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang; slug: string }
+const { lang, slug } = Astro.props;
+const t = T[lang].math;
+const all = import.meta.glob('../data/math/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+const m = all[`../data/math/${slug}.json`];
+const dec = (v: number, d = 3) => v.toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-US', { maximumFractionDigits: d });
+const show = (v: unknown) => (typeof v === 'number' ? dec(v, 6) : String(v).replace(/(\d)\.(\d)/g, lang === 'sr' ? '$1,$2' : '$1.$2'));
+const known = (k: string) => k in (t.keys as Record<string, string>);
+const label = (k: string) => (t.keys as Record<string, string>)[k] ?? k;
+const stat = (k: string) => m?.stats?.find((s: [string, unknown]) => s[0] === k)?.[1];
+const param = (k: string) => m?.params?.find((s: [string, unknown]) => s[0] === k)?.[1];
+
+let reading = '';
+if (m) {
+  if (m.kind === 'attractor') {
+    const l = Number(stat('lyapunov'));
+    if (m.type === 'flow') reading = l > 0.02 ? t.interp.flow(dec(l), dec(Math.LN2 / l, 2)) : t.interp.flowZero(dec(l));
+    else reading = t.interp.map(dec(l), dec(Math.exp(l), 2));
+  } else if (m.kind === 'mandelbrot') {
+    const inside = Number(stat('inside'));
+    reading = inside < 0.05
+      ? t.interp.mandelEdge(dec(Number(param('zoom')), 0), dec(Number(stat('meanEscape')), 0))
+      : t.interp.mandel(dec(Number(param('zoom')), 0), dec(inside, 1), dec(Number(stat('meanEscape')), 0));
+  } else if (param('partials')) {
+    reading = t.interp.signal(show(param('partials')));
+  }
+}
+const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params] : [];
+---
+{m && (
+  <section class="pm grid-bg">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">{t.label}</p>
+        <h2>{t.title}</h2>
+        <p class="lead">{t.lead}</p>
+      </div>
+      <div class="grid">
+        <div class="block corners eq">
+          <span class="k mono">{t.equations}</span>
+          {m.equations.map((e: string) => <code>{e}</code>)}
+        </div>
+        <div class="block">
+          <span class="k mono">{t.params}</span>
+          <dl>{params.map(([k, v]: [string, unknown]) => <div><dt class:list={{ sym: !known(k) }}>{label(k)}</dt><dd>{show(v)}</dd></div>)}</dl>
+        </div>
+        <div class="block">
+          <span class="k mono">{t.stats}</span>
+          <dl>{m.stats.map(([k, v]: [string, unknown]) => <div><dt>{label(k)}</dt><dd>{show(v)}</dd></div>)}</dl>
+        </div>
+        {reading && (
+          <div class="block read">
+            <span class="k mono">{t.read}</span>
+            <p>{reading}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+)}
+<style>
+  .pm { background-color: var(--bg-0); border-top: 1px solid var(--line); }
+  .head { margin-bottom: var(--space-md); }
+  .head .lead { margin-top: 20px; }
+  .grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--gap-col); align-items: start; }
+  .block { padding: clamp(24px, 2.6vw, 40px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); }
+  .eq { --c: var(--cyan); }
+  .k { display: block; margin-bottom: 18px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); }
+  code { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); font: 400 var(--fs-body)/1.6 var(--f-mono); color: var(--ice); overflow-wrap: anywhere; }
+  code:last-child { border-bottom: none; }
+  dl { margin: 0; display: grid; gap: 12px; }
+  dl div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  dt { font: 400 var(--fs-2xs)/1.5 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  dt.sym { text-transform: none; font-size: var(--fs-body); letter-spacing: 0; color: var(--cyan); }
+  dd { margin: 0; font: 400 var(--fs-sm)/1.5 var(--f-mono); color: var(--ice); text-align: right; overflow-wrap: anywhere; }
+  .read { grid-column: 1 / -1; }
+  .read p { margin: 0; font: 300 clamp(15px, 1.4vw, 19px)/1.6 var(--f-display); color: var(--ice); max-width: 70ch; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,31 @@
+{
+  "kind": "ridges",
+  "equations": [
+    "yᵢ(t) = bᵢ − A·env(t)·eᵢ·(1.56·n₁(t)² + 0.45·|sin(2π·f·t + φᵢ)|³·n₂(t))",
+    "env(t) = Σₖ aₖ·e^(−((t − cₖ)/wₖ)²) · sin(πt)^0.6"
+  ],
+  "params": [
+    [
+      "lines",
+      60
+    ],
+    [
+      "carrier",
+      45.87
+    ],
+    [
+      "envelopes",
+      "0.300±0.075 · 0.700±0.075"
+    ]
+  ],
+  "stats": [
+    [
+      "samples",
+      36060
+    ],
+    [
+      "focusLine",
+      34
+    ]
+  ]
+}

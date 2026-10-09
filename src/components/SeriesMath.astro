@@ -1,0 +1,37 @@
+---
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang; series: string }
+const { lang, series } = Astro.props;
+const t = T[lang];
+const sections = t.seriesMath[series as 'structure'] ?? [];
+---
+{sections.length > 0 && (
+  <section class="math grid-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label" data-reveal>{t.math.label}</p>
+        <h2 data-reveal>{t.math.title}</h2>
+      </div>
+      <ol class="cards">
+        {sections.map((s, i) => (
+          <li class="card corners" data-reveal style={`transition-delay:${i * 110}ms`}>
+            <span class="n mono">0{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+            <code class="f">{s.f}</code>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+)}
+<style>
+  .math { background-color: var(--bg-0); border-top: 1px solid var(--line); }
+  .cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-col); }
+  .card { display: flex; flex-direction: column; padding: clamp(28px, 3vw, 44px) clamp(24px, 2.4vw, 36px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); --c: var(--cyan); }
+  .n { font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-label); }
+  h3 { margin-top: 20px; }
+  p { margin: 14px 0 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.75; flex: 1; }
+  .f { display: block; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); font: 400 var(--fs-sm)/1.6 var(--f-mono); color: var(--ice); letter-spacing: 0.02em; overflow-wrap: anywhere; }
+  @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+</style>

@@ -5,6 +5,7 @@
 //   public/rooms/<slug>-<lang>.webp          the poster in a room (product gallery)
 //   public/interiors/<scene>-<lang>.webp     homepage room scenes
 //   public/og-<lang>.jpg                     social share image
+//   src/data/math/<slug>.json                equations, parameters and measurements of each render
 //
 //   node scripts/render-assets.mjs                 everything
 //   node scripts/render-assets.mjs slug1,slug2     only these products
@@ -41,7 +42,14 @@ await fs.writeFile(jobsFile, JSON.stringify(jobs));
 execFileSync('node', ['export.mjs', '--jobs', jobsFile, '--out', TMP], { cwd: GEN, stdio: 'inherit' });
 
 // Where the artwork sits on the poster, per style (fractions of width/height) - used for the detail crop.
-const ART_CENTRE = { structure: [0.5, 0.42], flux: [0.5, 0.42], city: [0.5, 0.4], ridges: [0.5, 0.45], orbit: [0.5, 0.44] };
+const ART_CENTRE = { structure: [0.5, 0.42], flux: [0.5, 0.42], city: [0.5, 0.4], attractor: [0.5, 0.41], mandelbrot: [0.5, 0.41], ridges: [0.5, 0.45], orbit: [0.5, 0.44] };
+
+// Maths metadata recorded during the render -> src/data/math/<slug>.json (product page reads it).
+await fs.mkdir(path.join(ROOT, 'src/data/math'), { recursive: true });
+for (const p of products) {
+  const src = path.join(TMP, `${p.slug}-sr.math.json`);
+  await fs.copyFile(src, path.join(ROOT, 'src/data/math', `${p.slug}.json`));
+}
 
 for (const p of products) {
   for (const lang of Object.keys(LANGS)) {

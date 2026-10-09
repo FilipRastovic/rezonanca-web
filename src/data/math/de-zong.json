@@ -1,0 +1,41 @@
+{
+  "kind": "attractor",
+  "system": "Peter de Jong",
+  "type": "map",
+  "equations": [
+    "xₙ₊₁ = sin(a·yₙ) − cos(b·xₙ)",
+    "yₙ₊₁ = sin(c·xₙ) − cos(d·yₙ)"
+  ],
+  "params": [
+    [
+      "a",
+      -2.2584
+    ],
+    [
+      "b",
+      0.4335
+    ],
+    [
+      "c",
+      -0.6238
+    ],
+    [
+      "d",
+      -2.4105
+    ]
+  ],
+  "stats": [
+    [
+      "iterations",
+      3372754
+    ],
+    [
+      "lyapunov",
+      0.397
+    ],
+    [
+      "coverage",
+      3.7
+    ]
+  ]
+}

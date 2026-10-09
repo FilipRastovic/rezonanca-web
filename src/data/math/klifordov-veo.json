@@ -1,0 +1,41 @@
+{
+  "kind": "attractor",
+  "system": "Clifford",
+  "type": "map",
+  "equations": [
+    "xₙ₊₁ = sin(a·yₙ) + c·cos(a·xₙ)",
+    "yₙ₊₁ = sin(b·xₙ) + d·cos(b·yₙ)"
+  ],
+  "params": [
+    [
+      "a",
+      1.7
+    ],
+    [
+      "b",
+      1.7
+    ],
+    [
+      "c",
+      0.6
+    ],
+    [
+      "d",
+      1.2
+    ]
+  ],
+  "stats": [
+    [
+      "iterations",
+      3372754
+    ],
+    [
+      "lyapunov",
+      0.349
+    ],
+    [
+      "coverage",
+      25.4
+    ]
+  ]
+}

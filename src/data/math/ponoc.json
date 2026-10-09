@@ -1,0 +1,36 @@
+{
+  "kind": "spectrogram",
+  "equations": [
+    "H(i, j) = (0.75·s(i/G)·s(j/G) + 0.25·n(i, j))^2.1 · c(i, j)",
+    "i = frequency band, j = time slice",
+    "s(t) = Σₖ aₖ·(½ + ½·sin(2π·fₖ·t + φₖ)) · Σⱼ bⱼ·e^(−((t − cⱼ)/wⱼ)²)"
+  ],
+  "params": [
+    [
+      "grid",
+      "44 × 44"
+    ],
+    [
+      "towers",
+      1936
+    ],
+    [
+      "partials",
+      "5.814 · 16.239 · 16.879 · 16.824"
+    ],
+    [
+      "swells",
+      "0.596±0.133 · 0.627±0.136"
+    ]
+  ],
+  "stats": [
+    [
+      "tallest",
+      "26, 10"
+    ],
+    [
+      "meanHeight",
+      0.031
+    ]
+  ]
+}

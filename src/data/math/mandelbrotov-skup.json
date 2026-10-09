@@ -1,0 +1,48 @@
+{
+  "kind": "mandelbrot",
+  "equations": [
+    "zₙ₊₁ = zₙ² + c",
+    "z₀ = 0",
+    "|zₙ| > 2  ⇒  c ∉ M"
+  ],
+  "params": [
+    [
+      "re",
+      -0.69863131
+    ],
+    [
+      "im",
+      0.00157804
+    ],
+    [
+      "width",
+      3.1
+    ],
+    [
+      "zoom",
+      1
+    ],
+    [
+      "maxIter",
+      400
+    ],
+    [
+      "rotation",
+      "0°"
+    ]
+  ],
+  "stats": [
+    [
+      "pixels",
+      1533070
+    ],
+    [
+      "inside",
+      15.07
+    ],
+    [
+      "meanEscape",
+      5.9
+    ]
+  ]
+}

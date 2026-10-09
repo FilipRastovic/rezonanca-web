@@ -5,6 +5,8 @@ export const SERIES = [
   { key: 'structure', slug: 'struktura' },
   { key: 'flux', slug: 'tok' },
   { key: 'city', slug: 'grad' },
+  { key: 'attractor', slug: 'atraktori' },
+  { key: 'mandelbrot', slug: 'mandelbrot' },
   { key: 'ridges', slug: 'grebeni' },
   { key: 'orbit', slug: 'orbita' },
 ];
@@ -73,6 +75,46 @@ export const PRODUCTS = [
     'Хиљаде малих зграда у сребрној тишини. Град у три ујутру.',
     'Thousands of small buildings in silver silence. The city at 3 a.m.'),
 
+  // ---- Атрактори
+  p('lorenc', 'attractor', 1, 'lorenz', 'cyan', 'Лоренц', 'Lorenz',
+    'Лептир који је изазвао олују. Три једначине за атмосферу, и ниједна путања се никад не понови.',
+    'The butterfly that started a storm. Three equations for the atmosphere, and no path ever repeats.'),
+  p('aizava', 'attractor', 1, 'aizawa', 'violet', 'Аизава', 'Aizawa',
+    'Сфера исплетена из једне нити, пробијена цеви кроз средину. Кретање које никад не стаје на исто место.',
+    'A sphere woven from a single thread, pierced by a tube through its heart. Motion that never lands in the same place.'),
+  p('tomas', 'attractor', 2, 'thomas', 'aurora', 'Томас', 'Thomas',
+    'Честица у лавиринту синусних таласа. Најједноставније могуће једначине, најсложенији могући пут.',
+    'A particle in a labyrinth of sine waves. The simplest possible equations, the most tangled possible path.'),
+  p('halvorsen', 'attractor', 2, 'halvorsen', 'ember', 'Халворсен', 'Halvorsen',
+    'Три крила савијена једно око другог, симетрија која се руши сваког тренутка.',
+    'Three wings folded around each other, a symmetry breaking in every instant.'),
+  p('klifordov-veo', 'attractor', 1, 'clifford', 'ice', 'Клифордов вео', "Clifford's Veil",
+    'Милиони тачака, свака израчуната из претходне. Заједно цртају тканину коју нико није дизајнирао.',
+    'Millions of points, each computed from the last. Together they draw a fabric no one designed.'),
+  p('de-zong', 'attractor', 3, 'dejong', 'cyan', 'Де Жонг', 'De Jong',
+    'Четири броја и две једначине. Петља светлости која се враћа, а никад не затвара.',
+    'Four numbers and two equations. A loop of light that keeps returning but never closes.'),
+
+  // ---- Манделброт
+  p('mandelbrotov-skup', 'mandelbrot', 1, 'full', 'cyan', 'Манделбротов скуп', 'The Mandelbrot Set',
+    'z² + c. Најпознатији облик у математици, бесконачна обала око једног острва.',
+    'z² + c. The most famous shape in mathematics, an infinite coastline around a single island.'),
+  p('dolina-morskih-konjica', 'mandelbrot', 1, 'seahorse', 'violet', 'Долина морских коњица', 'Seahorse Valley',
+    'Хиљаду пута увеличано. Спирале које се увијају у спирале, док се не изгубиш.',
+    'Magnified a thousand times. Spirals curling into spirals until you lose your way.'),
+  p('spirala', 'mandelbrot', 1, 'spiral', 'aurora', 'Спирала', 'Spiral',
+    'Дубоко у пукотини скупа, вртлог који никад не стиже до дна.',
+    'Deep in a crack of the set, a whirlpool that never reaches the bottom.'),
+  p('mali-mandelbrot', 'mandelbrot', 1, 'minibrot', 'ember', 'Мали Манделброт', 'Minibrot',
+    'На крају дугачке антене, савршена копија целог скупа. Бесконачност у малом.',
+    'At the end of the long antenna, a perfect copy of the whole set. Infinity in miniature.'),
+  p('vitica', 'mandelbrot', 1, 'tendril', 'ice', 'Витица', 'Tendril',
+    'Танке гране леда што расту из севера скупа, свака са истим обликом као цела.',
+    'Thin branches of ice growing from the north of the set, each one shaped like the whole.'),
+  p('morska-zvezda', 'mandelbrot', 1, 'starfish', 'cyan', 'Морска звезда', 'Starfish',
+    'Увеличано четиристо пута. Звезда од спирала, рођена из једне једначине.',
+    'Magnified four hundred times. A star made of spirals, born from a single equation.'),
+
   // ---- Гребени (first signals)
   p('prvi-signal', 'ridges', 3, 'classic', 'cyan', 'Први сигнал', 'First Signal',
     'Рад број један. Где је Резонанца почела - планински венац звука у плавој ноћи.',
@@ -122,6 +164,8 @@ const BOOST = {
   metropola: 0.35, 'orbitalni-grad': 0.6, kanjon: 0.45, kula: 0.6, talas: 0.35, ponoc: 0.9,
   'prvi-signal': 0.6, 'tiha-oluja': 0.6, 'severni-signal': 0.85, magla: 0.6, blizanci: 0.7, svitanje: 0.6,
   'nulta-orbita': 0.6, 'prsten-tisine': 0.85, magnetar: 0.7, pomracenje: 1.25, crvotocina: 1.2, oreol: 1.3,
+  lorenc: 0.5, aizava: 0.55, tomas: 0.55, halvorsen: 0.5, 'klifordov-veo': 0.6, 'de-zong': 0.75,
+  'mandelbrotov-skup': 0.6, 'dolina-morskih-konjica': 0.55, spirala: 0.55, 'mali-mandelbrot': 0.65, vitica: 0.6, 'morska-zvezda': 0.6,
 };
 for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 

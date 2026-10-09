@@ -1,0 +1,46 @@
+{
+  "kind": "attractor",
+  "system": "Halvorsen",
+  "type": "flow",
+  "equations": [
+    "dx/dt = −ax − 4y − 4z − y²",
+    "dy/dt = −ay − 4z − 4x − z²",
+    "dz/dt = −az − 4x − 4y − x²"
+  ],
+  "params": [
+    [
+      "a",
+      1.4
+    ]
+  ],
+  "stats": [
+    [
+      "x0",
+      "-8.73, -3.56, 1.404"
+    ],
+    [
+      "dt",
+      0.004
+    ],
+    [
+      "steps",
+      260000
+    ],
+    [
+      "integrator",
+      "RK4"
+    ],
+    [
+      "lyapunov",
+      0.694
+    ],
+    [
+      "view",
+      "85.3° / -4.1° / -14.3°"
+    ],
+    [
+      "coverage",
+      35.5
+    ]
+  ]
+}

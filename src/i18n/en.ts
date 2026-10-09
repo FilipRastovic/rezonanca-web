@@ -36,7 +36,7 @@ const en: typeof sr = {
   },
   series: {
     label: '01 // SERIES',
-    title: 'Five series. Thirty signals.',
+    title: 'Seven series. Forty-two signals.',
     structure: {
       name: 'Структура · Structure',
       code: 'SERIES A // DESIGN GRAMMAR',
@@ -52,14 +52,24 @@ const en: typeof sr = {
       code: 'SERIES C // SPECTRAL ARCHITECTURE',
       desc: 'A spectrogram turned into a metropolis. Every tower a frequency, every light a moment of sound. A city that never sleeps, because it never existed.',
     },
+    attractor: {
+      name: 'Атрактори · Attractors',
+      code: 'SERIES D // STRANGE ATTRACTORS',
+      desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by equations that never let the path repeat.',
+    },
+    mandelbrot: {
+      name: 'Манделброт · Mandelbrot',
+      code: 'SERIES E // THE SET z² + c',
+      desc: 'One equation, infinitely many coastlines. Each picture is a window into the Mandelbrot set, magnified to places no eye has looked before.',
+    },
     ridges: {
       name: 'Гребени · Ridges',
-      code: 'SERIES D // FIRST SIGNALS - STACKED SPECTRA',
+      code: 'SERIES F // FIRST SIGNALS - STACKED SPECTRA',
       desc: 'Where it all began. Dozens of waveforms stacked one behind another, like a landscape captured by a radio telescope at 3 a.m.',
     },
     orbit: {
       name: 'Орбита · Orbit',
-      code: 'SERIES E // FIRST SIGNALS - RADIAL SWEEP',
+      code: 'SERIES G // FIRST SIGNALS - RADIAL SWEEP',
       desc: 'A signal circling the void. Rings of waves bending under the gravity of silence - an eye that looks back.',
     },
     viewAll: 'All works in the series',
@@ -124,9 +134,9 @@ const en: typeof sr = {
     cta: 'Order a poster',
   },
   collection: {
-    label: 'COLLECTION // 30 WORKS',
+    label: 'COLLECTION // 42 WORKS',
     title: 'Collection',
-    lead: 'Thirty signals, five series. Every piece is one of a kind - born from its own number, its own grammar and its own light.',
+    lead: 'Forty-two signals, seven series. Every piece is one of a kind - born from its own number, its own grammar and its own light.',
     all: 'All',
     count: 'works',
   },
@@ -157,6 +167,69 @@ const en: typeof sr = {
     related: 'From the same series',
     otherSeries: 'Explore other series',
   },
+  math: {
+    label: 'MATHEMATICS',
+    title: 'The maths behind the picture',
+    lead: 'Every piece is computed, not drawn. These are the real equations and numbers from the program that made this exact piece.',
+    equations: 'Equations',
+    params: 'Parameters',
+    stats: 'Measured while drawing',
+    read: 'What these numbers mean',
+    keys: {
+      system: 'System', x0: 'Start point', dt: 'Time step', steps: 'Integration steps', integrator: 'Method', lyapunov: 'Lyapunov exponent λ',
+      view: 'View angle', coverage: 'Coverage (%)', iterations: 'Iterations', re: 'Re(c) centre', im: 'Im(c) centre', width: 'Window width',
+      zoom: 'Magnification ×', maxIter: 'Max iterations', rotation: 'Rotation', pixels: 'Points computed', inside: 'Inside the set (%)',
+      meanEscape: 'Mean escape', rays: 'Rays', cores: 'Cores', curl: 'Curl (°/step)', maxObjects: 'Object limit', partials: 'Signal frequencies',
+      swells: 'Swells', primitives: 'Shapes drawn', boxes: 'Blocks', nodes: 'Nodes', ribbons: 'Ribbons', lines: 'Lines', twists: 'Twists',
+      meander: 'Meander', samples: 'Samples', peak: 'Signal peak (t)', grid: 'Grid', towers: 'Towers', tallest: 'Tallest tower', meanHeight: 'Mean height',
+      carrier: 'Carrier frequency', envelopes: 'Envelopes', focusLine: 'Focus line', rings: 'Rings',
+    },
+    interp: {
+      flow: (l, t2) => `λ = ${l} > 0 means chaos: two paths starting 0.00000001 apart separate by a factor of e^(${l}·t). Their distance doubles every ${t2} time units, so very soon they have nothing in common.`,
+      flowZero: (l) => `λ ≈ ${l}: this system sits at the edge of chaos. The path spreads slowly, finding a new, slightly different loop every time.`,
+      map: (l, n) => `λ = ${l} per iteration: each new point multiplies any error about ${n} times. That's why the shape can only be drawn step by step, never predicted ahead.`,
+      mandel: (z, inside, esc) => `This window is magnified ${z} times. ${inside}% of points stay trapped in the set forever; the rest escape after ${esc} steps on average. Each point's colour is exactly that step count.`,
+      mandelEdge: (z, esc) => `This window is magnified ${z} times, at a place where the set has no interior: everything you see is the thin filaments of the boundary itself. Points around them escape after ${esc} steps on average, and each point's colour is exactly that count.`,
+      signal: (p) => `The form is driven by a sound signal made of the frequencies ${p}. Where the signal is louder, the structure grows further.`,
+    },
+  },
+  seriesMath: {
+    structure: [
+      { t: 'A grammar instead of a drawing', d: 'No hand draws the picture, a set of rules does: "a ray is a block, then a new ray a little further and a little bigger". The program applies the rules over and over, like a sentence that writes itself. The idea comes from Context Free Art and Structure Synth.', f: 'ray → block · ray(x + 2, s × 1.045)' },
+      { t: 'Chance with rules', d: 'Each rule has a probability: most of the time a ray simply extends, sometimes it forks in two, sometimes it places a node that grows arcs. The same seed always makes the same choices, so every piece is reproducible and unique.', f: 'p(extend) ≈ 84% · p(fork) ≈ 9% · p(node) ≈ 5%' },
+      { t: 'Sound sets the reach', d: 'How many steps each ray lives depends on a sound signal s(t): a sum of sine waves under swells of loudness. Loud parts of the signal become long rays, quiet parts stay short.', f: 's(t) = Σ aₖ·sin(2π·fₖ·t + φₖ) · envelope(t)' },
+    ],
+    flux: [
+      { t: 'A surface in motion', d: 'Each ribbon is a parametric surface: hundreds of lines placed around a cross-section that rotates as it travels along a curve. What looks like fabric is pure geometry.', f: 'P(t, φ) = C(t) + h(t)·sin φ·(cos θ(t)·N + sin θ(t)·T)' },
+      { t: 'The twist', d: 'The angle θ(t) grows linearly, plus a little noise, so the ribbon turns evenly but never mechanically. Lines in front are brighter and lines behind are darker, so the eye reads depth.', f: 'θ(t) = 2π·k·t + θ₀ + noise(t)' },
+      { t: 'Width is loudness', d: 'Where the signal is loud, the ribbon widens. The signal\'s highest point is the focal point of the picture.', f: 'h(t) = w₀ + w₁·s(t)^1.1' },
+    ],
+    city: [
+      { t: 'A spectrogram as a city', d: 'A spectrogram shows sound in two dimensions: how strong each frequency is at each moment. Here one axis is frequency, the other is time, and strength becomes the height of a tower.', f: 'H(i, j) = strength of frequency i at time j' },
+      { t: 'A Fourier series', d: 'The signal is a sum of a few sine waves of different frequencies, like a chord. Each frequency leaves its own row of towers across the city.', f: 's(t) = Σₖ aₖ·(½ + ½·sin(2π·fₖ·t + φₖ))' },
+      { t: 'Isometry', d: 'The city is drawn in isometric projection: no perspective, so parallel lines stay parallel. Towers are drawn back to front, so the front ones naturally hide the ones behind.', f: '(x, y) = (i − j, (i + j)/2 − h)' },
+    ],
+    attractor: [
+      { t: 'What an attractor is', d: 'Imagine a point that moves by a rule: its velocity depends only on where it is. Wherever it starts, it soon falls into a particular shape in space and never leaves it. That shape is the attractor.', f: 'dx/dt = f(x)' },
+      { t: 'Why "strange"', d: 'On a strange attractor the path never repeats, yet it stays on the same shape. Two points that start almost together quickly drift apart. This is the butterfly effect, which Edward Lorenz discovered in 1963 in a simplified model of the atmosphere.', f: '|δ(t)| ≈ |δ₀|·e^(λt),  λ > 0' },
+      { t: 'How the picture forms', d: 'The program solves the equations with the fourth-order Runge-Kutta method hundreds of thousands of times and records every step. The light in the picture is density: where the path passes more often, it glows brighter. The two-equation attractors (Clifford, De Jong) aren\'t solved but iterated: each point is computed from the previous one.', f: 'xₙ₊₁ = sin(a·yₙ) + c·cos(a·xₙ)' },
+    ],
+    mandelbrot: [
+      { t: 'One equation', d: 'Take a complex number c. Start from zero and repeat: square it, then add c. If the numbers stay small forever, c belongs to the set. If they run off to infinity, it doesn\'t. That is the whole definition.', f: 'zₙ₊₁ = zₙ² + c,   z₀ = 0' },
+      { t: 'The escape radius', d: 'It\'s proven that once |z| passes 2, it never comes back. So for every point the program counts how many steps it takes to escape. That number becomes the colour: points near the set escape slowly and glow.', f: '|zₙ| > 2  ⇒  c ∉ M' },
+      { t: 'An infinite coastline', d: 'The boundary of the set is a fractal: however far you zoom in, new spirals, tendrils and tiny copies of the whole set appear. The set is named after Benoit Mandelbrot, who studied it around 1980 at IBM. Its boundary has Hausdorff dimension 2 (Shishikura, 1998).', f: 'dim_H(∂M) = 2' },
+    ],
+    ridges: [
+      { t: 'Stacked spectra', d: 'Each line is one moment of sound. The lines are stacked one behind another and each hides the ones behind it, like a mountain range seen from far away.', f: 'yᵢ(t) = bᵢ − A·env(t)·signal(t)' },
+      { t: 'The envelope', d: 'Gaussian envelopes decide where the signal is strong: peaks rise in the middle of the picture and fade towards the edges.', f: 'env(t) = Σₖ aₖ·e^(−((t − cₖ)/wₖ)²)' },
+      { t: 'Noise and carrier', d: 'Inside the envelope a carrier frequency oscillates, and Perlin noise acts as the natural irregularity of sound, so no two lines are alike.', f: '|sin(2π·f·t + φᵢ)|³ · noise(t)' },
+    ],
+    orbit: [
+      { t: 'Waves in polar coordinates', d: 'The same signal as in Ridges, wound into a circle: instead of height, it changes the radius of each ring.', f: 'rᵢ(θ) = Rᵢ + A·env(θ)·signal(θ)' },
+      { t: 'Seamless noise', d: 'So that a ring doesn\'t break where the circle closes, the noise is sampled around a circle in space (cos θ, sin θ). The signal is continuous through all 360°.', f: 'noise(cos θ, sin θ, i)' },
+      { t: 'Layers', d: 'Rings are drawn from the outside in, each hiding the ones outside it. That creates the sense of a tunnel, an eye or an eclipse.', f: 'Rᵢ = R₀ + (R₁ − R₀)·i/N' },
+    ],
+  },
   palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember' },
   variants: {
     burst: 'Burst', spiral: 'Spiral', tree: 'Tree', twin: 'Twin', shell: 'Shell',
@@ -164,6 +237,8 @@ const en: typeof sr = {
     grid: 'Grid', round: 'Round', canyon: 'Canyon', spire: 'Spire', wave: 'Wave', dense: 'Dense',
     classic: 'Classic', eclipse: 'Eclipse', tunnel: 'Tunnel', halo: 'Halo',
     storm: 'Storm', drift: 'Drift', turbulent: 'Turbulent', shatter: 'Shatter',
+    lorenz: 'Lorenz', aizawa: 'Aizawa', thomas: 'Thomas', halvorsen: 'Halvorsen', clifford: 'Clifford', dejong: 'De Jong',
+    full: 'Full set', seahorse: 'Seahorses', spiral: 'Spiral', minibrot: 'Minibrot', tendril: 'Tendril', starfish: 'Starfish', elephant: 'Elephants',
   },
   footer: {
     tagline: 'Code art. Written in code, printed in Serbia.',

@@ -1,0 +1,50 @@
+{
+  "kind": "grammar",
+  "equations": [
+    "spoke → box · spoke(x + 2, rz ± 1.2°, s × 1.045)   p = 84%",
+    "spoke → box · spoke(rz + θ, s × 0.8) · spoke(rz − θ, s × 0.8)   p = 9%",
+    "spoke → node · arc · arc · spoke   p = 5%",
+    "arc → box · arc(rz = step / r)",
+    "s(t) = Σₖ aₖ·(½ + ½·sin(2π·fₖ·t + φₖ)) · Σⱼ bⱼ·e^(−((t − cⱼ)/wⱼ)²)"
+  ],
+  "params": [
+    [
+      "rays",
+      170
+    ],
+    [
+      "cores",
+      1
+    ],
+    [
+      "curl",
+      0
+    ],
+    [
+      "maxObjects",
+      14000
+    ],
+    [
+      "partials",
+      "5.789 · 13.87 · 5.293 · 13.147"
+    ],
+    [
+      "swells",
+      "0.789±0.145 · 0.014±0.128 · 0.418±0.207"
+    ]
+  ],
+  "stats": [
+    [
+      "primitives",
+      6705
+    ],
+    [
+      "boxes",
+      6509
+    ],
+    [
+      "nodes",
+      196
+    ]
+  ]
+}
