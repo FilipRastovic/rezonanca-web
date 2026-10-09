@@ -2,11 +2,11 @@
 // `style` + `variant` + `palette` + `seed` reproduce each artwork exactly in ../waveform-poster.
 
 export const SERIES = [
+  { key: 'attractor', slug: 'atraktori' },
+  { key: 'mandelbrot', slug: 'mandelbrot' },
   { key: 'structure', slug: 'struktura' },
   { key: 'flux', slug: 'tok' },
   { key: 'city', slug: 'grad' },
-  { key: 'attractor', slug: 'atraktori' },
-  { key: 'mandelbrot', slug: 'mandelbrot' },
   { key: 'ridges', slug: 'grebeni' },
   { key: 'orbit', slug: 'orbita' },
 ];

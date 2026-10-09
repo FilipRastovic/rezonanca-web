@@ -39,27 +39,27 @@ const en: typeof sr = {
     title: 'Seven series. Forty-two signals.',
     structure: {
       name: 'Структура · Structure',
-      code: 'SERIES A // DESIGN GRAMMAR',
+      code: 'SERIES C // DESIGN GRAMMAR',
       desc: 'Sound that builds. Thousands of blocks of light grow by the rules of a design grammar - branching, bending and repeating until the signal fades. The architecture of a single moment.',
     },
     flux: {
       name: 'Ток · Flux',
-      code: 'SERIES B // PHASE FLOW',
+      code: 'SERIES D // PHASE FLOW',
       desc: 'Hundreds of threads of light woven into a single ribbon. A signal twisting through space like silk in zero gravity.',
     },
     city: {
       name: 'Град · City',
-      code: 'SERIES C // SPECTRAL ARCHITECTURE',
+      code: 'SERIES E // SPECTRAL ARCHITECTURE',
       desc: 'A spectrogram turned into a metropolis. Every tower a frequency, every light a moment of sound. A city that never sleeps, because it never existed.',
     },
     attractor: {
       name: 'Атрактори · Attractors',
-      code: 'SERIES D // STRANGE ATTRACTORS',
+      code: 'SERIES A // STRANGE ATTRACTORS',
       desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by equations that never let the path repeat.',
     },
     mandelbrot: {
       name: 'Манделброт · Mandelbrot',
-      code: 'SERIES E // THE SET z² + c',
+      code: 'SERIES B // THE SET z² + c',
       desc: 'One equation, infinitely many coastlines. Each picture is a window into the Mandelbrot set, magnified to places no eye has looked before.',
     },
     ridges: {
@@ -86,7 +86,7 @@ const en: typeof sr = {
     scenes: {
       living: { t: 'Living room', d: 'Above the sofa, like a window into deep space.' },
       studio: { t: 'Studio', d: 'Beside the monitors, where things get made at night.' },
-      hall: { t: 'Hallway', d: 'As a pair - Flux and Structure, in conversation.' },
+      hall: { t: 'Hallway', d: 'As a pair - Aizawa and Mandelbrot, chaos and order in conversation.' },
     },
   },
   formats: {

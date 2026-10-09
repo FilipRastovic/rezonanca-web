@@ -148,9 +148,9 @@ for (const p of products) {
 // Homepage interiors + social share image.
 if (!only) {
   const HOME = {
-    living: [{ slug: 'predajnik', x: 650, y: 110, w: 300 }],
-    studio: [{ slug: 'metropola', x: 980, y: 120, w: 360 }],
-    hall: [{ slug: 'dvostruka-spirala', x: 430, y: 170, w: 300 }, { slug: 'galaksija', x: 870, y: 170, w: 300 }],
+    living: [{ slug: 'lorenc', x: 650, y: 110, w: 300 }],
+    studio: [{ slug: 'morska-zvezda', x: 980, y: 120, w: 360 }],
+    hall: [{ slug: 'aizava', x: 430, y: 170, w: 300 }, { slug: 'dolina-morskih-konjica', x: 870, y: 170, w: 300 }],
   };
   for (const [scene, frames] of Object.entries(HOME)) {
     for (const lang of Object.keys(LANGS)) {
@@ -158,7 +158,7 @@ if (!only) {
     }
   }
   for (const lang of Object.keys(LANGS)) {
-    const art = await sharp(posterPng('predajnik', lang)).resize({ height: 630 }).toBuffer();
+    const art = await sharp(posterPng('lorenc', lang)).resize({ height: 630 }).toBuffer();
     const label = lang === 'sr' ? 'РЕЗОНАНЦА' : 'REZONANCA';
     const sub = lang === 'sr' ? 'Звук, заустављен у светлости.' : 'Sound, frozen in light.';
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#02060f"/>
