@@ -9,6 +9,7 @@
 //
 //   node scripts/render-assets.mjs                 everything
 //   node scripts/render-assets.mjs slug1,slug2     only these products
+//   node scripts/render-assets.mjs --rooms-only    reuse cached renders; rebuild room shots + homepage interiors
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -25,7 +26,9 @@ const out = (...p) => path.join(ROOT, 'public', ...p);
 for (const d of ['posters', 'details', 'rooms', 'interiors']) await fs.mkdir(out(d), { recursive: true });
 await fs.mkdir(TMP, { recursive: true });
 
-const only = process.argv[2] ? process.argv[2].split(',') : null;
+const roomsOnly = process.argv.includes('--rooms-only');
+const arg = process.argv.slice(2).find((a) => !a.startsWith('--'));
+const only = arg ? arg.split(',') : null;
 const products = only ? PRODUCTS.filter((p) => only.includes(p.slug)) : PRODUCTS;
 const posterPng = (slug, lang) => path.join(TMP, `${slug}-${lang}.png`);
 const detailPng = (slug) => path.join(TMP, `${slug}-detail.png`);
@@ -39,19 +42,19 @@ for (const p of products) {
 }
 const jobsFile = path.join(TMP, 'jobs.json');
 await fs.writeFile(jobsFile, JSON.stringify(jobs));
-execFileSync('node', ['export.mjs', '--jobs', jobsFile, '--out', TMP], { cwd: GEN, stdio: 'inherit' });
+if (!roomsOnly) execFileSync('node', ['export.mjs', '--jobs', jobsFile, '--out', TMP], { cwd: GEN, stdio: 'inherit' });
 
 // Where the artwork sits on the poster, per style (fractions of width/height) - used for the detail crop.
 const ART_CENTRE = { structure: [0.5, 0.42], flux: [0.5, 0.42], city: [0.5, 0.4], attractor: [0.5, 0.41], mandelbrot: [0.5, 0.41], ridges: [0.5, 0.45], orbit: [0.5, 0.44] };
 
 // Maths metadata recorded during the render -> src/data/math/<slug>.json (product page reads it).
 await fs.mkdir(path.join(ROOT, 'src/data/math'), { recursive: true });
-for (const p of products) {
+for (const p of roomsOnly ? [] : products) {
   const src = path.join(TMP, `${p.slug}-sr.math.json`);
   await fs.copyFile(src, path.join(ROOT, 'src/data/math', `${p.slug}.json`));
 }
 
-for (const p of products) {
+for (const p of roomsOnly ? [] : products) {
   for (const lang of Object.keys(LANGS)) {
     await sharp(posterPng(p.slug, lang)).resize({ width: 900 }).webp({ quality: 84 }).toFile(out('posters', `${p.slug}-${lang}.webp`));
     await sharp(posterPng(p.slug, lang)).webp({ quality: 86 }).toFile(out('posters', `${p.slug}-${lang}-lg.webp`));
@@ -129,10 +132,16 @@ async function room(scene, frames, file) {
     ${sc.svg}</svg>`;
   const layers = [];
   for (const f of fr) {
-    const border = 10;
-    const art = await sharp(f.file).resize({ width: f.w - border * 2, height: f.h - border * 2 }).toBuffer();
-    const framed = await sharp({ create: { width: f.w, height: f.h, channels: 3, background: '#0b0b0d' } })
-      .composite([{ input: art, left: border, top: border }]).png().toBuffer();
+    // Thin black frame + off-white gallery mat (same look as the site's cards).
+    const frame = Math.max(5, Math.round(f.w * 0.022));
+    const pad = Math.round(f.w * 0.075);
+    const aw = f.w - 2 * (frame + pad), ah = f.h - 2 * (frame + pad);
+    const art = await sharp(f.file).resize({ width: aw, height: ah }).toBuffer();
+    const bevel = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${aw + 4}" height="${ah + 4}"><rect x="0.5" y="0.5" width="${aw + 3}" height="${ah + 3}" fill="none" stroke="#000" stroke-opacity="0.25" stroke-width="2"/></svg>`);
+    const mat = await sharp({ create: { width: f.w - 2 * frame, height: f.h - 2 * frame, channels: 3, background: '#e4e2dc' } })
+      .composite([{ input: bevel, left: pad - 2, top: pad - 2 }, { input: art, left: pad, top: pad }]).png().toBuffer();
+    const framed = await sharp({ create: { width: f.w, height: f.h, channels: 3, background: '#0d0d0f' } })
+      .composite([{ input: mat, left: frame, top: frame }]).png().toBuffer();
     layers.push({ input: framed, left: f.x, top: f.y });
   }
   await sharp(Buffer.from(bg)).composite(layers).webp({ quality: 82 }).toFile(file);
