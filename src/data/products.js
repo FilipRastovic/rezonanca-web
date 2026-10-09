@@ -114,14 +114,14 @@ export const PRODUCTS = [
     'A few bright rings, calm as a halo around the moon.'),
 ];
 
-// Print boost per piece (0 = as rendered, 1 = max): brightens + saturates the art for paper.
+// Print boost per piece (0 = as rendered, up to 1.5); highlights are rolled off so nothing blows out: brightens + saturates the art for paper.
 // Already-bright pieces get a light touch; the darkest get the most.
 const BOOST = {
   predajnik: 0.35, galaksija: 0.5, 'drvo-signala': 0.85, 'dvojna-zvezda': 0.6, 'dajsonova-sfera': 0.5, supernova: 0.85,
   aurora: 0.6, 'dvostruka-spirala': 0.35, horizont: 0.6, beskonacnost: 0.8, vodopad: 0.5, svila: 0.7,
   metropola: 0.35, 'orbitalni-grad': 0.6, kanjon: 0.45, kula: 0.6, talas: 0.35, ponoc: 0.9,
   'prvi-signal': 0.6, 'tiha-oluja': 0.6, 'severni-signal': 0.85, magla: 0.6, blizanci: 0.7, svitanje: 0.6,
-  'nulta-orbita': 0.6, 'prsten-tisine': 0.85, magnetar: 0.7, pomracenje: 0.6, crvotocina: 0.6, oreol: 0.85,
+  'nulta-orbita': 0.6, 'prsten-tisine': 0.85, magnetar: 0.7, pomracenje: 1.25, crvotocina: 1.2, oreol: 1.3,
 };
 for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 
