@@ -55,7 +55,7 @@ const cfg = JSON.stringify({ prices: PRICES, shipping: SHOP.shipping, inbox: SHO
           <select name="frame">{FRAMES.map((k) => <option value={k}>{t.frames[k]}</option>)}</select>
         </label>
         <label>{t.qty}
-          <input name="qty" type="number" min="1" max="20" value="1" inputmode="numeric" />
+          <span class="stepper"><button type="button" class="step" data-step="-1" aria-label="−">−</button><input type="number" name="qty" min="1" max="20" value="1" inputmode="numeric" /><button type="button" class="step" data-step="1" aria-label="+">+</button></span>
         </label>
 
         <label class="full">{t.name}<input name="name" required autocomplete="name" /></label>

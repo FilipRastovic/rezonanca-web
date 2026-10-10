@@ -162,6 +162,15 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
   .panel { padding: 20px 16px; margin-inline: calc(-0.5 * var(--gutter)); }
 }
 
+/* Quantity stepper: − [n] + */
+.stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--line); background: rgba(1, 3, 10, 0.8); height: 52px; }
+.stepper .step { width: 44px; border: none; background: none; color: var(--ice); font: 400 20px/1 var(--f-body); cursor: pointer; transition: color 0.2s, background 0.2s; }
+.stepper .step:hover:not(:disabled) { color: var(--cyan); background: rgba(80, 230, 255, 0.06); }
+.stepper .step:disabled { opacity: 0.3; cursor: default; }
+.stepper input { width: 48px !important; padding: 0 !important; border: none !important; border-left: 1px solid var(--line) !important; border-right: 1px solid var(--line) !important;
+  background: none !important; color: var(--ice); font: 500 16px/1 var(--f-body) !important; text-align: center; -moz-appearance: textfield; box-shadow: none !important; }
+.stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
 section { position: relative; padding: var(--space-section) 0; }
 main > section + section, main > section + * section:first-child { border-top: 1px solid var(--line); }
 

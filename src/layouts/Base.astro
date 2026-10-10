@@ -56,6 +56,23 @@ const canonical = new URL(path, Astro.site);
       }, { rootMargin: '0px 0px -10% 0px' });
       document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
 
+      // Quantity steppers.
+      const syncStep = (input: HTMLInputElement) => {
+        const v = +input.value, s = input.parentElement!;
+        (s.querySelector('[data-step="-1"]') as HTMLButtonElement).disabled = v <= +input.min;
+        (s.querySelector('[data-step="1"]') as HTMLButtonElement).disabled = v >= +input.max;
+      };
+      document.addEventListener('click', (e) => {
+        const b = (e.target as Element).closest<HTMLButtonElement>('.stepper .step');
+        if (!b) return;
+        const input = b.parentElement!.querySelector('input') as HTMLInputElement;
+        input.value = String(Math.min(+input.max, Math.max(+input.min, (+input.value || 1) + +b.dataset.step!)));
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      document.addEventListener('input', (e) => { const i = e.target as HTMLInputElement; if (i.closest?.('.stepper')) syncStep(i); });
+      document.querySelectorAll<HTMLInputElement>('.stepper input').forEach(syncStep);
+
       // Rails: prev/next arrows + position counter under every horizontal product row.
       document.querySelectorAll<HTMLElement>('.rail').forEach((rail) => {
         const nav = document.createElement('div');

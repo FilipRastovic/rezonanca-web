@@ -63,6 +63,7 @@ export function initOrder(dialog: HTMLDialogElement) {
       if (d.size) size.value = d.size;
       if (d.frame) ($<HTMLSelectElement>('[name=frame]')).value = d.frame;
       if (d.qty) qty.value = d.qty;
+      qty.dispatchEvent(new Event('input', { bubbles: true })); // refresh stepper buttons
       status.textContent = '';
       form.hidden = false;
       done.hidden = true;
