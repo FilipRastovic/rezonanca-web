@@ -15,7 +15,7 @@ const t = T[lang].series;
     </div>
 
     {SERIES.map((s, si) => (
-      <div class="series">
+      <div class="series panel">
         <SeriesHeader lang={lang} series={s} />
         <div class="grid rail">
           {productsBySeries(s.key).map((p, i) => (
@@ -37,7 +37,7 @@ const t = T[lang].series;
 </section>
 <style>
   section { background: linear-gradient(var(--bg-0), var(--bg-1) 50%, var(--bg-0)); }
-  .series + .series { margin-top: var(--space-block); }
+  .series + .series { margin-top: clamp(28px, 3.5vw, 56px); }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
   .all { display: flex; justify-content: center; margin-top: var(--space-block); }
   .custom { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: var(--space-md); padding: clamp(36px, 4vw, 56px) clamp(24px, 4vw, 48px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); }

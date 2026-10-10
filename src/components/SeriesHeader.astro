@@ -12,7 +12,7 @@ const n = productsBySeries(series.key).length;
   <Tag class="name">{info.name}</Tag>
   <div class="side">
     <p>{info.desc}</p>
-    {link && <a class="more mono" href={collectionHref(lang, series.slug)}>{t.viewAll} →</a>}
+    {link && <a class="btn more" href={collectionHref(lang, series.slug)}>{t.viewAll} <span class="arrow">→</span></a>}
   </div>
 </header>
 <style>
@@ -21,7 +21,6 @@ const n = productsBySeries(series.key).length;
   .name { font: 400 clamp(24px, 2.8vw, 38px)/1.15 var(--f-display); letter-spacing: 0.06em; color: var(--ice); margin: 0; }
   .side { justify-self: end; max-width: 52ch; }
   .side p { margin: 0; color: var(--muted); }
-  .more { display: inline-block; margin-top: 12px; font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
-  .more:hover { color: var(--ice); }
+  .more { margin-top: 20px; padding: 12px 18px; font-size: var(--fs-2xs); }
   @media (max-width: 860px) { .series-head { grid-template-columns: 1fr; } .side { justify-self: start; } }
 </style>

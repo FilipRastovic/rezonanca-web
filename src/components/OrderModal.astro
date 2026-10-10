@@ -80,6 +80,19 @@ const cfg = JSON.stringify({ prices: PRICES, shipping: SHOP.shipping, inbox: SHO
       </div>
     </div>
   </form>
+  <section class="done sheet corners" hidden aria-live="polite">
+    <div class="check" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27 l8 8 l15 -17"/></svg></div>
+    <p class="label">{t.label}</p>
+    <h2>{t.doneTitle}</h2>
+    <p class="lead">{t.doneLead}</p>
+    <div class="summary">
+      <span class="k mono">{t.doneSummary}</span>
+      <dl id="order-summary"></dl>
+    </div>
+    <p class="note">{t.doneNote} <a href={`mailto:${SHOP.email}`}>{SHOP.email}</a></p>
+    <p class="demo mono" hidden>{t.demo}</p>
+    <button type="button" class="btn btn--solid" data-close>{t.doneClose} <span class="arrow">→</span></button>
+  </section>
   <template id="order-msgs" data-success={t.success} data-demo={t.demo} data-error={t.error} data-required={t.required}></template>
 </dialog>
 
@@ -124,6 +137,25 @@ const cfg = JSON.stringify({ prices: PRICES, shipping: SHOP.shipping, inbox: SHO
   .submit { justify-content: center; padding: 18px; }
   .submit[disabled] { opacity: 0.6; cursor: wait; }
   [data-frame][hidden] { display: none; }
+  .done { text-align: center; padding: clamp(36px, 6vw, 72px) clamp(24px, 5vw, 64px); }
+  .done[hidden] { display: none; }
+  .check svg { width: 64px; height: 64px; fill: none; stroke: var(--cyan); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 10px rgba(80,230,255,.6)); }
+  .check circle { stroke-dasharray: 160; stroke-dashoffset: 160; animation: draw-c 0.7s ease forwards; }
+  .check path { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw-c 0.4s 0.6s ease forwards; }
+  @keyframes draw-c { to { stroke-dashoffset: 0; } }
+  .done .label { justify-content: center; margin-top: 24px; }
+  .done h2 { margin: 14px auto 0; font-size: var(--fs-h2); }
+  .done .lead { margin: 18px auto 0; color: var(--text); }
+  .summary { max-width: 440px; margin: 32px auto 0; padding: 20px 24px; border: 1px solid var(--line); text-align: left; }
+  .summary .k { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); }
+  .summary dl { margin: 14px 0 0; display: grid; gap: 8px; }
+  .summary dl :global(div) { display: flex; justify-content: space-between; gap: 16px; font-size: var(--fs-sm); }
+  .summary dl :global(dt) { color: var(--muted); } .summary dl :global(dd) { margin: 0; color: var(--ice); text-align: right; }
+  .summary dl :global(div.total) { margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line); font-weight: 600; }
+  .note { margin: 24px auto 0; font-size: var(--fs-sm); color: var(--muted); }
+  .note a { color: var(--cyan); }
+  .demo { font-size: var(--fs-2xs); color: var(--muted); }
+  .done .btn { margin-top: 28px; }
   @media (max-width: 760px) {
     .body { grid-template-columns: 1fr; }
     .preview { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: end; }

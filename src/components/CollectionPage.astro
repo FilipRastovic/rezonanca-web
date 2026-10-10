@@ -41,9 +41,9 @@ const description = info ? info.desc : t.collection.lead;
   <section class="list">
     <div class="wrap">
       {shown.map((s, si) => (
-        <div class="series">
+        <div class="series panel">
           {!current && <SeriesHeader lang={lang} series={s} />}
-          <div class:list={['grid', { rail: !current }]}>
+          <div class="grid">
             {productsBySeries(s.key).map((p, i) => <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={(i % 3) * 90} />)}
           </div>
         </div>
@@ -66,8 +66,9 @@ const description = info ? info.desc : t.collection.lead;
   .chips a.on { border-color: var(--cyan); background: rgba(80, 230, 255, 0.08); color: var(--cyan); }
   .chips i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
   .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: var(--space-head); }
-  .series + .series { margin-top: var(--space-block); }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
-  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
-  @media (max-width: 420px) { .grid { gap: 20px 12px; } }
+  .series + .series { margin-top: clamp(28px, 3.5vw, 56px); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 1.8vw, 28px); }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
 </style>

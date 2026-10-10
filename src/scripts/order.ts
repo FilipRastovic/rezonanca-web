@@ -15,6 +15,31 @@ export function initOrder(dialog: HTMLDialogElement) {
   const img = dialog.querySelector('#order-img') as HTMLImageElement;
   const total = dialog.querySelector('#order-total')!;
   const status = $<HTMLElement>('.status');
+  const done = dialog.querySelector('.done') as HTMLElement;
+
+  // After a successful send: replace the form with a confirmation + order summary.
+  const showDone = (demo: boolean) => {
+    const L = form.querySelectorAll('label');
+    const lab = (name: string) => ([...L].find((l) => l.querySelector(`[name=${name}]`))?.childNodes[0]?.textContent ?? name).trim();
+    const val = (name: string) => {
+      const el = form.querySelector(`[name=${name}]`) as HTMLSelectElement | HTMLInputElement;
+      return el instanceof HTMLSelectElement ? el.selectedOptions[0]?.text.trim() : el.value;
+    };
+    const rows: [string, string][] = [[lab('poster'), val('poster')], [lab('format'), val('format')], [lab('size'), val('size')]];
+    if (!frameRow.hidden) rows.push([lab('frame'), val('frame')]);
+    rows.push([lab('qty'), val('qty')], [lab('name'), val('name')], [lab('phone'), val('phone')]);
+    const dl = dialog.querySelector('#order-summary')!;
+    dl.innerHTML = '';
+    for (const [k, v] of rows) { const d = document.createElement('div'); d.innerHTML = '<dt></dt><dd></dd>'; d.children[0].textContent = k; d.children[1].textContent = v; dl.append(d); }
+    const tot = document.createElement('div'); tot.className = 'total'; tot.innerHTML = '<dt></dt><dd></dd>';
+    tot.children[0].textContent = dialog.querySelector('.total .mono')?.textContent ?? ''; tot.children[1].textContent = total.textContent ?? '';
+    dl.append(tot);
+    (done.querySelector('.demo') as HTMLElement).hidden = !demo;
+    form.hidden = true;
+    done.hidden = false;
+    dialog.scrollTop = 0;
+    (done.querySelector('.btn') as HTMLElement).focus();
+  };
   const submit = $<HTMLButtonElement>('.submit');
   const money = (n: number) => `${n.toLocaleString(cfg.lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;
 
@@ -39,6 +64,8 @@ export function initOrder(dialog: HTMLDialogElement) {
       if (d.frame) ($<HTMLSelectElement>('[name=frame]')).value = d.frame;
       if (d.qty) qty.value = d.qty;
       status.textContent = '';
+      form.hidden = false;
+      done.hidden = true;
       update();
       dialog.showModal();
       return;
@@ -83,7 +110,7 @@ export function initOrder(dialog: HTMLDialogElement) {
       if (!cfg.inbox) {
         console.info('[order demo]', payload);
         await new Promise((r) => setTimeout(r, 700));
-        status.textContent = `${msgs.success} ${msgs.demo}`;
+        showDone(true);
       } else {
         const res = await fetch(`https://formsubmit.co/ajax/${cfg.inbox}`, {
           method: 'POST',
@@ -92,7 +119,7 @@ export function initOrder(dialog: HTMLDialogElement) {
         });
         const json = await res.json();
         if (String(json.success) !== 'true') throw new Error(json.message);
-        status.textContent = msgs.success!;
+        showDone(false);
       }
       form.reset();
       update();
