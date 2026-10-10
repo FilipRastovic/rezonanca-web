@@ -15,7 +15,7 @@ const series = seriesOf(p)!;
 const info = t.series[p.style as 'structure'];
 const seriesName = seriesShort(lang, p.style);
 const name = p.name[lang];
-const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug);
+const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug).slice(0, 4);
 const others = SERIES.filter((s) => s.key !== p.style);
 const fmt = t.formats.items;
 
@@ -153,9 +153,9 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
     <div class="wrap">
       <div class="rel-head">
         <h2>{tp.related}</h2>
-        <a class="more mono" href={collectionHref(lang, series.slug)}>{t.series.viewAll} →</a>
+        <a class="btn more" href={collectionHref(lang, series.slug)}>{t.series.viewAll} <span class="arrow">→</span></a>
       </div>
-      <div class="grid rail">
+      <div class="grid">
         {related.map((r, i) => <ProductCard product={r} lang={lang} delay={i * 90} />)}
       </div>
       <p class="label other-label">{tp.otherSeries}</p>
@@ -263,8 +263,10 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
   .related { background: linear-gradient(var(--bg-0), var(--bg-1)); }
   .rel-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(36px, 4vw, 64px); }
   .rel-head h2 { margin: 0; font-size: var(--fs-h2); }
-  .more { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
+  .more { padding: 12px 18px; font-size: var(--fs-2xs); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 1.8vw, 28px); }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
   .other-label { margin-top: var(--space-block); }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
   .chips a { padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; }

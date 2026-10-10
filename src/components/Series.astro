@@ -1,7 +1,7 @@
 ---
 import ProductCard from './ProductCard.astro';
 import SeriesHeader from './SeriesHeader.astro';
-import { SERIES, productsBySeries } from '../data/products.js';
+import { SERIES, homePicks } from '../data/products.js';
 import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -18,7 +18,7 @@ const t = T[lang].series;
       <div class="series panel">
         <SeriesHeader lang={lang} series={s} />
         <div class="grid">
-          {productsBySeries(s.key).slice(0, 4).map((p, i) => (
+          {homePicks(s.key).map((p, i) => (
             <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={Math.min(i, 2) * 100} />
           ))}
         </div>

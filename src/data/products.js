@@ -169,7 +169,21 @@ const BOOST = {
 };
 for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 
-export const productsBySeries = (key) => PRODUCTS.filter((x) => x.style === key);
+// Display order within a series (overrides definition order).
+const ORDER = {
+  attractor: ['tomas', 'halvorsen', 'klifordov-veo', 'de-zong', 'lorenc', 'aizava'],
+};
+// Which 4 pieces the homepage shows per series (default: the first 4).
+const HOME_PICKS = {
+  mandelbrot: ['vitica', 'dolina-morskih-konjica', 'spirala', 'morska-zvezda'],
+};
+
+export const productsBySeries = (key) => {
+  const list = PRODUCTS.filter((x) => x.style === key);
+  const order = ORDER[key];
+  return order ? [...list].sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug)) : list;
+};
+export const homePicks = (key) => (HOME_PICKS[key] ? HOME_PICKS[key].map(findProduct) : productsBySeries(key).slice(0, 4));
 export const seriesOf = (product) => SERIES.find((s) => s.key === product.style);
 export const findProduct = (slug) => PRODUCTS.find((x) => x.slug === slug);
 export const pad = (n) => String(n).padStart(5, '0');
