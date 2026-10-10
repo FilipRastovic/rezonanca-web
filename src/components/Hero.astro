@@ -3,7 +3,7 @@ import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].hero;
-const coords = lang === 'sr' ? '44,8125°С  20,4612°И' : '44.8125°N  20.4612°E';
+const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335°E'; // Novi Sad
 ---
 <section class="hero" aria-label={t.title}>
   <div class="canvas" id="hero-canvas" aria-hidden="true"></div>

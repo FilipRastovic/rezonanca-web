@@ -29,7 +29,7 @@ const en: typeof sr = {
     ],
     pillars: [
       { k: 'HOME', t: 'Silence that glows', d: 'Deep, saturated colours that calm the room at dusk and light up when the sun goes down. Art that breathes with the space.' },
-      { k: 'STUDIO', t: 'A visual metronome', d: 'For producers, designers, coders - everyone who creates at night. A signal that holds focus when everything else goes quiet.' },
+      { k: 'TECHNOLOGY', t: 'The beauty behind the machine', d: 'For anyone fascinated by how things work: code, maths, science. A picture that shows technology can be art.' },
       { k: 'GIFT', t: 'A gift with a story', d: 'Every piece has its own number, coordinates, frequency and real mathematics behind it. A gift with a story to tell.' },
     ],
   },
@@ -84,7 +84,7 @@ const en: typeof sr = {
     lead: 'Rezonanca posters don’t shout. They wait for the lights to dim - and then they take over the space.',
     scenes: {
       living: { t: 'Living room', d: 'Above the sofa, like a window into deep space.' },
-      studio: { t: 'Studio', d: 'Beside the monitors, where things get made at night.' },
+      studio: { t: 'Workspace', d: 'Beside the monitors, where you work, play or learn.' },
       hall: { t: 'Hallway', d: 'As a pair - Aizawa and Mandelbrot, chaos and order in conversation.' },
     },
   },
@@ -101,7 +101,7 @@ const en: typeof sr = {
     badge: 'Most popular',
     get: {
       title: 'What you get',
-      items: ['300 DPI - every line razor-sharp', 'Signal number and coordinates printed on the piece', 'Printed in Serbia by a local studio', 'Safe packaging in a rigid tube or box', 'Pay on delivery - no card, no risk'],
+      items: ['300 DPI - every line razor-sharp', 'Signal number and coordinates printed on the piece', 'Printed in Serbia at a local print shop', 'Safe packaging in a rigid tube or box', 'Pay on delivery - no card, no risk'],
     },
   },
   how: {
