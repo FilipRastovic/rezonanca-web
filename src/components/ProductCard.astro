@@ -1,5 +1,5 @@
 ---
-import { PRICES, formatPrice } from '../config';
+import { PRICES, SALES_OPEN, formatPrice } from '../config';
 import { pad } from '../data/products.js';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number }
@@ -21,7 +21,8 @@ const series = t.series[p.style as 'structure'];
     <span class="name">{p.name[lang]}</span>
   </span>
   <span class="foot">
-    <span class="price"><span class="mono">{t.card.from}</span> {formatPrice(PRICES.print['30x40'], lang)}</span>
+    {SALES_OPEN ? <span class="price"><span class="mono">{t.card.from}</span> {formatPrice(PRICES.print['30x40'], lang)}</span>
+               : <span class="soon mono">{t.soon.badge}</span>}
     <span class="go mono">{t.card.view} <span class="arrow">→</span></span>
   </span>
 </a>
@@ -43,6 +44,7 @@ const series = t.series[p.style as 'structure'];
   .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding: 14px 16px; border-top: 1px solid var(--line); }
   .price { font: 500 var(--fs-body)/1 var(--f-body); color: var(--ice); }
   .price .mono { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-right: 4px; }
+  .soon { padding: 4px 9px; border: 1px solid var(--line-strong); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ice); }
   .go { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
   .go .arrow { display: inline-block; transition: transform 0.3s; }
   .card:hover .go .arrow { transform: translateX(4px); }

@@ -1,0 +1,81 @@
+---
+// Waitlist signup (used while SALES_OPEN is false). Not a <form>, so it can sit inside the product form.
+// With `product`, the chosen format/size/frame are read from #pp-form at submit time.
+import { SHOP } from '../config';
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang; product?: { slug: string; name: string }; title?: boolean }
+const { lang, product, title = false } = Astro.props;
+const t = T[lang].soon;
+const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHOP.email, lang, product: product ?? null,
+  formats: Object.fromEntries(Object.entries(T[lang].formats.items).map(([k, v]) => [k, v.t])), frames: T[lang].order.frames,
+  msg: { sending: t.sending, invalid: t.invalid, error: t.error, done: product ? t.done : t.doneGeneral } });
+---
+<div class="waitlist" data-waitlist={cfg}>
+  {title && <h3 class="wt">{t.generalTitle}</h3>}
+  {title && <p class="wl">{t.generalLead}</p>}
+  <div class="row">
+    <label class="f"><span class="mono">{t.contact}</span><input type="text" name="wl-contact" autocomplete="email" placeholder={t.placeholder} /></label>
+    <button type="button" class="btn btn--solid go">{t.notify} <span class="arrow">→</span></button>
+  </div>
+  <input type="text" name="wl-bot" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <p class="msg" role="status" aria-live="polite"></p>
+  <p class="pv">{t.privacy}</p>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-waitlist]').forEach((box) => {
+    const cfg = JSON.parse(box.dataset.waitlist!);
+    const input = box.querySelector('[name="wl-contact"]') as HTMLInputElement;
+    const btn = box.querySelector('.go') as HTMLButtonElement;
+    const msg = box.querySelector('.msg') as HTMLElement;
+    const valid = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || v.replace(/[^\d]/g, '').length >= 8;
+    const send = async () => {
+      const contact = input.value.trim();
+      msg.classList.remove('err');
+      if (!valid(contact)) { msg.classList.add('err'); msg.textContent = cfg.msg.invalid; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
+      input.removeAttribute('aria-invalid');
+      if ((box.querySelector('[name="wl-bot"]') as HTMLInputElement).value) return;
+      let choice: Record<string, string> = {};
+      const pf = document.getElementById('pp-form') as HTMLFormElement | null;
+      if (cfg.product && pf) {
+        const d = new FormData(pf), format = String(d.get('format')), size = String(d.get('size'));
+        choice = { format: cfg.formats[format] ?? format, size: size.replace('x', ' × ') + ' cm' };
+        if (['framed', 'edition'].includes(format)) choice.frame = cfg.frames[String(d.get('frame'))] ?? '';
+      }
+      const what = cfg.product ? `${cfg.product.name} / ${[choice.format, choice.size, choice.frame].filter(Boolean).join(' · ')}` : 'општа пријава';
+      const payload = { _subject: `${cfg.shop} - листа чекања: ${what}`, _template: 'table', contact, ...(cfg.product ? { poster: cfg.product.name, slug: cfg.product.slug } : { poster: '(општа)' }), ...choice, page: location.href, language: cfg.lang };
+      btn.disabled = true; const label = btn.firstChild!.textContent; btn.firstChild!.textContent = cfg.msg.sending + ' ';
+      try {
+        if (!cfg.inbox) { console.info('[waitlist demo]', payload); await new Promise((r) => setTimeout(r, 500)); }
+        else {
+          const res = await fetch(`https://formsubmit.co/ajax/${cfg.inbox}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
+          const json = await res.json();
+          if (String(json.success) !== 'true') throw new Error(json.message);
+        }
+        box.classList.add('sent');
+        msg.textContent = '✓ ' + cfg.msg.done;
+      } catch (e) {
+        console.error(e); msg.classList.add('err'); msg.textContent = `${cfg.msg.error} ${cfg.email}`;
+      } finally { btn.disabled = false; btn.firstChild!.textContent = label; }
+    };
+    btn.addEventListener('click', send);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); send(); } });
+  });
+</script>
+<style>
+  .waitlist { display: grid; gap: 12px; }
+  .wt { font-size: var(--fs-h3); }
+  .wl { margin: 0; color: var(--text); font-size: var(--fs-body); }
+  .row { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+  .f { flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px; }
+  .f .mono { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
+  input { width: 100%; height: 52px; padding: 0 14px; background: rgba(1, 3, 10, 0.8); border: 1px solid var(--line); color: var(--ice); font: 400 16px/1 var(--f-body); border-radius: 0; }
+  input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(80, 230, 255, 0.12); }
+  input[aria-invalid='true'] { border-color: #ff5f7a; }
+  .go { height: 52px; padding: 0 22px; justify-content: center; flex: 0 0 auto; }
+  .hp { display: none; }
+  .msg { margin: 0; min-height: 1.2em; font-size: var(--fs-sm); color: var(--cyan); }
+  .msg.err { color: #ff8da0; }
+  .pv { margin: 0; font-size: var(--fs-2xs); color: var(--muted); }
+  .sent .row { display: none; }
+  @media (max-width: 520px) { .go { flex: 1 1 100%; } }
+</style>

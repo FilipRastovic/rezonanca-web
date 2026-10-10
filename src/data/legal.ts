@@ -1,11 +1,11 @@
 // Terms of sale + privacy policy (SR + EN). Draft based on the Serbian Consumer Protection Act
 // and Personal Data Protection Act - have an accountant/lawyer review before relying on it.
-import { SHOP, SELLER } from '../config';
+import { SHOP, SELLER, SALES_OPEN } from '../config';
 
 const seller = `${SELLER.name}, MB ${SELLER.mb}, PIB ${SELLER.pib}, ${SELLER.address}`;
 const contact = `${SHOP.email} · ${SHOP.phone}`;
-const ship = `${SHOP.shipping} RSD`;
-export const UPDATED = '09.10.2026.';
+const ship = SALES_OPEN ? `${SHOP.shipping} RSD` : '';
+export const UPDATED = '10.10.2026.';
 
 type Section = { h: string; p: string[] };
 
@@ -17,7 +17,7 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
       sections: [
         { h: 'Продавац', p: [`Продавац је ${seller}. Контакт: ${contact}.`] },
         { h: 'Поручивање и закључење уговора', p: ['Поруџбину шаљеш преко обрасца на сајту. Уговор је закључен када ти потврдимо поруџбину телефоном или имејлом, најкасније у року од 24 сата. До потврде поруџбину можеш слободно да измениш или откажеш.'] },
-        { h: 'Цене и плаћање', p: [`Цене су исказане у динарима (RSD) и коначне су: продавац није у систему ПДВ-а. На цену се додаје поштарина од ${ship}, коју плаћа купац. На сајту се не плаћа и не уносе се подаци о картици: плаћаш поузећем, куриру при преузимању, или уплатом на рачун након потврде поруџбине.`] },
+        { h: 'Цене и плаћање', p: [`Цене су исказане у динарима (RSD) и коначне су: продавац није у систему ПДВ-а. На цену се додаје поштарина${ship ? ' од ' + ship : ' по ценовнику курирске службе'}, коју плаћа купац. На сајту се не плаћа и не уносе се подаци о картици: плаћаш поузећем, куриру при преузимању, или уплатом на рачун након потврде поруџбине.`] },
         { h: 'Израда и испорука', p: ['Принтови се израђују 3–5 радних дана, урамљени радови и метал/акрил 7–10 радних дана. Испорука курирском службом на територији Србије траје 1–2 радна дана. О тачном року обавештавамо те при потврди поруџбине.'] },
         { h: 'Право на одустанак', p: [
           'Имаш право да одустанеш од уговора у року од 14 дана од дана када си примио/ла рад, без навођења разлога. Довољно је да нам пошаљеш јасну изјаву имејлом (нпр. „Одустајем од уговора за поруџбину бр. …“, са именом, адресом и датумом пријема).',
@@ -33,8 +33,8 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
       title: 'Политика приватности',
       sections: [
         { h: 'Руковалац подацима', p: [`Руковалац подацима је ${seller}. Контакт за питања о подацима: ${SHOP.email}.`] },
-        { h: 'Које податке прикупљамо', p: ['Само оно што унесеш у образац за поруџбину: име и презиме, телефон, имејл, адресу и напомену. Не прикупљамо податке о картици.'] },
-        { h: 'Зашто их користимо', p: ['Искључиво да бисмо потврдили, израдили и испоручили твоју поруџбину и да бисмо били у контакту око ње. Правни основ је извршење уговора. Не шаљемо рекламне поруке без твоје сагласности.'] },
+        { h: 'Које податке прикупљамо', p: ['Само оно што унесеш у образац за поруџбину (име и презиме, телефон, имејл, адресу и напомену) или на листу чекања (имејл или телефон и рад који те занима). Не прикупљамо податке о картици.'] },
+        { h: 'Зашто их користимо', p: ['Да бисмо потврдили, израдили и испоручили твоју поруџбину и били у контакту око ње (правни основ: извршење уговора), односно да бисмо ти јавили када рад са листе чекања крене у продају (правни основ: твоја сагласност, коју можеш повући у сваком тренутку). Не шаљемо друге рекламне поруке.'] },
         { h: 'Коме их дајемо', p: ['Курирској служби (име, адреса, телефон) ради испоруке, и сервису FormSubmit који поруџбину из обрасца прослеђује на наш имејл. Податке не продајемо и не дајемо другима.'] },
         { h: 'Колико их чувамо', p: ['Онолико колико је потребно за поруџбину и евентуалне рекламације, као и колико налажу прописи о рачуноводству.'] },
         { h: 'Твоја права', p: ['Имаш право да тражиш увид у своје податке, исправку, брисање или ограничење обраде, као и да уложиш приговор. Ако сматраш да су ти права повређена, можеш се обратити Поверенику за информације од јавног значаја и заштиту података о личности.'] },
@@ -49,7 +49,7 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
       sections: [
         { h: 'Seller', p: [`The seller is ${seller}. Contact: ${contact}.`] },
         { h: 'Ordering and the contract', p: ['You send an order through the form on the site. The contract is concluded when we confirm your order by phone or email, within 24 hours at the latest. Until then you can freely change or cancel it.'] },
-        { h: 'Prices and payment', p: [`Prices are in Serbian dinars (RSD) and are final: the seller is not registered for VAT. Shipping of ${ship} is added and paid by the customer. Nothing is paid on the site and no card details are entered: you pay cash on delivery to the courier, or by bank transfer after we confirm the order.`] },
+        { h: 'Prices and payment', p: [`Prices are in Serbian dinars (RSD) and are final: the seller is not registered for VAT. Shipping${ship ? ' of ' + ship : ' at the courier’s rates'} is added and paid by the customer. Nothing is paid on the site and no card details are entered: you pay cash on delivery to the courier, or by bank transfer after we confirm the order.`] },
         { h: 'Production and delivery', p: ['Prints are made in 3–5 business days, framed and metal/acrylic pieces in 7–10 business days. Courier delivery within Serbia takes 1–2 business days. We confirm the exact timing when we confirm your order.'] },
         { h: 'Right of withdrawal', p: [
           'You may withdraw from the contract within 14 days of receiving the piece, without giving a reason. Just send us a clear statement by email (e.g. "I withdraw from the contract for order no. …", with your name, address and date of receipt).',
@@ -65,8 +65,8 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
       title: 'Privacy policy',
       sections: [
         { h: 'Data controller', p: [`The data controller is ${seller}. Contact for data questions: ${SHOP.email}.`] },
-        { h: 'What we collect', p: ['Only what you enter in the order form: name, phone, email, address and note. We never collect card details.'] },
-        { h: 'Why we use it', p: ['Solely to confirm, produce and deliver your order and to stay in touch about it. The legal basis is performance of a contract. We do not send marketing messages without your consent.'] },
+        { h: 'What we collect', p: ['Only what you enter in the order form (name, phone, email, address and note) or on the waitlist (email or phone and the piece you’re interested in). We never collect card details.'] },
+        { h: 'Why we use it', p: ['To confirm, produce and deliver your order and stay in touch about it (legal basis: performance of a contract), or to tell you when a waitlisted piece goes on sale (legal basis: your consent, which you can withdraw at any time). We send no other marketing messages.'] },
         { h: 'Who we share it with', p: ['The courier (name, address, phone) for delivery, and FormSubmit, the service that forwards the order form to our email. We never sell your data or give it to anyone else.'] },
         { h: 'How long we keep it', p: ['As long as needed for the order and any complaints, and as long as accounting regulations require.'] },
         { h: 'Your rights', p: ['You may request access to your data, correction, deletion or restriction of processing, and you may object. If you believe your rights have been violated, you can contact the Serbian Commissioner for Information of Public Importance and Personal Data Protection.'] },

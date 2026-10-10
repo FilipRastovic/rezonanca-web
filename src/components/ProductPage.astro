@@ -5,7 +5,8 @@ import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad } from '../data/products.js';
-import { SHOP, SIZES, FORMATS, FRAMES, PRICES, formatPrice } from '../config';
+import { SHOP, SIZES, FORMATS, FRAMES, PRICES, SALES_OPEN, formatPrice } from '../config';
+import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; slug: string }
 const { lang, slug } = Astro.props;
@@ -35,16 +36,16 @@ const jsonLd = {
   image: new URL(gallery[0].src, site).href,
   sku: `RZ-${p.slug}`,
   brand: { '@type': 'Brand', name: 'Rezonanca' },
-  offers: {
+  ...(SALES_OPEN ? { offers: {
     '@type': 'AggregateOffer',
     priceCurrency: SHOP.currency,
     lowPrice: Math.min(...FORMATS.map((f) => PRICES[f]['30x40'])),
     highPrice: Math.max(...FORMATS.map((f) => PRICES[f]['61x91'])),
     availability: 'https://schema.org/InStock',
     url: new URL(productHref(lang, p.slug), site).href,
-  },
+  } } : {}),
 };
-const cfg = JSON.stringify({ prices: PRICES, lang });
+const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
 ---
 <Base lang={lang} title={`${name} - ${seriesName} | Резонанца`} description={p.line[lang]} image={`/posters/${p.slug}-${lang}.webp`}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -79,10 +80,18 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
           <p class="meta mono">{tp.no} {pad(p.seed)} · {t.variants[p.variant as 'burst']} · {t.palettes[p.palette as 'cyan']}</p>
           <p class="line">{p.line[lang]}</p>
 
-          <div class="price">
-            <strong id="pp-price">{formatPrice(PRICES.print['30x40'], lang)}</strong>
-            <small>{tp.priceNote}</small>
-          </div>
+          {SALES_OPEN ? (
+            <div class="price">
+              <strong id="pp-price">{formatPrice(PRICES.print['30x40'], lang)}</strong>
+              <small>{tp.priceNote}</small>
+            </div>
+          ) : (
+            <div class="price soon">
+              <span class="badge mono">{T[lang].soon.badge}</span>
+              <strong>{T[lang].soon.priceSoon}</strong>
+              <small>{T[lang].soon.priceNote}</small>
+            </div>
+          )}
 
           <fieldset>
             <legend class="mono">{tp.format}</legend>
@@ -92,7 +101,7 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
                   <input type="radio" name="format" value={f} checked={i === 0} />
                   <span class="box">
                     <strong>{fmt[f].t}</strong>
-                    <span class="mono">{tp.from} {formatPrice(PRICES[f]['30x40'], lang)}</span>
+                    {SALES_OPEN && <span class="mono">{tp.from} {formatPrice(PRICES[f]['30x40'], lang)}</span>}
                   </span>
                 </label>
               ))}
@@ -119,7 +128,8 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
 
           <p class="edition mono" id="pp-edition" hidden>✦ {tp.edition}</p>
 
-          <div class="buy">
+          {!SALES_OPEN && <div class="wait"><Waitlist lang={lang} product={{ slug: p.slug, name }} /></div>}
+          <div class="buy" hidden={!SALES_OPEN}>
             <label class="qty"><span class="mono">{tp.qty}</span><span class="stepper"><button type="button" class="step" data-step="-1" aria-label="−">−</button><input type="number" name="qty" min="1" max="20" value="1" inputmode="numeric" /><button type="button" class="step" data-step="1" aria-label="+">+</button></span></label>
             <button type="button" class="btn btn--solid order" id="pp-order" data-slug={p.slug} data-format="print" data-size="30x40" data-frame="black" data-qty="1">
               {T[lang].cart.add} <span class="arrow">→</span>
@@ -171,7 +181,7 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
 <script>
   const form = document.getElementById('pp-form') as HTMLFormElement;
   const { prices, lang } = JSON.parse(form.dataset.config!);
-  const priceEl = document.getElementById('pp-price')!;
+  const priceEl = document.getElementById('pp-price'); // absent while sales are closed
   const orderBtn = document.getElementById('pp-order')!;
   const frameSet = document.getElementById('pp-frame')!;
   const editionEl = document.getElementById('pp-edition')!;
@@ -181,7 +191,7 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
     const d = new FormData(form);
     const format = String(d.get('format')), size = String(d.get('size'));
     const qty = Math.max(1, Math.min(20, parseInt(String(d.get('qty')), 10) || 1));
-    priceEl.textContent = money(prices[format][size] * qty);
+    if (priceEl) priceEl.textContent = money(prices[format][size] * qty);
     frameSet.hidden = !['framed', 'edition'].includes(format);
     editionEl.hidden = format !== 'edition';
     Object.assign(orderBtn.dataset, { format, size, frame: String(d.get('frame')), qty: String(qty) });
@@ -233,6 +243,9 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
   .meta { margin: 14px 0 0; font-size: var(--fs-xs); color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
   .line { margin: 22px 0 0; font: 400 var(--fs-lead)/1.6 var(--f-body); color: var(--ice); }
   .price { display: flex; flex-direction: column; gap: 6px; margin: 28px 0 8px; padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .price.soon strong { font: 400 clamp(20px, 2vw, 26px)/1.2 var(--f-display); }
+  .badge { align-self: flex-start; padding: 5px 10px; background: var(--cyan); color: var(--bg-0); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .wait { margin-top: 28px; }
   .price strong { font: 400 clamp(22px, 2vw, 28px)/1 var(--f-display); color: var(--ice); }
   .price small { color: var(--muted); font-size: var(--fs-sm); }
 

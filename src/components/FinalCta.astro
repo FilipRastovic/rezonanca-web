@@ -1,5 +1,7 @@
 ---
 import { T, collectionHref, type Lang } from '../i18n';
+import { SALES_OPEN } from '../config';
+import Waitlist from './Waitlist.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].final;
@@ -12,6 +14,7 @@ const t = T[lang].final;
     <h2 data-reveal>{t.title}</h2>
     <p class="lead" data-reveal>{t.lead}</p>
     <a class="btn btn--solid" href={collectionHref(lang)} data-reveal>{T[lang].hero.primary} <span class="arrow">→</span></a>
+    {!SALES_OPEN && <div class="wl panel" data-reveal><Waitlist lang={lang} title /></div>}
   </div>
 </section>
 <style>
@@ -21,5 +24,6 @@ const t = T[lang].final;
   .inner { position: relative; display: flex; flex-direction: column; align-items: center; }
   h2 { max-width: 16ch; font-size: clamp(26px, 3.6vw, 52px); font-weight: 300; text-shadow: 0 0 60px rgba(80, 230, 255, 0.35); }
   .lead { margin: 24px auto 40px; }
+  .wl { margin-top: 48px; width: min(560px, 100%); text-align: left; }
   @media (prefers-reduced-motion: reduce) { .line { animation: none; stroke-dasharray: none; } }
 </style>

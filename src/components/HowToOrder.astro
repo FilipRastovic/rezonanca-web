@@ -1,8 +1,9 @@
 ---
 import { T, type Lang } from '../i18n';
+import { SALES_OPEN } from '../config';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const t = T[lang].how;
+const t = SALES_OPEN ? T[lang].how : T[lang].soon.how;
 ---
 <section id="how" class="grid-bg">
   <div class="wrap">

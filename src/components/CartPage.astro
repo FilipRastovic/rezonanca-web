@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import Waitlist from './Waitlist.astro';
+import { SALES_OPEN } from '../config';
 import { T, homeHref, collectionHref, checkoutHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -9,6 +11,8 @@ const t = T[lang].cart;
   <section class="page grid-bg">
     <div class="wrap">
       <nav class="crumbs mono"><a href={homeHref(lang)}>{T[lang].product.home}</a><span>/</span><span aria-current="page">{t.title}</span></nav>
+      {!SALES_OPEN && <div class="soonbox panel"><Waitlist lang={lang} title /></div>}
+      <div hidden={!SALES_OPEN}>
       <p class="label">{t.label}</p>
       <h1>{t.title}</h1>
 
@@ -27,6 +31,7 @@ const t = T[lang].cart;
           <p class="note">{t.note}</p>
           <a class="link mono" href={collectionHref(lang)}>← {t.continue}</a>
         </aside>
+      </div>
       </div>
     </div>
   </section>
@@ -73,6 +78,7 @@ const t = T[lang].cart;
   render();
 </script>
 <style>
+  .soonbox { margin-top: 24px; max-width: 640px; }
   .page { padding-top: clamp(130px, 13vw, 180px); background-color: var(--bg-0); min-height: 80vh; }
   .crumbs { display: flex; gap: 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
   .crumbs a:hover { color: var(--cyan); }

@@ -1,3 +1,7 @@
+// Sales switch. false = "coming soon": prices hidden, cart/checkout disabled, product pages collect
+// waitlist signups (emailed via FormSubmit like orders). Set to true once prices are final.
+export const SALES_OPEN = false;
+
 // Shop settings - edit these before going live.
 export const SHOP = {
   name: 'Резонанца',

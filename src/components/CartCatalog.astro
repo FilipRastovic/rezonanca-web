@@ -1,14 +1,14 @@
 ---
 // Product data the client-side cart needs (names, images, prices), embedded once per page.
 import { PRODUCTS } from '../data/products.js';
-import { PRICES, SHOP, FORMATS, FRAMES } from '../config';
+import { PRICES, SHOP, FORMATS, FRAMES, SALES_OPEN } from '../config';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang];
 const data = {
   lang,
-  prices: PRICES,
+  prices: SALES_OPEN ? PRICES : {}, // prices not published while sales are closed
   shipping: SHOP.shipping,
   products: Object.fromEntries(PRODUCTS.map((p) => [p.slug, { name: p.name[lang], img: `/posters/${p.slug}-${lang}.webp`, href: productHref(lang, p.slug), series: seriesShort(lang, p.style) }])),
   formats: Object.fromEntries(FORMATS.map((f) => [f, t.formats.items[f].t])),
