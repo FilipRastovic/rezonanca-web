@@ -8,6 +8,7 @@ import Formats from './Formats.astro';
 import HowToOrder from './HowToOrder.astro';
 import Faq from './Faq.astro';
 import FinalCta from './FinalCta.astro';
+import MadeInSerbia from './MadeInSerbia.astro';
 import type { Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -20,5 +21,6 @@ const { lang } = Astro.props;
   <Formats lang={lang} />
   <HowToOrder lang={lang} />
   <Faq lang={lang} />
+  <MadeInSerbia lang={lang} />
   <FinalCta lang={lang} />
 </Base>

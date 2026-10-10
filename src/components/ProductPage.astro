@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ProductCard from './ProductCard.astro';
 import ProductMath from './ProductMath.astro';
 import History from './History.astro';
+import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad } from '../data/products.js';
 import { SHOP, SIZES, FORMATS, FRAMES, PRICES, formatPrice } from '../config';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -164,6 +165,7 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
       </div>
     </div>
   </section>
+  <MadeInSerbia lang={lang} />
 </Base>
 
 <script>

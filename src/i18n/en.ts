@@ -286,6 +286,18 @@ const en: typeof sr = {
     ],
   },
   legal: { terms: { title: 'Услови куповине' }, privacy: { title: 'Политика приватности' } },
+  madeIn: {
+    label: 'MADE IN SERBIA',
+    title: 'Written, printed and packed in Serbia.',
+    lead: 'From the first line of code to the courier at your door, every step happens here.',
+    steps: [
+      { k: 'CODE', t: 'Written in Novi Sad', d: 'We write and draw every piece ourselves, in JavaScript, in Novi Sad.' },
+      { k: 'PRINT', t: 'Printed in Novi Sad', d: 'Printed at a local print shop on a 12-colour plotter, on matte paper.' },
+      { k: 'DELIVERY', t: 'Across Serbia', d: 'Packed by hand in a rigid tube or box and shipped by courier.' },
+    ],
+    pin: 'NOVI SAD',
+    coords: '45.25°N 19.83°E',
+  },
   palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember' },
   variants: {
     burst: 'Burst', spiral: 'Spiral', tree: 'Tree', twin: 'Twin', shell: 'Shell',
