@@ -5,14 +5,14 @@ const en: typeof sr = {
   meta: {
     title: 'Rezonanca - code art. Sound, frozen in light.',
     description:
-      'Art made with code. Every piece is written in JavaScript, line by line, from a unique signal that will never repeat. Printed in Serbia, pay on delivery.',
+      'Art made with code. Every piece is written in JavaScript, line by line. You get exactly the print you see in the picture. Printed in Serbia, pay on delivery.',
   },
   nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In space', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
     label: 'SIGNAL 00 // RECEIVING',
     title: 'РЕЗОНАНЦА',
     tagline: 'Sound, frozen in light.',
-    lead: 'Pictures made with code, from signals that will never repeat. For a wall you don’t decorate - you tune it.',
+    lead: 'Pictures made with code, line by line. For a wall you don’t decorate - you tune it.',
     primary: 'Explore the collection',
     secondary: 'Order a poster',
     readout: ['FREQUENCY', 'COORDINATES', 'STATUS'],
@@ -24,13 +24,13 @@ const en: typeof sr = {
     lines: ['Every sound', 'leaves a trace.', 'We catch it.'],
     body: [
       'Somewhere in the silence between two stations, in the hiss of a distant pulsar, in the tremor of a string before it fades - there is a shape. Invisible. Fleeting. Yours.',
-      'Rezonanca catches it. Every poster begins with a single number - a seed - and a set of rules, a design grammar, by which the signal builds its own form: branching, twisting, raising towers of light. Same number, same piece. Another number - an entirely new world. None ever repeat.',
+      'Rezonanca catches it. Every poster begins with a single number - a seed - and a set of rules, a design grammar, by which the signal builds its own form: branching, twisting, raising towers of light. The same number always gives the same piece, down to the last line, so the print you receive is exactly the one in the picture. Another number - an entirely new world.',
       'No artificial intelligence. Every piece is a program - hundreds of lines of JavaScript (p5.js) we wrote by hand. Code doesn’t guess or copy: it draws exactly what we told it to, every line in its place.',
     ],
     pillars: [
       { k: 'HOME', t: 'Silence that glows', d: 'A deep blue that calms the room at dusk and lights up when the sun goes down. Art that breathes with the space.' },
       { k: 'STUDIO', t: 'A visual metronome', d: 'For producers, designers, coders - everyone who creates at night. A signal that holds focus when everything else goes quiet.' },
-      { k: 'GIFT', t: 'As unique as a person', d: 'Every piece has its own number, coordinates and frequency. A gift that exists nowhere else in the world.' },
+      { k: 'GIFT', t: 'A gift with a story', d: 'Every piece has its own number, coordinates, frequency and real mathematics behind it. A gift with a story to tell.' },
     ],
   },
   series: {
@@ -101,7 +101,7 @@ const en: typeof sr = {
     badge: 'Most popular',
     get: {
       title: 'What you get',
-      items: ['300 DPI - every line razor-sharp', 'A unique signal number and coordinates on the piece', 'Printed in Serbia by a local studio', 'Safe packaging in a rigid tube or box', 'Pay on delivery - no card, no risk'],
+      items: ['300 DPI - every line razor-sharp', 'Signal number and coordinates printed on the piece', 'Printed in Serbia by a local studio', 'Safe packaging in a rigid tube or box', 'Pay on delivery - no card, no risk'],
     },
   },
   how: {
@@ -121,7 +121,7 @@ const en: typeof sr = {
       { q: 'Is this AI art?', a: 'No. Every piece is written in code - JavaScript and the p5.js library - a program we built ourselves. No artificial intelligence, no one else’s images: just maths, sound and light. Whoever writes the program is the author of the picture.' },
       { q: 'How do I pay?', a: 'Cash on delivery to the courier, or bank transfer once we confirm your order. No card details are ever entered on the site.' },
       { q: 'How long does it take?', a: 'Prints 3–5 business days, framed and metal 7–10 business days. Courier delivery across Serbia takes 1–2 days, shipping is 500 RSD.' },
-      { q: 'Is every poster really unique?', a: 'Yes. Our code draws each piece from a unique number - a seed. Limited editions are printed in at most 50 copies, then the signal goes dark forever.' },
+      { q: 'Do I get the same piece as in the picture?', a: 'Yes, exactly that one. Our code draws each piece from a single number - a seed - and the same number always gives exactly the same image. The print you receive is identical to the one on the site. Limited editions are printed in at most 50 numbered copies.' },
       { q: 'Can I get a piece from my own number or date?', a: 'Of course. Send us a birthday, an anniversary or the coordinates of a place you love - we’ll draw a signal that is only yours.' },
       { q: 'Do you ship abroad?', a: 'We currently ship across Serbia and the region. For other countries, write to us and we’ll work it out.' },
       { q: 'What if I’m not happy?', a: 'If a piece arrives damaged, we replace it, no questions asked. Send us a photo within 7 days.' },
@@ -135,7 +135,7 @@ const en: typeof sr = {
   collection: {
     label: 'COLLECTION // 42 WORKS',
     title: 'Collection',
-    lead: 'Forty-two signals, seven series. Every piece is one of a kind - born from its own number, its own grammar and its own light.',
+    lead: 'Forty-two signals, seven series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
     all: 'All',
     count: 'works',
   },
@@ -195,7 +195,7 @@ const en: typeof sr = {
   seriesMath: {
     structure: [
       { t: 'A grammar instead of a drawing', d: 'No hand draws the picture, a set of rules does: "a ray is a block, then a new ray a little further and a little bigger". The program applies the rules over and over, like a sentence that writes itself. The idea comes from Context Free Art and Structure Synth.', f: 'ray → block · ray(x + 2, s × 1.045)' },
-      { t: 'Chance with rules', d: 'Each rule has a probability: most of the time a ray simply extends, sometimes it forks in two, sometimes it places a node that grows arcs. The same seed always makes the same choices, so every piece is reproducible and unique.', f: 'p(extend) ≈ 84% · p(fork) ≈ 9% · p(node) ≈ 5%' },
+      { t: 'Chance with rules', d: 'Each rule has a probability: most of the time a ray simply extends, sometimes it forks in two, sometimes it places a node that grows arcs. The same seed always makes the same choices, so every piece is exactly reproducible: every print is identical to the original.', f: 'p(extend) ≈ 84% · p(fork) ≈ 9% · p(node) ≈ 5%' },
       { t: 'Sound sets the reach', d: 'How many steps each ray lives depends on a sound signal s(t): a sum of sine waves under swells of loudness. Loud parts of the signal become long rays, quiet parts stay short.', f: 's(t) = Σ aₖ·sin(2π·fₖ·t + φₖ) · envelope(t)' },
     ],
     flux: [
