@@ -17,8 +17,8 @@ const t = T[lang].series;
     {SERIES.map((s, si) => (
       <div class="series panel">
         <SeriesHeader lang={lang} series={s} />
-        <div class="grid rail">
-          {productsBySeries(s.key).map((p, i) => (
+        <div class="grid">
+          {productsBySeries(s.key).slice(0, 4).map((p, i) => (
             <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={Math.min(i, 2) * 100} />
           ))}
         </div>
@@ -38,10 +38,11 @@ const t = T[lang].series;
 <style>
   section { background: linear-gradient(var(--bg-0), var(--bg-1) 50%, var(--bg-0)); }
   .series + .series { margin-top: clamp(28px, 3.5vw, 56px); }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-row) var(--gap-col); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 1.8vw, 28px); }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
   .all { display: flex; justify-content: center; margin-top: var(--space-block); }
   .custom { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: var(--space-md); padding: clamp(36px, 4vw, 56px) clamp(24px, 4vw, 48px); border: 1px solid var(--line); background-color: rgba(5, 12, 28, 0.7); }
   .custom p { margin: 0; font: 300 clamp(15px, 1.4vw, 19px)/1.5 var(--f-display); color: var(--ice); max-width: 40ch; }
 
-  @media (max-width: 420px) { .grid { gap: 12px; } }
 </style>
