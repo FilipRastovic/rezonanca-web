@@ -1,0 +1,74 @@
+---
+// Slide-in cart panel, opened after "Add to cart".
+import { T, cartHref, checkoutHref, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].cart;
+---
+<dialog id="cart-drawer" class="drawer" aria-labelledby="drawer-title">
+  <div class="panel-in">
+    <header>
+      <p class="label" id="drawer-title"><span class="ok">✓</span> {t.added}</p>
+      <button type="button" class="x" data-drawer-close aria-label="✕">✕</button>
+    </header>
+    <ul class="lines" id="drawer-lines"></ul>
+    <div class="sum">
+      <div><span>{t.subtotal}</span><strong id="drawer-subtotal"></strong></div>
+      <div class="muted"><span>{t.shipping}</span><span id="drawer-shipping"></span></div>
+    </div>
+    <div class="actions">
+      <a class="btn btn--solid" href={checkoutHref(lang)}>{t.toCheckout} <span class="arrow">→</span></a>
+      <a class="btn" href={cartHref(lang)}>{t.viewCart}</a>
+      <button type="button" class="link mono" data-drawer-close>{t.continue}</button>
+    </div>
+  </div>
+</dialog>
+<script>
+  import { totals, catalog, money, describe } from '../scripts/cart';
+  const dlg = document.getElementById('cart-drawer') as HTMLDialogElement;
+  const render = () => {
+    const c = catalog(), { lines, subtotal, shipping } = totals();
+    const ul = document.getElementById('drawer-lines')!;
+    ul.innerHTML = '';
+    for (const l of lines) {
+      const p = c.products[l.slug];
+      if (!p) continue;
+      const li = document.createElement('li');
+      li.innerHTML = '<img alt="" width="60" height="80"><div><a class="n"></a><span class="d"></span><span class="q"></span></div>';
+      (li.querySelector('img') as HTMLImageElement).src = p.img;
+      const a = li.querySelector('.n') as HTMLAnchorElement; a.href = p.href; a.textContent = p.name;
+      li.querySelector('.d')!.textContent = describe(l);
+      li.querySelector('.q')!.textContent = `${l.qty} × ${money(c.prices[l.format][l.size])}`;
+      ul.append(li);
+    }
+    document.getElementById('drawer-subtotal')!.textContent = money(subtotal);
+    document.getElementById('drawer-shipping')!.textContent = '+ ' + money(shipping);
+  };
+  document.addEventListener('cart:open', () => { render(); dlg.showModal(); });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg || (e.target as Element).closest('[data-drawer-close]')) dlg.close(); });
+</script>
+<style>
+  .drawer { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(420px, 100vw); padding: 0; border: none; border-left: 1px solid var(--line-strong); background: var(--bg-card); color: var(--text); }
+  .drawer::backdrop { background: rgba(1, 3, 10, 0.7); backdrop-filter: blur(6px); }
+  .drawer[open] { animation: slide 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  @keyframes slide { from { transform: translateX(100%); } }
+  .panel-in { display: flex; flex-direction: column; height: 100%; padding: 24px; }
+  header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .ok { color: var(--cyan); }
+  .x { background: none; border: 1px solid var(--line); width: 38px; height: 38px; color: var(--ice); cursor: pointer; }
+  .lines { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
+  .lines :global(li) { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .lines :global(img) { width: 60px; height: 80px; object-fit: cover; border: 1px solid var(--line); flex: none; }
+  .lines :global(div) { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .lines :global(.n) { font: 500 var(--fs-body)/1.3 var(--f-display); color: var(--ice); }
+  .lines :global(.d) { font-size: var(--fs-sm); color: var(--muted); }
+  .lines :global(.q) { font-size: var(--fs-sm); color: var(--text); }
+  .sum { padding: 16px 0; display: grid; gap: 8px; }
+  .sum div { display: flex; justify-content: space-between; font-size: var(--fs-body); }
+  .sum strong { color: var(--ice); font-weight: 600; }
+  .muted { color: var(--muted); font-size: var(--fs-sm) !important; }
+  .actions { display: grid; gap: 10px; }
+  .actions .btn { justify-content: center; }
+  .link { background: none; border: none; color: var(--muted); font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; cursor: pointer; padding: 10px; }
+  .link:hover { color: var(--cyan); }
+</style>

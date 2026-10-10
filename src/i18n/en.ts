@@ -28,7 +28,7 @@ const en: typeof sr = {
       'No artificial intelligence. Every piece is a program - hundreds of lines of JavaScript (p5.js) we wrote by hand. Code doesn’t guess or copy: it draws exactly what we told it to, every line in its place.',
     ],
     pillars: [
-      { k: 'HOME', t: 'Silence that glows', d: 'A deep blue that calms the room at dusk and lights up when the sun goes down. Art that breathes with the space.' },
+      { k: 'HOME', t: 'Silence that glows', d: 'Deep, saturated colours that calm the room at dusk and light up when the sun goes down. Art that breathes with the space.' },
       { k: 'STUDIO', t: 'A visual metronome', d: 'For producers, designers, coders - everyone who creates at night. A signal that holds focus when everything else goes quiet.' },
       { k: 'GIFT', t: 'A gift with a story', d: 'Every piece has its own number, coordinates, frequency and real mathematics behind it. A gift with a story to tell.' },
     ],
@@ -298,6 +298,16 @@ const en: typeof sr = {
     pin: 'NOVI SAD',
     coords: '45.25°N 19.83°E',
   },
+  cart: {
+    nav: 'Cart', title: 'Cart', label: 'CART',
+    empty: 'Your cart is empty.', emptyCta: 'Explore the collection',
+    add: 'Add to cart', added: 'Added to cart', viewCart: 'View cart', continue: 'Continue shopping',
+    remove: 'Remove', subtotal: 'Subtotal', shipping: 'Shipping', total: 'Total',
+    toCheckout: 'Continue to checkout', items: 'pcs',
+    checkoutTitle: 'Checkout', checkoutLabel: 'CHECKOUT', details: 'Delivery details', summary: 'Your order',
+    place: 'Place order', edit: 'Edit cart', note: 'You only pay on delivery. No card, no account.',
+    custom: 'I want a custom one-of-one piece',
+  },
   palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember' },
   variants: {
     burst: 'Burst', spiral: 'Spiral', tree: 'Tree', twin: 'Twin', shell: 'Shell',
@@ -306,7 +316,7 @@ const en: typeof sr = {
     classic: 'Classic', eclipse: 'Eclipse', tunnel: 'Tunnel', halo: 'Halo',
     storm: 'Storm', drift: 'Drift', turbulent: 'Turbulent', shatter: 'Shatter',
     lorenz: 'Lorenz', aizawa: 'Aizawa', thomas: 'Thomas', halvorsen: 'Halvorsen', clifford: 'Clifford', dejong: 'De Jong',
-    full: 'Full set', seahorse: 'Seahorses', spiral: 'Spiral', minibrot: 'Minibrot', tendril: 'Tendril', starfish: 'Starfish', elephant: 'Elephants',
+    full: 'Full set', seahorse: 'Seahorses', minibrot: 'Minibrot', tendril: 'Tendril', starfish: 'Starfish', elephant: 'Elephants',
   },
   footer: {
     tagline: 'Code art. Written in code, printed in Serbia.',

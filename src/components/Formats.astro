@@ -1,6 +1,6 @@
 ---
 import { FORMATS, PRICES, formatPrice } from '../config';
-import { T, type Lang } from '../i18n';
+import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].formats;
@@ -25,7 +25,7 @@ const t = T[lang].formats;
               <span class="mono">{t.from}</span>
               <strong>{formatPrice(PRICES[f]['30x40'], lang)}</strong>
             </div>
-            <button class:list={['btn', { 'btn--solid': f === 'framed' }]} data-order data-format={f}>{T[lang].series.order} <span class="arrow">→</span></button>
+            <a class:list={['btn', { 'btn--solid': f === 'framed' }]} href={collectionHref(lang)}>{T[lang].hero.primary} <span class="arrow">→</span></a>
           </article>
         );
       })}

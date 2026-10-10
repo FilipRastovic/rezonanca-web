@@ -2,6 +2,7 @@
 import ProductCard from './ProductCard.astro';
 import SeriesHeader from './SeriesHeader.astro';
 import { SERIES, homePicks } from '../data/products.js';
+import { SHOP } from '../config';
 import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -31,7 +32,7 @@ const t = T[lang].series;
 
     <div class="custom corners" data-reveal>
       <p>{t.custom}</p>
-      <button class="btn" data-order data-poster="custom">{t.customCta} <span class="arrow">→</span></button>
+      <a class="btn" href={`mailto:${SHOP.email}?subject=${encodeURIComponent(T[lang].cart.custom)}`}>{t.customCta} <span class="arrow">→</span></a>
     </div>
   </div>
 </section>

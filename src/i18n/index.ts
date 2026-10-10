@@ -15,10 +15,12 @@ export const homeHref = (lang: Lang) => (lang === 'sr' ? '/' : '/en/');
 export const collectionHref = (lang: Lang, series?: string) =>
   `${lang === 'sr' ? '/kolekcija/' : '/en/collection/'}${series ? `${series}/` : ''}`;
 export const productHref = (lang: Lang, slug: string) => `${lang === 'sr' ? '' : '/en'}/poster/${slug}/`;
+export const cartHref = (lang: Lang) => (lang === 'sr' ? '/korpa/' : '/en/cart/');
+export const checkoutHref = (lang: Lang) => (lang === 'sr' ? '/naplata/' : '/en/checkout/');
 export const legalHref = (lang: Lang, page: 'terms' | 'privacy') =>
   lang === 'sr' ? (page === 'terms' ? '/uslovi/' : '/privatnost/') : `/en/${page}/`;
 // The same page in the other language. Pairs: Serbian path prefix <-> English path prefix (after /en).
-const PAIRS: [string, string][] = [['/kolekcija/', '/collection/'], ['/uslovi/', '/terms/'], ['/privatnost/', '/privacy/']];
+const PAIRS: [string, string][] = [['/kolekcija/', '/collection/'], ['/uslovi/', '/terms/'], ['/privatnost/', '/privacy/'], ['/korpa/', '/cart/'], ['/naplata/', '/checkout/']];
 export const altHref = (path: string, to: Lang) => {
   const isEn = path === '/en' || path.startsWith('/en/');
   let rest = isEn ? path.slice(3) || '/' : path;

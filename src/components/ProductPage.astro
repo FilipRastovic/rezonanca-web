@@ -121,8 +121,8 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
 
           <div class="buy">
             <label class="qty"><span class="mono">{tp.qty}</span><span class="stepper"><button type="button" class="step" data-step="-1" aria-label="−">−</button><input type="number" name="qty" min="1" max="20" value="1" inputmode="numeric" /><button type="button" class="step" data-step="1" aria-label="+">+</button></span></label>
-            <button type="button" class="btn btn--solid order" id="pp-order" data-order data-poster={p.slug} data-format="print" data-size="30x40" data-frame="black" data-qty="1">
-              {tp.order} <span class="arrow">→</span>
+            <button type="button" class="btn btn--solid order" id="pp-order" data-slug={p.slug} data-format="print" data-size="30x40" data-frame="black" data-qty="1">
+              {T[lang].cart.add} <span class="arrow">→</span>
             </button>
           </div>
 
@@ -189,6 +189,14 @@ const cfg = JSON.stringify({ prices: PRICES, lang });
   form.addEventListener('change', update);
   form.addEventListener('input', update);
   update();
+
+  // Add to cart -> open the cart panel.
+  import { add } from '../scripts/cart';
+  orderBtn.addEventListener('click', () => {
+    const d = orderBtn.dataset;
+    add({ slug: d.slug!, format: d.format!, size: d.size!, frame: d.frame, qty: +(d.qty || 1) });
+    document.dispatchEvent(new CustomEvent('cart:open'));
+  });
 
   // Gallery.
   const main = document.getElementById('pp-main') as HTMLImageElement;

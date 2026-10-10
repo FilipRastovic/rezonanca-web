@@ -44,7 +44,8 @@
   --frame: #0d0d0f;
   --mat: #eceae4;
   --mat-pad: 7%;
-  --frame-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 18px 40px -12px rgba(0, 0, 0, 0.8);
+  /* Layered shadow, light from top-left: contact, near and far shadow so the frame lifts off the wall. */
+  --frame-shadow: 0 1px 1px rgba(0, 0, 0, 0.7), 2px 4px 6px rgba(0, 0, 0, 0.55), 8px 16px 24px -4px rgba(0, 0, 0, 0.75), 18px 34px 56px -14px rgba(0, 0, 0, 0.9);
 
   --gutter: clamp(20px, 5vw, 80px);
   --max: 1280px;
@@ -52,6 +53,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;

@@ -1,0 +1,19 @@
+---
+// Product data the client-side cart needs (names, images, prices), embedded once per page.
+import { PRODUCTS } from '../data/products.js';
+import { PRICES, SHOP, FORMATS, FRAMES } from '../config';
+import { T, productHref, seriesShort, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang];
+const data = {
+  lang,
+  prices: PRICES,
+  shipping: SHOP.shipping,
+  products: Object.fromEntries(PRODUCTS.map((p) => [p.slug, { name: p.name[lang], img: `/posters/${p.slug}-${lang}.webp`, href: productHref(lang, p.slug), series: seriesShort(lang, p.style) }])),
+  formats: Object.fromEntries(FORMATS.map((f) => [f, t.formats.items[f].t])),
+  frames: Object.fromEntries(FRAMES.map((f) => [f, t.order.frames[f]])),
+  framed: ['framed', 'edition'],
+};
+---
+<script id="rz-catalog" type="application/json" set:html={JSON.stringify(data)} />

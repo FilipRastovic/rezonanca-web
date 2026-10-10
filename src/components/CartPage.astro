@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import { T, homeHref, collectionHref, checkoutHref, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].cart;
+---
+<Base lang={lang} title={`${t.title} | Резонанца`} description={t.title}>
+  <section class="page grid-bg">
+    <div class="wrap">
+      <nav class="crumbs mono"><a href={homeHref(lang)}>{T[lang].product.home}</a><span>/</span><span aria-current="page">{t.title}</span></nav>
+      <p class="label">{t.label}</p>
+      <h1>{t.title}</h1>
+
+      <div class="empty panel" id="cart-empty" hidden>
+        <p>{t.empty}</p>
+        <a class="btn btn--solid" href={collectionHref(lang)}>{t.emptyCta} <span class="arrow">→</span></a>
+      </div>
+
+      <div class="layout" id="cart-full" hidden>
+        <ul class="lines" id="cart-lines"></ul>
+        <aside class="summary panel">
+          <div class="row"><span>{t.subtotal}</span><span id="cart-subtotal"></span></div>
+          <div class="row muted"><span>{t.shipping}</span><span id="cart-shipping"></span></div>
+          <div class="row total"><span>{t.total}</span><strong id="cart-total"></strong></div>
+          <a class="btn btn--solid go" href={checkoutHref(lang)}>{t.toCheckout} <span class="arrow">→</span></a>
+          <p class="note">{t.note}</p>
+          <a class="link mono" href={collectionHref(lang)}>← {t.continue}</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+  <template id="cart-msgs" data-remove={t.remove}></template>
+</Base>
+<script>
+  import { totals, catalog, money, describe, setQty, remove } from '../scripts/cart';
+  const removeLabel = (document.getElementById('cart-msgs') as HTMLElement).dataset.remove!;
+  const render = () => {
+    const c = catalog(), { lines, subtotal, shipping, total } = totals();
+    document.getElementById('cart-empty')!.hidden = lines.length > 0;
+    document.getElementById('cart-full')!.hidden = lines.length === 0;
+    const ul = document.getElementById('cart-lines')!;
+    ul.innerHTML = '';
+    lines.forEach((l, i) => {
+      const p = c.products[l.slug];
+      if (!p) return;
+      const li = document.createElement('li');
+      li.className = 'line';
+      li.innerHTML = `<a class="thumb"><img alt="" width="96" height="128"></a>
+        <div class="info"><span class="s mono"></span><a class="n"></a><span class="d"></span>
+          <div class="ctl"><span class="stepper"><button type="button" class="step" data-step="-1">−</button><input type="number" min="1" max="20" inputmode="numeric"><button type="button" class="step" data-step="1">+</button></span>
+          <button type="button" class="rm mono"></button></div></div>
+        <span class="price"></span>`;
+      li.querySelectorAll('a').forEach((a) => (a.href = p.href));
+      (li.querySelector('img') as HTMLImageElement).src = p.img;
+      li.querySelector('.s')!.textContent = p.series;
+      li.querySelector('.n')!.textContent = p.name;
+      li.querySelector('.d')!.textContent = describe(l);
+      const input = li.querySelector('input') as HTMLInputElement;
+      input.value = String(l.qty);
+      input.addEventListener('change', () => setQty(i, +input.value || 1));
+      li.querySelector('.rm')!.textContent = removeLabel;
+      li.querySelector('.rm')!.addEventListener('click', () => remove(i));
+      li.querySelector('.price')!.textContent = money(c.prices[l.format][l.size] * l.qty);
+      ul.append(li);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    document.getElementById('cart-subtotal')!.textContent = money(subtotal);
+    document.getElementById('cart-shipping')!.textContent = money(shipping);
+    document.getElementById('cart-total')!.textContent = money(total);
+  };
+  document.addEventListener('cart:change', render);
+  render();
+</script>
+<style>
+  .page { padding-top: clamp(130px, 13vw, 180px); background-color: var(--bg-0); min-height: 80vh; }
+  .crumbs { display: flex; gap: 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+  .crumbs a:hover { color: var(--cyan); }
+  h1 { font-size: var(--fs-h1); margin-top: 16px; }
+  .empty { margin-top: var(--space-md); display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+  .empty p { margin: 0; color: var(--text); font-size: var(--fs-lead); }
+  .layout { margin-top: var(--space-md); display: grid; grid-template-columns: 1fr 380px; gap: clamp(24px, 4vw, 56px); align-items: start; }
+  .lines { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+  .lines :global(.line) { display: grid; grid-template-columns: 96px 1fr auto; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .lines :global(.thumb img) { width: 96px; height: 128px; object-fit: cover; border: 1px solid var(--line); }
+  .lines :global(.info) { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .lines :global(.s) { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
+  .lines :global(.n) { font: 500 var(--fs-h3)/1.25 var(--f-display); color: var(--ice); }
+  .lines :global(.d) { font-size: var(--fs-sm); color: var(--muted); }
+  .lines :global(.ctl) { display: flex; align-items: center; gap: 18px; margin-top: 10px; flex-wrap: wrap; }
+  .lines :global(.stepper) { height: 42px; }
+  .lines :global(.rm) { background: none; border: none; color: var(--muted); font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+  .lines :global(.rm:hover) { color: #ff8da0; }
+  .lines :global(.price) { font: 500 var(--fs-body)/1.3 var(--f-body); color: var(--ice); white-space: nowrap; }
+  .summary { position: sticky; top: 100px; display: grid; gap: 12px; }
+  .row { display: flex; justify-content: space-between; font-size: var(--fs-body); }
+  .muted { color: var(--muted); font-size: var(--fs-sm); }
+  .total { padding-top: 14px; border-top: 1px solid var(--line); font-size: var(--fs-lead); }
+  .total strong { font: 500 var(--fs-price)/1 var(--f-display); color: var(--ice); }
+  .go { justify-content: center; margin-top: 8px; }
+  .note { margin: 4px 0 0; color: var(--muted); font-size: var(--fs-sm); }
+  .link { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
+  .link:hover { color: var(--cyan); }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .summary { position: static; } }
+  @media (max-width: 520px) { .lines :global(.line) { grid-template-columns: 72px 1fr; } .lines :global(.thumb img) { width: 72px; height: 96px; } .lines :global(.price) { grid-column: 2; } }
+</style>

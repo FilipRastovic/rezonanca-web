@@ -1,5 +1,5 @@
 ---
-import { T, type Lang } from '../i18n';
+import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].final;
@@ -11,7 +11,7 @@ const t = T[lang].final;
   <div class="wrap inner">
     <h2 data-reveal>{t.title}</h2>
     <p class="lead" data-reveal>{t.lead}</p>
-    <button class="btn btn--solid" data-order data-reveal>{t.cta} <span class="arrow">→</span></button>
+    <a class="btn btn--solid" href={collectionHref(lang)} data-reveal>{T[lang].hero.primary} <span class="arrow">→</span></a>
   </div>
 </section>
 <style>
