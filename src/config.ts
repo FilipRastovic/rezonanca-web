@@ -29,8 +29,9 @@ export const SELLER = {
   address: 'Slavka Rodića 40, 21208 Sremska Kamenica, Srbija',
 };
 
-export const SIZES = ['30x40', '50x70', '61x91'] as const;
+export const SIZES = ['21x30', '30x40', '50x70', '61x91'] as const; // 21x30 = A4
 export type Size = (typeof SIZES)[number];
+export const DEFAULT_SIZE: Size = '30x40'; // preselected on product pages
 
 export const FORMATS = ['print', 'framed', 'edition', 'metal'] as const;
 export type Format = (typeof FORMATS)[number];
@@ -41,10 +42,10 @@ export const ACTIVE_FORMATS: Format[] = ['print'];
 
 // Prices in RSD per format and size.
 export const PRICES: Record<Format, Record<Size, number>> = {
-  print:   { '30x40': 2900,  '50x70': 4900,  '61x91': 6900 },
-  framed:  { '30x40': 6900,  '50x70': 10900, '61x91': 14900 },
-  edition: { '30x40': 9900,  '50x70': 14900, '61x91': 19900 },
-  metal:   { '30x40': 14900, '50x70': 22900, '61x91': 29900 },
+  print:   { '21x30': 1900, '30x40': 2900,  '50x70': 4900,  '61x91': 6900 },
+  framed:  { '21x30': 4400, '30x40': 6900,  '50x70': 10900, '61x91': 14900 },
+  edition: { '21x30': 6900, '30x40': 9900,  '50x70': 14900, '61x91': 19900 },
+  metal:   { '21x30': 9900, '30x40': 14900, '50x70': 22900, '61x91': 29900 },
 };
 
 export const FRAMES = ['black', 'white', 'oak'] as const;

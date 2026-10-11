@@ -24,7 +24,7 @@ const one = ACTIVE_FORMATS.length === 1;
             <ul>{item.spec.map((s) => <li>{s}</li>)}</ul>
             <div class="price">
               {SALES_OPEN && <span class="mono">{t.from}</span>}
-              <strong>{SALES_OPEN ? formatPrice(PRICES[f]['30x40'], lang) : T[lang].soon.badge}</strong>
+              <strong>{SALES_OPEN ? formatPrice(PRICES[f]['21x30'], lang) : T[lang].soon.badge}</strong>
             </div>
             <a class:list={['btn', { 'btn--solid': one || f === 'framed' }]} href={collectionHref(lang)}>{T[lang].hero.primary} <span class="arrow">→</span></a>
           </article>
