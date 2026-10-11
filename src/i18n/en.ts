@@ -25,7 +25,7 @@ const en: typeof sr = {
     body: [
       'Somewhere in the silence between two stations, in the hiss of a distant pulsar, in the tremor of a string before it fades - there is a shape. Invisible. Fleeting. Yours.',
       'Rezonanca catches it. Every poster begins with a single number - a seed - and a set of rules, a design grammar, by which the signal builds its own form: branching, twisting, raising towers of light. The same number always gives the same piece, down to the last line, so the print you receive is exactly the one in the picture. Another number - an entirely new world.',
-      'No artificial intelligence. Every piece is a program - hundreds of lines of JavaScript (p5.js) we wrote by hand. Code doesn’t guess or copy: it draws exactly what we told it to, every line in its place.',
+      'Every piece is a program - hundreds of lines of JavaScript (p5.js) we wrote by hand. Code doesn’t guess or copy: it draws exactly what we told it to, every line in its place.',
     ],
     pillars: [
       { k: 'HOME', t: 'Silence that glows', d: 'Deep, saturated colours that calm the room at dusk and light up when the sun goes down. Art that breathes with the space.' },
@@ -120,7 +120,7 @@ const en: typeof sr = {
     label: '06 // FAQ',
     title: 'Before you tune in.',
     items: [
-      { q: 'Is this AI art?', a: 'No. Every piece is written in code - JavaScript and the p5.js library - a program we built ourselves. No artificial intelligence, no one else’s images: just maths, sound and light. Whoever writes the program is the author of the picture.' },
+      { q: 'How is a piece made?', a: 'Every piece is written in code - JavaScript and the p5.js library - a program we built ourselves. No one else’s images, no templates: just maths, sound and light. Whoever writes the program is the author of the picture.' },
       { q: 'How do I pay?', a: 'Cash on delivery to the courier, or bank transfer once we confirm your order. No card details are ever entered on the site.' },
       { q: 'How long does it take?', a: 'Prints 3–5 business days. Courier delivery across Serbia takes 1–2 days, shipping is paid by the buyer.' },
       { q: 'Do I get the same piece as in the picture?', a: 'Yes, exactly that one. Our code draws each piece from a single number - a seed - and the same number always gives exactly the same image. The print you receive is identical to the one on the site.' },
