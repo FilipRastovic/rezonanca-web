@@ -1,6 +1,6 @@
 // Cart: kept in localStorage (falls back to memory if storage is blocked).
 // Line = one product in one configuration; same configuration added twice = higher qty.
-export type Line = { slug: string; format: string; size: string; frame?: string; qty: number };
+export type Line = { slug: string; format: string; size: string; frame?: string; tone?: string; qty: number };
 type Catalog = {
   lang: 'sr' | 'en';
   prices: Record<string, Record<string, number>>;
@@ -8,6 +8,7 @@ type Catalog = {
   products: Record<string, { name: string; img: string; href: string; series: string }>;
   formats: Record<string, string>;
   frames: Record<string, string>;
+  tones: Record<string, string>;
   framed: string[];
 };
 
@@ -24,7 +25,7 @@ function write(lines: Line[]) {
   try { localStorage.setItem(KEY, JSON.stringify(lines)); } catch { /* private mode: memory only */ }
   document.dispatchEvent(new CustomEvent('cart:change'));
 }
-const same = (a: Line, b: Line) => a.slug === b.slug && a.format === b.format && a.size === b.size && (a.frame || '') === (b.frame || '');
+const same = (a: Line, b: Line) => a.slug === b.slug && a.format === b.format && a.size === b.size && (a.frame || '') === (b.frame || '') && (a.tone || '') === (b.tone || '');
 
 export function add(line: Line) {
   const c = catalog();
@@ -49,5 +50,7 @@ export function totals() {
 }
 export function describe(l: Line) {
   const c = catalog();
-  return [c.formats[l.format], l.size.replace('x', ' × ') + ' cm', l.frame ? c.frames[l.frame] : ''].filter(Boolean).join(' · ');
+  return [l.tone ? c.tones[l.tone] : '', c.formats[l.format], l.size.replace('x', ' × ') + ' cm', l.frame ? c.frames[l.frame] : ''].filter(Boolean).join(' · ');
 }
+// Thumbnail of the line in its colourway.
+export const imgFor = (l: Line) => { const img = catalog().products[l.slug]?.img ?? ''; return l.tone ? img.replace(`/${l.slug}-`, `/${l.slug}-${l.tone}-`) : img; };

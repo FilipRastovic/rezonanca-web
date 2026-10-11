@@ -38,7 +38,7 @@ const t = T[lang].cart;
   <template id="cart-msgs" data-remove={t.remove}></template>
 </Base>
 <script>
-  import { totals, catalog, money, describe, setQty, remove } from '../scripts/cart';
+  import { totals, catalog, money, describe, imgFor, setQty, remove } from '../scripts/cart';
   const removeLabel = (document.getElementById('cart-msgs') as HTMLElement).dataset.remove!;
   const render = () => {
     const c = catalog(), { lines, subtotal, shipping, total } = totals();
@@ -57,7 +57,7 @@ const t = T[lang].cart;
           <button type="button" class="rm mono"></button></div></div>
         <span class="price"></span>`;
       li.querySelectorAll('a').forEach((a) => (a.href = p.href));
-      (li.querySelector('img') as HTMLImageElement).src = p.img;
+      (li.querySelector('img') as HTMLImageElement).src = imgFor(l);
       li.querySelector('.s')!.textContent = p.series;
       li.querySelector('.n')!.textContent = p.name;
       li.querySelector('.d')!.textContent = describe(l);

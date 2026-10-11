@@ -24,7 +24,7 @@ const t = T[lang].cart;
   </div>
 </dialog>
 <script>
-  import { totals, catalog, money, describe } from '../scripts/cart';
+  import { totals, catalog, money, describe, imgFor } from '../scripts/cart';
   const dlg = document.getElementById('cart-drawer') as HTMLDialogElement;
   const render = () => {
     const c = catalog(), { lines, subtotal, shipping } = totals();
@@ -35,7 +35,7 @@ const t = T[lang].cart;
       if (!p) continue;
       const li = document.createElement('li');
       li.innerHTML = '<img alt="" width="60" height="80"><div><a class="n"></a><span class="d"></span><span class="q"></span></div>';
-      (li.querySelector('img') as HTMLImageElement).src = p.img;
+      (li.querySelector('img') as HTMLImageElement).src = imgFor(l);
       const a = li.querySelector('.n') as HTMLAnchorElement; a.href = p.href; a.textContent = p.name;
       li.querySelector('.d')!.textContent = describe(l);
       li.querySelector('.q')!.textContent = `${l.qty} × ${money(c.prices[l.format][l.size])}`;

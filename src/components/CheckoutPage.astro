@@ -73,7 +73,7 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
   <template id="co-msgs" data-required={o.required} data-error={o.error}></template>
 </Base>
 <script>
-  import { totals, catalog, money, describe, clear } from '../scripts/cart';
+  import { totals, catalog, money, describe, imgFor, clear } from '../scripts/cart';
   const form = document.getElementById('co-form') as HTMLFormElement;
   const cfg = JSON.parse(form.dataset.config!);
   const msgs = (document.getElementById('co-msgs') as HTMLElement).dataset;
@@ -88,7 +88,7 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
       if (!p) continue;
       const li = document.createElement('li');
       li.innerHTML = '<img alt="" width="48" height="64"><div><span class="n"></span><span class="d"></span></div><span class="p"></span>';
-      (li.querySelector('img') as HTMLImageElement).src = p.img;
+      (li.querySelector('img') as HTMLImageElement).src = imgFor(l);
       li.querySelector('.n')!.textContent = `${p.name}${l.qty > 1 ? ' × ' + l.qty : ''}`;
       li.querySelector('.d')!.textContent = describe(l);
       li.querySelector('.p')!.textContent = money(c.prices[l.format][l.size] * l.qty);

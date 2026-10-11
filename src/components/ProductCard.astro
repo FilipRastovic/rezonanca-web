@@ -1,11 +1,13 @@
 ---
 import { PRICES, SALES_OPEN, formatPrice } from '../config';
-import { pad } from '../data/products.js';
+import { pad, imgKey } from '../data/products.js';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number }
 const { product: p, lang, eager = false, delay = 0 } = Astro.props;
 const t = T[lang];
 const series = t.series[p.style as 'structure'];
+const tone = p.tones?.[0]; // first colourway: shown on hover, plus colour dots
+const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', violet: '#7a4dff', aurora: '#11c9a8', ember: '#ff9a4a' };
 ---
 <a class="card" href={productHref(lang, p.slug)} data-reveal style={`transition-delay:${delay}ms`}>
   <span class="top mono">
@@ -15,10 +17,17 @@ const series = t.series[p.style as 'structure'];
   <span class="stage">
     <span class="art">
       <img src={`/posters/${p.slug}-${lang}.webp`} alt={`${series.name} - ${p.name[lang]}`} width="900" height="1200" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      {tone && <img class="alt" src={`/posters/${imgKey(p.slug, tone)}-${lang}.webp`} alt="" width="900" height="1200" loading="lazy" decoding="async" />}
     </span>
   </span>
   <span class="info">
     <span class="name">{p.name[lang]}</span>
+    {tone && (
+      <span class="tones" title={['orig', ...p.tones].map((k: string) => t.order.tones[k as 'orig']).join(' · ')}>
+        <i style={`background:linear-gradient(135deg,#050b1e 50%,${PAL_GLOW[p.palette] || '#2a8cff'} 50%)`}></i>
+        <i style="background:linear-gradient(135deg,#b23a68 50%,#0fb37d 50%)"></i>
+      </span>
+    )}
   </span>
   <span class="foot">
     {SALES_OPEN ? <span class="price"><span class="mono">{t.card.from}</span> {formatPrice(PRICES.print['21x30'], lang)}</span>
@@ -39,7 +48,12 @@ const series = t.series[p.style as 'structure'];
   .art::after { content: ''; position: absolute; inset: var(--mat-pad); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35); pointer-events: none; }
   .art img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: filter 0.6s; }
   .card:hover .art img { filter: brightness(1.1) saturate(1.08); }
-  .info { display: flex; flex-direction: column; gap: 6px; padding: 16px 16px 14px; border-top: 1px solid var(--line); }
+  .info { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 14px; border-top: 1px solid var(--line); }
+  .tones { display: flex; gap: 5px; flex: none; }
+  .tones i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); }
+  /* Colourway fades in on hover (pointer devices only). */
+  .art .alt { position: absolute; top: var(--mat-pad); left: var(--mat-pad); width: calc(100% - 2 * var(--mat-pad)); opacity: 0; transition: opacity 0.5s, filter 0.6s; }
+  @media (hover: hover) { .card:hover .art .alt { opacity: 1; } }
   .name { font: 500 var(--fs-h3)/1.25 var(--f-display); color: var(--ice); }
   .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding: 14px 16px; border-top: 1px solid var(--line); }
   .price { font: 500 var(--fs-body)/1 var(--f-body); color: var(--ice); }

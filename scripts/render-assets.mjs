@@ -10,12 +10,14 @@
 //   node scripts/render-assets.mjs                 everything
 //   node scripts/render-assets.mjs slug1,slug2     only these products
 //   node scripts/render-assets.mjs --rooms-only    reuse cached renders; rebuild room shots + homepage interiors
+//   node scripts/render-assets.mjs --tones-only    only the colourway images (<slug>-<tone>-…), originals untouched
+// Colourways (product.tones) get the same set under <slug>-<tone>: posters, details and rooms.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { PRODUCTS, findProduct } from '../src/data/products.js';
+import { PRODUCTS, findProduct, imgKey } from '../src/data/products.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const GEN = path.resolve(ROOT, '../waveform-poster');
@@ -27,18 +29,21 @@ for (const d of ['posters', 'details', 'rooms', 'interiors']) await fs.mkdir(out
 await fs.mkdir(TMP, { recursive: true });
 
 const roomsOnly = process.argv.includes('--rooms-only');
+const tonesOnly = process.argv.includes('--tones-only');
 const arg = process.argv.slice(2).find((a) => !a.startsWith('--'));
 const only = arg ? arg.split(',') : null;
 const products = only ? PRODUCTS.filter((p) => only.includes(p.slug)) : PRODUCTS;
+// Every image set to build: the original ('' tone) and each colourway.
+const sets = products.flatMap((p) => [...(tonesOnly ? [] : ['']), ...(p.tones || [])].map((tone) => ({ p, tone, key: imgKey(p.slug, tone) })));
 const posterPng = (slug, lang) => path.join(TMP, `${slug}-${lang}.png`);
 const detailPng = (slug) => path.join(TMP, `${slug}-detail.png`);
 
 // 1. Render with the existing exporter: 80 DPI per language, 150 DPI once for detail crops.
 const jobs = [];
-for (const p of products) {
-  const base = { seed: p.seed, style: p.style, variant: p.variant, palette: p.palette, boost: p.boost };
-  for (const [lang, code] of Object.entries(LANGS)) jobs.push({ ...base, lang: code, dpi: 80, name: `${p.slug}-${lang}` });
-  jobs.push({ ...base, lang: 'sr-cyrl', dpi: 150, name: `${p.slug}-detail` });
+for (const { p, tone, key } of sets) {
+  const base = { seed: p.seed, style: p.style, variant: p.variant, palette: p.palette, boost: p.boost, ...(tone ? { tone } : {}) };
+  for (const [lang, code] of Object.entries(LANGS)) jobs.push({ ...base, lang: code, dpi: 80, name: `${key}-${lang}` });
+  jobs.push({ ...base, lang: 'sr-cyrl', dpi: 150, name: `${key}-detail` });
 }
 const jobsFile = path.join(TMP, 'jobs.json');
 await fs.writeFile(jobsFile, JSON.stringify(jobs));
@@ -49,22 +54,22 @@ const ART_CENTRE = { structure: [0.5, 0.42], flux: [0.5, 0.42], city: [0.5, 0.4]
 
 // Maths metadata recorded during the render -> src/data/math/<slug>.json (product page reads it).
 await fs.mkdir(path.join(ROOT, 'src/data/math'), { recursive: true });
-for (const p of roomsOnly ? [] : products) {
+for (const p of roomsOnly || tonesOnly ? [] : products) {
   const src = path.join(TMP, `${p.slug}-sr.math.json`);
   await fs.copyFile(src, path.join(ROOT, 'src/data/math', `${p.slug}.json`));
 }
 
-for (const p of roomsOnly ? [] : products) {
+for (const { p, key } of roomsOnly ? [] : sets) {
   for (const lang of Object.keys(LANGS)) {
-    await sharp(posterPng(p.slug, lang)).resize({ width: 900 }).webp({ quality: 84 }).toFile(out('posters', `${p.slug}-${lang}.webp`));
-    await sharp(posterPng(p.slug, lang)).webp({ quality: 86 }).toFile(out('posters', `${p.slug}-${lang}-lg.webp`));
+    await sharp(posterPng(key, lang)).resize({ width: 900 }).webp({ quality: 84 }).toFile(out('posters', `${key}-${lang}.webp`));
+    await sharp(posterPng(key, lang)).webp({ quality: 86 }).toFile(out('posters', `${key}-${lang}-lg.webp`));
   }
-  const img = sharp(detailPng(p.slug));
+  const img = sharp(detailPng(key));
   const { width, height } = await img.metadata();
   const [fx, fy] = p.variant === 'tree' ? [0.5, 0.55] : ART_CENTRE[p.style];
   const s = Math.round(width * 0.46);
   await img.extract({ left: Math.round(width * fx - s / 2), top: Math.round(height * fy - s / 2), width: s, height: s })
-    .resize({ width: 1100 }).webp({ quality: 86 }).toFile(out('details', `${p.slug}.webp`));
+    .resize({ width: 1100 }).webp({ quality: 86 }).toFile(out('details', `${key}.webp`));
 }
 
 // 2. Room scenes: SVG silhouettes, posters composited onto the wall.
@@ -78,7 +83,7 @@ const defs = (lampX, lampY) => `
     <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
   </defs>`;
 // Wall glow tinted by the poster's palette.
-const GLOW = { cyan: '#2a8cff', ice: '#8fa6c8', violet: '#7a4dff', aurora: '#11c9a8', ember: '#ff9a4a' };
+const GLOW = { cyan: '#2a8cff', ice: '#8fa6c8', violet: '#7a4dff', aurora: '#11c9a8', ember: '#ff9a4a', roza: '#e0508a' };
 const glowBehind = (x, y, w, h, c) =>
   `<rect x="${x - 30}" y="${y - 30}" width="${w + 60}" height="${h + 60}" fill="${c}" opacity="0.26" filter="url(#blur)"/>
    <rect x="${x + 14}" y="${y + 26}" width="${w}" height="${h}" fill="#000" opacity="0.7" filter="url(#soft)"/>`;
@@ -148,14 +153,14 @@ async function room(scene, frames, file) {
 }
 
 // Per-product room shot (living room) for the product gallery.
-for (const p of products) {
+for (const { p, tone, key } of sets) {
   for (const lang of Object.keys(LANGS)) {
-    await room('living', [{ x: 650, y: 110, w: 300, file: posterPng(p.slug, lang), palette: p.palette }], out('rooms', `${p.slug}-${lang}.webp`));
+    await room('living', [{ x: 650, y: 110, w: 300, file: posterPng(key, lang), palette: tone || p.palette }], out('rooms', `${key}-${lang}.webp`));
   }
 }
 
 // Homepage interiors + social share image.
-if (!only) {
+if (!only && !tonesOnly) {
   const HOME = {
     living: [{ slug: 'lorenc', x: 650, y: 110, w: 300 }],
     studio: [{ slug: 'morska-zvezda', x: 980, y: 120, w: 360 }],

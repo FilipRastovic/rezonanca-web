@@ -13,6 +13,7 @@ const data = {
   products: Object.fromEntries(PRODUCTS.map((p) => [p.slug, { name: p.name[lang], img: `/posters/${p.slug}-${lang}.webp`, href: productHref(lang, p.slug), series: seriesShort(lang, p.style) }])),
   formats: Object.fromEntries(FORMATS.map((f) => [f, t.formats.items[f].t])),
   frames: Object.fromEntries(FRAMES.map((f) => [f, t.order.frames[f]])),
+  tones: t.order.tones,
   framed: ['framed', 'edition'],
 };
 ---

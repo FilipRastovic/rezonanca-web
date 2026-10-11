@@ -4,7 +4,7 @@ import ProductCard from './ProductCard.astro';
 import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
-import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad } from '../data/products.js';
+import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FRAMES, PRICES, SALES_OPEN, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -22,11 +22,22 @@ const others = SERIES.filter((s) => s.key !== p.style);
 const fmt = t.formats.items;
 const hasFrames = ACTIVE_FORMATS.some((f) => f === 'framed' || f === 'edition');
 
-const gallery = [
-  { src: `/posters/${p.slug}-${lang}-lg.webp`, thumb: `/posters/${p.slug}-${lang}.webp`, alt: `${seriesName} - ${name}`, fit: 'poster' },
-  { src: `/rooms/${p.slug}-${lang}.webp`, thumb: `/rooms/${p.slug}-${lang}.webp`, alt: `${name} - ${tp.gallery[1]}`, fit: 'wide' },
-  { src: `/details/${p.slug}.webp`, thumb: `/details/${p.slug}.webp`, alt: `${name} - ${tp.gallery[2]}`, fit: 'square' },
-];
+// One gallery per colourway ('' = original); the colour choice swaps the whole set.
+const tones = ['', ...(p.tones || [])];
+const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];
+const galleryFor = (tone: string) => {
+  const k = imgKey(p.slug, tone), suffix = tone ? ` (${toneName(tone)})` : '';
+  return [
+    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${seriesName} - ${name}${suffix}`, fit: 'poster' },
+    { src: `/rooms/${k}-${lang}.webp`, thumb: `/rooms/${k}-${lang}.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'wide' },
+    { src: `/details/${k}.webp`, thumb: `/details/${k}.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
+  ];
+};
+const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galleryFor(tone)]));
+const gallery = galleries.orig;
+// Swatch: the piece's own colour on navy, or the colourway's ground + core.
+const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', violet: '#7a4dff', aurora: '#11c9a8', ember: '#ff9a4a' };
+const swatch = (tone: string) => tone === 'roza' ? 'linear-gradient(135deg, #b23a68 50%, #0fb37d 50%)' : `linear-gradient(135deg, #050b1e 50%, ${PAL_GLOW[p.palette] || '#2a8cff'} 50%)`;
 
 const site = Astro.site!;
 const jsonLd = {
@@ -78,6 +89,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
           </div>
         </div>
 
+        <script type="application/json" id="pp-galleries" set:html={JSON.stringify(galleries)} />
         <dialog class="lightbox" id="pp-lightbox" aria-label={name}>
           <img id="lb-img" src={gallery[0].src} alt={gallery[0].alt} />
           <button type="button" class="lb-btn lb-close" data-lb="close" aria-label={tp.lightbox.close}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19" /></svg></button>
@@ -103,6 +115,17 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
               <strong>{T[lang].soon.priceSoon}</strong>
               <small>{T[lang].soon.priceNote}</small>
             </div>
+          )}
+
+          {tones.length > 1 && (
+            <fieldset>
+              <legend class="mono">{t.order.color}</legend>
+              <div class="pills">
+                {tones.map((tone, i) => (
+                  <label class="pill swatch"><input type="radio" name="tone" value={tone || 'orig'} checked={i === 0} /><span><i class="tone-sw" style={`background:${swatch(tone)}`}></i>{toneName(tone)}</span></label>
+                ))}
+              </div>
+            </fieldset>
           )}
 
           {ACTIVE_FORMATS.length === 1 ? (
@@ -215,7 +238,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
     if (priceEl) priceEl.textContent = money(prices[format][size] * qty);
     if (frameSet) frameSet.hidden = !['framed', 'edition'].includes(format);
     if (editionEl) editionEl.hidden = format !== 'edition';
-    Object.assign(orderBtn.dataset, { format, size, frame: String(d.get('frame')), qty: String(qty) });
+    Object.assign(orderBtn.dataset, { format, size, frame: String(d.get('frame')), qty: String(qty), tone: String(d.get('tone') || '') });
   };
   form.addEventListener('change', update);
   form.addEventListener('input', update);
@@ -225,7 +248,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
   import { add } from '../scripts/cart';
   orderBtn.addEventListener('click', () => {
     const d = orderBtn.dataset;
-    add({ slug: d.slug!, format: d.format!, size: d.size!, frame: d.frame, qty: +(d.qty || 1) });
+    add({ slug: d.slug!, format: d.format!, size: d.size!, frame: d.frame, qty: +(d.qty || 1), ...(d.tone && d.tone !== 'orig' ? { tone: d.tone } : {}) });
     document.dispatchEvent(new CustomEvent('cart:open'));
   });
 
@@ -243,6 +266,22 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
     fig.dataset.fit = b.dataset.fit!;
   };
   thumbs.forEach((b, i) => b.addEventListener('click', () => show(i)));
+
+  // Colour choice: swap every gallery image to that colourway (what you see is what you get).
+  const galleries = JSON.parse(document.getElementById('pp-galleries')!.textContent!);
+  const setTone = (tone: string) => {
+    const g = galleries[tone] || galleries.orig;
+    thumbs.forEach((b, i) => {
+      Object.assign(b.dataset, { src: g[i].src, alt: g[i].alt });
+      (b.querySelector('img') as HTMLImageElement).src = g[i].thumb;
+    });
+    show(current);
+  };
+  form.querySelectorAll<HTMLInputElement>('input[name="tone"]').forEach((r) => r.addEventListener('change', () => setTone(r.value)));
+  // ?boja=roza (e.g. from a pink card or a shared link) preselects the colour.
+  const wanted = new URLSearchParams(location.search).get('boja');
+  const pre = wanted && form.querySelector<HTMLInputElement>(`input[name="tone"][value="${CSS.escape(wanted)}"]`);
+  if (pre) { pre.checked = true; setTone(wanted!); update(); }
 
   // Full screen view: tap the image; arrows, swipe, Esc or tap outside to close.
   const lb = document.getElementById('pp-lightbox') as HTMLDialogElement;
@@ -381,4 +420,5 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
   }
   @media (max-width: 420px) { .formats { grid-template-columns: 1fr; } .trust { grid-template-columns: 1fr; } }
   @media (max-width: 600px) { .pills { display: grid; grid-template-columns: 1fr 1fr; } .pill { display: block; } .pill span { display: flex; justify-content: center; width: 100%; } }
+  .tone-sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35); }
 </style>

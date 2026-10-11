@@ -169,6 +169,14 @@ const BOOST = {
 };
 for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 
+// Colourways offered next to the original (generator ?tone=, see waveform-poster TONES).
+// Skipped where the colourway doesn't work: fine ridge meshes turn to haze, thin single lines vanish.
+export const TONES = ['roza'];
+const NO_TONE = ['prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'];
+for (const x of PRODUCTS) x.tones = NO_TONE.includes(x.slug) ? [] : TONES;
+// Image file key for a product in a colourway ('' = original).
+export const imgKey = (slug, tone) => (tone ? `${slug}-${tone}` : slug);
+
 // Display order within a series (overrides definition order).
 const ORDER = {
   attractor: ['tomas', 'halvorsen', 'klifordov-veo', 'de-zong', 'lorenc', 'aizava'],

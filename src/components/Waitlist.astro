@@ -7,7 +7,7 @@ interface Props { lang: Lang; product?: { slug: string; name: string }; title?: 
 const { lang, product, title = false } = Astro.props;
 const t = T[lang].soon;
 const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHOP.email, lang, product: product ?? null,
-  formats: Object.fromEntries(Object.entries(T[lang].formats.items).map(([k, v]) => [k, v.t])), frames: T[lang].order.frames,
+  formats: Object.fromEntries(Object.entries(T[lang].formats.items).map(([k, v]) => [k, v.t])), frames: T[lang].order.frames, tones: T[lang].order.tones,
   msg: { sending: t.sending, invalid: t.invalid, error: t.error, done: product ? t.done : t.doneGeneral } });
 ---
 <div class="waitlist" data-waitlist={cfg}>
@@ -38,10 +38,11 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
       const pf = document.getElementById('pp-form') as HTMLFormElement | null;
       if (cfg.product && pf) {
         const d = new FormData(pf), format = String(d.get('format')), size = String(d.get('size'));
-        choice = { format: cfg.formats[format] ?? format, size: size.replace('x', ' × ') + ' cm' };
+        const tone = d.get('tone');
+        choice = { ...(tone ? { color: cfg.tones[String(tone)] ?? String(tone) } : {}), format: cfg.formats[format] ?? format, size: size.replace('x', ' × ') + ' cm' };
         if (['framed', 'edition'].includes(format)) choice.frame = cfg.frames[String(d.get('frame'))] ?? '';
       }
-      const what = cfg.product ? `${cfg.product.name} / ${[choice.format, choice.size, choice.frame].filter(Boolean).join(' · ')}` : 'општа пријава';
+      const what = cfg.product ? `${cfg.product.name} / ${[choice.color, choice.format, choice.size, choice.frame].filter(Boolean).join(' · ')}` : 'општа пријава';
       const payload = { _subject: `${cfg.shop} - листа чекања: ${what}`, _template: 'table', contact, ...(cfg.product ? { poster: cfg.product.name, slug: cfg.product.slug } : { poster: '(општа)' }), ...choice, page: location.href, language: cfg.lang };
       btn.disabled = true; const label = btn.firstChild!.textContent; btn.firstChild!.textContent = cfg.msg.sending + ' ';
       try {
