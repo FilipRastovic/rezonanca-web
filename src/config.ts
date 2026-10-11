@@ -35,6 +35,10 @@ export type Size = (typeof SIZES)[number];
 export const FORMATS = ['print', 'framed', 'edition', 'metal'] as const;
 export type Format = (typeof FORMATS)[number];
 
+// Formats actually offered on the site. Only what has been test-printed goes here:
+// add 'framed', 'edition' or 'metal' back once that product has been tested.
+export const ACTIVE_FORMATS: Format[] = ['print'];
+
 // Prices in RSD per format and size.
 export const PRICES: Record<Format, Record<Size, number>> = {
   print:   { '30x40': 2900,  '50x70': 4900,  '61x91': 6900 },

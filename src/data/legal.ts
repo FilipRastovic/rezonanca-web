@@ -18,7 +18,7 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
         { h: 'Продавац', p: [`Продавац је ${seller}. Контакт: ${contact}.`] },
         { h: 'Поручивање и закључење уговора', p: ['Поруџбину шаљеш преко обрасца на сајту. Уговор је закључен када ти потврдимо поруџбину телефоном или имејлом, најкасније у року од 24 сата. До потврде поруџбину можеш слободно да измениш или откажеш.'] },
         { h: 'Цене и плаћање', p: [`Цене су исказане у динарима (RSD) и коначне су: продавац није у систему ПДВ-а. На цену се додаје поштарина${ship ? ' од ' + ship : ' по ценовнику курирске службе'}, коју плаћа купац. На сајту се не плаћа и не уносе се подаци о картици: плаћаш поузећем, куриру при преузимању, или уплатом на рачун након потврде поруџбине.`] },
-        { h: 'Израда и испорука', p: ['Принтови се израђују 3–5 радних дана, урамљени радови и метал/акрил 7–10 радних дана. Испорука курирском службом на територији Србије траје 1–2 радна дана. О тачном року обавештавамо те при потврди поруџбине.'] },
+        { h: 'Израда и испорука', p: ['Принтови се израђују 3–5 радних дана. Испорука курирском службом на територији Србије траје 1–2 радна дана. О тачном року обавештавамо те при потврди поруџбине.'] },
         { h: 'Право на одустанак', p: [
           'Имаш право да одустанеш од уговора у року од 14 дана од дана када си примио/ла рад, без навођења разлога. Довољно је да нам пошаљеш јасну изјаву имејлом (нпр. „Одустајем од уговора за поруџбину бр. …“, са именом, адресом и датумом пријема).',
           'Рад враћаш у року од 14 дана од слања изјаве, неоштећен и у оригиналном паковању. Трошак повраћаја сноси купац. Новац враћамо у року од 14 дана од пријема изјаве, а можемо да сачекамо док рад не стигне назад.',
@@ -50,7 +50,7 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
         { h: 'Seller', p: [`The seller is ${seller}. Contact: ${contact}.`] },
         { h: 'Ordering and the contract', p: ['You send an order through the form on the site. The contract is concluded when we confirm your order by phone or email, within 24 hours at the latest. Until then you can freely change or cancel it.'] },
         { h: 'Prices and payment', p: [`Prices are in Serbian dinars (RSD) and are final: the seller is not registered for VAT. Shipping${ship ? ' of ' + ship : ' at the courier’s rates'} is added and paid by the customer. Nothing is paid on the site and no card details are entered: you pay cash on delivery to the courier, or by bank transfer after we confirm the order.`] },
-        { h: 'Production and delivery', p: ['Prints are made in 3–5 business days, framed and metal/acrylic pieces in 7–10 business days. Courier delivery within Serbia takes 1–2 business days. We confirm the exact timing when we confirm your order.'] },
+        { h: 'Production and delivery', p: ['Prints are made in 3–5 business days. Courier delivery within Serbia takes 1–2 business days. We confirm the exact timing when we confirm your order.'] },
         { h: 'Right of withdrawal', p: [
           'You may withdraw from the contract within 14 days of receiving the piece, without giving a reason. Just send us a clear statement by email (e.g. "I withdraw from the contract for order no. …", with your name, address and date of receipt).',
           'Return the piece within 14 days of sending the statement, undamaged and in its original packaging. Return shipping is paid by the customer. We refund you within 14 days of receiving your statement, and may wait until the piece arrives back.',

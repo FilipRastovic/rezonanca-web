@@ -1,22 +1,23 @@
 ---
-import { FORMATS, PRICES, SALES_OPEN, formatPrice } from '../config';
+import { ACTIVE_FORMATS, PRICES, SALES_OPEN, formatPrice } from '../config';
 import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].formats;
+const one = ACTIVE_FORMATS.length === 1;
 ---
 <section id="formats">
   <div class="wrap">
     <div class="section-head">
       <p class="label" data-reveal>{t.label}</p>
-      <h2 data-reveal>{t.title}</h2>
+      <h2 data-reveal>{one ? t.titleOne : t.title}</h2>
     </div>
-    <div class="cards">
-      {FORMATS.map((f, i) => {
+    <div class:list={['cards', { one }]}>
+      {ACTIVE_FORMATS.map((f, i) => {
         const item = t.items[f];
         return (
-          <article class:list={['card', { featured: f === 'framed' }]} data-reveal style={`transition-delay:${i * 90}ms`}>
-            {f === 'framed' && <span class="badge mono">{t.badge}</span>}
+          <article class:list={['card', { featured: one || f === 'framed' }]} data-reveal style={`transition-delay:${i * 90}ms`}>
+            {!one && f === 'framed' && <span class="badge mono">{t.badge}</span>}
             <span class="idx mono">F-0{i + 1}</span>
             <h3>{item.t}</h3>
             <p class="d">{item.d}</p>
@@ -25,10 +26,11 @@ const t = T[lang].formats;
               {SALES_OPEN && <span class="mono">{t.from}</span>}
               <strong>{SALES_OPEN ? formatPrice(PRICES[f]['30x40'], lang) : T[lang].soon.badge}</strong>
             </div>
-            <a class:list={['btn', { 'btn--solid': f === 'framed' }]} href={collectionHref(lang)}>{T[lang].hero.primary} <span class="arrow">→</span></a>
+            <a class:list={['btn', { 'btn--solid': one || f === 'framed' }]} href={collectionHref(lang)}>{T[lang].hero.primary} <span class="arrow">→</span></a>
           </article>
         );
       })}
+      {one && <p class="more" data-reveal>{t.soonMore}</p>}
     </div>
 
     <div class="get corners" data-reveal>
@@ -40,6 +42,8 @@ const t = T[lang].formats;
 <style>
   section { background: linear-gradient(var(--bg-0), var(--bg-1)); }
   .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 1.8vw, 28px); }
+  .cards.one { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; gap: clamp(28px, 5vw, 80px); }
+  .more { margin: 0; max-width: 46ch; color: var(--muted); font-size: var(--fs-body); line-height: 1.7; }
   .card { position: relative; display: flex; flex-direction: column; padding: clamp(28px, 2.6vw, 40px) clamp(22px, 2vw, 32px); background: var(--bg-card); border: 1px solid var(--line); transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s; }
   .card:hover { border-color: var(--line-strong); transform: translateY(-6px); }
   .card.featured { border-color: var(--cyan); box-shadow: var(--glow); background: linear-gradient(180deg, rgba(35, 105, 255, 0.14), var(--bg-card) 60%); }
@@ -58,7 +62,8 @@ const t = T[lang].formats;
   .get h3 { font-size: var(--fs-h2); }
   .get ul { margin: 0; grid-template-columns: 1fr 1fr; gap: 14px 32px; }
   .get li { color: var(--text); font-size: var(--fs-body); }
-  @media (max-width: 1080px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 1080px) { .cards:not(.one) { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 760px) { .get, .get ul { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .cards.one { grid-template-columns: 1fr; } }
   @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } .d { min-height: 0; } }
 </style>
