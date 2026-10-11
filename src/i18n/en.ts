@@ -153,6 +153,7 @@ const en: typeof sr = {
     priceNote: '+ 500 RSD shipping. No payment on the site - pay on delivery or by bank transfer after we confirm.',
     trust: ['Pay on delivery', 'Printed in Serbia', '300 DPI giclée', 'Safe packaging'],
     gallery: ['Poster', 'In a room', 'Detail'],
+    lightbox: { open: 'View full screen', close: 'Close', prev: 'Previous', next: 'Next' },
     about: 'About the piece',
     aboutGen: 'Drawn in code from seed',
     style: 'Series',

@@ -62,7 +62,10 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
       <div class="layout">
         <div class="gallery">
           <figure class="main corners" data-fit="poster">
-            <img id="pp-main" src={gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
+            <button type="button" class="zoom" id="pp-zoom" aria-label={tp.lightbox.open}>
+              <img id="pp-main" src={gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
+              <span class="zoom-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
+            </button>
           </figure>
           <div class="thumbs" role="tablist">
             {gallery.map((g, i) => (
@@ -73,6 +76,14 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
             ))}
           </div>
         </div>
+
+        <dialog class="lightbox" id="pp-lightbox" aria-label={name}>
+          <img id="lb-img" src={gallery[0].src} alt={gallery[0].alt} />
+          <button type="button" class="lb-btn lb-close" data-lb="close" aria-label={tp.lightbox.close}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19" /></svg></button>
+          <button type="button" class="lb-btn lb-prev" data-lb="-1" aria-label={tp.lightbox.prev}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 4l-8 8 8 8" /></svg></button>
+          <button type="button" class="lb-btn lb-next" data-lb="1" aria-label={tp.lightbox.next}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 4l8 8-8 8" /></svg></button>
+          <p class="lb-count mono" id="lb-count"></p>
+        </dialog>
 
         <form class="info" id="pp-form" data-config={cfg} onsubmit="return false">
           <p class="label">{info.code.split(' // ')[0]} // {seriesName}</p>
@@ -210,14 +221,53 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
 
   // Gallery.
   const main = document.getElementById('pp-main') as HTMLImageElement;
-  const fig = main.parentElement!;
-  document.querySelectorAll<HTMLButtonElement>('.thumbs button').forEach((b) => b.addEventListener('click', () => {
-    document.querySelectorAll('.thumbs button').forEach((x) => x.setAttribute('aria-selected', 'false'));
-    b.setAttribute('aria-selected', 'true');
+  const fig = main.closest('figure')!;
+  const thumbs = [...document.querySelectorAll<HTMLButtonElement>('.thumbs button')];
+  let current = 0;
+  const show = (i: number) => {
+    current = (i + thumbs.length) % thumbs.length;
+    const b = thumbs[current];
+    thumbs.forEach((x) => x.setAttribute('aria-selected', String(x === b)));
     main.src = b.dataset.src!;
     main.alt = b.dataset.alt!;
     fig.dataset.fit = b.dataset.fit!;
-  }));
+  };
+  thumbs.forEach((b, i) => b.addEventListener('click', () => show(i)));
+
+  // Full screen view: tap the image; arrows, swipe, Esc or tap outside to close.
+  const lb = document.getElementById('pp-lightbox') as HTMLDialogElement;
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+  const lbCount = document.getElementById('lb-count')!;
+  const lbShow = (i: number) => {
+    show(i);
+    lbImg.src = main.src;
+    lbImg.alt = main.alt;
+    lbCount.textContent = `${current + 1} / ${thumbs.length}`;
+  };
+  document.getElementById('pp-zoom')!.addEventListener('click', () => {
+    lbShow(current);
+    lb.showModal();
+    document.documentElement.style.overflow = 'hidden';
+  });
+  lb.addEventListener('close', () => { document.documentElement.style.overflow = ''; });
+  lb.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const btn = t.closest<HTMLElement>('[data-lb]');
+    if (btn) return btn.dataset.lb === 'close' ? lb.close() : lbShow(current + Number(btn.dataset.lb));
+    if (t !== lbImg) lb.close();
+  });
+  lb.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') lbShow(current + 1);
+    if (e.key === 'ArrowLeft') lbShow(current - 1);
+  });
+  let x0: number | null = null, y0 = 0;
+  lb.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) lbShow(current + (dx < 0 ? 1 : -1));
+  });
 </script>
 
 <style>
@@ -229,7 +279,22 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
 
   /* One fixed 3:4 frame for every view, so switching images never changes the height. */
   .main { margin: 0; position: relative; aspect-ratio: 3 / 4; background-color: #000; border: 1px solid var(--line); padding: 0; overflow: hidden; --l: 22px; }
+  .zoom { display: block; position: relative; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
   .main img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .zoom-ico { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 34px; height: 34px; color: var(--ice); background: rgba(1, 3, 10, 0.6); border: 1px solid var(--line); opacity: 0.75; transition: opacity 0.3s, border-color 0.3s; }
+  .zoom:hover .zoom-ico, .zoom:focus-visible .zoom-ico { opacity: 1; border-color: var(--cyan); }
+
+  .lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(1, 3, 10, 0.96); color: var(--ice); overflow: hidden; }
+  .lightbox::backdrop { background: rgba(1, 3, 10, 0.9); }
+  .lightbox[open] { display: grid; place-items: center; }
+  .lightbox img { max-width: calc(100vw - 32px); max-height: calc(100dvh - 96px); width: auto; height: auto; object-fit: contain; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
+  .lb-btn { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; color: var(--ice); background: rgba(1, 3, 10, 0.6); border: 1px solid var(--line); cursor: pointer; transition: border-color 0.3s, color 0.3s; }
+  .lb-btn:hover, .lb-btn:focus-visible { border-color: var(--cyan); color: var(--cyan); }
+  .lb-close { top: 16px; right: 16px; }
+  .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+  .lb-count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); margin: 0; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); color: var(--muted); }
+  @media (max-width: 600px) { .lb-prev, .lb-next { top: auto; bottom: 8px; transform: none; } .lb-prev { left: 16px; } .lb-next { right: 16px; } .lightbox img { max-height: calc(100dvh - 150px); } }
   .main[data-fit='poster'] { padding: var(--mat-pad); background: var(--mat); border: 8px solid var(--frame); box-shadow: var(--frame-shadow); }
   .main[data-fit='poster'] img { object-fit: contain; }
   .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
