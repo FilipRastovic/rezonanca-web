@@ -10,7 +10,7 @@ export const SHOP = {
   // Social profiles (footer links; an empty string hides that link).
   instagram: 'https://www.instagram.com/rezonanca.art/',
   tiktok: 'https://www.tiktok.com/@rezonanca.art',
-  facebook: 'https://www.facebook.com/rezonanca.art',
+  facebook: 'https://www.facebook.com/people/%D0%A0%D0%B5%D0%B7%D0%BE%D0%BD%D0%B0%D0%BD%D1%86%D0%B0/61595416314680/',
   // Orders are emailed via FormSubmit (https://formsubmit.co). The first order triggers an
   // activation email to this address; click "Activate" once. FormSubmit then offers a random
   // alias - put it here instead of the email to keep the address out of the page source.
