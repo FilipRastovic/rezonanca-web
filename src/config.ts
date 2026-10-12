@@ -29,6 +29,12 @@ export const SELLER = {
   address: 'Slavka Rodića 40, 21208 Sremska Kamenica, Srbija',
 };
 
+// Analytics. Both load only after the visitor accepts cookies (Consent.astro). An empty string disables it.
+export const ANALYTICS = {
+  metaPixel: '28640408028947508', // Events Manager → dataset rezonanca.art
+  ga4: '', // GA4 Measurement ID, e.g. 'G-XXXXXXXXXX'
+};
+
 export const SIZES = ['21x30', '30x40', '50x70', '61x91'] as const; // 21x30 = A4
 export type Size = (typeof SIZES)[number];
 export const DEFAULT_SIZE: Size = '30x40'; // preselected on product pages

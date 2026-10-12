@@ -222,6 +222,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
   <MadeInSerbia lang={lang} />
 </Base>
 
+<script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug }}>window.rzTrack && window.rzTrack('ViewContent', { content_name: vcName, content_ids: [vcId], content_type: 'product' });</script>
 <script>
   const form = document.getElementById('pp-form') as HTMLFormElement;
   const { prices, lang } = JSON.parse(form.dataset.config!);

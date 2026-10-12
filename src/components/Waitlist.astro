@@ -53,6 +53,7 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
           if (String(json.success) !== 'true') throw new Error(json.message);
         }
         box.classList.add('sent');
+        (window as any).rzTrack?.('Lead', { content_name: cfg.product?.name ?? 'general', content_ids: cfg.product ? [cfg.product.slug] : [], ...choice });
         msg.textContent = '✓ ' + cfg.msg.done;
       } catch (e) {
         console.error(e); msg.classList.add('err'); msg.textContent = `${cfg.msg.error} ${cfg.email}`;

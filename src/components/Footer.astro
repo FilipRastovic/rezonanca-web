@@ -29,7 +29,7 @@ const t = T[lang].footer;
   </div>
   <div class="wrap legal mono">
     <span>{SELLER.name} · МБ {SELLER.mb} · ПИБ {SELLER.pib} · {SELLER.address}</span>
-    <span class="links"><a href={legalHref(lang, 'terms')}>{T[lang].legal.terms.title}</a><a href={legalHref(lang, 'privacy')}>{T[lang].legal.privacy.title}</a></span>
+    <span class="links"><a href={legalHref(lang, 'terms')}>{T[lang].legal.terms.title}</a><a href={legalHref(lang, 'privacy')}>{T[lang].legal.privacy.title}</a><a href={legalHref(lang, 'privacy')} data-consent-open>{T[lang].consent.settings}</a></span>
   </div>
   <div class="wrap bottom mono">
     <span>© {new Date().getFullYear()} Rezonanca. {t.rights}</span>

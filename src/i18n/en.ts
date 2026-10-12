@@ -347,6 +347,13 @@ const en: typeof sr = {
     lorenz: 'Lorenz', aizawa: 'Aizawa', thomas: 'Thomas', halvorsen: 'Halvorsen', clifford: 'Clifford', dejong: 'De Jong',
     full: 'Full set', seahorse: 'Seahorses', minibrot: 'Minibrot', tendril: 'Tendril', starfish: 'Starfish', elephant: 'Elephants',
   },
+  consent: {
+    text: 'We use cookies to measure visits and ads (Meta, Google). They only switch on if you accept.',
+    more: 'More',
+    accept: 'Accept',
+    reject: 'Decline',
+    settings: 'Cookies',
+  },
   footer: {
     tagline: 'Code art. Written in code, printed in Serbia.',
     rights: 'All rights reserved.',

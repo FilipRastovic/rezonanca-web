@@ -345,6 +345,13 @@ export default {
     lorenz: 'Лоренц', aizawa: 'Аизава', thomas: 'Томас', halvorsen: 'Халворсен', clifford: 'Клифорд', dejong: 'Де Жонг',
     full: 'Цео скуп', seahorse: 'Морски коњици', minibrot: 'Мини-скуп', tendril: 'Витица', starfish: 'Звезда', elephant: 'Слонови',
   },
+  consent: {
+    text: 'Користимо колачиће за мерење посета и огласа (Meta, Google). Укључују се само ако прихватиш.',
+    more: 'Више',
+    accept: 'Прихвати',
+    reject: 'Одбиј',
+    settings: 'Колачићи',
+  },
   footer: {
     tagline: 'Програмерска уметност. Написано кодом, штампано у Србији.',
     rights: 'Сва права задржана.',

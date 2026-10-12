@@ -146,6 +146,7 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
         const json = await res.json();
         if (String(json.success) !== 'true') throw new Error(json.message);
       }
+      (window as any).rzTrack?.('Purchase', { value: subtotal, currency: 'RSD', content_ids: lines.map((l) => l.slug), num_items: lines.reduce((a, l) => a + l.qty, 0) });
       fillLines(document.getElementById('co-done-lines')!);
       document.getElementById('co-done-total')!.textContent = money(total);
       (document.querySelector('#co-done .demo') as HTMLElement).hidden = !!cfg.inbox;
