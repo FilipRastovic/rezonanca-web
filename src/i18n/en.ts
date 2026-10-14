@@ -174,7 +174,7 @@ const en: typeof sr = {
     total: 'Total',
     priceNote: '+ 500 RSD shipping. No payment on the site - pay on delivery or by bank transfer after we confirm.',
     trust: ['Pay on delivery', 'Printed in Serbia', 'Matte paper, 300 DPI', 'Safe packaging'],
-    gallery: ['Poster', 'In a room', 'Detail'],
+    gallery: ['Poster', 'In a room', 'Detail', 'Photo'],
     lightbox: { open: 'View full screen', close: 'Close', prev: 'Previous', next: 'Next' },
     about: 'About the piece',
     aboutGen: 'Drawn in code from seed',

@@ -25,6 +25,8 @@ const hasFrames = FRAMES.length > 1 && ACTIVE_FORMATS.some((f) => f === 'framed'
 const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f].includes(s)));
 const sizeFormats = (s: string) => ACTIVE_FORMATS.filter((f) => (FORMAT_SIZES[f] as string[]).includes(s)).join(' ');
 
+// Real photos available per product (numbers of public/photos/<slug>-N.webp).
+const PHOTOS: Record<string, number[]> = { halvorsen: [1] };
 // One gallery per colourway ('' = original); the colour choice swaps the whole set.
 const tones = ['', ...(p.tones || [])];
 const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];
@@ -34,6 +36,8 @@ const galleryFor = (tone: string) => {
     { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${seriesName} - ${name}${suffix}`, fit: 'poster' },
     { src: `/rooms/${k}-${lang}.webp`, thumb: `/rooms/${k}-${lang}.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'wide' },
     { src: `/details/${k}.webp`, thumb: `/details/${k}.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
+    // Real photos of the printed piece (public/photos/<slug>-N.webp), same in every colourway.
+    ...(PHOTOS[p.slug] ?? []).map((n) => ({ src: `/photos/${p.slug}-${n}.webp`, thumb: `/photos/${p.slug}-${n}-sm.webp`, alt: `${name} - ${tp.gallery[3]}`, fit: 'square' })),
   ];
 };
 const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galleryFor(tone)]));
@@ -86,7 +90,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
             {gallery.map((g, i) => (
               <button role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-src={g.src} data-alt={g.alt} data-fit={g.fit}>
                 <img src={g.thumb} alt="" loading="lazy" width="200" height="200" />
-                <span class="mono">{tp.gallery[i]}</span>
+                <span class="mono">{tp.gallery[Math.min(i, 3)]}</span>
               </button>
             ))}
           </div>
@@ -380,7 +384,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
   .main[data-fit='poster'][data-look='mounted'] { border: 1px solid #000; padding: 11%; background: #121214; box-shadow: var(--frame-shadow), inset 0 0 0 1px rgba(255,255,255,.04); }
   .main[data-fit='poster'][data-look='mounted'] img { box-shadow: 0 0 0 3px #0a0a0b, 0 0 0 4px rgba(255,255,255,.07); }
   .main[data-fit='poster'][data-look='mini'] { box-shadow: var(--frame-shadow), 0 0 0 1px rgba(255,255,255,.14); border: 12px solid #0d0d0f; padding: 11%; background: var(--mat); aspect-ratio: 1; width: 82%; margin: 9% auto; }
-  .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+  .thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); grid-auto-flow: column; gap: 12px; margin-top: 12px; }
   .thumbs button { padding: 0; border: 1px solid var(--line); background: #000; cursor: pointer; text-align: left; transition: border-color 0.3s; }
   .thumbs button[aria-selected='true'] { border-color: var(--cyan); box-shadow: var(--glow); }
   .thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; }
