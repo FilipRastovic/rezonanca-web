@@ -10,7 +10,7 @@ const COVER: Record<string, string> = {
   object: 'anomalija', attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
   orbit: 'pomracenje', city: 'metropola', ridges: 'svitanje',
 };
-const ORDER = ['object', 'attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges'];
+const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'object'];
 const tiles = ORDER.map((k) => SERIES.find((s) => s.key === k)!);
 const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
 ---
@@ -22,8 +22,9 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
     </div>
     <div class="tiles">
       {tiles.map((s, i) => (
-        <a class="tile" href={collectionHref(lang, s.slug)} data-reveal style={`transition-delay:${(i % 4) * 80}ms`}>
+        <a class:list={['tile', { framed: i % 2 === 1 }]} href={collectionHref(lang, s.slug)} data-reveal style={`transition-delay:${(i % 4) * 80}ms`}>
           <img src={`/posters/${COVER[s.key]}-${lang}-lg.webp`} alt="" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
+          {i % 2 === 1 && <span class="frm"><img src={`/posters/${COVER[s.key]}-${lang}.webp`} alt="" loading="lazy" decoding="async" /></span>}
           <span class="txt">
             <span class="name">{seriesShort(lang, s.key)}</span>
             <span class="n mono">{productsBySeries(s.key).length} {t.collection.count} <span class="arrow">→</span></span>
@@ -62,4 +63,11 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
   .mosaic img { clip-path: inset(0); }
   .tile.all:hover .mosaic img { transform: scale(1.38); }
   @media (hover: none) { .tile:hover > img, .tile.all:hover .mosaic img { transform: scale(1.45); } .tile.all:hover .mosaic img { transform: scale(1.3); } }
+  /* Every other tile: the whole poster in a frame, over a dimmed blurred close-up of itself. */
+  .tile.framed > img { filter: blur(14px) brightness(0.45) saturate(1.1); transform: scale(1.6); }
+  .tile.framed:hover > img { transform: scale(1.66); }
+  .frm { position: absolute; z-index: 1; left: 50%; top: 44%; width: 46%; transform: translate(-50%, -50%); padding: 4.5%; background: var(--mat); border: 5px solid var(--frame); box-shadow: var(--frame-shadow); transition: transform 0.6s cubic-bezier(.2,.7,.2,1); }
+  .frm img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+  .tile.framed:hover .frm { transform: translate(-50%, -52%); }
+  @media (max-width: 600px) { .frm { width: 30%; top: 42%; } }
 </style>
