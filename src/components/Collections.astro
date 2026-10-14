@@ -69,5 +69,5 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
   .frm { position: absolute; z-index: 1; left: 50%; top: 42%; width: 64%; transform: translate(-50%, -50%); padding: 4.5%; background: var(--mat); border: 5px solid var(--frame); box-shadow: var(--frame-shadow); transition: transform 0.6s cubic-bezier(.2,.7,.2,1); }
   .frm img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
   .tile.framed:hover .frm { transform: translate(-50%, -52%); }
-  @media (max-width: 600px) { .frm { width: 62%; top: 41%; } }
+  @media (max-width: 600px) { .tile { aspect-ratio: 4 / 5.6; } .frm { width: 74%; top: 40%; padding: 4%; } }
 </style>
