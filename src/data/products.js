@@ -9,6 +9,7 @@ export const SERIES = [
   { key: 'city', slug: 'grad' },
   { key: 'ridges', slug: 'grebeni' },
   { key: 'orbit', slug: 'orbita' },
+  { key: 'object', slug: 'objekti' },
 ];
 
 const p = (slug, style, seed, variant, palette, sr, en, lineSr, lineEn) =>
@@ -154,6 +155,13 @@ export const PRODUCTS = [
   p('oreol', 'orbit', 5, 'halo', 'aurora', 'Ореол', 'Halo',
     'Неколико светлих прстенова, мирних као ореол око месеца.',
     'A few bright rings, calm as a halo around the moon.'),
+  // Објекти: particle worlds rendered by explore/kiber/kiber.html (mode=objekat), not by waveform-poster.
+  p('stanica', 'object', 8, 'objekat', 'ember', 'Станица', 'Station',
+    'Хексагонални свет у плавом сјају, са ћилибарним прстеном прашине и месецима на ивици орбите.',
+    'A hexagonal world in blue light, with an amber ring of dust and moons at the edge of its orbit.'),
+  p('anomalija', 'object', 10, 'objekat', 'violet', 'Аномалија', 'Anomaly',
+    'Неонска планета у прстену магенте, ухваћена у нишан инструмента док сигнал трепери.',
+    'A neon planet inside a magenta ring, caught in an instrument\'s reticle while the signal flickers.'),
 ];
 
 // Print boost per piece (0 = as rendered, up to 1.5); highlights are rolled off so nothing blows out: brightens + saturates the art for paper.
@@ -172,7 +180,7 @@ for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 // Colourways offered next to the original (generator ?tone=, see waveform-poster TONES).
 // Skipped where the colourway doesn't work: fine ridge meshes turn to haze, thin single lines vanish.
 export const TONES = ['roza'];
-const NO_TONE = ['prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'];
+const NO_TONE = ['stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'];
 for (const x of PRODUCTS) x.tones = NO_TONE.includes(x.slug) ? [] : TONES;
 // Image file key for a product in a colourway ('' = original).
 export const imgKey = (slug, tone) => (tone ? `${slug}-${tone}` : slug);

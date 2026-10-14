@@ -34,8 +34,13 @@ const en: typeof sr = {
     ],
   },
   series: {
+    object: {
+      name: 'Objects',
+      code: 'SERIES G // HEX OBJECTS',
+      desc: 'Worlds made of particles. Millions of points of light build a planet with a hexagonal shell, a ring of dust and orbits with moons, as seen by an instrument on a passing ship.',
+    },
     label: '01 // SERIES',
-    title: 'Seven series. Forty-two signals.',
+    title: 'Eight series. Forty-four signals.',
     structure: {
       name: 'Структура · Structure',
       code: 'SERIES C // DESIGN GRAMMAR',
@@ -138,9 +143,9 @@ const en: typeof sr = {
   },
   tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
   collection: {
-    label: 'COLLECTION // 42 WORKS',
+    label: 'COLLECTION // 44 WORKS',
     title: 'Collection',
-    lead: 'Forty-two signals, seven series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
+    lead: 'Forty-four signals, eight series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
     all: 'All',
     count: 'works',
     filter: { open: 'Filters', series: 'Series', palette: 'Colour', sort: 'Sort', featured: 'Featured', az: 'Name A-Z', bySeries: 'By series', clear: 'Clear filters', empty: 'No works match this selection.' },
@@ -183,6 +188,7 @@ const en: typeof sr = {
     stats: 'Measured while drawing',
     read: 'What these numbers mean',
     keys: {
+      seed: 'Seed', palette: 'Palette', camera: 'Camera', particles: 'Particles', layers: 'Layers', 
       system: 'System', x0: 'Start point', dt: 'Time step', steps: 'Integration steps', integrator: 'Method', lyapunov: 'Lyapunov exponent λ',
       view: 'View angle', coverage: 'Coverage (%)', iterations: 'Iterations', re: 'Re(c) centre', im: 'Im(c) centre', width: 'Window width',
       zoom: 'Magnification ×', maxIter: 'Max iterations', rotation: 'Rotation', pixels: 'Points computed', inside: 'Inside the set (%)',
@@ -201,6 +207,11 @@ const en: typeof sr = {
     },
   },
   seriesMath: {
+    object: [
+      { t: 'A world of particles', d: 'The image is not drawn with lines but with millions of particles. Each one is a tiny light, and a pixel is as bright as the sum of the particles that land on it. Where there are more, it glows. That is how the dust rings, the atmosphere and the beam below the planet appear.', f: 'L(pixel) = Σ particle light' },
+      { t: 'A hexagonal shell', d: 'Points are scattered across the surface of a sphere, and only those close to the edge of a hexagon are kept. A net of hexagons on a sphere is the same idea as Buckminster Fuller\'s geodesic dome.', f: 'x² + y² + z² = r²' },
+      { t: 'A view from space', d: 'Each object is three-dimensional: the program looks at it from an angle and projects it onto a plane, so nearer particles look bigger and brighter. The instrument layer on top is part of the work: moon labels, a lock-on reticle and signal data.', f: "x' = f·x / (z + d)" },
+    ],
     structure: [
       { t: 'A grammar instead of a drawing', d: 'No hand draws the picture, a set of rules does: "a ray is a block, then a new ray a little further and a little bigger". The program applies the rules over and over, like a sentence that writes itself. The idea comes from Context Free Art and Structure Synth.', f: 'ray → block · ray(x + 2, s × 1.045)' },
       { t: 'Chance with rules', d: 'Each rule has a probability: most of the time a ray simply extends, sometimes it forks in two, sometimes it places a node that grows arcs. The same seed always makes the same choices, so every piece is exactly reproducible: every print is identical to the original.', f: 'p(extend) ≈ 84% · p(fork) ≈ 9% · p(node) ≈ 5%' },
@@ -246,6 +257,12 @@ const en: typeof sr = {
     label: 'Perlin noise',
   },
   history: {
+    object: [
+      { y: '1937', t: 'Michael Goldberg describes polyhedra made of hexagons and a few pentagons, the meshes we still use to cover a sphere.' },
+      { y: '1954', t: 'Buckminster Fuller patents the geodesic dome: a sphere built from a net of triangles and hexagons.' },
+      { y: '1983', t: 'William Reeves publishes his paper on particle systems, made for the "Genesis" effect in Star Trek II: a planet exploding into hundreds of thousands of points.' },
+      { y: 'today', t: 'Film titles and science-fiction interfaces build worlds from particles and layers of data. This series does it in code, point by point.' },
+    ],
     label: 'HISTORY',
     title: 'Where this idea comes from',
     perlin: [
@@ -344,6 +361,7 @@ const en: typeof sr = {
   },
   palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember' },
   variants: {
+    objekat: 'Object',
     burst: 'Burst', spiral: 'Spiral', tree: 'Tree', twin: 'Twin', shell: 'Shell',
     column: 'Column', horizon: 'Horizon', helix: 'Helix', loop: 'Loop', cascade: 'Cascade',
     grid: 'Grid', round: 'Round', canyon: 'Canyon', spire: 'Spire', wave: 'Wave', dense: 'Dense',

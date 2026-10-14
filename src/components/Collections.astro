@@ -7,10 +7,10 @@ const { lang } = Astro.props;
 const t = T[lang];
 // Cover piece per series (cropped into the art).
 const COVER: Record<string, string> = {
-  attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
+  object: 'anomalija', attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
   orbit: 'pomracenje', city: 'metropola', ridges: 'svitanje',
 };
-const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges'];
+const ORDER = ['object', 'attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges'];
 const tiles = ORDER.map((k) => SERIES.find((s) => s.key === k)!);
 const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
 ---
@@ -42,7 +42,7 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
 </section>
 <style>
   .cols { background: var(--bg-0); padding-bottom: var(--space-md); }
-  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.4vw, 20px); }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.4vw, 20px); }
   @media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .tiles { grid-template-columns: 1fr; } }
   .tile { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--line); background: #04091a; color: inherit; transition: border-color 0.4s, box-shadow 0.4s; }

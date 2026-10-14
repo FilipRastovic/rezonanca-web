@@ -1,0 +1,29 @@
+{
+  "kind": "object",
+  "style": "object",
+  "equations": [
+    "x² + y² + z² = r²",
+    "x' = f·x / (z + d)",
+    "L(p) = Σ wᵢ"
+  ],
+  "params": [
+    [
+      "seed",
+      10
+    ],
+    [
+      "camera",
+      "f = 1,25·min(W, H)"
+    ]
+  ],
+  "stats": [
+    [
+      "particles",
+      "≈ 2 000 000"
+    ],
+    [
+      "layers",
+      9
+    ]
+  ]
+}
