@@ -23,6 +23,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const GEN = path.resolve(ROOT, '../waveform-poster');
 const TMP = path.join(ROOT, '.asset-cache');
 const LANGS = { sr: 'sr-cyrl', en: 'en' };
+// Print-safe colours (waveform-poster/print-safe.py): the shop shows what the matte print really looks like.
+const PS = 0.4;
 const out = (...p) => path.join(ROOT, 'public', ...p);
 
 for (const d of ['posters', 'details', 'rooms', 'interiors']) await fs.mkdir(out(d), { recursive: true });
@@ -41,7 +43,7 @@ const detailPng = (slug) => path.join(TMP, `${slug}-detail.png`);
 // 1. Render with the existing exporter: 80 DPI per language, 150 DPI once for detail crops.
 const jobs = [];
 for (const { p, tone, key } of sets) {
-  const base = { seed: p.seed, style: p.style, variant: p.variant, palette: p.palette, boost: p.boost, ...(tone ? { tone } : {}) };
+  const base = { seed: p.seed, style: p.style, variant: p.variant, palette: p.palette, boost: p.boost, ps: PS, ...(tone ? { tone } : {}) };
   for (const [lang, code] of Object.entries(LANGS)) jobs.push({ ...base, lang: code, dpi: 80, name: `${key}-${lang}` });
   jobs.push({ ...base, lang: 'sr-cyrl', dpi: 150, name: `${key}-detail` });
 }
