@@ -259,8 +259,10 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
     if (frameSet) frameSet.hidden = !['framed', 'edition'].includes(format);
     // The main poster view shows what you'd get: bare print, black/oak frame, black mat, or the framed mini.
     const look = format === 'framed' ? `framed-${String(d.get('frame') || 'black')}` : format;
-    document.querySelector<HTMLElement>('.main')!.dataset.look = look;
-    document.dispatchEvent(new CustomEvent('pp:look'));
+    const figEl = document.querySelector<HTMLElement>('.main')!;
+    const changed = figEl.dataset.look !== look;
+    figEl.dataset.look = look;
+    if (changed) document.dispatchEvent(new CustomEvent('pp:look'));
     if (editionEl) editionEl.hidden = format !== 'edition';
     Object.assign(orderBtn.dataset, { format, size, frame: String(d.get('frame')), qty: String(qty), tone: String(d.get('tone') || '') });
   };
@@ -296,7 +298,8 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
       fig.classList.add('is-mini');
     } else fig.classList.remove('is-mini');
   };
-  document.addEventListener('pp:look', () => show(current));
+  // A new format or frame jumps back to the main view, so the click always shows that variant.
+  document.addEventListener('pp:look', () => show(0));
   thumbs.forEach((b, i) => b.addEventListener('click', () => show(i)));
 
   // Colour choice: swap every gallery image to that colourway (what you see is what you get).
