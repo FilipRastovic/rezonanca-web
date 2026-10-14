@@ -27,7 +27,7 @@ const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f
 const sizeFormats = (s: string) => ACTIVE_FORMATS.filter((f) => (FORMAT_SIZES[f] as string[]).includes(s)).join(' ');
 
 // Real photos available per product (numbers of public/photos/<slug>-N.webp).
-const PHOTOS: Record<string, number[]> = { halvorsen: [1] };
+const PHOTOS: Record<string, number[]> = { halvorsen: [2, 3, 1] };
 // One gallery per colourway ('' = original); the colour choice swaps the whole set.
 const tones = ['', ...(p.tones || [])];
 const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];

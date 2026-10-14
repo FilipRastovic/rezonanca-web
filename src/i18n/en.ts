@@ -154,7 +154,7 @@ const en: typeof sr = {
   real: {
     label: 'THE REAL PRINT',
     title: 'This is how it looks off the screen.',
-    text: 'Halvorsen, matte paper 180 gsm, framed in oak. Photographed in daylight in Novi Sad, no mockups.',
+    text: 'Halvorsen, matte paper 180 gsm, framed in oak. Photographed in a flat in Novi Sad, no mockups.',
     cta: 'See Halvorsen',
     alt: 'The framed Halvorsen print on an easel in a garden',
     caption: 'A photo of a real print: Halvorsen on matte paper, in an oak frame.',
