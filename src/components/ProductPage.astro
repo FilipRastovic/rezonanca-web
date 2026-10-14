@@ -5,7 +5,7 @@ import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
-import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
+import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; slug: string }
@@ -60,7 +60,7 @@ const jsonLd = {
     url: new URL(productHref(lang, p.slug), site).href,
   } } : {}),
 };
-const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
+const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
 ---
 <Base lang={lang} title={`${name} - ${seriesName} | Резонанца`} description={p.line[lang]} image={`/posters/${p.slug}-${lang}.webp`}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -107,10 +107,10 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
           <p class="meta mono">{tp.no} {pad(p.seed)} · {t.variants[p.variant as 'burst']} · {t.palettes[p.palette as 'cyan']}</p>
           <p class="line">{p.line[lang]}</p>
 
-          {SALES_OPEN ? (
+          {SALES_OPEN || PRICES_VISIBLE ? (
             <div class="price">
-              <strong id="pp-price">{formatPrice(PRICES.print[DEFAULT_SIZE], lang)}</strong>
-              <small>{tp.priceNote}</small>
+              <strong id="pp-price">{formatPrice(PRICES.print[DEFAULT_SIZE]!, lang)}</strong>
+              <small>{SALES_OPEN ? tp.priceNote : T[lang].soon.priceOpenNote}</small>
             </div>
           ) : (
             <div class="price soon">
@@ -147,7 +147,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
                   <input type="radio" name="format" value={f} checked={i === 0} />
                   <span class="box">
                     <strong>{fmt[f].t}</strong>
-                    {SALES_OPEN && <span class="mono">{tp.from} {formatPrice(minPrice(f), lang)}</span>}
+                    {PRICES_VISIBLE && <span class="mono">{tp.from} {formatPrice(minPrice(f), lang)}</span>}
                   </span>
                 </label>
               ))}

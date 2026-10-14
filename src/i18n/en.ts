@@ -367,6 +367,7 @@ const en: typeof sr = {
     custom: 'I want a custom one-of-one piece',
   },
   soon: {
+    priceOpenNote: 'Sales open soon. Choose a format and size and leave your contact - we will tell you first. + 500 RSD shipping, cash on delivery.',
     badge: 'Coming soon',
     priceSoon: 'Sales open soon',
     priceNote: 'Prices are not final yet. Choose a size and leave your contact - we’ll tell you first when this piece goes on sale.',

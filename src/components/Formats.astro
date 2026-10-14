@@ -1,5 +1,5 @@
 ---
-import { ACTIVE_FORMATS, SALES_OPEN, minPrice, formatPrice } from '../config';
+import { ACTIVE_FORMATS, PRICES_VISIBLE, minPrice, formatPrice } from '../config';
 import { T, collectionHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -23,8 +23,8 @@ const one = ACTIVE_FORMATS.length === 1;
             <p class="d">{item.d}</p>
             <ul>{item.spec.map((s) => <li>{s}</li>)}</ul>
             <div class="price">
-              {SALES_OPEN && <span class="mono">{t.from}</span>}
-              <strong>{SALES_OPEN ? formatPrice(minPrice(f), lang) : T[lang].soon.badge}</strong>
+              {PRICES_VISIBLE && <span class="mono">{t.from}</span>}
+              <strong>{PRICES_VISIBLE ? formatPrice(minPrice(f), lang) : T[lang].soon.badge}</strong>
             </div>
             <a class:list={['btn', { 'btn--solid': one || f === 'framed' }]} href={collectionHref(lang)}>{T[lang].hero.primary} <span class="arrow">→</span></a>
           </article>
