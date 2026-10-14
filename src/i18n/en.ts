@@ -134,6 +134,7 @@ const en: typeof sr = {
     lead: 'Somewhere in the noise there is a signal that has been waiting for you.',
     cta: 'Order a poster',
   },
+  tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
   collection: {
     label: 'COLLECTION // 42 WORKS',
     title: 'Collection',

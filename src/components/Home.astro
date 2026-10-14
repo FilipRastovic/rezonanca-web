@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from './Hero.astro';
 import Manifesto from './Manifesto.astro';
 import Series from './Series.astro';
+import Collections from './Collections.astro';
 import Interiors from './Interiors.astro';
 import Formats from './Formats.astro';
 import HowToOrder from './HowToOrder.astro';
@@ -15,6 +16,7 @@ const { lang } = Astro.props;
 ---
 <Base lang={lang}>
   <Hero lang={lang} />
+  <Collections lang={lang} />
   <Series lang={lang} />
   <Manifesto lang={lang} />
   <Interiors lang={lang} />

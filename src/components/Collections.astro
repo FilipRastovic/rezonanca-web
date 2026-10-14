@@ -1,0 +1,65 @@
+---
+// Homepage "shop by series" tiles, right after the hero: one tile per series + all works.
+import { SERIES, PRODUCTS, productsBySeries } from '../data/products.js';
+import { T, collectionHref, seriesShort, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang];
+// Cover piece per series (cropped into the art).
+const COVER: Record<string, string> = {
+  attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
+  orbit: 'pomracenje', city: 'metropola', ridges: 'svitanje',
+};
+const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges'];
+const tiles = ORDER.map((k) => SERIES.find((s) => s.key === k)!);
+const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
+---
+<section class="cols">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label" data-reveal>{t.tiles.label}</p>
+      <h2 data-reveal>{t.tiles.title}</h2>
+    </div>
+    <div class="tiles">
+      {tiles.map((s, i) => (
+        <a class="tile" href={collectionHref(lang, s.slug)} data-reveal style={`transition-delay:${(i % 4) * 80}ms`}>
+          <img src={`/posters/${COVER[s.key]}-${lang}-lg.webp`} alt="" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
+          <span class="txt">
+            <span class="name">{seriesShort(lang, s.key)}</span>
+            <span class="n mono">{productsBySeries(s.key).length} {t.collection.count} <span class="arrow">→</span></span>
+          </span>
+        </a>
+      ))}
+      <a class="tile all" href={collectionHref(lang)} data-reveal style="transition-delay:240ms">
+        <span class="mosaic">{mosaic.map((m) => <img src={`/posters/${m}-${lang}.webp`} alt="" loading="lazy" decoding="async" />)}</span>
+        <span class="txt">
+          <span class="name">{t.tiles.all}</span>
+          <span class="n mono">{PRODUCTS.length} {t.collection.count} <span class="arrow">→</span></span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  .cols { background: var(--bg-0); padding-bottom: var(--space-md); }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.4vw, 20px); }
+  @media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .tiles { grid-template-columns: 1fr; } }
+  .tile { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--line); background: #04091a; color: inherit; transition: border-color 0.4s, box-shadow 0.4s; }
+  @media (max-width: 600px) { .tile { aspect-ratio: 3 / 2; } }
+  .tile > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1.45); transform-origin: 50% 40%; transition: transform 0.9s cubic-bezier(.2,.7,.2,1); }
+  .tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(1, 4, 12, 0.92) 0%, rgba(1, 4, 12, 0.35) 38%, transparent 62%); pointer-events: none; }
+  .tile:hover { border-color: var(--line-strong); box-shadow: var(--glow); }
+  .tile:hover > img { transform: scale(1.55); }
+  .txt { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: flex; flex-direction: column; gap: 8px; padding: clamp(16px, 1.8vw, 24px); }
+  .name { font: 500 var(--fs-h3)/1.15 var(--f-display); color: var(--ice); }
+  .n { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
+  .n .arrow { display: inline-block; margin-left: 6px; transition: transform 0.3s; }
+  .tile:hover .n .arrow { transform: translateX(4px); }
+  .mosaic { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--bg-0); }
+  .mosaic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; transform: scale(1.3); transition: transform 0.9s cubic-bezier(.2,.7,.2,1); }
+  .mosaic { overflow: hidden; }
+  .mosaic img { clip-path: inset(0); }
+  .tile.all:hover .mosaic img { transform: scale(1.38); }
+  @media (hover: none) { .tile:hover > img, .tile.all:hover .mosaic img { transform: scale(1.45); } .tile.all:hover .mosaic img { transform: scale(1.3); } }
+</style>
