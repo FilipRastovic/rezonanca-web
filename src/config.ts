@@ -36,7 +36,7 @@ export const ANALYTICS = {
 };
 
 // Product range 2026-10-14 (BUSINESS-PLAN.md): each format has its own sizes and prices.
-export const SIZES = ['14x14', '20x25', '30x40', '50x70'] as const;
+export const SIZES = ['14x14', '28x35', '30x40', '50x70'] as const; // 28x35 = Temu 11×14" black mat (print 20×25 inside)
 export type Size = (typeof SIZES)[number];
 export const DEFAULT_SIZE: Size = '30x40'; // preselected on product pages
 
@@ -46,11 +46,12 @@ export type Format = (typeof FORMATS)[number];
 // Formats offered on the site. edition/metal stay in code but hidden until tested.
 export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mounted', 'mini'];
 
-// Which sizes each format comes in (print size; mounted = 20×25 print in a 28×35 black mat).
+// Which sizes each format comes in. Mounted is sized by the mat (Temu 11×14" = 28×35 cm, 20×25 print inside);
+// add '20x25' (8×10" mat, ~13×18 print) once those mats are bought and tested.
 export const FORMAT_SIZES: Record<Format, Size[]> = {
   print: ['30x40', '50x70'],
-  framed: ['30x40'],
-  mounted: ['20x25'],
+  framed: ['30x40', '50x70'],
+  mounted: ['28x35'],
   mini: ['14x14'],
   edition: [],
   metal: [],
@@ -59,8 +60,8 @@ export const FORMAT_SIZES: Record<Format, Size[]> = {
 // Prices in RSD per format and size (launch proposal 2026-10-14, see BUSINESS-PLAN.md).
 export const PRICES: Record<Format, Partial<Record<Size, number>>> = {
   print: { '30x40': 2490, '50x70': 3990 },
-  framed: { '30x40': 5490 },
-  mounted: { '20x25': 2290 },
+  framed: { '30x40': 5490, '50x70': 8990 },
+  mounted: { '28x35': 2290 },
   mini: { '14x14': 1990 },
   edition: {},
   metal: {},
@@ -69,8 +70,8 @@ export const minPrice = (f: Format) => Math.min(...Object.values(PRICES[f]) as n
 export const MIN_PRICE = Math.min(...ACTIVE_FORMATS.map(minPrice));
 export const MAX_PRICE = Math.max(...ACTIVE_FORMATS.flatMap((f) => Object.values(PRICES[f]) as number[]));
 
-// Frame colours offered for 'framed' (only oak 30×40 for now). With one option there is no picker.
-export const FRAMES = ['oak'] as const;
+// Frame colours offered for 'framed'.
+export const FRAMES = ['black', 'oak'] as const;
 
 export const formatPrice = (n: number, lang: 'sr' | 'en') =>
   `${n.toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;

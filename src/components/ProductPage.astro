@@ -159,7 +159,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
             <legend class="mono">{tp.size}</legend>
             <div class="pills">
               {shownSizes.map((s) => (
-                <label class="pill" data-formats={sizeFormats(s)}><input type="radio" name="size" value={s} checked={s === DEFAULT_SIZE} /><span>{s.replace('x', ' × ')} cm{s === '20x25' && <small> · {tp.matNote}</small>}</span></label>
+                <label class="pill" data-formats={sizeFormats(s)}><input type="radio" name="size" value={s} checked={s === DEFAULT_SIZE} /><span>{s.replace('x', ' × ')} cm{s === '28x35' && <small> · {tp.matNote}</small>}</span></label>
               ))}
             </div>
           </fieldset>
