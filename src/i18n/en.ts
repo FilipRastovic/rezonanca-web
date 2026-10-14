@@ -151,6 +151,14 @@ const en: typeof sr = {
     lead: 'Somewhere in the noise there is a signal that has been waiting for you.',
     cta: 'Order a poster',
   },
+  real: {
+    label: 'THE REAL PRINT',
+    title: 'This is how it looks off the screen.',
+    text: 'Halvorsen, matte paper 180 gsm, framed in oak. Photographed in daylight in Novi Sad, no mockups.',
+    cta: 'See Halvorsen',
+    alt: 'The framed Halvorsen print on an easel in a garden',
+    caption: 'A photo of a real print: Halvorsen on matte paper, in an oak frame.',
+  },
   tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
   collection: {
     label: 'COLLECTION // 58 WORKS',

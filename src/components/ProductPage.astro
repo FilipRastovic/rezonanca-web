@@ -6,6 +6,7 @@ import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
+import RealPrint from './RealPrint.astro';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; slug: string }
@@ -188,6 +189,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
             </button>
           </div>
 
+          {p.slug !== 'halvorsen' && <RealPrint lang={lang} variant="card" />}
           <ul class="trust mono">{tp.trust.map((x) => <li>{x}</li>)}</ul>
 
           <div class="acc">

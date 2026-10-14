@@ -4,6 +4,7 @@ import Hero from './Hero.astro';
 import Manifesto from './Manifesto.astro';
 import Series from './Series.astro';
 import Collections from './Collections.astro';
+import RealPrint from './RealPrint.astro';
 import Interiors from './Interiors.astro';
 import Formats from './Formats.astro';
 import HowToOrder from './HowToOrder.astro';
@@ -16,6 +17,7 @@ const { lang } = Astro.props;
 ---
 <Base lang={lang}>
   <Hero lang={lang} />
+  <RealPrint lang={lang} />
   <Collections lang={lang} />
   <Series lang={lang} />
   <Manifesto lang={lang} />
