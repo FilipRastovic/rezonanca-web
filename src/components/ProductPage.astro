@@ -76,7 +76,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
 
       <div class="layout">
         <div class="gallery">
-          <figure class="main corners" data-fit="poster">
+          <figure class="main corners" data-fit="poster" data-look="print">
             <button type="button" class="zoom" id="pp-zoom" aria-label={tp.lightbox.open}>
               <img id="pp-main" src={gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
               <span class="zoom-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
@@ -251,6 +251,10 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
     const qty = Math.max(1, Math.min(20, parseInt(String(d.get('qty')), 10) || 1));
     if (priceEl && prices[format]?.[size]) priceEl.textContent = money(prices[format][size] * qty);
     if (frameSet) frameSet.hidden = !['framed', 'edition'].includes(format);
+    // The main poster view shows what you'd get: bare print, black/oak frame, black mat, or the framed mini.
+    const look = format === 'framed' ? `framed-${String(d.get('frame') || 'black')}` : format;
+    document.querySelector<HTMLElement>('.main')!.dataset.look = look;
+    document.dispatchEvent(new CustomEvent('pp:look'));
     if (editionEl) editionEl.hidden = format !== 'edition';
     Object.assign(orderBtn.dataset, { format, size, frame: String(d.get('frame')), qty: String(qty), tone: String(d.get('tone') || '') });
   };
@@ -278,7 +282,15 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
     main.src = b.dataset.src!;
     main.alt = b.dataset.alt!;
     fig.dataset.fit = b.dataset.fit!;
+    // Мини у раму: the poster view becomes the square, art-only mini (what that product really is).
+    if (fig.dataset.look === 'mini' && b.dataset.fit === 'poster') {
+      const tone = String(new FormData(form).get('tone') || 'orig');
+      main.src = `/minis/${orderBtn.dataset.slug}${tone !== 'orig' ? '-' + tone : ''}.webp`;
+      fig.dataset.fit = 'poster';
+      fig.classList.add('is-mini');
+    } else fig.classList.remove('is-mini');
   };
+  document.addEventListener('pp:look', () => show(current));
   thumbs.forEach((b, i) => b.addEventListener('click', () => show(i)));
 
   // Colour choice: swap every gallery image to that colourway (what you see is what you get).
@@ -360,6 +372,14 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
   @media (max-width: 600px) { .lb-prev, .lb-next { top: auto; bottom: 8px; transform: none; } .lb-prev { left: 16px; } .lb-next { right: 16px; } .lightbox img { max-height: calc(100dvh - 150px); } }
   .main[data-fit='poster'] { padding: var(--mat-pad); background: var(--mat); border: 8px solid var(--frame); box-shadow: var(--frame-shadow); }
   .main[data-fit='poster'] img { object-fit: contain; }
+  /* Per-format look of the poster view (set from the chosen format/frame). */
+  .main[data-fit='poster'] { transition: padding 0.35s, border-color 0.35s, background-color 0.35s; }
+  .main[data-fit='poster'][data-look='print'] { padding: 3.2%; background: #f4f3ef; border: 1px solid rgba(255,255,255,.08); }
+  .main[data-fit='poster'][data-look='framed-black'] { border: 16px solid #0d0d0f; padding: 8%; background: var(--mat); box-shadow: var(--frame-shadow), 0 0 0 1px rgba(255,255,255,.14); }
+  .main[data-fit='poster'][data-look='framed-oak'] { border: 16px solid #b0835a; border-image: linear-gradient(135deg, #c79a6b, #9c7048 30%, #b88a5f 55%, #8d633f 80%, #b48858) 1; padding: 8%; background: var(--mat); }
+  .main[data-fit='poster'][data-look='mounted'] { border: 1px solid #000; padding: 11%; background: #121214; box-shadow: var(--frame-shadow), inset 0 0 0 1px rgba(255,255,255,.04); }
+  .main[data-fit='poster'][data-look='mounted'] img { box-shadow: 0 0 0 3px #0a0a0b, 0 0 0 4px rgba(255,255,255,.07); }
+  .main[data-fit='poster'][data-look='mini'] { box-shadow: var(--frame-shadow), 0 0 0 1px rgba(255,255,255,.14); border: 12px solid #0d0d0f; padding: 11%; background: var(--mat); aspect-ratio: 1; width: 82%; margin: 9% auto; }
   .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
   .thumbs button { padding: 0; border: 1px solid var(--line); background: #000; cursor: pointer; text-align: left; transition: border-color 0.3s; }
   .thumbs button[aria-selected='true'] { border-color: var(--cyan); box-shadow: var(--glow); }
