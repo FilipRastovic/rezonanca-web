@@ -12,7 +12,7 @@ const COVER: Record<string, string> = {
 };
 const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'object'];
 const tiles = ORDER.map((k) => SERIES.find((s) => s.key === k)!);
-const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
+const fan = ['snop', 'halvorsen', 'spirala'];
 ---
 <section class="cols">
   <div class="wrap">
@@ -31,8 +31,9 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
           </span>
         </a>
       ))}
-      <a class="tile all" href={collectionHref(lang)} data-reveal style="transition-delay:240ms">
-        <span class="mosaic">{mosaic.map((m) => <img src={`/posters/${m}-${lang}.webp`} alt="" loading="lazy" decoding="async" />)}</span>
+      <a class="tile all framed" href={collectionHref(lang)} data-reveal style="transition-delay:240ms">
+        <img src={`/posters/halvorsen-${lang}-lg.webp`} alt="" loading="lazy" decoding="async" />
+        {fan.map((m, k) => <span class={`frm fan f${k}`}><img src={`/posters/${m}-${lang}.webp`} alt="" loading="lazy" decoding="async" /></span>)}
         <span class="txt">
           <span class="name">{t.tiles.all}</span>
           <span class="n mono">{PRODUCTS.length} {t.collection.count} <span class="arrow">→</span></span>
@@ -57,12 +58,7 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
   .n { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
   .n .arrow { display: inline-block; margin-left: 6px; transition: transform 0.3s; }
   .tile:hover .n .arrow { transform: translateX(4px); }
-  .mosaic { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--bg-0); }
-  .mosaic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; transform: scale(1.3); transition: transform 0.9s cubic-bezier(.2,.7,.2,1); }
-  .mosaic { overflow: hidden; }
-  .mosaic img { clip-path: inset(0); }
-  .tile.all:hover .mosaic img { transform: scale(1.38); }
-  @media (hover: none) { .tile:hover > img, .tile.all:hover .mosaic img { transform: scale(1.45); } .tile.all:hover .mosaic img { transform: scale(1.3); } }
+  @media (hover: none) { .tile:hover > img { transform: scale(1.45); } }
   /* Every other tile: the whole poster in a frame, over a dimmed blurred close-up of itself. */
   .tile.framed > img { filter: blur(14px) brightness(0.45) saturate(1.1); transform: scale(1.6); }
   .tile.framed:hover > img { transform: scale(1.66); }
@@ -70,4 +66,13 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
   .frm img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
   .tile.framed:hover .frm { transform: translate(-50%, -52%); }
   @media (max-width: 600px) { .tile { aspect-ratio: 4 / 5.6; } .frm { width: 74%; top: 40%; padding: 4%; } }
+  /* "All works": three framed posters fanned out */
+  .frm.fan { width: 42%; }
+  .frm.f0 { transform: translate(-96%, -50%) rotate(-7deg); z-index: 1; }
+  .frm.f1 { transform: translate(-50%, -54%); z-index: 3; }
+  .frm.f2 { transform: translate(-4%, -50%) rotate(7deg); z-index: 2; }
+  .tile.all:hover .frm.f0 { transform: translate(-102%, -51%) rotate(-9deg); }
+  .tile.all:hover .frm.f1 { transform: translate(-50%, -57%); }
+  .tile.all:hover .frm.f2 { transform: translate(2%, -51%) rotate(9deg); }
+  @media (max-width: 600px) { .frm.fan { width: 50%; } }
 </style>
