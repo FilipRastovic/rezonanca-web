@@ -1,5 +1,5 @@
 ---
-import { PRICES, SALES_OPEN, formatPrice } from '../config';
+import { MIN_PRICE, SALES_OPEN, formatPrice } from '../config';
 import { pad } from '../data/products.js';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string }
@@ -29,7 +29,7 @@ const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', viol
     )}
   </span>
   <span class="foot">
-    {SALES_OPEN ? <span class="price"><span class="mono">{t.card.from}</span> {formatPrice(PRICES.print['21x30'], lang)}</span>
+    {SALES_OPEN ? <span class="price"><span class="mono">{t.card.from}</span> {formatPrice(MIN_PRICE, lang)}</span>
                : <span class="soon mono">{t.soon.badge}</span>}
     <span class="go mono">{t.card.view} <span class="arrow">→</span></span>
   </span>

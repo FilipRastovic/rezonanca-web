@@ -35,26 +35,42 @@ export const ANALYTICS = {
   ga4: 'G-FKNVF77VNE', // GA4 Measurement ID (property rezonanca.art)
 };
 
-export const SIZES = ['21x30', '30x40', '50x70', '61x91'] as const; // 21x30 = A4
+// Product range 2026-10-14 (BUSINESS-PLAN.md): each format has its own sizes and prices.
+export const SIZES = ['14x14', '20x25', '30x40', '50x70'] as const;
 export type Size = (typeof SIZES)[number];
 export const DEFAULT_SIZE: Size = '30x40'; // preselected on product pages
 
-export const FORMATS = ['print', 'framed', 'edition', 'metal'] as const;
+export const FORMATS = ['print', 'framed', 'mounted', 'mini', 'edition', 'metal'] as const;
 export type Format = (typeof FORMATS)[number];
 
-// Formats actually offered on the site. Only what has been test-printed goes here:
-// add 'framed', 'edition' or 'metal' back once that product has been tested.
-export const ACTIVE_FORMATS: Format[] = ['print'];
+// Formats offered on the site. edition/metal stay in code but hidden until tested.
+export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mounted', 'mini'];
 
-// Prices in RSD per format and size.
-export const PRICES: Record<Format, Record<Size, number>> = {
-  print:   { '21x30': 1900, '30x40': 2900,  '50x70': 4900,  '61x91': 6900 },
-  framed:  { '21x30': 4400, '30x40': 6900,  '50x70': 10900, '61x91': 14900 },
-  edition: { '21x30': 6900, '30x40': 9900,  '50x70': 14900, '61x91': 19900 },
-  metal:   { '21x30': 9900, '30x40': 14900, '50x70': 22900, '61x91': 29900 },
+// Which sizes each format comes in (print size; mounted = 20×25 print in a 28×35 black mat).
+export const FORMAT_SIZES: Record<Format, Size[]> = {
+  print: ['30x40', '50x70'],
+  framed: ['30x40'],
+  mounted: ['20x25'],
+  mini: ['14x14'],
+  edition: [],
+  metal: [],
 };
 
-export const FRAMES = ['black', 'white', 'oak'] as const;
+// Prices in RSD per format and size (launch proposal 2026-10-14, see BUSINESS-PLAN.md).
+export const PRICES: Record<Format, Partial<Record<Size, number>>> = {
+  print: { '30x40': 2490, '50x70': 3990 },
+  framed: { '30x40': 5490 },
+  mounted: { '20x25': 2290 },
+  mini: { '14x14': 1990 },
+  edition: {},
+  metal: {},
+};
+export const minPrice = (f: Format) => Math.min(...Object.values(PRICES[f]) as number[]);
+export const MIN_PRICE = Math.min(...ACTIVE_FORMATS.map(minPrice));
+export const MAX_PRICE = Math.max(...ACTIVE_FORMATS.flatMap((f) => Object.values(PRICES[f]) as number[]));
+
+// Frame colours offered for 'framed' (only oak 30×40 for now). With one option there is no picker.
+export const FRAMES = ['oak'] as const;
 
 export const formatPrice = (n: number, lang: 'sr' | 'en') =>
   `${n.toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;

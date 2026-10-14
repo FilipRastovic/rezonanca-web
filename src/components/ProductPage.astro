@@ -5,7 +5,7 @@ import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
-import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FRAMES, PRICES, SALES_OPEN, formatPrice } from '../config';
+import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; slug: string }
@@ -20,7 +20,10 @@ const name = p.name[lang];
 const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug).slice(0, 4);
 const others = SERIES.filter((s) => s.key !== p.style);
 const fmt = t.formats.items;
-const hasFrames = ACTIVE_FORMATS.some((f) => f === 'framed' || f === 'edition');
+const hasFrames = FRAMES.length > 1 && ACTIVE_FORMATS.some((f) => f === 'framed' || f === 'edition');
+// Sizes offered by at least one active format; each pill lists the formats it belongs to.
+const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f].includes(s)));
+const sizeFormats = (s: string) => ACTIVE_FORMATS.filter((f) => (FORMAT_SIZES[f] as string[]).includes(s)).join(' ');
 
 // One gallery per colourway ('' = original); the colour choice swaps the whole set.
 const tones = ['', ...(p.tones || [])];
@@ -51,8 +54,8 @@ const jsonLd = {
   ...(SALES_OPEN ? { offers: {
     '@type': 'AggregateOffer',
     priceCurrency: SHOP.currency,
-    lowPrice: Math.min(...ACTIVE_FORMATS.map((f) => PRICES[f]['21x30'])),
-    highPrice: Math.max(...ACTIVE_FORMATS.map((f) => PRICES[f]['61x91'])),
+    lowPrice: MIN_PRICE,
+    highPrice: MAX_PRICE,
     availability: 'https://schema.org/InStock',
     url: new URL(productHref(lang, p.slug), site).href,
   } } : {}),
@@ -144,7 +147,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
                   <input type="radio" name="format" value={f} checked={i === 0} />
                   <span class="box">
                     <strong>{fmt[f].t}</strong>
-                    {SALES_OPEN && <span class="mono">{tp.from} {formatPrice(PRICES[f]['21x30'], lang)}</span>}
+                    {SALES_OPEN && <span class="mono">{tp.from} {formatPrice(minPrice(f), lang)}</span>}
                   </span>
                 </label>
               ))}
@@ -155,12 +158,13 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
           <fieldset>
             <legend class="mono">{tp.size}</legend>
             <div class="pills">
-              {SIZES.map((s, i) => (
-                <label class="pill"><input type="radio" name="size" value={s} checked={s === DEFAULT_SIZE} /><span>{s.replace('x', ' × ')} cm{s === '21x30' && <small> · A4</small>}</span></label>
+              {shownSizes.map((s) => (
+                <label class="pill" data-formats={sizeFormats(s)}><input type="radio" name="size" value={s} checked={s === DEFAULT_SIZE} /><span>{s.replace('x', ' × ')} cm{s === '20x25' && <small> · {tp.matNote}</small>}</span></label>
               ))}
             </div>
           </fieldset>
 
+          {!hasFrames && <input type="hidden" name="frame" value={FRAMES[0]} />}
           {hasFrames && <fieldset id="pp-frame" hidden>
             <legend class="mono">{tp.frame}</legend>
             <div class="pills">
@@ -175,7 +179,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
           {!SALES_OPEN && <div class="wait"><Waitlist lang={lang} product={{ slug: p.slug, name }} /></div>}
           <div class="buy" hidden={!SALES_OPEN}>
             <label class="qty"><span class="mono">{tp.qty}</span><span class="stepper"><button type="button" class="step" data-step="-1" aria-label="−">−</button><input type="number" name="qty" min="1" max="20" value="1" inputmode="numeric" /><button type="button" class="step" data-step="1" aria-label="+">+</button></span></label>
-            <button type="button" class="btn btn--solid order" id="pp-order" data-slug={p.slug} data-format="print" data-size={DEFAULT_SIZE} data-frame="black" data-qty="1">
+            <button type="button" class="btn btn--solid order" id="pp-order" data-slug={p.slug} data-format="print" data-size={DEFAULT_SIZE} data-frame={FRAMES[0]} data-qty="1">
               {T[lang].cart.add} <span class="arrow">→</span>
             </button>
           </div>
@@ -234,9 +238,18 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
 
   const update = () => {
     const d = new FormData(form);
-    const format = String(d.get('format')), size = String(d.get('size'));
+    const format = String(d.get('format'));
+    // Only the sizes this format comes in; keep the choice valid.
+    const pills = [...form.querySelectorAll<HTMLElement>('.pill[data-formats]')];
+    for (const pl of pills) pl.hidden = !pl.dataset.formats!.split(' ').includes(format);
+    const checked = form.querySelector<HTMLInputElement>('input[name="size"]:checked');
+    if (!checked || checked.closest<HTMLElement>('.pill')!.hidden) {
+      const first = pills.find((pl) => !pl.hidden)?.querySelector('input');
+      if (first) first.checked = true;
+    }
+    const size = String(new FormData(form).get('size'));
     const qty = Math.max(1, Math.min(20, parseInt(String(d.get('qty')), 10) || 1));
-    if (priceEl) priceEl.textContent = money(prices[format][size] * qty);
+    if (priceEl && prices[format]?.[size]) priceEl.textContent = money(prices[format][size] * qty);
     if (frameSet) frameSet.hidden = !['framed', 'edition'].includes(format);
     if (editionEl) editionEl.hidden = format !== 'edition';
     Object.assign(orderBtn.dataset, { format, size, frame: String(d.get('frame')), qty: String(qty), tone: String(d.get('tone') || '') });
@@ -374,6 +387,7 @@ const cfg = JSON.stringify({ prices: SALES_OPEN ? PRICES : {}, lang });
   .fmt input:checked + .box { border-color: var(--cyan); background: rgba(80, 230, 255, 0.07); }
   .fmt input:focus-visible + .box, .pill input:focus-visible + span { outline: 1px solid var(--cyan); outline-offset: 3px; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill[hidden] { display: none !important; }
   .pill small { font-size: 0.85em; color: var(--muted); }
   .pill span { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-sm); color: var(--text); cursor: pointer; transition: border-color 0.3s, color 0.3s; }
   .pill input:checked + span { border-color: var(--cyan); color: var(--ice); background: rgba(80, 230, 255, 0.07); }
