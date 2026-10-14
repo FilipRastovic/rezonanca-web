@@ -153,7 +153,7 @@ const en: typeof sr = {
     format: 'Format',
     size: 'Size',
     frame: 'Frame',
-    matNote: 'mat, 20 × 25 print',
+    matNote: 'with mat, 20 × 25 print',
     qty: 'Quantity',
     order: 'Order',
     total: 'Total',
