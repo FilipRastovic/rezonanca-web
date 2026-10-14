@@ -140,6 +140,7 @@ const en: typeof sr = {
     lead: 'Forty-two signals, seven series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
     all: 'All',
     count: 'works',
+    filter: { open: 'Filters', series: 'Series', palette: 'Colour', sort: 'Sort', featured: 'Featured', az: 'Name A-Z', bySeries: 'By series', clear: 'Clear filters', empty: 'No works match this selection.' },
   },
   card: { from: 'from', view: 'View' },
   product: {
