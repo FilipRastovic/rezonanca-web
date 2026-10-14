@@ -49,8 +49,6 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
     </div>
   </section>
 
-  <RealPrint lang={lang} />
-
   {!current && (
   <section class="list">
     <div class="wrap all">
@@ -113,6 +111,7 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
       ))}
     </div>
   </section>}
+  <RealPrint lang={lang} />
   {current && <SeriesMath lang={lang} series={current.key} />}
   {current && <History lang={lang} series={current.key} />}
   <MadeInSerbia lang={lang} />
