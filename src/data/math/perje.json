@@ -1,0 +1,21 @@
+{
+  "kind": "plamen",
+  "style": "flame",
+  "equations": [
+    "xₙ₊₁ = Fᵢ(xₙ)",
+    "F(x) = Σ wⱼ·Vⱼ(Ax + b)",
+    "L = log(1 + n) / log(1 + nₘₐₓ)"
+  ],
+  "params": [
+    [
+      "seed",
+      1
+    ]
+  ],
+  "stats": [
+    [
+      "particles",
+      "≈ 10 000 000"
+    ]
+  ]
+}

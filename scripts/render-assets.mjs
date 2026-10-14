@@ -48,7 +48,8 @@ for (const { p, tone, key } of sets) {
   jobs.push({ ...base, lang: 'sr-cyrl', dpi: 150, name: `${key}-detail` });
 }
 const jobsFile = path.join(TMP, 'jobs.json');
-const genJobs = jobs.filter((j) => j.style !== 'object'); // Објекти are rendered by explore/kiber, below
+const external = new Set(PRODUCTS.filter((x) => x.style === 'object' || x.render).map((x) => x.seed + '|' + x.style + '|' + x.variant));
+const genJobs = jobs.filter((j) => !external.has(j.seed + '|' + j.style + '|' + j.variant)); // rendered by explore/kiber or explore/apstrakt, below
 await fs.writeFile(jobsFile, JSON.stringify(genJobs));
 if (!roomsOnly && genJobs.length) execFileSync('node', ['export.mjs', '--jobs', jobsFile, '--out', TMP], { cwd: GEN, stdio: 'inherit' });
 
@@ -56,16 +57,20 @@ if (!roomsOnly && genJobs.length) execFileSync('node', ['export.mjs', '--jobs', 
 // made print-safe like everything else, then scaled to the poster PNG size (1440×1920) and a 2700×3600 detail source.
 const KIBER = path.resolve(ROOT, '../explore/kiber');
 const KPAL = { ember: 'zar', violet: 'neon', aurora: 'kiselina', ice: 'led', cyan: 'led' };
-const objects = sets.filter(({ p }) => p.style === 'object');
+const objects = sets.filter(({ p }) => p.style === 'object' || p.render);
 if (!roomsOnly && objects.length) {
+  const APS = path.resolve(ROOT, '../explore/apstrakt');
   const { default: puppeteer } = await import('puppeteer-core');
   const browser = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--allow-file-access-from-files'] });
   const page = await browser.newPage();
   await page.setViewport({ width: 1500, height: 2000 });
   for (const { p, key } of objects) {
+    const url = (lang) => p.render
+      ? `file://${APS}/apstrakt.html?mode=${p.render[0]}&seed=${p.render[1]}&pal=${p.render[2]}&w=1500&h=2000&lang=${lang}`
+      : `file://${KIBER}/kiber.html?mode=objekat&seed=${p.seed}&pal=${KPAL[p.palette]}&w=1500&h=2000&lang=${lang}`;
     for (const [lang] of Object.entries(LANGS)) {
-      await page.goto(`file://${KIBER}/kiber.html?mode=objekat&seed=${p.seed}&pal=${KPAL[p.palette]}&w=1500&h=2000&lang=${lang}`);
-      await page.waitForFunction('window.__done === true', { timeout: 300000 });
+      await page.goto(url(lang));
+      await page.waitForFunction('window.__done === true', { timeout: 600000 });
       const raw = path.join(TMP, `${key}-${lang}.raw.png`);
       await page.screenshot({ path: raw, type: 'png' });
       execFileSync('/usr/bin/python3', [path.join(GEN, 'print-safe.py'), raw, raw, String(PS)]);
@@ -73,19 +78,23 @@ if (!roomsOnly && objects.length) {
       if (lang === 'sr') await sharp(raw).resize(2700, 3600, { kernel: 'lanczos3' }).png().toFile(detailPng(key));
       await fs.rm(raw);
     }
-    await fs.writeFile(path.join(TMP, `${p.slug}-sr.math.json`), JSON.stringify({
-      kind: 'object', style: 'object',
-      equations: ['x² + y² + z² = r²', "x' = f·x / (z + d)", 'L(p) = Σ wᵢ'],
-      params: [['seed', p.seed], ['camera', 'f = 1,25·min(W, H)']],
-      stats: [['particles', '≈ 2 000 000'], ['layers', 9]],
-    }, null, 2));
-    console.log(`✓ ${key} (kiber objekat ${p.seed})`);
+    const eqs = { atraktor: null, hopf: ['S¹ → S³ → S²', '(z₁, z₂) ↦ (2z₁z̄₂, |z₁|² − |z₂|²)', 'p ↦ (x, y, z) / (1 − w)'], plamen: ['xₙ₊₁ = Fᵢ(xₙ)', 'F(x) = Σ wⱼ·Vⱼ(Ax + b)', 'L = log(1 + n) / log(1 + nₘₐₓ)'] };
+    const sysEq = { 1: ["x' = −y − z", "y' = x + 0,2y", "z' = 0,2 + z(x − 5,7)"], 2: ["x' = 35(y − x)", "y' = −7x − xz + 28y", "z' = xy − 3z"], 3: ["x' = y − 3x + 2,7yz", "y' = 1,7y − xz + z", "z' = 2xy − 9z"],
+      4: ["x' = y + 2,07xy + xz", "y' = 1 − 1,79x² + yz", "z' = x − x² − y²"], 5: ["x' = y(z − 1 + x²) + 0,87x", "y' = x(3z + 1 − x²) + 0,87y", "z' = −2z(1,1 + xy)"], 6: ["x' = 0,2x + yz", "y' = 0,01x − 0,4y − xz", "z' = −z − xy"] };
+    const math = p.render
+      ? { kind: p.render[0], style: p.style, equations: p.render[0] === 'atraktor' ? sysEq[p.render[1]] : eqs[p.render[0]],
+          params: [['seed', p.render[1]], ...(p.render[0] === 'atraktor' ? [['integrator', 'RK4']] : [])],
+          stats: p.render[0] === 'plamen' ? [['particles', '≈ 10 000 000']] : p.render[0] === 'hopf' ? [['fibres', '100 - 320']] : [['steps', 340000]] }
+      : { kind: 'object', style: 'object', equations: ['x² + y² + z² = r²', "x' = f·x / (z + d)", 'L(p) = Σ wᵢ'],
+          params: [['seed', p.seed], ['camera', 'f = 1,25·min(W, H)']], stats: [['particles', '≈ 2 000 000'], ['layers', 9]] };
+    await fs.writeFile(path.join(TMP, `${p.slug}-sr.math.json`), JSON.stringify(math, null, 2));
+    console.log(`✓ ${key} (${p.render ? 'apstrakt ' + p.render.join(' ') : 'kiber objekat ' + p.seed})`);
   }
   await browser.close();
 }
 
 // Where the artwork sits on the poster, per style (fractions of width/height) - used for the detail crop.
-const ART_CENTRE = { object: [0.5, 0.42], structure: [0.5, 0.42], flux: [0.5, 0.42], city: [0.5, 0.4], attractor: [0.5, 0.41], mandelbrot: [0.5, 0.41], ridges: [0.5, 0.45], orbit: [0.5, 0.44] };
+const ART_CENTRE = { object: [0.5, 0.42], hopf: [0.5, 0.4], flame: [0.5, 0.4], structure: [0.5, 0.42], flux: [0.5, 0.42], city: [0.5, 0.4], attractor: [0.5, 0.41], mandelbrot: [0.5, 0.41], ridges: [0.5, 0.45], orbit: [0.5, 0.44] };
 
 // Maths metadata recorded during the render -> src/data/math/<slug>.json (product page reads it).
 await fs.mkdir(path.join(ROOT, 'src/data/math'), { recursive: true });

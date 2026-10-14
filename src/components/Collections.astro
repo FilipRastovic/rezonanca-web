@@ -7,10 +7,10 @@ const { lang } = Astro.props;
 const t = T[lang];
 // Cover piece per series (cropped into the art).
 const COVER: Record<string, string> = {
-  object: 'anomalija', attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
+  object: 'anomalija', hopf: 'snop', flame: 'perje', attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
   orbit: 'pomracenje', city: 'metropola', ridges: 'svitanje',
 };
-const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'object'];
+const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'object'];
 const tiles = ORDER.map((k) => SERIES.find((s) => s.key === k)!);
 const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
 ---
@@ -22,9 +22,9 @@ const mosaic = ['lorenc', 'morska-zvezda', 'galaksija', 'crvotocina'];
     </div>
     <div class="tiles">
       {tiles.map((s, i) => (
-        <a class:list={['tile', { framed: i % 2 === 1 }]} href={collectionHref(lang, s.slug)} data-reveal style={`transition-delay:${(i % 4) * 80}ms`}>
+        <a class="tile framed" href={collectionHref(lang, s.slug)} data-reveal style={`transition-delay:${(i % 4) * 80}ms`}>
           <img src={`/posters/${COVER[s.key]}-${lang}-lg.webp`} alt="" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
-          {i % 2 === 1 && <span class="frm"><img src={`/posters/${COVER[s.key]}-${lang}.webp`} alt="" loading="lazy" decoding="async" /></span>}
+          {<span class="frm"><img src={`/posters/${COVER[s.key]}-${lang}.webp`} alt="" loading="lazy" decoding="async" /></span>}
           <span class="txt">
             <span class="name">{seriesShort(lang, s.key)}</span>
             <span class="n mono">{productsBySeries(s.key).length} {t.collection.count} <span class="arrow">→</span></span>

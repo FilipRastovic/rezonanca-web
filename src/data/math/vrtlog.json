@@ -1,0 +1,21 @@
+{
+  "kind": "hopf",
+  "style": "hopf",
+  "equations": [
+    "S¹ → S³ → S²",
+    "(z₁, z₂) ↦ (2z₁z̄₂, |z₁|² − |z₂|²)",
+    "p ↦ (x, y, z) / (1 − w)"
+  ],
+  "params": [
+    [
+      "seed",
+      4
+    ]
+  ],
+  "stats": [
+    [
+      "fibres",
+      "100 - 320"
+    ]
+  ]
+}

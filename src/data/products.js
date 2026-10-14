@@ -9,11 +9,15 @@ export const SERIES = [
   { key: 'city', slug: 'grad' },
   { key: 'ridges', slug: 'grebeni' },
   { key: 'orbit', slug: 'orbita' },
+  { key: 'hopf', slug: 'hopf' },
+  { key: 'flame', slug: 'plamen' },
   { key: 'object', slug: 'objekti' },
 ];
 
 const p = (slug, style, seed, variant, palette, sr, en, lineSr, lineEn) =>
   ({ slug, style, seed, variant, palette, name: { sr, en }, line: { sr: lineSr, en: lineEn } });
+// pa(): artwork rendered by explore/apstrakt/apstrakt.html instead of the poster generator.
+const pa = (slug, style, seed, variant, palette, render, sr, en, lineSr, lineEn) => ({ ...p(slug, style, seed, variant, palette, sr, en, lineSr, lineEn), render });
 
 export const PRODUCTS = [
   // ---- Структура
@@ -155,6 +159,49 @@ export const PRODUCTS = [
   p('oreol', 'orbit', 5, 'halo', 'aurora', 'Ореол', 'Halo',
     'Неколико светлих прстенова, мирних као ореол око месеца.',
     'A few bright rings, calm as a halo around the moon.'),
+  // Rendered by explore/apstrakt/apstrakt.html (render: [mode, seed, pal]), not by waveform-poster.
+  pa('resler', 'attractor', 1, 'sistem', 'aurora', ['atraktor', 1, 'aurora'], 'Реслер', 'Rössler',
+    'Спирала која се увија у пераје, најједноставнији хаос: само једна нелинеарна чланица у три једначине.',
+    'A spiral that curls into a fin, the simplest chaos: a single non-linear term in three equations.'),
+  pa('cen', 'attractor', 2, 'sistem', 'ember', ['atraktor', 2, 'zar'], 'Чен', 'Chen',
+    'Оштра крила која се савијају једно око другог, рођак Лоренцовог атрактора.',
+    'Sharp wings folding around each other, a cousin of the Lorenz attractor.'),
+  pa('dadras', 'attractor', 3, 'sistem', 'aurora', ['atraktor', 3, 'aurora'], 'Дадрас', 'Dadras',
+    'Вртлог који се на средини пресавија, као трака светлости ухваћена у ветру.',
+    'A vortex that folds in the middle, like a ribbon of light caught in the wind.'),
+  pa('sprot', 'attractor', 4, 'sistem', 'violet', ['atraktor', 4, 'ponoc'], 'Спрот', 'Sprott',
+    'Облик медузе са таласом кроз средину, из каталога најједноставнијих хаотичних система.',
+    'A jellyfish shape with a wave through its middle, from a catalogue of the simplest chaotic systems.'),
+  pa('rabinovic', 'attractor', 5, 'sistem', 'ember', ['atraktor', 5, 'zar'], 'Рабинович', 'Rabinovich',
+    'Шкољка од хиљада петљи, систем Рабиновича и Фабриканта из физике плазме.',
+    'A shell of thousands of loops, the Rabinovich-Fabrikant system from plasma physics.'),
+  pa('cetiri-krila', 'attractor', 6, 'sistem', 'aurora', ['atraktor', 6, 'aurora'], 'Четири крила', 'Four Wings',
+    'Четири вртлога која се преплићу у једну фигуру, као лептир у огледалу.',
+    'Four vortices woven into one figure, like a butterfly in a mirror.'),
+  pa('snop', 'hopf', 3, 'snop', 'ember', ['hopf', 3, 'zar'], 'Сноп', 'Fibration',
+    'Угнежђени торуси од хиљада кругова, где сваки круг пролази кроз сваки други.',
+    'Nested tori of thousands of circles, where every circle passes through every other.'),
+  pa('dvojstvo', 'hopf', 2, 'snop', 'aurora', ['hopf', 2, 'aurora'], 'Двојство', 'Duality',
+    'Два вртлога спојена једним снопом кругова, слика из четврте димензије.',
+    'Two vortices joined by one bundle of circles, an image from the fourth dimension.'),
+  pa('vrtlog', 'hopf', 4, 'snop', 'violet', ['hopf', 4, 'ponoc'], 'Вртлог', 'Vortex',
+    'Спирала кругова која се увлачи у своју средину, мирна као цвет који се отвара.',
+    'A spiral of circles drawn into its own centre, calm as a flower opening.'),
+  pa('caura', 'hopf', 6, 'snop', 'aurora', ['hopf', 6, 'aurora'], 'Чаура', 'Cocoon',
+    'Усправна чаура од светлих прстенова, сваки прстен један круг из четврте димензије.',
+    'An upright cocoon of bright rings, each ring one circle from the fourth dimension.'),
+  pa('perje', 'flame', 1, 'plamen', 'aurora', ['plamen', 1, 'aurora'], 'Перје', 'Feathers',
+    'Светлост која се шири као перје, израчуната из неколико правила која се бирају насумично.',
+    'Light that spreads like feathers, computed from a few rules chosen at random.'),
+  pa('dim', 'flame', 3, 'plamen', 'ember', ['plamen', 3, 'zar'], 'Дим', 'Smoke',
+    'Троструки облак дима око светлог средишта, са симетријом троугла.',
+    'A threefold cloud of smoke around a bright core, with the symmetry of a triangle.'),
+  pa('ruza', 'flame', 4, 'plamen', 'violet', ['plamen', 4, 'ponoc'], 'Ружа', 'Rose',
+    'Латице од милиона тачака око топлог језгра, са петоструком симетријом.',
+    'Petals of millions of points around a warm core, with fivefold symmetry.'),
+  pa('vetrenjaca', 'flame', 6, 'plamen', 'aurora', ['plamen', 6, 'aurora'], 'Ветрењача', 'Pinwheel',
+    'Четири крака светлости која се окрећу око средишта, као ветрењача у тами.',
+    'Four arms of light turning around a centre, like a pinwheel in the dark.'),
   // Објекти: particle worlds rendered by explore/kiber/kiber.html (mode=objekat), not by waveform-poster.
   p('stanica', 'object', 8, 'objekat', 'ember', 'Станица', 'Station',
     'Хексагонални свет у плавом сјају, са ћилибарним прстеном прашине и месецима на ивици орбите.',
@@ -180,14 +227,14 @@ for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 // Colourways offered next to the original (generator ?tone=, see waveform-poster TONES).
 // Skipped where the colourway doesn't work: fine ridge meshes turn to haze, thin single lines vanish.
 export const TONES = ['roza'];
-const NO_TONE = ['stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'];
+const NO_TONE = ['resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'];
 for (const x of PRODUCTS) x.tones = NO_TONE.includes(x.slug) ? [] : TONES;
 // Image file key for a product in a colourway ('' = original).
 export const imgKey = (slug, tone) => (tone ? `${slug}-${tone}` : slug);
 
 // Display order within a series (overrides definition order).
 const ORDER = {
-  attractor: ['tomas', 'halvorsen', 'klifordov-veo', 'de-zong', 'lorenc', 'aizava'],
+  attractor: ['tomas', 'halvorsen', 'klifordov-veo', 'de-zong', 'lorenc', 'aizava', 'resler', 'sprot', 'cetiri-krila', 'dadras', 'cen', 'rabinovic'],
 };
 // Which 4 pieces the homepage shows per series (default: the first 4).
 const HOME_PICKS = {

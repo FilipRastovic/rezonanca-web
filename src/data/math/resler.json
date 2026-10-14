@@ -1,0 +1,25 @@
+{
+  "kind": "atraktor",
+  "style": "attractor",
+  "equations": [
+    "x' = −y − z",
+    "y' = x + 0,2y",
+    "z' = 0,2 + z(x − 5,7)"
+  ],
+  "params": [
+    [
+      "seed",
+      1
+    ],
+    [
+      "integrator",
+      "RK4"
+    ]
+  ],
+  "stats": [
+    [
+      "steps",
+      340000
+    ]
+  ]
+}

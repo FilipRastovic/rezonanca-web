@@ -34,13 +34,23 @@ const en: typeof sr = {
     ],
   },
   series: {
+    hopf: {
+      name: 'Hopf',
+      code: 'SERIES H // HOPF FIBRATION',
+      desc: 'Shapes from the fourth dimension. Thousands of circles, each passing through every other, brought down into our space as nested tori of light.',
+    },
+    flame: {
+      name: 'Flame',
+      code: 'SERIES I // FRACTAL FLAME',
+      desc: 'Light like smoke and silk. Millions of points jump between a few rules chosen at random, and their traces build shapes no hand would draw.',
+    },
     object: {
       name: 'Objects',
       code: 'SERIES G // HEX OBJECTS',
       desc: 'Worlds made of particles. Millions of points of light build a planet with a hexagonal shell, a ring of dust and orbits with moons, as seen by an instrument on a passing ship.',
     },
     label: '01 // SERIES',
-    title: 'Eight series. Forty-four signals.',
+    title: 'Ten series. Fifty-eight signals.',
     structure: {
       name: 'Структура · Structure',
       code: 'SERIES C // DESIGN GRAMMAR',
@@ -143,9 +153,9 @@ const en: typeof sr = {
   },
   tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
   collection: {
-    label: 'COLLECTION // 44 WORKS',
+    label: 'COLLECTION // 58 WORKS',
     title: 'Collection',
-    lead: 'Forty-four signals, eight series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
+    lead: 'Fifty-eight signals, ten series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
     all: 'All',
     count: 'works',
     filter: { open: 'Filters', series: 'Series', palette: 'Colour', sort: 'Sort', featured: 'Featured', az: 'Name A-Z', bySeries: 'By series', clear: 'Clear filters', empty: 'No works match this selection.' },
@@ -188,6 +198,7 @@ const en: typeof sr = {
     stats: 'Measured while drawing',
     read: 'What these numbers mean',
     keys: {
+      fibres: 'Circles', 
       seed: 'Seed', palette: 'Palette', camera: 'Camera', particles: 'Particles', layers: 'Layers', 
       system: 'System', x0: 'Start point', dt: 'Time step', steps: 'Integration steps', integrator: 'Method', lyapunov: 'Lyapunov exponent λ',
       view: 'View angle', coverage: 'Coverage (%)', iterations: 'Iterations', re: 'Re(c) centre', im: 'Im(c) centre', width: 'Window width',
@@ -207,6 +218,16 @@ const en: typeof sr = {
     },
   },
   seriesMath: {
+    hopf: [
+      { t: 'A circle in four dimensions', d: 'The three-sphere S³ lives in four-dimensional space. In 1931 Heinz Hopf found that it can be divided entirely into circles, so that every pair of circles is linked like two links of a chain.', f: 'S¹ → S³ → S²' },
+      { t: 'Every point, one circle', d: 'Each point on an ordinary sphere corresponds to one circle in S³. The program picks points along parallels or a spiral and draws the circle for each.', f: '(z₁, z₂) ↦ (2z₁z̄₂, |z₁|² − |z₂|²)' },
+      { t: 'Down into our space', d: 'Stereographic projection brings the fourth dimension down into ours, the way a map brings the Earth onto paper. Circles stay circles, and each passes through every other.', f: 'p ↦ (x, y, z) / (1 − w)' },
+    ],
+    flame: [
+      { t: 'The chaos game', d: 'A point jumps millions of times, and at each jump it picks one of a few rules at random. Where it lands most often, the image glows brightest. Scott Draves devised the method in 1992.', f: 'xₙ₊₁ = Fᵢ(xₙ),  i random' },
+      { t: 'Non-linear variations', d: 'Each rule is a shift and a turn, then a bend by one of several functions: sine, sphere, swirl, spiral. They make the shapes soft as smoke and silk.', f: 'F(x) = Σ wⱼ·Vⱼ(Ax + b)' },
+      { t: 'Colour from history', d: 'Each point remembers which rules it used last, and that history becomes its colour. Brightness is logarithmic, so even the faintest traces show.', f: 'L = log(1 + n) / log(1 + nₘₐₓ)' },
+    ],
     object: [
       { t: 'A world of particles', d: 'The image is not drawn with lines but with millions of particles. Each one is a tiny light, and a pixel is as bright as the sum of the particles that land on it. Where there are more, it glows. That is how the dust rings, the atmosphere and the beam below the planet appear.', f: 'L(pixel) = Σ particle light' },
       { t: 'A hexagonal shell', d: 'Points are scattered across the surface of a sphere, and only those close to the edge of a hexagon are kept. A net of hexagons on a sphere is the same idea as Buckminster Fuller\'s geodesic dome.', f: 'x² + y² + z² = r²' },
@@ -257,6 +278,18 @@ const en: typeof sr = {
     label: 'Perlin noise',
   },
   history: {
+    hopf: [
+      { y: '1931', t: 'Heinz Hopf discovers the map from the three-sphere to the sphere and proves that all its circles are linked.' },
+      { y: '1975', t: 'Physicists recognise the Hopf fibration in the magnetic monopole and in the quantum mechanics of spin.' },
+      { y: '2010', t: 'Jos Leys, Étienne Ghys and Aurélien Alvarez make the films "Dimensions", showing the Hopf fibration to the world.' },
+      { y: 'today', t: 'Here every piece draws thousands of real circles from the fourth dimension, computed point by point.' },
+    ],
+    flame: [
+      { y: '1981', t: 'John Hutchinson describes iterated function systems: a fractal as a set of rules that repeat.' },
+      { y: '1988', t: 'Michael Barnsley shows that a few rules and the chaos game draw ferns and clouds.' },
+      { y: '1992', t: 'Scott Draves devises the fractal flame: non-linear variations, log density and colour from history.' },
+      { y: 'today', t: 'The flame is one of the best-known forms of code art. Here every piece has its own rules and its own number.' },
+    ],
     object: [
       { y: '1937', t: 'Michael Goldberg describes polyhedra made of hexagons and a few pentagons, the meshes we still use to cover a sphere.' },
       { y: '1954', t: 'Buckminster Fuller patents the geodesic dome: a sphere built from a net of triangles and hexagons.' },
@@ -361,6 +394,7 @@ const en: typeof sr = {
   },
   palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember' },
   variants: {
+    sistem: 'System', snop: 'Fibration', plamen: 'Flame',
     objekat: 'Object',
     burst: 'Burst', spiral: 'Spiral', tree: 'Tree', twin: 'Twin', shell: 'Shell',
     column: 'Column', horizon: 'Horizon', helix: 'Helix', loop: 'Loop', cascade: 'Cascade',
