@@ -38,15 +38,15 @@ export const ANALYTICS = {
 };
 
 // Product range 2026-10-14 (BUSINESS-PLAN.md): each format has its own sizes and prices.
-export const SIZES = ['14x14', '28x35', '30x40', '50x70'] as const; // 28x35 = Temu 11×14" black mat (print 20×25 inside)
+export const SIZES = ['15x15', '28x35', '30x40', '50x70'] as const; // 28x35 = Temu 11×14" black mat (print 20×25 inside)
 export type Size = (typeof SIZES)[number];
 export const DEFAULT_SIZE: Size = '30x40'; // preselected on product pages
 
-export const FORMATS = ['print', 'framed', 'mounted', 'mini', 'edition', 'metal'] as const;
+export const FORMATS = ['print', 'framed', 'mounted', 'mini', 'miniprint', 'edition', 'metal'] as const;
 export type Format = (typeof FORMATS)[number];
 
 // Formats offered on the site. edition/metal stay in code but hidden until tested.
-export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mounted', 'mini'];
+export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mounted', 'mini', 'miniprint'];
 
 // Which sizes each format comes in. Mounted is sized by the mat (Temu 11×14" = 28×35 cm, 20×25 print inside);
 // add '20x25' (8×10" mat, ~13×18 print) once those mats are bought and tested.
@@ -54,7 +54,8 @@ export const FORMAT_SIZES: Record<Format, Size[]> = {
   print: ['30x40', '50x70'],
   framed: ['30x40', '50x70'],
   mounted: ['28x35'],
-  mini: ['14x14'],
+  mini: ['15x15'],
+  miniprint: ['15x15'],
   edition: [],
   metal: [],
 };
@@ -64,7 +65,8 @@ export const PRICES: Record<Format, Partial<Record<Size, number>>> = {
   print: { '30x40': 2490, '50x70': 3990 },
   framed: { '30x40': 5490, '50x70': 8990 },
   mounted: { '28x35': 2290 },
-  mini: { '14x14': 1990 },
+  mini: { '15x15': 1990 },
+  miniprint: { '15x15': 690 },
   edition: {},
   metal: {},
 };
