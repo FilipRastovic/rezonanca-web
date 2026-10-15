@@ -98,7 +98,7 @@ const en: typeof sr = {
     title: 'Light that changes a room.',
     lead: 'Rezonanca posters don’t shout. They wait for the lights to dim - and then they take over the space.',
     scenes: {
-      living: { t: 'Living room', d: 'Halvorsen in an oak frame, above a sideboard. A real photo.' },
+      living: { t: 'Living room', d: 'Halvorsen in an oak frame, above a sideboard, in daylight. A real photo.' },
       studio: { t: 'Music corner', d: 'Next to a guitar and an amp, leaning on the sofa. A real photo.' },
       hall: { t: 'Hallway', d: 'As a pair - Aizawa and Mandelbrot, chaos and order in conversation.' },
     },
