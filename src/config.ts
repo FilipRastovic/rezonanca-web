@@ -35,6 +35,7 @@ export const SELLER = {
 export const ANALYTICS = {
   metaPixel: '28640408028947508', // Events Manager → dataset rezonanca.art
   ga4: 'G-FKNVF77VNE', // GA4 Measurement ID (property rezonanca.art)
+  clarity: 'yzmig7kv3w', // Microsoft Clarity project ID (heatmaps + session recordings)
 };
 
 // Product range 2026-10-14 (BUSINESS-PLAN.md): each format has its own sizes and prices.
