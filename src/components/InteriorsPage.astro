@@ -1,0 +1,88 @@
+---
+// Dedicated "У простору" page: the two room scenes, then every work hanging in a room (second mockup shot,
+// so it differs from the collection cards), each linking to its product.
+import Base from '../layouts/Base.astro';
+import { SERIES, PRODUCTS, productsBySeries } from '../data/products.js';
+import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang];
+const ti = t.interiors;
+const scenes = (['living', 'studio'] as const).map((k) => ({ k, ...ti.scenes[k] }));
+const FEATURED = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'object'];
+const lists = FEATURED.map((k) => productsBySeries(k));
+const flat: any[] = [];
+for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l[i]) flat.push(l[i]);
+---
+<Base lang={lang} title={`${ti.page} | Резонанца`} description={ti.allLead}>
+  <section class="top">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href={homeHref(lang)}>{t.product.home}</a><span>/</span><span aria-current="page">{ti.page}</span>
+      </nav>
+      <p class="label">{ti.page}</p>
+      <h1>{ti.title}</h1>
+      <p class="lead">{ti.lead}</p>
+    </div>
+  </section>
+
+  <section class="scenes-s">
+    <div class="wrap scenes">
+      {scenes.map((s) => (
+        <figure class="scene">
+          <img src={`/interiors/${s.k}-${lang}.webp`} alt={`${s.t} - ${s.d}`} width="1200" height="800" decoding="async" />
+          <figcaption><strong>{s.t}</strong><span>{s.d}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <section class="all">
+    <div class="wrap">
+      <div class="head">
+        <h2>{ti.all}</h2>
+        <p>{ti.allLead}</p>
+      </div>
+      <div class="grid">
+        {flat.map((p, i) => {
+          const shot = `/rooms/${p.slug}-${lang}-2`;
+          return (
+            <a class="item" href={productHref(lang, p.slug)}>
+              <span class="pic"><img src={`${shot}-sm.webp`} srcset={`${shot}-sm.webp 480w, ${shot}.webp 800w`} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 420px" alt={`${p.name[lang]} - ${ti.page}`} width="480" height="640" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" /></span>
+              <span class="cap"><b>{p.name[lang]}</b><span>{seriesShort(lang, p.style)}</span></span>
+            </a>
+          );
+        })}
+      </div>
+      <div class="more"><a class="btn btn--solid" href={collectionHref(lang)}>{ti.toCollection} <span class="arrow">→</span></a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .top { padding: clamp(120px, 12vw, 168px) 0 var(--space-md); background: var(--bg-0); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover, .crumbs [aria-current] { color: var(--ice); }
+  h1 { font-size: clamp(26px, 3vw, 44px); line-height: 1.1; margin-top: 20px; }
+  .top .lead { margin-top: 20px; }
+  .scenes-s { padding: 0 0 var(--space-md); background: var(--bg-0); }
+  .scenes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-col); }
+  .scene { margin: 0; }
+  .scene img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  figcaption { display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline; padding-top: 14px; }
+  figcaption strong { font: 500 var(--fs-h3)/1.2 var(--f-display); color: var(--ice); }
+  figcaption span { color: var(--muted); font-size: var(--fs-sm); }
+  .all { background: var(--bg-0); border-top: 1px solid var(--line); padding: var(--space-md) 0 var(--space-block); }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 24px 48px; flex-wrap: wrap; margin-bottom: clamp(32px, 4vw, 56px); }
+  .head h2 { margin: 0; font-size: clamp(20px, 2vw, 28px); }
+  .head p { margin: 0; max-width: 52ch; color: var(--text); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
+  .item { display: block; color: inherit; }
+  .pic { display: block; aspect-ratio: 3 / 4; overflow: hidden; background: var(--bg-1); }
+  .pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(.2,.7,.2,1); }
+  .item:hover .pic img { transform: scale(1.03); }
+  .cap { display: flex; justify-content: space-between; gap: 12px; padding-top: 12px; font-size: var(--fs-sm); color: var(--muted); }
+  .cap b { font: 500 var(--fs-h3)/1.25 var(--f-display); color: var(--ice); }
+  .item:hover .cap b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .more { display: flex; justify-content: center; margin-top: var(--space-md); }
+  @media (max-width: 900px) { .scenes { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; } .cap { flex-direction: column; gap: 2px; font-size: var(--fs-2xs); } .cap b { font-size: var(--fs-sm); } }
+</style>

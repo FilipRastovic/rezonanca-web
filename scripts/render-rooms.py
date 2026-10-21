@@ -31,7 +31,7 @@ for i, (slug, tones) in enumerate(prods):
     for k in [slug] + [f'{slug}-{t}' for t in tones]:
         jobs.append((k, shots))
 # Homepage "У простору" scenes: (file key, poster, scene) → public/interiors/<file>-<lang>.webp, whole scene 1600w.
-INTERIORS = [('living', 'halvorsen', SCENES[0]), ('studio', 'spirala', SCENES[1])]
+INTERIORS = [('living', 'halvorsen', 'poster-black-frame-minimalist-1-34'), ('studio', 'spirala', 'poster-black-frame-minimalist-2-34')]
 interiors = '--interiors' in sys.argv
 want = [a for a in sys.argv[1:] if not a.startswith('--') and (sys.argv.index(a) == 0 or sys.argv[sys.argv.index(a) - 1] != '--test')]
 all_jobs = list(jobs)

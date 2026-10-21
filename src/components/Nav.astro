@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { SALES_OPEN } from '../config';
-import { T, homeHref, collectionHref, altHref, seriesShort, cartHref, type Lang } from '../i18n';
+import { T, homeHref, collectionHref, interiorsHref, altHref, seriesShort, cartHref, type Lang } from '../i18n';
 import { SERIES } from '../data/products.js';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -10,10 +10,7 @@ const home = homeHref(lang);
 const links = [
   [home, t.home],
   [collectionHref(lang), t.collection],
-  [`${home}#interiors`, t.interiors],
-  [`${home}#formats`, t.formats],
-  [`${home}#how`, t.order],
-  [`${home}#faq`, t.faq],
+  [interiorsHref(lang), t.interiors],
 ];
 const path = Astro.url.pathname;
 const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';

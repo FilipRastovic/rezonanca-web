@@ -7,7 +7,7 @@ const en: typeof sr = {
     description:
       'Art made with code. Every piece is written in JavaScript, line by line. You get exactly the print you see in the picture. Printed in Serbia, pay on delivery.',
   },
-  nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In space', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
+  nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In a room', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
     label: 'Prints · Novi Sad',
     title: 'РЕЗОНАНЦА',
@@ -106,6 +106,11 @@ const en: typeof sr = {
       living: { t: 'Desk corner', d: 'Halvorsen in a black frame, on the wall above a desk.' },
       studio: { t: 'By the window', d: 'Spiral in a black frame, in afternoon light.' },
     },
+    cta: 'See everything in a room',
+    page: 'In a room',
+    all: 'Every piece on a wall',
+    allLead: 'All 58 pieces in real rooms: in a black or oak frame, on a desk or on the wall. Click a piece for sizes and prices.',
+    toCollection: 'Full collection',
   },
   about: {
     label: 'About me',
