@@ -72,13 +72,13 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ..
   .block { padding: clamp(24px, 2.6vw, 40px); border: 1px solid var(--line); background-color: rgba(255, 255, 255, 0.7); }
   .eq { --c: var(--cyan); }
   .k { display: block; margin-bottom: 18px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); }
-  code { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); font: 400 var(--fs-body)/1.6 var(--f-mono); color: var(--ice); overflow-wrap: anywhere; }
+  code { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); font: 400 var(--fs-body)/1.6 var(--f-code); color: var(--ice); overflow-wrap: anywhere; }
   code:last-child { border-bottom: none; }
   dl { margin: 0; display: grid; gap: 12px; }
   dl div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
   dt { font: 400 var(--fs-2xs)/1.5 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   dt.sym { text-transform: none; font-size: var(--fs-body); letter-spacing: 0; color: var(--cyan); }
-  dd { margin: 0; font: 400 var(--fs-sm)/1.5 var(--f-mono); color: var(--ice); text-align: right; overflow-wrap: anywhere; }
+  dd { margin: 0; font: 400 var(--fs-sm)/1.5 var(--f-code); color: var(--ice); text-align: right; overflow-wrap: anywhere; }
   .read { grid-column: 1 / -1; }
   .read p.noise:not(:first-of-type) { margin-top: 20px; }
   .read p.noise { font: 400 var(--fs-sm)/1.75 var(--f-body); color: var(--text); }

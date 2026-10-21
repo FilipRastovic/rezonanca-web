@@ -47,7 +47,7 @@ export const FORMATS = ['print', 'framed', 'mounted', 'mini', 'miniprint', 'edit
 export type Format = (typeof FORMATS)[number];
 
 // Formats offered on the site. edition/metal stay in code but hidden until tested.
-export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mounted', 'mini', 'miniprint'];
+export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mini', 'miniprint']; // 'mounted' (картонски оквир 28×35) paused 2026-10-21, Filip
 
 // Which sizes each format comes in. Mounted is sized by the mat (Temu 11×14" = 28×35 cm, 20×25 print inside);
 // add '20x25' (8×10" mat, ~13×18 print) once those mats are bought and tested.

@@ -95,9 +95,11 @@ const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
   .nav.open { backdrop-filter: none; -webkit-backdrop-filter: none; background: transparent; border-color: transparent; }
   .inner { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
   nav { display: flex; gap: 30px; }
-  nav a { font: 500 var(--fs-xs)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); transition: color 0.3s; white-space: nowrap; }
+  nav a { font: 500 var(--fs-xs)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--text); transition: color 0.3s; white-space: nowrap; }
   @media (max-width: 1180px) { nav { gap: 22px; } }
-  nav a:hover, nav a.on { color: var(--cyan); }
+  nav a:hover, nav a.on { color: var(--ice); }
+  /* monochrome UI: the current page is underlined, not coloured */
+  nav a.on, .lang a.on { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
   .right { display: flex; align-items: center; gap: 20px; }
   .lang { display: flex; gap: 6px; font-size: var(--fs-xs); color: var(--muted); }
   .lang a.on { color: var(--cyan); }

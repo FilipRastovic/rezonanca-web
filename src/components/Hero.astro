@@ -4,123 +4,116 @@ import { findProduct } from '../data/products.js';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].hero;
-// Right side: what the shop sells - a framed print (cycling through a few pieces) and a mini print.
-// [piece, room shot suffix] picked so the four views are four different scenes (public/rooms, render-rooms.py).
+// Two columns: text left (5/12), a small print collage right (7/12): a room shot of a framed print, plus a column with
+// a small framed print at a tilt and a Мини урамљен mockup. Each slot cycles through pieces; nothing overlaps.
+// [piece, room shot suffix] picked so the four room views are four different scenes (public/rooms, render-rooms.py).
 const SHOW = ([['halvorsen', ''], ['dolina-morskih-konjica', '-2'], ['lorenc', '-2'], ['aizava', '-2']] as const).map(([s, n]) => ({ ...findProduct(s), shot: n }));
-// Mini: the printed card in the small black frame (Мини урамљен mockup).
+// Tilted framed print: its own pieces (two pink colourways for variety); [slug, poster key].
+const TILT = [['tomas', 'tomas'], ['dvostruka-spirala', 'dvostruka-spirala-roza'], ['perje', 'perje'], ['kula', 'kula-roza']];
 const MINIS = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findProduct);
-const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335°E'; // Novi Sad
 ---
 <section class="hero" aria-label={t.title}>
+  <div class="lines" id="hero-lines" aria-hidden="true"></div>
 
-  <div class="wrap content">
-    <p class="label">{t.label}</p>
-    <h1 class="title" aria-label={t.title}>
-      {[...t.title].map((ch, i) => <span style={`--i:${i}`}>{ch}</span>)}
-    </h1>
-    <p class="tagline">{t.tagline}</p>
-    <p class="lead">{t.lead}</p>
-    <p class="shop mono">{t.shop}</p>
-    <div class="actions">
-      <a class="btn btn--solid" href={collectionHref(lang)}>{t.primary} <span class="arrow">→</span></a>
+  <div class="wrap grid">
+    <div class="content">
+      <p class="label">{t.label}</p>
+      <h1 class="title" aria-label={t.title}>
+        {[...t.title].map((ch, i) => <span style={`--i:${i}`}>{ch}</span>)}
+      </h1>
+      <p class="lead">{t.lead}</p>
+      <div class="actions">
+        <a class="btn btn--solid" href={collectionHref(lang)}>{t.primary} <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="collage" style={`--n:${SHOW.length}`}>
+      <div class="side">
+        <a class="tilt" href={productHref(lang, TILT[0][0])} aria-label={`${findProduct(TILT[0][0]).name[lang]} - ${t.framed}`}>
+          <span class="pframe">
+            {TILT.map(([, key], i) => <img src={`/posters/${key}-${lang}.webp`} alt="" width="900" height="1200" decoding="async" style={`--i:${i}; --off:1.2s`} />)}
+          </span>
+        </a>
+        <a class="tile mini" href={productHref(lang, MINIS[0].slug)} aria-label={`${MINIS[0].name[lang]} - ${t.mini}`}>
+          {MINIS.map((p, i) => <img src={`/minis/framed-${p.slug}.webp`} alt="" width="960" height="1280" decoding="async" style={`--i:${i}; --off:2.5s`} />)}
+        </a>
+      </div>
+      <figure class="main-shot">
+        <a class="tile big" href={productHref(lang, SHOW[0].slug)} aria-label={`${SHOW[0].name[lang]} - ${t.framed}`}>
+          {SHOW.map((p, i) => (
+            <img src={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp`} srcset={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp 540w, /rooms/${p.slug}-${lang}${p.shot}.webp 960w`} sizes="(max-width: 900px) 64vw, 34vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
+          ))}
+        </a>
+        <figcaption class="caps">
+          {SHOW.map((p, i) => <p style={`--i:${i}`}><b>{p.name[lang]}</b> <span>{t.framed}</span></p>)}
+        </figcaption>
+      </figure>
     </div>
   </div>
 
-  <div class="showcase" style={`--n:${SHOW.length}`}>
-    <a class="framed" href={productHref(lang, SHOW[0].slug)} aria-label={`${SHOW[0].name[lang]} - ${t.framed}`}>
-      <span class="art">
-      {SHOW.map((p, i) => (
-        <img src={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp`} srcset={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp 540w, /rooms/${p.slug}-${lang}${p.shot}.webp 960w`} sizes="(max-width: 900px) 60vw, 30vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
-      ))}
-      </span>
-    </a>
-    <a class="mini" href={productHref(lang, MINIS[0].slug)} aria-label={`${MINIS[0].name[lang]} - ${t.mini}`}>
-      <span class="art">
-        {MINIS.map((p, i) => <img src={`/minis/framed-${p.slug}.webp`} alt="" width="960" height="1280" decoding="async" style={`--i:${i}`} />)}
-      </span>
-    </a>
-    <div class="caps mono">
-      {SHOW.map((p, i) => <p style={`--i:${i}`}><b>{p.name[lang]}</b>{t.framed}</p>)}
-    </div>
+  <!-- What you get, in plain facts (real spec: matte 180 g, 12-colour pigment print, 300 DPI). -->
+  <div class="wrap">
+    <ul class="facts">
+      {t.facts.map((f, i) => <li><span class="n">0{i + 1}</span>{f}</li>)}
+    </ul>
   </div>
-
-
 </section>
 
+<script>
+  import { mountHeroLines } from '../scripts/hero-lines';
+  mountHeroLines(document.getElementById('hero-lines')!);
+</script>
 
 <style>
-  .hero { position: relative; min-height: 100svh; padding: 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; overflow: hidden; background: var(--bg-0); }
-  .canvas { position: absolute; inset: 0; }
-  .canvas :global(canvas) { display: block; }
-  .veil {
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 60% 50% at 60% 70%, rgba(35, 105, 255, 0.16), transparent 70%),
-      linear-gradient(180deg, rgba(251, 250, 247, 0.9) 0%, rgba(251, 250, 247, 0.2) 38%, transparent 60%, rgba(251, 250, 247, 0.75) 100%),
-      linear-gradient(90deg, rgba(251, 250, 247, 0.88) 0%, rgba(251, 250, 247, 0.55) 35%, transparent 62%);
-  }
-  .frame { position: absolute; inset: 96px var(--gutter) 28px; --l: 22px; pointer-events: none; opacity: 0.8; }
-  .content { position: relative; z-index: 2; padding-top: 120px; padding-bottom: 200px; }
-  .title { display: flex; flex-wrap: nowrap; white-space: nowrap; margin: 22px 0 0; font-size: var(--fs-display); font-weight: 600; line-height: 1; letter-spacing: 0.1em; color: var(--ice); }
+  .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: clamp(48px, 6vw, 88px); padding: 120px 0 clamp(32px, 4vw, 56px); border-bottom: 1px solid var(--line); overflow: hidden; background: var(--bg-0); }
+  /* Background: flowing noise lines (scripts/hero-lines.ts), faded out under the text. */
+  .lines { position: absolute; inset: 0; pointer-events: none; -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.25) 30%, #000 62%); mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.25) 30%, #000 62%); }
+  .lines :global(canvas) { display: block; }
+
+  .grid { position: relative; z-index: 2; display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 96px); align-items: center; }
+  .title { display: flex; flex-wrap: nowrap; white-space: nowrap; margin: 24px 0 0; font-size: clamp(34px, 4.6vw, 68px); font-weight: 600; line-height: 1; letter-spacing: 0.06em; color: var(--ice); }
   .title span { display: inline-block; animation: tune 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i) * 70ms + 200ms); }
   @keyframes tune {
     0% { opacity: 0; filter: blur(14px); transform: translateY(0.25em) scaleY(1.6); }
     60% { opacity: 1; filter: blur(0); }
     100% { opacity: 1; filter: blur(0); transform: none; }
   }
-  .tagline { margin: 28px 0 0; font: 300 clamp(14px, 1.3vw, 18px)/1.4 var(--f-display); letter-spacing: 0.04em; color: var(--ice); }
-  .lead { margin: 16px 0 0; max-width: 42ch; color: var(--muted); }
-  .shop { margin: 14px 0 0; max-width: 44ch; font-size: var(--fs-2xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ice); line-height: 1.8; }
+  .lead { margin: 28px 0 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
-  /* Showcase: a framed print on the right, cross-fading through a few pieces, plus a mini print in front. */
-  .showcase { position: absolute; z-index: 2; right: calc(var(--gutter) + 2vw); top: 50%; transform: translateY(-46%); height: min(58vh, 620px); aspect-ratio: 3 / 4; --cycle: calc(var(--n) * 5s); }
-  .showcase::before { display: none; } .x-unused { content: ''; position: absolute; inset: -18% -22%; background: radial-gradient(closest-side, rgba(35, 105, 255, 0.28), rgba(80, 230, 255, 0.06) 60%, transparent); pointer-events: none; }
-  .framed { position: absolute; inset: 0; display: block; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 50px 90px -40px rgba(18, 20, 23, 0.35); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .framed:hover { transform: translateY(-6px); }
-  .framed .art { position: relative; display: block; width: 100%; height: 100%; background: #eeebe5; }
-  .framed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3); }
-  .framed img:first-child { opacity: 1; }
+  /* Collage: side column (detail square + framed mini) and the big room shot, bottoms aligned. */
+  .collage { display: grid; grid-template-columns: 1fr 2fr; gap: clamp(12px, 1.4vw, 20px); align-items: end; --cycle: calc(var(--n) * 5s); }
+  .side { display: grid; gap: clamp(12px, 1.4vw, 20px); }
+  .main-shot { position: relative; margin: 0; }
+  .tile { position: relative; display: block; overflow: hidden; background: var(--bg-1); box-shadow: 0 24px 60px -32px rgba(18, 20, 23, 0.35); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .tile:hover { transform: translateY(-4px); }
+  /* A small framed print standing at a slight tilt (object, not photo); cycles with the big shot. */
+  .tilt { position: relative; display: block; aspect-ratio: 1; }
+  .pframe { position: absolute; left: 50%; top: 50%; width: 64%; aspect-ratio: 3 / 4.1; transform: translate(-50%, -50%) rotate(-6deg); background: #fff; border: 7px solid #121417; box-shadow: 0 1px 1px rgba(0,0,0,.25), 4px 10px 16px -4px rgba(18,20,23,.3), 14px 30px 50px -18px rgba(18,20,23,.45); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); --cycle: calc(var(--n) * 5s); }
+  .tilt:hover .pframe { transform: translate(-50%, -52%) rotate(-3deg); }
+  .pframe img { position: absolute; inset: 9%; width: 82%; height: 82%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s + var(--off, 0s) - 0.01s); }
+  .pframe img:first-child { opacity: 1; }
+  .mini, .big { aspect-ratio: 3 / 4; }
+  .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s + var(--off, 0s) - 0.01s); }
+  .tile img:first-child { opacity: 1; }
   @keyframes show { 0%, 21% { opacity: 1; } 27%, 94% { opacity: 0; } 100% { opacity: 1; } }
-  .mini { position: absolute; right: calc(100% + 22px); bottom: 0; width: 42%; aspect-ratio: 3 / 4; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.8); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .mini:hover { transform: translateY(-6px); }
-  .mini .art { position: relative; display: block; width: 100%; height: 100%; background: #e9e3dc; } /* Мини урамљен mockup */
-  .mini img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s + 2.5s - 0.01s); }
-  .mini img:first-child { opacity: 1; }
-  .caps { position: absolute; left: 0; right: 0; top: calc(100% + 18px); height: 2.6em; font-size: var(--fs-2xs); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+  .caps { position: absolute; left: 0; right: 0; top: calc(100% + 16px); height: 1.6em; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
   .caps p { position: absolute; inset: 0 0 auto 0; margin: 0; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); }
   .caps p:first-child { opacity: 1; }
-  .caps b { display: block; margin-bottom: 4px; color: var(--ice); font-weight: 500; }
+  .caps b { color: var(--ice); font-weight: 500; margin-right: 10px; }
 
+  /* Print facts strip */
+  .facts { position: relative; z-index: 2; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .facts li { display: flex; align-items: baseline; gap: 14px; padding: 18px 0 0; font-size: var(--fs-sm); color: var(--ice); }
+  .facts .n { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); color: var(--muted); }
 
-  .readout { position: absolute; z-index: 2; left: 0; right: 0; bottom: 64px; display: flex; gap: clamp(20px, 5vw, 64px); flex-wrap: wrap; font-size: var(--fs-xs); color: var(--ice); }
-  .readout div { display: flex; flex-direction: column; gap: 6px; }
-  .readout .k { color: var(--muted); font-size: var(--fs-2xs); letter-spacing: 0.24em; }
-  .live { display: inline-flex; align-items: center; gap: 8px; color: var(--cyan); }
-  .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: blink 1.4s infinite; }
-  @keyframes blink { 50% { opacity: 0.2; } }
-
-  .scroll { position: absolute; z-index: 2; right: calc(var(--gutter) + 24px); bottom: 64px; display: flex; align-items: center; gap: 12px; font-size: var(--fs-2xs); letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; }
-  .scroll span { width: 1px; height: 56px; background: linear-gradient(var(--cyan), transparent); animation: drop 2s infinite; }
-  @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
-
-  @media (max-width: 1100px) {
-    .scroll { display: none; }
-    .showcase { right: var(--gutter); height: min(46vh, 460px); }
-  }
   @media (max-width: 900px) {
-    .hero { justify-content: flex-start; }
-    .content { padding-bottom: 40px; }
-    .showcase { position: relative; right: auto; top: auto; transform: none; height: auto; width: min(56vw, 340px); margin: 0 auto 190px; left: 12vw; }
+    .hero { justify-content: flex-start; padding-top: 110px; }
+    .grid { grid-template-columns: 1fr; }
+    .collage { max-width: 560px; margin-bottom: 36px; }
+    .facts { grid-template-columns: 1fr 1fr; row-gap: 4px; }
   }
-  @media (max-width: 700px) {
-    .content { padding-top: 110px; padding-bottom: 40px; }
-    .actions { gap: 10px; margin-top: 28px; }
-    .actions :global(.btn) { padding: 12px 14px; font-size: var(--fs-2xs); letter-spacing: 0.18em; }
-    .readout { bottom: 44px; gap: 16px 28px; }
-    .readout div:nth-child(2) { display: none; }
-    .scroll { display: none; }
-    .frame { inset: 84px 10px 14px; }
+  @media (prefers-reduced-motion: reduce) {
+    .title span, .tile img, .pframe img, .caps p { animation: none; }
   }
-  @media (prefers-reduced-motion: reduce) { .title span, .live i, .scroll span, .framed img, .caps p, .mini img { animation: none; } .mini img:not(:first-child) { display: none; } }
 </style>

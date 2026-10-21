@@ -13,8 +13,8 @@ const { size = 12, tag, tagClass } = Astro.props;
 <style>
   .logo { display: inline-flex; align-items: center; gap: 10px; font: 600 var(--s)/1 var(--f-display); letter-spacing: 0.3em; color: var(--ice); }
   .words { display: inline-flex; flex-direction: column; gap: calc(var(--s) * 0.45); }
-  .tag { font: 400 calc(var(--s) * 0.72)/1 var(--f-mono); letter-spacing: 0.32em; text-transform: uppercase; color: var(--cyan); opacity: 0.85; white-space: nowrap; }
+  .tag { font: 400 calc(var(--s) * 0.72)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); white-space: nowrap; }
   /* In the nav, the full menu needs the room between 901 and 1180 px; mobile (burger menu) shows the line again. */
   @media (min-width: 901px) and (max-width: 1180px) { .nav-tag { display: none; } }
-  svg { width: calc(var(--s) * 2.4); height: calc(var(--s) * 1.2); fill: none; stroke: var(--cyan); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(80,230,255,.6)); }
+  svg { width: calc(var(--s) * 2.4); height: calc(var(--s) * 1.2); fill: none; stroke: var(--cyan); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 </style>

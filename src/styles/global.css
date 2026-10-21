@@ -4,34 +4,37 @@
   --bg-0: #fbfaf7;
   --bg-1: #f4f2ed;
   --bg-card: #ffffff;
-  --deep: #1a2a6c;
-  --blue: #1f3fbf;
-  --cyan: #1f3fbf;
+  --deep: #2b2e34;
+  --blue: #121417;
+  --cyan: #121417;  /* accent = ink (monochrome UI; colour comes from the art) */
   --ice: #121417;
   --text: #3b3f46;
-  --muted: #8b8f96;
+  --muted: #5f636b;  /* ≥ 5.8:1 on the white, WCAG AA for small text */
   --line: rgba(18, 20, 23, 0.09);
   --line-strong: rgba(18, 20, 23, 0.32);
   --glow: 0 24px 60px -28px rgba(18, 20, 23, 0.28);
 
   --f-display: 'Unbounded', 'Verdana', sans-serif;
-  --f-mono: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
+  /* Type system: Unbounded = headings only; Inter = everything else (body, lead, small-caps labels/nav/buttons);
+     JetBrains Mono = maths only (--f-code). --f-mono is kept as a name for the small-caps UI style. */
+  --f-mono: 'Inter', system-ui, sans-serif;
+  --f-code: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
   --f-body: 'Inter', system-ui, sans-serif;
 
   /* Type scale - small, airy, premium. Tune the whole site from here. */
-  --fs-2xs: 9.5px;      /* micro mono labels, codes, meta */
-  --fs-xs: 10.5px;      /* nav, buttons, section labels */
-  --fs-sm: 12.5px;      /* secondary text, captions */
-  --fs-body: 14px;      /* body copy */
-  --fs-lead: 15.5px;    /* intro paragraphs */
-  --fs-name: 13.5px;    /* product names on cards */
+  --fs-2xs: 11px;      /* micro mono labels, codes, meta */
+  --fs-xs: 11.5px;      /* nav, buttons, section labels */
+  --fs-sm: 13px;      /* secondary text, captions */
+  --fs-body: 15px;      /* body copy */
+  --fs-lead: 18px;    /* intro paragraphs */
+  --fs-name: 15px;    /* product names on cards */
   --fs-h3: 16px;
   --fs-price: 19px;
   --fs-h2: clamp(22px, 2.7vw, 36px);
   --fs-h1: clamp(26px, 3.2vw, 44px);
   --fs-display: clamp(30px, 6.2vw, 92px);
-  --track-label: 0.3em;
-  --track-ui: 0.22em;
+  --track-label: 0.14em;
+  --track-ui: 0.12em;
 
   /* Spacing scale — generous air around small type. */
   --space-section: clamp(140px, 18vw, 280px);  /* between homepage sections */
@@ -121,11 +124,11 @@ body::after {
   text-transform: uppercase;
 }
 .label::before { content: ''; width: 22px; height: 1px; background: var(--cyan); }
-.mono { font-family: var(--f-mono); letter-spacing: 0.12em; }
+.mono { font-family: var(--f-mono); letter-spacing: 0.06em; }
 h1, h2, h3 { font-family: var(--f-display); color: var(--ice); margin: 0; font-weight: 400; letter-spacing: 0.02em; }
 h2 { font-size: var(--fs-h2); line-height: 1.2; margin-top: 18px; max-width: 22ch; }
 h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
-.lead { font-size: var(--fs-lead); color: var(--text); max-width: 52ch; }
+.lead { font-size: var(--fs-lead); line-height: 1.6; color: var(--ice); max-width: 46ch; }
 
 /* Buttons */
 .btn {
@@ -145,7 +148,7 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
 }
 .btn:hover { border-color: var(--cyan); box-shadow: var(--glow); }
 .btn--solid { background: var(--cyan); color: var(--bg-0); border-color: var(--cyan); font-weight: 600; }
-.btn--solid:hover { background: var(--ice); }
+.btn--solid:hover { background: var(--deep); border-color: var(--deep); }
 .btn .arrow { transition: transform 0.3s; }
 .btn:hover .arrow { transform: translateX(4px); }
 
@@ -170,7 +173,7 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
 /* Quantity stepper: − [n] + */
 .stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--line); background: rgba(251, 250, 247, 0.8); height: 52px; }
 .stepper .step { width: 44px; border: none; background: none; color: var(--ice); font: 400 20px/1 var(--f-body); cursor: pointer; transition: color 0.2s, background 0.2s; }
-.stepper .step:hover:not(:disabled) { color: var(--cyan); background: rgba(31, 63, 191, 0.05); }
+.stepper .step:hover:not(:disabled) { color: var(--cyan); background: rgba(18, 20, 23, 0.03); }
 .stepper .step:disabled { opacity: 0.3; cursor: default; }
 .stepper input { width: 48px !important; padding: 0 !important; border: none !important; border-left: 1px solid var(--line) !important; border-right: 1px solid var(--line) !important;
   background: none !important; color: var(--ice); font: 500 16px/1 var(--f-body) !important; text-align: center; -moz-appearance: textfield; box-shadow: none !important; }
