@@ -98,6 +98,8 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
               <img id="pp-main" src={first ? first.src : gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
               <span class="zoom-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
             </button>
+            <button type="button" class="pp-nav pp-prev" data-step="-1" aria-label={tp.lightbox.prev}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 4l-8 8 8 8" /></svg></button>
+            <button type="button" class="pp-nav pp-next" data-step="1" aria-label={tp.lightbox.next}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 4l8 8-8 8" /></svg></button>
           </figure>
           <div class="thumbs" role="tablist">
             {gallery.map((g, i) => (
@@ -314,6 +316,12 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   // A new format or frame jumps back to the main view, so the click always shows that variant.
   document.addEventListener('pp:look', () => show(0));
   thumbs.forEach((b, i) => b.addEventListener('click', () => show(i)));
+  // Arrows on the main image (mouse users; phones swipe).
+  document.querySelectorAll<HTMLButtonElement>('.pp-nav').forEach((b) => b.addEventListener('click', () => {
+    const dir = Number(b.dataset.step);
+    show(current + dir);
+    main.animate([{ opacity: 0.2, transform: `translateX(${dir * 24}px)` }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
+  }));
 
   // Colour choice: swap every gallery image to that colourway (what you see is what you get).
   const galleries = JSON.parse(document.getElementById('pp-galleries')!.textContent!);
@@ -410,6 +418,11 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   .main img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
   .zoom-ico { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 34px; height: 34px; color: var(--ice); background: rgba(251, 250, 247, 0.6); border: 1px solid var(--line); opacity: 0.75; transition: opacity 0.3s, border-color 0.3s; }
   .zoom:hover .zoom-ico, .zoom:focus-visible .zoom-ico { opacity: 1; border-color: var(--cyan); }
+  .pp-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; display: none; place-items: center; width: 44px; height: 44px; padding: 0; color: var(--ice); background: rgba(251, 250, 247, 0.75); border: 1px solid var(--line); cursor: pointer; opacity: 0.8; transition: opacity 0.3s, border-color 0.3s; }
+  .pp-prev { left: 12px; }
+  .pp-next { right: 12px; }
+  .pp-nav:hover, .pp-nav:focus-visible { opacity: 1; border-color: var(--cyan); }
+  @media (hover: hover) and (pointer: fine) { .pp-nav { display: grid; } }
 
   .lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(251, 250, 247, 0.96); color: var(--ice); overflow: hidden; }
   .lightbox::backdrop { background: rgba(251, 250, 247, 0.9); }
