@@ -2,7 +2,7 @@
 //   public/posters/<slug>-<lang>.webp        catalogue card (900w)
 //   public/posters/<slug>-<lang>-lg.webp     product page main image (1440w)
 //   public/details/<slug>.webp               close-up of the artwork (language-free)
-//   public/rooms/<slug>-<lang>.webp          the poster in a room (product gallery)
+//   public/rooms/<slug>-<lang>(-sm).webp     the poster in a room (via scripts/render-rooms.py; gallery + card hover)
 //   public/interiors/<scene>-<lang>.webp     homepage room scenes
 //   public/og-<lang>.jpg                     social share image
 //   src/data/math/<slug>.json                equations, parameters and measurements of each render
@@ -196,11 +196,13 @@ async function room(scene, frames, file) {
   await sharp(Buffer.from(bg)).composite(layers).webp({ quality: 82 }).toFile(file);
 }
 
-// Per-product room shot (living room) for the product gallery.
-for (const { p, tone, key } of sets) {
-  for (const lang of Object.keys(LANGS)) {
-    await room('living', [{ x: 650, y: 110, w: 300, file: posterPng(key, lang), palette: tone || p.palette }], out('rooms', `${key}-${lang}.webp`));
-  }
+// Per-product room shot for the product gallery + card hover: the approved black-frame mockup scenes
+// (scripts/render-rooms.py, scenes in ../social/mockups/scenes). Needs the posters above to exist first.
+{
+  const PY = path.join(process.env.HOME, '.venvs/rezonanca-mockup/bin/python');
+  const keys = [...new Set(sets.map((x) => x.key))];
+  try { execFileSync(PY, [path.join(ROOT, 'scripts/render-rooms.py'), ...keys], { cwd: ROOT, stdio: 'inherit' }); }
+  catch (e) { console.warn('room shots NOT rendered (run scripts/render-rooms.py with the mockup venv):', e.message); }
 }
 
 // Homepage interiors + social share image.

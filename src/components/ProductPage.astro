@@ -40,7 +40,8 @@ const galleryFor = (tone: string) => {
   const k = imgKey(p.slug, tone), suffix = tone ? ` (${toneName(tone)})` : '';
   return [
     { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${seriesName} - ${name}${suffix}`, fit: 'poster' },
-    { src: `/rooms/${k}-${lang}.webp`, thumb: `/rooms/${k}-${lang}.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'wide' },
+    // Room shot: the exact print in the approved black-frame scene (scripts/render-rooms.py).
+    { src: `/rooms/${k}-${lang}.webp`, thumb: `/rooms/${k}-${lang}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' },
     { src: `/details/${k}.webp`, thumb: `/details/${k}.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
     // Real photos of the printed piece (public/photos/<slug>-N.webp), same in every colourway.
     ...(PHOTOS[p.slug] ?? []).map((n) => ({ src: `/photos/${p.slug}-${n}.webp`, thumb: `/photos/${p.slug}-${n}-sm.webp`, alt: `${name} - ${tp.gallery[3]}`, fit: 'square' })),
