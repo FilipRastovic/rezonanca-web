@@ -4,7 +4,7 @@
 //   public/details/<slug>.webp               close-up of the artwork (language-free)
 //   public/rooms/<slug>-<lang>(-sm).webp     the poster in a room (via scripts/render-rooms.py; gallery + card hover)
 //   public/interiors/<scene>-<lang>.webp     homepage room scenes
-//   public/og-<lang>.jpg                     social share image
+//   public/og-<lang>.jpg, public/og/<slug>-<lang>.jpg   light share images (scripts/og-images.mjs)
 //   src/data/math/<slug>.json                equations, parameters and measurements of each render
 //
 //   node scripts/render-assets.mjs                 everything
@@ -206,28 +206,13 @@ async function room(scene, frames, file) {
   catch (e) { console.warn('room shots NOT rendered (run scripts/render-rooms.py with the mockup venv):', e.message); }
 }
 
-// Homepage interiors + social share image.
+// Homepage interiors (mockup scenes) + light share images, from the fresh posters and room shots.
 if (!only && !tonesOnly) {
-  const HOME = {
-    living: [{ slug: 'lorenc', x: 650, y: 110, w: 300 }],
-    studio: [{ slug: 'morska-zvezda', x: 980, y: 120, w: 360 }],
-    hall: [{ slug: 'aizava', x: 430, y: 170, w: 300 }, { slug: 'dolina-morskih-konjica', x: 870, y: 170, w: 300 }],
-  };
-  for (const [scene, frames] of Object.entries(HOME)) {
-    for (const lang of Object.keys(LANGS)) {
-      await room(scene, frames.map((f) => ({ ...f, file: posterPng(f.slug, lang), palette: findProduct(f.slug).palette })), out('interiors', `${scene}-${lang}.webp`));
-    }
-  }
-  for (const lang of Object.keys(LANGS)) {
-    const art = await sharp(posterPng('lorenc', lang)).resize({ height: 630 }).toBuffer();
-    const label = lang === 'sr' ? 'РЕЗОНАНЦА' : 'REZONANCA';
-    const sub = lang === 'sr' ? 'Звук, заустављен у светлости.' : 'Sound, frozen in light.';
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#02060f"/>
-      <text x="520" y="300" font-family="Unbounded, Verdana, sans-serif" font-weight="700" font-size="64" letter-spacing="8" fill="#d7faff">${label}</text>
-      <text x="524" y="360" font-family="JetBrains Mono, Menlo, monospace" font-size="24" letter-spacing="3" fill="#50e6ff">${sub}</text></svg>`;
-    await sharp(Buffer.from(svg)).composite([{ input: art, left: 0, top: 0 }]).jpeg({ quality: 85 }).toFile(out(`og-${lang}.jpg`));
-  }
+  const PY = path.join(process.env.HOME, '.venvs/rezonanca-mockup/bin/python');
+  try { execFileSync(PY, [path.join(ROOT, 'scripts/render-rooms.py'), '--interiors'], { cwd: ROOT, stdio: 'inherit' }); }
+  catch (e) { console.warn('interiors NOT rendered:', e.message); }
 }
+execFileSync('node', [path.join(ROOT, 'scripts/og-images.mjs')], { cwd: ROOT, stdio: 'inherit' });
 // Colour dots (cards, product page) from the fresh posters.
 execFileSync('node', [path.join(ROOT, 'scripts/swatches.mjs')], { cwd: ROOT, stdio: 'inherit' });
 console.log(`✓ assets for ${products.length} products`);

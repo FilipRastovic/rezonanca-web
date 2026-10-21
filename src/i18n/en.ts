@@ -2,10 +2,12 @@ import type sr from './sr';
 
 const en: typeof sr = {
   htmlLang: 'en',
+  ogSub: 'Print drawn in code',
+  ogHome: 'Prints drawn in code, line by line. Printed on matte paper in Novi Sad.',
   meta: {
-    title: 'Rezonanca - code art. Sound, frozen in light.',
+    title: 'Rezonanca - prints drawn in code',
     description:
-      'Art made with code. Every piece is written in JavaScript, line by line. You get exactly the print you see in the picture. Printed in Serbia, pay on delivery.',
+      'Prints drawn in code, line by line, printed on matte paper in Novi Sad. You get exactly the print you see in the picture. Cash on delivery.',
   },
   nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In a room', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
