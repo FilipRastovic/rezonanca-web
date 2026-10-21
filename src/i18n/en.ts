@@ -12,7 +12,7 @@ const en: typeof sr = {
     label: 'Prints · Novi Sad',
     title: 'РЕЗОНАНЦА',
     tagline: 'Sound, frozen in light.',
-    lead: 'Sound, frozen in light. Pictures drawn with code, line by line, printed on matte paper in Novi Sad.',
+    lead: 'Pictures drawn with code, line by line, printed on matte paper in Novi Sad.',
     primary: 'Explore the collection',
     secondary: 'Order a poster',
     readout: ['FREQUENCY', 'COORDINATES', 'STATUS'],
