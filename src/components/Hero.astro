@@ -5,7 +5,9 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].hero;
 // Right side: what the shop sells - a framed print (cycling through a few pieces) and a mini print.
-const SHOW = ['halvorsen', 'dolina-morskih-konjica', 'lorenc', 'tomas'].map(findProduct);
+// [piece, room shot suffix] picked so the four views are four different scenes (public/rooms, render-rooms.py).
+const SHOW = ([['halvorsen', ''], ['dolina-morskih-konjica', '-2'], ['lorenc', '-2'], ['aizava', '-2']] as const).map(([s, n]) => ({ ...findProduct(s), shot: n }));
+// Mini: the printed card in the small black frame (Мини урамљен mockup).
 const MINIS = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findProduct);
 const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335°E'; // Novi Sad
 ---
@@ -32,13 +34,13 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
     <a class="framed" href={productHref(lang, SHOW[0].slug)} aria-label={`${SHOW[0].name[lang]} - ${t.framed}`}>
       <span class="art">
       {SHOW.map((p, i) => (
-        <img src={`/posters/${p.slug}-${lang}.webp`} srcset={`/posters/${p.slug}-${lang}.webp 900w, /posters/${p.slug}-${lang}-lg.webp 1440w`} sizes="(max-width: 900px) 60vw, 30vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="900" height="1200" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
+        <img src={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp`} srcset={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp 540w, /rooms/${p.slug}-${lang}${p.shot}.webp 960w`} sizes="(max-width: 900px) 60vw, 30vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
       ))}
       </span>
     </a>
     <a class="mini" href={productHref(lang, MINIS[0].slug)} aria-label={`${MINIS[0].name[lang]} - ${t.mini}`}>
       <span class="art">
-        {MINIS.map((p, i) => <img src={`/minis/card-${p.slug}.webp`} alt="" width="900" height="900" decoding="async" style={`--i:${i}`} />)}
+        {MINIS.map((p, i) => <img src={`/minis/framed-${p.slug}.webp`} alt="" width="960" height="1280" decoding="async" style={`--i:${i}`} />)}
       </span>
     </a>
     <div class="caps mono">
@@ -90,17 +92,17 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
   /* Showcase: a framed print on the right, cross-fading through a few pieces, plus a mini print in front. */
-  .showcase { position: absolute; z-index: 2; right: calc(var(--gutter) + 2vw); top: 50%; transform: translateY(-46%); height: min(58vh, 620px); aspect-ratio: 3 / 4.05; --cycle: calc(var(--n) * 5s); }
+  .showcase { position: absolute; z-index: 2; right: calc(var(--gutter) + 2vw); top: 50%; transform: translateY(-46%); height: min(58vh, 620px); aspect-ratio: 3 / 4; --cycle: calc(var(--n) * 5s); }
   .showcase::before { content: ''; position: absolute; inset: -18% -22%; background: radial-gradient(closest-side, rgba(35, 105, 255, 0.28), rgba(80, 230, 255, 0.06) 60%, transparent); pointer-events: none; }
-  .framed { position: absolute; inset: 0; display: block; padding: 7.5%; background: var(--mat); border: 14px solid #b0835a; border-image: linear-gradient(135deg, #c79a6b, #9c7048 30%, #b88a5f 55%, #8d633f 80%, #b48858) 1; box-shadow: var(--frame-shadow), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 40px 120px -30px rgba(35, 105, 255, 0.45); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .framed { position: absolute; inset: 0; display: block; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 40px 120px -30px rgba(35, 105, 255, 0.45); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .framed:hover { transform: translateY(-6px); }
-  .framed .art { position: relative; display: block; width: 100%; height: 100%; background: #050b1e; }
+  .framed .art { position: relative; display: block; width: 100%; height: 100%; background: #0a1222; }
   .framed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3); }
   .framed img:first-child { opacity: 1; }
   @keyframes show { 0%, 21% { opacity: 1; } 27%, 94% { opacity: 0; } 100% { opacity: 1; } }
-  .mini { position: absolute; right: calc(100% + 22px); bottom: 0; width: 40%; aspect-ratio: 1; background: #fff; box-shadow: var(--frame-shadow); transform: rotate(-3deg); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .mini:hover { transform: rotate(-1deg) translateY(-6px); }
-  .mini .art { position: relative; display: block; width: 100%; height: 100%; background: #fff; } /* the printed mini card (white border + name) */
+  .mini { position: absolute; right: calc(100% + 22px); bottom: 0; width: 42%; aspect-ratio: 3 / 4; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.8); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .mini:hover { transform: translateY(-6px); }
+  .mini .art { position: relative; display: block; width: 100%; height: 100%; background: #e9e3dc; } /* Мини урамљен mockup */
   .mini img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s + 2.5s - 0.01s); }
   .mini img:first-child { opacity: 1; }
   .caps { position: absolute; left: 0; right: 0; top: calc(100% + 18px); height: 2.6em; font-size: var(--fs-2xs); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }

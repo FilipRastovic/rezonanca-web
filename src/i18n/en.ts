@@ -20,7 +20,7 @@ const en: typeof sr = {
     scroll: 'Scroll',
     shop: 'Art prints on matte paper, printed in Novi Sad.',
     framed: 'Framed print · 30 × 40 cm',
-    mini: 'Mini print · 15 × 15 cm',
+    mini: 'Framed mini · 15 × 15 cm',
   },
   manifesto: {
     label: '02 // MANIFESTO',
