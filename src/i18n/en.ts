@@ -101,16 +101,14 @@ const en: typeof sr = {
     title: 'Light that changes a room.',
     lead: 'Rezonanca posters don’t shout. They wait for the lights to dim - and then they take over the space.',
     scenes: {
-      living: { t: 'Living room', d: 'Halvorsen in an oak frame, above a sideboard, in daylight. A real photo.' },
-      studio: { t: 'Music corner', d: 'Next to a guitar and an amp, leaning on the sofa. A real photo.' },
-      hall: { t: 'Above the sideboard', d: 'Spiral in an oak frame, 30 × 40, in daylight. A real photo.' },
+      living: { t: 'Desk corner', d: 'Halvorsen in a black frame, on the wall above a desk.' },
+      studio: { t: 'By the window', d: 'Spiral in a black frame, in afternoon light.' },
     },
   },
   formats: {
     label: '04 // FORMATS',
     title: 'Choose how the signal lives.',
     from: 'from',
-    miniPhoto: 'Mini prints on a table - a real photo',
     items: {
       print: { t: 'Unframed print', d: 'Pure form. Pigment inks on matte paper, printed in Novi Sad.', spec: ['Matte paper, 180 gsm, 300 DPI', 'Arrives rolled in a rigid tube', 'Ready for your frame'] },
       framed: { t: 'Framed print', d: 'Ready for the wall the day it arrives.', spec: ['Black or oak frame', 'Standard sizes 30 × 40 and 50 × 70 cm', 'Carefully packed in a box'] },
@@ -155,14 +153,6 @@ const en: typeof sr = {
     title: 'Find your frequency.',
     lead: 'Somewhere in the noise there is a signal that has been waiting for you.',
     cta: 'Order a poster',
-  },
-  real: {
-    label: 'THE REAL PRINT',
-    title: 'This is how it looks off the screen.',
-    text: 'Halvorsen, matte paper 180 gsm, framed in oak. Photographed in a flat in Novi Sad, no mockups.',
-    cta: 'See Halvorsen',
-    alt: 'The framed Halvorsen print on an easel in a garden',
-    caption: 'A photo of a real print: Halvorsen on matte paper, in an oak frame.',
   },
   tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
   collection: {

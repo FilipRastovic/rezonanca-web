@@ -6,7 +6,6 @@ import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
-import RealPrint from './RealPrint.astro';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; slug: string }
@@ -31,8 +30,6 @@ const S0 = (Object.entries(PRICES[F0]) as [string, number][]).sort((a, b) => a[1
 const miniFirst = F0 === 'mini' || F0 === 'miniprint';
 const sizeFormats = (s: string) => ACTIVE_FORMATS.filter((f) => (FORMAT_SIZES[f] as string[]).includes(s)).join(' ');
 
-// Real photos available per product (numbers of public/photos/<slug>-N.webp).
-const PHOTOS: Record<string, number[]> = { halvorsen: [2, 3, 1], lorenc: [2, 1], spirala: [2, 1], tomas: [2] };
 // One gallery per colourway ('' = original); the colour choice swaps the whole set.
 const tones = ['', ...(p.tones || [])];
 const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];
@@ -43,8 +40,6 @@ const galleryFor = (tone: string) => {
     // Room shot: the exact print in the approved black-frame scene (scripts/render-rooms.py).
     { src: `/rooms/${k}-${lang}.webp`, thumb: `/rooms/${k}-${lang}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' },
     { src: `/details/${k}.webp`, thumb: `/details/${k}.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
-    // Real photos of the printed piece (public/photos/<slug>-N.webp), same in every colourway.
-    ...(PHOTOS[p.slug] ?? []).map((n) => ({ src: `/photos/${p.slug}-${n}.webp`, thumb: `/photos/${p.slug}-${n}-sm.webp`, alt: `${name} - ${tp.gallery[3]}`, fit: 'square' })),
   ];
 };
 const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galleryFor(tone)]));
@@ -195,7 +190,6 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
             </button>
           </div>
 
-          {!PHOTOS[p.slug] && <RealPrint lang={lang} variant="card" />}
           <ul class="trust mono">{tp.trust.map((x) => <li>{x}</li>)}</ul>
 
           <div class="acc">
