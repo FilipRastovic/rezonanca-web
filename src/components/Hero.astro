@@ -35,13 +35,13 @@ const MINIS = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(find
           </span>
         </a>
         <a class="tile mini" href={productHref(lang, MINIS[0].slug)} aria-label={`${MINIS[0].name[lang]} - ${t.mini}`}>
-          {MINIS.map((p, i) => <img src={`/minis/framed-${p.slug}.webp`} alt="" width="960" height="1280" decoding="async" style={`--i:${i}; --off:2.5s`} />)}
+          {MINIS.map((p, i) => <img src={`/minis/framed-${p.slug}.webp`} alt="" width="800" height="1067" decoding="async" style={`--i:${i}; --off:2.5s`} />)}
         </a>
       </div>
       <figure class="main-shot">
         <a class="tile big" href={productHref(lang, SHOW[0].slug)} aria-label={`${SHOW[0].name[lang]} - ${t.framed}`}>
           {SHOW.map((p, i) => (
-            <img src={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp`} srcset={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp 540w, /rooms/${p.slug}-${lang}${p.shot}.webp 960w`} sizes="(max-width: 900px) 64vw, 34vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
+            <img src={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp`} srcset={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp 480w, /rooms/${p.slug}-${lang}${p.shot}.webp 800w`} sizes="(max-width: 900px) 64vw, 34vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
           ))}
         </a>
         <figcaption class="caps">

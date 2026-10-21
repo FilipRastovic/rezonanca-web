@@ -13,9 +13,9 @@ const SW = SWATCHES as Record<string, string>;
 ---
 <a class="card" href={productHref(lang, p.slug) + (show ? `?boja=${show}` : '')} data-reveal style={`transition-delay:${delay}ms`}>
   <span class="stage">
-    <img class="room" src={`/rooms/${key}-${lang}-sm.webp`} srcset={`/rooms/${key}-${lang}-sm.webp 540w, /rooms/${key}-${lang}.webp 960w`} sizes="(max-width: 600px) 100vw, 360px" alt={`${series.name} - ${p.name[lang]}${show ? ` (${t.order.tones[show as 'orig']})` : ''}`} width="540" height="720" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <img class="room" src={`/rooms/${key}-${lang}-sm.webp`} srcset={`/rooms/${key}-${lang}-sm.webp 480w, /rooms/${key}-${lang}.webp 800w`} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 45vw, 330px" alt={`${series.name} - ${p.name[lang]}${show ? ` (${t.order.tones[show as 'orig']})` : ''}`} width="480" height="640" loading={eager ? 'eager' : 'lazy'} decoding="async" />
     <span class="art">
-      <img src={`/posters/${key}-${lang}.webp`} alt="" width="900" height="1200" loading="lazy" decoding="async" />
+      <img data-hover-src={`/posters/${key}-${lang}.webp`} alt="" width="900" height="1200" decoding="async" />
     </span>
   </span>
   <span class="info">
@@ -33,6 +33,15 @@ const SW = SWATCHES as Record<string, string>;
     </span>
   </span>
 </a>
+<script>
+  // The plain print behind the room shot loads only when someone actually hovers a card (saves ~3 MB per page).
+  const load = (e: Event) => {
+    const img = (e.target as Element).closest?.('.card')?.querySelector<HTMLImageElement>('img[data-hover-src]');
+    if (img && !img.src) img.src = img.dataset.hoverSrc!;
+  };
+  document.addEventListener('pointerover', load, { passive: true });
+  document.addEventListener('focusin', load);
+</script>
 <style>
   /* Minimal gallery card: image, then name + colour dots, then series and price. No borders, no bars. */
   .card { display: flex; flex-direction: column; color: inherit; }

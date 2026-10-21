@@ -114,6 +114,7 @@ for (const { p, key } of roomsOnly ? [] : sets) {
   const s = Math.round(width * 0.46);
   await img.extract({ left: Math.round(width * fx - s / 2), top: Math.round(height * fy - s / 2), width: s, height: s })
     .resize({ width: 1100 }).webp({ quality: 86 }).toFile(out('details', `${key}.webp`));
+  await sharp(out('details', `${key}.webp`)).resize(320).webp({ quality: 72 }).toFile(out('details', `${key}-sm.webp`)); // gallery thumb
 }
 
 // 2. Room scenes: SVG silhouettes, posters composited onto the wall.

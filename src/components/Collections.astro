@@ -25,7 +25,7 @@ const ALL = 'dvostruka-spirala'; // 'all works' tile
         const shot = `/rooms/${COVER[s.key]}-${lang}${i % 2 ? '-2' : ''}`; // alternate framed scenes between tiles
         return (
           <a class="tile" href={collectionHref(lang, s.slug)} data-reveal style={`transition-delay:${(i % 4) * 80}ms`}>
-            <span class="pic"><img src={`${shot}-sm.webp`} srcset={`${shot}-sm.webp 540w, ${shot}.webp 960w`} sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" alt="" width="540" height="720" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" /></span>
+            <span class="pic"><img src={`${shot}-sm.webp`} srcset={`${shot}-sm.webp 480w, ${shot}.webp 800w`} sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" alt="" width="540" height="720" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" /></span>
             <span class="txt">
               <span class="name">{seriesShort(lang, s.key)}</span>
               <span class="n mono">{productsBySeries(s.key).length} {t.collection.count} <span class="arrow">→</span></span>
@@ -34,7 +34,7 @@ const ALL = 'dvostruka-spirala'; // 'all works' tile
         );
       })}
       <a class="tile all" href={collectionHref(lang)} data-reveal style="transition-delay:240ms">
-        <span class="pic"><img src={`/rooms/${ALL}-${lang}-2-sm.webp`} srcset={`/rooms/${ALL}-${lang}-2-sm.webp 540w, /rooms/${ALL}-${lang}-2.webp 960w`} sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" alt="" width="540" height="720" loading="lazy" decoding="async" /></span>
+        <span class="pic"><img src={`/rooms/${ALL}-${lang}-2-sm.webp`} srcset={`/rooms/${ALL}-${lang}-2-sm.webp 480w, /rooms/${ALL}-${lang}-2.webp 800w`} sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" alt="" width="540" height="720" loading="lazy" decoding="async" /></span>
         <span class="txt">
           <span class="name">{t.tiles.all}</span>
           <span class="n mono">{PRODUCTS.length} {t.collection.count} <span class="arrow">→</span></span>

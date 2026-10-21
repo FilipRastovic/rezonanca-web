@@ -1,8 +1,8 @@
 # Room shots for the site: every poster (and colourway) in the approved black-frame scene, both languages.
 #   ~/.venvs/rezonanca-mockup/bin/python scripts/render-rooms.py [slug-or-key ...]   (--interiors: homepage scenes; --minis: mini cards; --frames: oak shots + minis + manifest)
 # Scenes + masks come from ../social/mockups/scenes (extract.py / reshape.py); same lighting as social/mockups/render.py.
-# → public/rooms/<key>-<lang>.webp (960×1280, 3:4 crop around the frame, product gallery image 2)
-#   public/rooms/<key>-<lang>-sm.webp (540×720, collection card hover)
+# → public/rooms/<key>-<lang>.webp (800×1067, 3:4 crop around the frame, product gallery image 2)
+#   public/rooms/<key>-<lang>-sm.webp (480×640, cards)
 # Scenes rotate in the shop's featured order so neighbouring cards differ; colourways use their product's scenes.
 import json, subprocess, sys
 from pathlib import Path
@@ -109,7 +109,7 @@ def render_minis(keys):
         card = Image.open(CARDS / f'{key}.png').convert('RGB')
         card.resize((900, 900), Image.LANCZOS).save(WEB / f'public/minis/card-{key}.webp', quality=80, method=6)
         res, q = compose(key, MINI_SCENE, 'sr', art=card, border=0)
-        crop34(res, q).resize((960, 1280), Image.LANCZOS).save(WEB / f'public/minis/framed-{key}.webp', quality=74, method=6)
+        crop34(res, q).resize((800, 1067), Image.LANCZOS).save(WEB / f'public/minis/framed-{key}.webp', quality=70, method=6)
         print('mini', key)
 
 # Files: <key>-<lang>.webp (+ -sm) = shot 1 (card image, gallery); <key>-<lang>-2/-3.webp (+ -sm) = more gallery shots.
@@ -120,15 +120,15 @@ for key, shots in [] if skip_rooms else jobs:
             res, q = compose(key, name, lang)
             res = crop34(res, q)
             suf = '' if n == 0 else f'-{n + 1}'
-            res.resize((960, 1280), Image.LANCZOS).save(OUT / f'{key}-{lang}{suf}.webp', quality=72, method=6)
-            res.resize((540, 720), Image.LANCZOS).save(OUT / f'{key}-{lang}{suf}-sm.webp', quality=70, method=6)
+            res.resize((800, 1067), Image.LANCZOS).save(OUT / f'{key}-{lang}{suf}.webp', quality=70, method=6)
+            res.resize((480, 640), Image.LANCZOS).save(OUT / f'{key}-{lang}{suf}-sm.webp', quality=68, method=6)
     print(key, shots)
 
 for key, shots in jobs:
     if frames[key]['oak'] == '-oak':
         for lang in ('sr', 'en'):
             res, q = compose(key, OAK, lang)
-            crop34(res, q).resize((960, 1280), Image.LANCZOS).save(OUT / f'{key}-{lang}-oak.webp', quality=72, method=6)
+            crop34(res, q).resize((800, 1067), Image.LANCZOS).save(OUT / f'{key}-{lang}-oak.webp', quality=70, method=6)
         print('oak', key)
 
 if jobs:
@@ -143,5 +143,5 @@ if '--minis' in sys.argv:
 for file, key, name in INTERIORS if interiors else []:
     for lang in ('sr', 'en'):
         res, _ = compose(key, name, lang)
-        res.resize((1600, round(res.height * 1600 / res.width)), Image.LANCZOS).save(WEB / f'public/interiors/{file}-{lang}.webp', quality=84, method=6)
+        res.resize((1200, round(res.height * 1200 / res.width)), Image.LANCZOS).save(WEB / f'public/interiors/{file}-{lang}.webp', quality=72, method=6)
     print('interior', file, key)

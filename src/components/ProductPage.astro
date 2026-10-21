@@ -51,7 +51,7 @@ const galleryFor = (tone: string) => {
     { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${seriesName} - ${name}${suffix}`, fit: 'poster' },
     // Room shots: the exact print in three mockup scenes (scripts/render-rooms.py).
     ...['', '-2', '-3'].map((n) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' })),
-    { src: `/details/${k}.webp`, thumb: `/details/${k}.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
+    { src: `/details/${k}.webp`, thumb: `/details/${k}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
   ];
 };
 const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galleryFor(tone)]));
