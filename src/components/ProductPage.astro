@@ -5,7 +5,7 @@ import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
-import { SHOP, SIZES, DEFAULT_SIZE, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
+import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import RealPrint from './RealPrint.astro';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -24,6 +24,11 @@ const fmt = t.formats.items;
 const hasFrames = FRAMES.length > 1 && ACTIVE_FORMATS.some((f) => f === 'framed' || f === 'edition');
 // Sizes offered by at least one active format; each pill lists the formats it belongs to.
 const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f].includes(s)));
+// Picker order: cheapest first, and every page opens on that cheapest option and its cheapest size.
+const PICK = [...ACTIVE_FORMATS].sort((a, b) => minPrice(a) - minPrice(b));
+const F0 = PICK[0];
+const S0 = (Object.entries(PRICES[F0]) as [string, number][]).sort((a, b) => a[1] - b[1])[0][0];
+const miniFirst = F0 === 'mini' || F0 === 'miniprint';
 const sizeFormats = (s: string) => ACTIVE_FORMATS.filter((f) => (FORMAT_SIZES[f] as string[]).includes(s)).join(' ');
 
 // Real photos available per product (numbers of public/photos/<slug>-N.webp).
@@ -81,9 +86,9 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
 
       <div class="layout">
         <div class="gallery">
-          <figure class="main corners" data-fit="poster" data-look="print">
+          <figure class:list={['main corners', { 'is-mini': miniFirst }]} data-fit="poster" data-look={F0 === 'framed' ? `framed-${FRAMES[0]}` : F0}>
             <button type="button" class="zoom" id="pp-zoom" aria-label={tp.lightbox.open}>
-              <img id="pp-main" src={gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
+              <img id="pp-main" src={miniFirst ? `/minis/${p.slug}.webp` : gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
               <span class="zoom-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
             </button>
           </figure>
@@ -114,7 +119,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
 
           {SALES_OPEN || PRICES_VISIBLE ? (
             <div class="price">
-              <strong id="pp-price">{formatPrice(PRICES.print[DEFAULT_SIZE]!, lang)}</strong>
+              <strong id="pp-price">{formatPrice(PRICES[F0][S0 as keyof (typeof PRICES)[typeof F0]]!, lang)}</strong>
               <small>{SALES_OPEN ? tp.priceNote : T[lang].soon.priceOpenNote}</small>
             </div>
           ) : (
@@ -147,7 +152,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
           <fieldset>
             <legend class="mono">{tp.format}</legend>
             <div class="formats">
-              {ACTIVE_FORMATS.map((f, i) => (
+              {PICK.map((f, i) => (
                 <label class="fmt">
                   <input type="radio" name="format" value={f} checked={i === 0} />
                   <span class="box">
@@ -164,7 +169,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
             <legend class="mono">{tp.size}</legend>
             <div class="pills">
               {shownSizes.map((s) => (
-                <label class="pill" data-formats={sizeFormats(s)}><input type="radio" name="size" value={s} checked={s === DEFAULT_SIZE} /><span>{s.replace('x', ' × ')} cm{s === '28x35' && <small> · {tp.matNote}</small>}</span></label>
+                <label class="pill" data-formats={sizeFormats(s)}><input type="radio" name="size" value={s} checked={s === S0} /><span>{s.replace('x', ' × ')} cm{s === '28x35' && <small> · {tp.matNote}</small>}</span></label>
               ))}
             </div>
           </fieldset>
@@ -184,7 +189,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
           {!SALES_OPEN && <div class="wait"><Waitlist lang={lang} product={{ slug: p.slug, name }} /></div>}
           <div class="buy" hidden={!SALES_OPEN}>
             <label class="qty"><span class="mono">{tp.qty}</span><span class="stepper"><button type="button" class="step" data-step="-1" aria-label="−">−</button><input type="number" name="qty" min="1" max="20" value="1" inputmode="numeric" /><button type="button" class="step" data-step="1" aria-label="+">+</button></span></label>
-            <button type="button" class="btn btn--solid order" id="pp-order" data-slug={p.slug} data-format="print" data-size={DEFAULT_SIZE} data-frame={FRAMES[0]} data-qty="1">
+            <button type="button" class="btn btn--solid order" id="pp-order" data-slug={p.slug} data-format={F0} data-size={S0} data-frame={FRAMES[0]} data-qty="1">
               {T[lang].cart.add} <span class="arrow">→</span>
             </button>
           </div>
@@ -317,7 +322,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
   const wanted = new URLSearchParams(location.search).get('boja');
   const pre = wanted && form.querySelector<HTMLInputElement>(`input[name="tone"][value="${CSS.escape(wanted)}"]`);
   if (pre) { pre.checked = true; setTone(wanted!); update(); }
-  // Every visit starts on the first, cheapest option (Принт 30 × 40): the browser must not bring back
+  // Every visit starts on the first, cheapest option: the browser must not bring back
   // an earlier choice when the page is restored from back/forward.
   addEventListener('pageshow', (e) => {
     if (!e.persisted) return;
