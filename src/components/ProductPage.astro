@@ -25,9 +25,9 @@ const fmt = t.formats.items;
 const hasFrames = FRAMES.length > 1 && ACTIVE_FORMATS.some((f) => f === 'framed' || f === 'edition');
 // Sizes offered by at least one active format; each pill lists the formats it belongs to.
 const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f].includes(s)));
-// Picker order: cheapest first, and every page opens on that cheapest option and its cheapest size.
+// Picker order: cheapest first; every page opens on Принт неурамљен in its cheapest size.
 const PICK = [...ACTIVE_FORMATS].sort((a, b) => minPrice(a) - minPrice(b));
-const F0 = PICK[0];
+const F0 = PICK.includes('print') ? 'print' : PICK[0]; // opens on the unframed poster (Принт неурамљен), cheapest size
 const S0 = (Object.entries(PRICES[F0]) as [string, number][]).sort((a, b) => a[1] - b[1])[0][0];
 // The main view follows the chosen format (what you see is what you get): bare print / mounted = the poster drawn
 // with CSS; framed = room shot with that frame colour; Мини урамљен = the card in a small frame; Мини принт = the card.
@@ -161,7 +161,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
             <div class="formats">
               {PICK.map((f, i) => (
                 <label class="fmt">
-                  <input type="radio" name="format" value={f} checked={i === 0} />
+                  <input type="radio" name="format" value={f} checked={f === F0} />
                   <span class="box">
                     <strong>{fmt[f].t}</strong>
                     {PRICES_VISIBLE && <span class="mono">{tp.from} {formatPrice(minPrice(f), lang)}</span>}
