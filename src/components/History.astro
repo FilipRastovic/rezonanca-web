@@ -30,13 +30,15 @@ if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });
   </div>
 </section>
 <style>
-  .hist { background: linear-gradient(var(--bg-0), var(--bg-1)); border-top: 1px solid var(--line); }
-  .hist.compact { padding: var(--space-block) 0; }
+  .hist { background: var(--bg-0); border-top: 1px solid var(--line); }
+  .hist.compact { padding: var(--space-md) 0; border-top: 1px solid var(--line); }
+  .hist.compact h2 { font-size: clamp(20px, 2vw, 28px); }
+  .hist.compact :global(.section-head) { margin-bottom: clamp(32px, 4vw, 56px); }
   .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md) var(--gap-col); }
   h3 { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); font-weight: 500; margin-bottom: 24px; }
   ol { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--line-strong); }
   li { position: relative; padding: 0 0 28px 28px; }
-  li::before { content: ''; position: absolute; left: -4px; top: 6px; width: 7px; height: 7px; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
-  .y { font: 300 clamp(20px, 2vw, 28px)/1 var(--f-display); color: var(--ice); }
+  li::before { content: ''; position: absolute; left: -4px; top: 4px; width: 7px; height: 7px; background: var(--cyan); }
+  .y { font: 500 var(--fs-h3)/1 var(--f-display); color: var(--ice); }
   p { margin: 10px 0 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.75; max-width: 52ch; }
 </style>

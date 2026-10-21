@@ -9,7 +9,7 @@ const en: typeof sr = {
   },
   nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In space', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
-    label: 'Art prints · Novi Sad',
+    label: 'Prints · Novi Sad',
     title: 'РЕЗОНАНЦА',
     tagline: 'Sound, frozen in light.',
     lead: 'Sound, frozen in light. Pictures drawn with code, line by line, printed on matte paper in Novi Sad.',
@@ -18,7 +18,7 @@ const en: typeof sr = {
     readout: ['FREQUENCY', 'COORDINATES', 'STATUS'],
     status: 'RECEIVING',
     scroll: 'Scroll',
-    shop: 'Art prints on matte paper, printed in Novi Sad.',
+    shop: 'Prints on matte paper, printed in Novi Sad.',
     framed: 'Framed print · 30 × 40 cm',
     mini: 'Framed mini · 15 × 15 cm',
     detail: 'print detail',

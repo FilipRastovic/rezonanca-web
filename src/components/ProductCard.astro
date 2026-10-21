@@ -1,6 +1,5 @@
 ---
 import { MIN_PRICE, PRICES_VISIBLE, formatPrice } from '../config';
-import { pad } from '../data/products.js';
 import SWATCHES from '../data/swatches.json';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string }
@@ -13,10 +12,6 @@ const tone = p.tones?.[0]; // first colourway: shown as colour dots
 const SW = SWATCHES as Record<string, string>;
 ---
 <a class="card" href={productHref(lang, p.slug) + (show ? `?boja=${show}` : '')} data-reveal style={`transition-delay:${delay}ms`}>
-  <span class="top mono">
-    <span>{seriesShort(lang, p.style)}</span>
-    <span>{t.product.no} {pad(p.seed)}</span>
-  </span>
   <span class="stage">
     <img class="room" src={`/rooms/${key}-${lang}-sm.webp`} srcset={`/rooms/${key}-${lang}-sm.webp 540w, /rooms/${key}-${lang}.webp 960w`} sizes="(max-width: 600px) 100vw, 360px" alt={`${series.name} - ${p.name[lang]}${show ? ` (${t.order.tones[show as 'orig']})` : ''}`} width="540" height="720" loading={eager ? 'eager' : 'lazy'} decoding="async" />
     <span class="art">
@@ -24,45 +19,40 @@ const SW = SWATCHES as Record<string, string>;
     </span>
   </span>
   <span class="info">
-    <span class="name">{p.name[lang]}{show && <small class="mono">{t.order.tones[show as 'orig']}</small>}</span>
-    {tone && (
-      <span class="tones" title={['orig', ...p.tones].map((k: string) => t.order.tones[k as 'orig']).join(' · ')}>
-        {['', ...p.tones].map((tn: string) => <i style={`background:${SW[tn ? `${p.slug}-${tn}` : p.slug]}`}></i>)}
-      </span>
-    )}
-  </span>
-  <span class="foot">
-    {PRICES_VISIBLE ? <span class="price"><span class="mono">{t.card.from}</span> {formatPrice(MIN_PRICE, lang)}</span>
-               : <span class="soon mono">{t.soon.badge}</span>}
-    <span class="go mono">{t.card.view} <span class="arrow">→</span></span>
+    <span class="row">
+      <span class="name">{p.name[lang]}{show && <small>{t.order.tones[show as 'orig']}</small>}</span>
+      {tone && (
+        <span class="tones" title={['orig', ...p.tones].map((k: string) => t.order.tones[k as 'orig']).join(' · ')}>
+          {['', ...p.tones].map((tn: string) => <i style={`background:${SW[tn ? `${p.slug}-${tn}` : p.slug]}`}></i>)}
+        </span>
+      )}
+    </span>
+    <span class="meta">
+      <span>{seriesShort(lang, p.style)}</span>
+      {PRICES_VISIBLE ? <span class="price">{t.card.from} {formatPrice(MIN_PRICE, lang)}</span> : <span>{t.soon.badge}</span>}
+    </span>
   </span>
 </a>
 <style>
-  .card { display: flex; flex-direction: column; color: inherit; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.6); transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s; }
-  .card:hover { border-color: var(--line-strong); box-shadow: var(--glow); transform: translateY(-4px); }
-  .top { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
-  .top span:first-child { color: var(--cyan); }
-  /* Card image: the print hanging in a room. Hover (desktop): the plain print on a dark wall, exactly as shipped. */
-  .stage { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; background: radial-gradient(ellipse at 35% 25%, rgba(18, 20, 23, 0.11), transparent 65%), linear-gradient(160deg, #f3f1ec, #eeebe5 60%, #e9e6df); }
+  /* Minimal gallery card: image, then name + colour dots, then series and price. No borders, no bars. */
+  .card { display: flex; flex-direction: column; color: inherit; }
+  /* Card image: the print hanging in a room. Hover (desktop): the plain print on a light wall, exactly as shipped. */
+  .stage { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; background: linear-gradient(160deg, #f3f1ec, #eeebe5 60%, #e9e6df); }
   .room { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.45s, transform 0.9s cubic-bezier(.2,.7,.2,1); }
-  .art { position: absolute; left: 50%; top: 47%; width: 72%; transform: translate(-50%, -50%); padding: var(--mat-pad); background: var(--mat); border: 6px solid var(--frame); box-shadow: var(--frame-shadow); opacity: 0; transition: opacity 0.45s; }
+  .art { position: absolute; left: 50%; top: 47%; width: 70%; transform: translate(-50%, -50%); padding: var(--mat-pad); background: var(--mat); border: 6px solid var(--frame); box-shadow: var(--frame-shadow); opacity: 0; transition: opacity 0.45s; }
   .art img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
   @media (hover: hover) {
     .card:hover .room { opacity: 0; }
     .card:hover .art { opacity: 1; }
   }
   @media (hover: none) { .art { display: none; } }
-  .info { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 14px; border-top: 1px solid var(--line); }
-  .tones { display: flex; gap: 5px; flex: none; }
-  .tones i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(18, 20, 23, 0.12); }
+  .info { display: grid; gap: 6px; padding: 16px 0 0; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .name { font: 500 var(--fs-h3)/1.25 var(--f-display); color: var(--ice); }
-  .name small { margin-left: 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: #e07aa0; vertical-align: middle; }
-  .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding: 14px 16px; border-top: 1px solid var(--line); }
-  .price { font: 500 var(--fs-body)/1 var(--f-body); color: var(--ice); }
-  .price .mono { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-right: 4px; }
-  .soon { padding: 4px 9px; border: 1px solid var(--line-strong); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ice); }
-  .go { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--cyan); }
-  .go .arrow { display: inline-block; transition: transform 0.3s; }
-  .card:hover .go .arrow { transform: translateX(4px); }
-  @media (hover: none) { .card:hover { transform: none; box-shadow: none; border-color: var(--line); } .card:hover .art img { filter: none; } }
+  .name small { margin-left: 8px; font: 400 var(--fs-2xs)/1 var(--f-body); letter-spacing: var(--track-ui); text-transform: uppercase; color: #b23a68; vertical-align: middle; }
+  .card:hover .name { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .tones { display: flex; gap: 5px; flex: none; }
+  .tones i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(18, 20, 23, 0.12); }
+  .meta { display: flex; justify-content: space-between; gap: 12px; font-size: var(--fs-sm); color: var(--muted); }
+  .price { color: var(--ice); }
 </style>

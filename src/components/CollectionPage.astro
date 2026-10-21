@@ -101,7 +101,7 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
   {current && <section class="list">
     <div class="wrap">
       {shown.map((s, si) => (
-        <div class="series panel">
+        <div class="series">
           {!current && <SeriesHeader lang={lang} series={s} />}
           <div class="grid">
             {productsBySeries(s.key).map((p, i) => <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={(i % 3) * 90} />)}
@@ -169,7 +169,7 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
   .chips i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
   .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: var(--space-head); }
   .series + .series { margin-top: clamp(28px, 3.5vw, 56px); }
-  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 1.8vw, 28px); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
   @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }

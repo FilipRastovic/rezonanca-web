@@ -1,13 +1,13 @@
 ---
 import { SERBIA_MAP } from '../data/serbia-map';
 import { T, type Lang } from '../i18n';
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props { lang: Lang; compact?: boolean }
+const { lang, compact = false } = Astro.props;
 const t = T[lang].madeIn;
 // Split the map so the Novi Sad marker can be highlighted.
 const [before, after] = SERBIA_MAP.split('@');
 ---
-<section class="made grid-bg">
+<section class:list={['made grid-bg', { compact }]}>
   <div class="wrap">
     <div class="box panel">
       <div class="text">
@@ -33,6 +33,7 @@ const [before, after] = SERBIA_MAP.split('@');
 </section>
 <style>
   .made { background-color: var(--bg-0); }
+  .made.compact { padding: var(--space-md) 0; border-top: 1px solid var(--line); }
   .box { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
   .lead { margin-top: 20px; }
   .steps { list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 0; border-top: 1px solid var(--line); }

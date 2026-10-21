@@ -20,7 +20,7 @@ const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
 ---
 <header class="nav" id="nav">
   <div class="wrap inner">
-    <a href={home} aria-label="Rezonanca" class="home"><Logo tag={lang === 'sr' ? 'уметнички принтови' : 'art prints'} tagClass="nav-tag" /></a>
+    <a href={home} aria-label="Rezonanca" class="home"><Logo tag={lang === 'sr' ? 'принтови нацртани кодом' : 'prints drawn in code'} tagClass="nav-tag" /></a>
     <nav aria-label="Main">
       {links.map(([href, label]) => <a href={href} class:list={{ on: href === path }}>{label}</a>)}
     </nav>
