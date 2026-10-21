@@ -107,6 +107,18 @@ const en: typeof sr = {
       studio: { t: 'By the window', d: 'Spiral in a black frame, in afternoon light.' },
     },
   },
+  about: {
+    label: 'About me',
+    title: 'A programmer who draws with code.',
+    name: 'Filip Rastović',
+    role: 'Software engineer (BSc) · Novi Sad',
+    alt: 'Filip Rastović',
+    body: [
+      'I hold a degree in software engineering and have been programming for more than ten years. I build online stores for brands around the world, and I also make 3D art.',
+      'Rezonanca brings the two together. Every piece is a program I wrote myself, line by line: the maths decides the shape, I choose the number, the colours and the framing. The prints are made in Novi Sad on matte paper, and I ship them myself.',
+      'What you see on the site is exactly what arrives on your wall.',
+    ],
+  },
   formats: {
     label: '04 // FORMATS',
     title: 'Choose how the signal lives.',
