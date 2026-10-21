@@ -15,7 +15,7 @@ const scenes = (['living', 'studio', 'hall'] as const).map((k) => ({ k, ...t.sce
     <div class="scenes">
       {scenes.map((s, i) => (
         <figure class:list={['scene', { wide: i === 0 }]} data-reveal>
-          <img src={i === 0 ? '/photos/halvorsen-3-wide.webp' : i === 1 ? '/photos/halvorsen-2-wide.webp' : `/interiors/${s.k}-${lang}.webp`} alt={`${s.t} - ${s.d}`} width="1600" height="1000" loading="lazy" decoding="async" />
+          <img src={i === 0 ? '/photos/halvorsen-3-wide.webp' : i === 1 ? '/photos/halvorsen-2-wide.webp' : '/photos/spirala-1-wide.webp'} alt={`${s.t} - ${s.d}`} width="1600" height="1000" loading="lazy" decoding="async" />
           <figcaption>
             <span class="mono">0{i + 1}</span>
             <strong>{s.t}</strong>

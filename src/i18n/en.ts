@@ -100,13 +100,14 @@ const en: typeof sr = {
     scenes: {
       living: { t: 'Living room', d: 'Halvorsen in an oak frame, above a sideboard, in daylight. A real photo.' },
       studio: { t: 'Music corner', d: 'Next to a guitar and an amp, leaning on the sofa. A real photo.' },
-      hall: { t: 'Hallway', d: 'As a pair - Aizawa and Mandelbrot, chaos and order in conversation.' },
+      hall: { t: 'Above the sideboard', d: 'Spiral in an oak frame, 30 × 40, in daylight. A real photo.' },
     },
   },
   formats: {
     label: '04 // FORMATS',
     title: 'Choose how the signal lives.',
     from: 'from',
+    miniPhoto: 'Mini prints on a table - a real photo',
     items: {
       print: { t: 'Print', d: 'Pure form. Pigment inks on matte paper, printed in Novi Sad.', spec: ['Matte paper, 180 gsm, 300 DPI', 'Arrives rolled in a rigid tube', 'Ready for your frame'] },
       framed: { t: 'Framed print', d: 'Ready for the wall the day it arrives.', spec: ['Black or oak frame', 'Standard sizes 30 × 40 and 50 × 70 cm', 'Carefully packed in a box'] },

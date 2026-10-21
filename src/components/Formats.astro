@@ -18,6 +18,7 @@ const one = ACTIVE_FORMATS.length === 1;
         return (
           <article class:list={['card', { featured: one || f === 'framed' }]} data-reveal style={`transition-delay:${i * 90}ms`}>
             {!one && f === 'framed' && <span class="badge mono">{t.badge}</span>}
+            {f === 'miniprint' && <img class="ph" src="/photos/mini-printovi-1-sm.webp" alt={t.miniPhoto} width="500" height="667" loading="lazy" decoding="async" />}
             <span class="idx mono">F-0{i + 1}</span>
             <h3>{item.t}</h3>
             <p class="d">{item.d}</p>
@@ -48,6 +49,7 @@ const one = ACTIVE_FORMATS.length === 1;
   .card:hover { border-color: var(--line-strong); transform: translateY(-6px); }
   .card.featured { border-color: var(--cyan); box-shadow: var(--glow); background: linear-gradient(180deg, rgba(35, 105, 255, 0.14), var(--bg-card) 60%); }
   .badge { position: absolute; top: -11px; left: 24px; padding: 5px 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; background: var(--cyan); color: var(--bg-0); font-weight: 700; }
+  .ph { display: block; width: calc(100% + 2 * clamp(22px, 2vw, 32px)); max-width: none; margin: calc(-1 * clamp(28px, 2.6vw, 40px)) calc(-1 * clamp(22px, 2vw, 32px)) 22px; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 40%; border-bottom: 1px solid var(--line); }
   .idx { font-size: var(--fs-2xs); color: var(--muted); }
   h3 { margin-top: 18px; font-size: var(--fs-h3); }
   .d { margin: 12px 0 0; color: var(--text); font-size: var(--fs-body); min-height: 4.8em; }
