@@ -43,7 +43,7 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ..
       <div class="grid">
         <div class="block eq">
           <span class="k mono">{t.equations}</span>
-          {m.equations.map((e: string) => <code>{e}</code>)}
+          <pre class="codebox" aria-label={t.equations}>{m.equations.map((e: string) => <code>{e}</code>)}</pre>
         </div>
         <div class="block">
           <span class="k mono">{t.params}</span>
@@ -74,7 +74,10 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ..
   .block { padding: 0; }
   .eq { --c: var(--cyan); }
   .k { display: block; margin-bottom: 18px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); }
-  code { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); font: 400 var(--fs-body)/1.6 var(--f-code); color: var(--ice); overflow-wrap: anywhere; }
+  /* Equations as a code block: ink panel, numbered lines, monospace. */
+  .codebox { margin: 0; padding: 18px 0; background: #121417; color: #e9e6df; counter-reset: ln; overflow-x: auto; white-space: normal; }
+  code { position: relative; display: block; padding: 6px 20px 6px 52px; font: 400 var(--fs-sm)/1.7 var(--f-code); color: #e9e6df; overflow-wrap: anywhere; counter-increment: ln; }
+  code::before { content: counter(ln, decimal-leading-zero); position: absolute; left: 18px; color: #6b6f77; font-size: var(--fs-2xs); line-height: inherit; top: 7px; }
   code:last-child { border-bottom: none; }
   dl { margin: 0; display: grid; gap: 12px; }
   dl div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
