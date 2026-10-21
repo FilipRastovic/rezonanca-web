@@ -175,7 +175,6 @@ const en: typeof sr = {
   },
   tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
   collection: {
-    pink: 'Pink versions',
     label: 'COLLECTION // 58 WORKS',
     title: 'Collection',
     lead: 'Fifty-eight signals, ten series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',

@@ -37,7 +37,6 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
       <h1>{current ? info!.name : t.collection.title}</h1>
       <p class="lead">{current ? info!.desc : t.collection.lead}</p>
 
-      {!current && <div class="chips mono"><a href={`${collectionHref(lang)}?boja=roza`}><span class="pink"></span>{t.collection.pink} <i>{pink.length}</i></a></div>}
       {current && <div class="chips mono" role="list">
         <a role="listitem" href={collectionHref(lang)} class:list={{ on: !current }}>{t.collection.all} <i>{PRODUCTS.length}</i></a>
         {SERIES.map((s) => (
@@ -168,7 +167,6 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
   .chips a:hover { border-color: var(--line-strong); color: var(--ice); }
   .chips a.on { border-color: var(--cyan); background: rgba(18, 20, 23, 0.048); color: var(--cyan); }
   .chips i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
-  .chips .pink { width: 10px; height: 10px; border-radius: 50%; background: #cd467d; }
   .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: var(--space-head); }
   .series + .series { margin-top: clamp(28px, 3.5vw, 56px); }
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
