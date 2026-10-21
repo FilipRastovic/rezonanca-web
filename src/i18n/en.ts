@@ -109,7 +109,7 @@ const en: typeof sr = {
     from: 'from',
     miniPhoto: 'Mini prints on a table - a real photo',
     items: {
-      print: { t: 'Print', d: 'Pure form. Pigment inks on matte paper, printed in Novi Sad.', spec: ['Matte paper, 180 gsm, 300 DPI', 'Arrives rolled in a rigid tube', 'Ready for your frame'] },
+      print: { t: 'Unframed print', d: 'Pure form. Pigment inks on matte paper, printed in Novi Sad.', spec: ['Matte paper, 180 gsm, 300 DPI', 'Arrives rolled in a rigid tube', 'Ready for your frame'] },
       framed: { t: 'Framed print', d: 'Ready for the wall the day it arrives.', spec: ['Black or oak frame', 'Standard sizes 30 × 40 and 50 × 70 cm', 'Carefully packed in a box'] },
       mounted: { t: 'Mounted print', d: 'A print set in a black mat board, unframed. A gift, or ready for your frame.', spec: ['28 × 35 cm mat, 20 × 25 cm print', 'Unframed, in a protective sleeve', 'Fits a standard 11 × 14" (28 × 35) frame'] },
       mini: { t: 'Framed mini', d: 'A small square of the artwork itself, framed.', spec: ['15 × 15 cm, framed', 'Artwork only, no text around it', 'Name and formula on the white border'] },

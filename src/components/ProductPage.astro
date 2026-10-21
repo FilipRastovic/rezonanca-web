@@ -295,7 +295,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
     main.src = b.dataset.src!;
     main.alt = b.dataset.alt!;
     fig.dataset.fit = b.dataset.fit!;
-    // Мини у раму: the poster view becomes the square, art-only mini (what that product really is).
+    // Мини урамљен / Мини принт: the poster view becomes the square, art-only mini (what that product really is).
     if ((fig.dataset.look === 'mini' || fig.dataset.look === 'miniprint') && b.dataset.fit === 'poster') {
       const tone = String(new FormData(form).get('tone') || 'orig');
       main.src = `/minis/${orderBtn.dataset.slug}${tone !== 'orig' ? '-' + tone : ''}.webp`;
