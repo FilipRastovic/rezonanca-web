@@ -106,7 +106,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
           <p class="lb-count mono" id="lb-count"></p>
         </dialog>
 
-        <form class="info" id="pp-form" data-config={cfg} onsubmit="return false">
+        <form class="info" id="pp-form" data-config={cfg} onsubmit="return false" autocomplete="off">
           <p class="label">{info.code.split(' // ')[0]} // {seriesName}</p>
           <h1>{name}</h1>
           <p class="meta mono">{tp.no} {pad(p.seed)} · {t.variants[p.variant as 'burst']} · {t.palettes[p.palette as 'cyan']}</p>
@@ -317,6 +317,15 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
   const wanted = new URLSearchParams(location.search).get('boja');
   const pre = wanted && form.querySelector<HTMLInputElement>(`input[name="tone"][value="${CSS.escape(wanted)}"]`);
   if (pre) { pre.checked = true; setTone(wanted!); update(); }
+  // Every visit starts on the first, cheapest option (Принт 30 × 40): the browser must not bring back
+  // an earlier choice when the page is restored from back/forward.
+  addEventListener('pageshow', (e) => {
+    if (!e.persisted) return;
+    form.reset();
+    if (pre) pre.checked = true;
+    setTone(pre ? wanted! : 'orig');
+    update();
+  });
 
   // Full screen view: tap the image; arrows, swipe, Esc or tap outside to close.
   const lb = document.getElementById('pp-lightbox') as HTMLDialogElement;
