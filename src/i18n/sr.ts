@@ -448,7 +448,7 @@ export default {
     size: 'Величина',
     frame: 'Рам',
     frames: { black: 'Црни', white: 'Бели', oak: 'Храст' },
-    tones: { orig: 'Оригинал', roza: 'Розе' },
+    tones: { orig: 'Оригинал', roza: 'Розе', tus: 'Туш' },
     color: 'Боја',
     qty: 'Количина',
     name: 'Име и презиме',

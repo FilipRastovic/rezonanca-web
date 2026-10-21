@@ -226,9 +226,13 @@ for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 
 // Colourways offered next to the original (generator ?tone=, see waveform-poster TONES).
 // Skipped where the colourway doesn't work: fine ridge meshes turn to haze, thin single lines vanish.
-export const TONES = ['roza'];
-const NO_TONE = ['resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'];
-for (const x of PRODUCTS) x.tones = NO_TONE.includes(x.slug) ? [] : TONES;
+// roza = deep rose ground (2026-10-11); tus = Туш, black ink on white paper (2026-10-21, light rebrand).
+export const TONES = ['roza', 'tus'];
+const NO_TONE = {
+  roza: ['resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'],
+  tus: ['magla', 'nulta-orbita', 'pomracenje', 'oreol', 'crvotocina'], // weak on white paper (Filip 2026-10-21)
+};
+for (const x of PRODUCTS) x.tones = TONES.filter((t) => !NO_TONE[t].includes(x.slug));
 // Image file key for a product in a colourway ('' = original).
 export const imgKey = (slug, tone) => (tone ? `${slug}-${tone}` : slug);
 

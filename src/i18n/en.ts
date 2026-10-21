@@ -450,7 +450,7 @@ const en: typeof sr = {
     size: 'Size',
     frame: 'Frame',
     frames: { black: 'Black', white: 'White', oak: 'Oak' },
-    tones: { orig: 'Original', roza: 'Rose' },
+    tones: { orig: 'Original', roza: 'Rose', tus: 'Ink' },
     color: 'Colour',
     qty: 'Quantity',
     name: 'Full name',

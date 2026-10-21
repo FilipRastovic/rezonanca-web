@@ -17,6 +17,7 @@ const out = {};
 for (const p of PRODUCTS) {
   for (const tone of ['', ...(p.tones || [])]) {
     const key = imgKey(p.slug, tone);
+    if (tone === 'tus') { out[key] = '#121417'; continue; } // Туш = black ink on white paper
     const { data } = await sharp(`public/posters/${key}-sr.webp`).resize(150).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     const w = new Float64Array(BINS), sum = Array.from({ length: BINS }, () => [0, 0, 0]);
     for (let i = 0; i < data.length; i += 3) {

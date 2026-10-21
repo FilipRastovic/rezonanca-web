@@ -7,7 +7,15 @@
 "black": "-2",
 "oak": ""
 },
+"aizava-tus": {
+"black": "-2",
+"oak": ""
+},
 "anomalija": {
+"black": "",
+"oak": "-2"
+},
+"anomalija-tus": {
 "black": "",
 "oak": "-2"
 },
@@ -19,11 +27,19 @@
 "black": "",
 "oak": "-2"
 },
+"aurora-tus": {
+"black": "",
+"oak": "-2"
+},
 "beskonacnost": {
 "black": "",
 "oak": "-oak"
 },
 "beskonacnost-roza": {
+"black": "",
+"oak": "-oak"
+},
+"beskonacnost-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -35,7 +51,15 @@
 "black": "",
 "oak": "-oak"
 },
+"blizanci-tus": {
+"black": "",
+"oak": "-oak"
+},
 "caura": {
+"black": "",
+"oak": "-oak"
+},
+"caura-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -43,7 +67,15 @@
 "black": "",
 "oak": "-oak"
 },
+"cen-tus": {
+"black": "",
+"oak": "-oak"
+},
 "cetiri-krila": {
+"black": "",
+"oak": "-oak"
+},
+"cetiri-krila-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -55,6 +87,10 @@
 "black": "",
 "oak": "-2"
 },
+"dadras-tus": {
+"black": "",
+"oak": "-2"
+},
 "dajsonova-sfera": {
 "black": "",
 "oak": "-oak"
@@ -63,11 +99,23 @@
 "black": "",
 "oak": "-oak"
 },
+"dajsonova-sfera-tus": {
+"black": "",
+"oak": "-oak"
+},
 "de-zong": {
 "black": "-2",
 "oak": ""
 },
+"de-zong-tus": {
+"black": "-2",
+"oak": ""
+},
 "dim": {
+"black": "",
+"oak": "-oak"
+},
+"dim-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -79,11 +127,19 @@
 "black": "",
 "oak": "-2"
 },
+"dolina-morskih-konjica-tus": {
+"black": "",
+"oak": "-2"
+},
 "drvo-signala": {
 "black": "",
 "oak": "-oak"
 },
 "drvo-signala-roza": {
+"black": "",
+"oak": "-oak"
+},
+"drvo-signala-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -95,7 +151,15 @@
 "black": "",
 "oak": "-2"
 },
+"dvojna-zvezda-tus": {
+"black": "",
+"oak": "-2"
+},
 "dvojstvo": {
+"black": "-2",
+"oak": ""
+},
+"dvojstvo-tus": {
 "black": "-2",
 "oak": ""
 },
@@ -107,11 +171,19 @@
 "black": "-2",
 "oak": ""
 },
+"dvostruka-spirala-tus": {
+"black": "-2",
+"oak": ""
+},
 "galaksija": {
 "black": "",
 "oak": "-oak"
 },
 "galaksija-roza": {
+"black": "",
+"oak": "-oak"
+},
+"galaksija-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -123,11 +195,19 @@
 "black": "",
 "oak": "-oak"
 },
+"halvorsen-tus": {
+"black": "",
+"oak": "-oak"
+},
 "horizont": {
 "black": "",
 "oak": "-2"
 },
 "horizont-roza": {
+"black": "",
+"oak": "-2"
+},
+"horizont-tus": {
 "black": "",
 "oak": "-2"
 },
@@ -139,11 +219,19 @@
 "black": "-2",
 "oak": ""
 },
+"kanjon-tus": {
+"black": "-2",
+"oak": ""
+},
 "klifordov-veo": {
 "black": "",
 "oak": "-oak"
 },
 "klifordov-veo-roza": {
+"black": "",
+"oak": "-oak"
+},
+"klifordov-veo-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -155,11 +243,19 @@
 "black": "",
 "oak": "-oak"
 },
+"kula-tus": {
+"black": "",
+"oak": "-oak"
+},
 "lorenc": {
 "black": "",
 "oak": "-oak"
 },
 "lorenc-roza": {
+"black": "",
+"oak": "-oak"
+},
+"lorenc-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -175,11 +271,19 @@
 "black": "",
 "oak": "-oak"
 },
+"magnetar-tus": {
+"black": "",
+"oak": "-oak"
+},
 "mali-mandelbrot": {
 "black": "",
 "oak": "-oak"
 },
 "mali-mandelbrot-roza": {
+"black": "",
+"oak": "-oak"
+},
+"mali-mandelbrot-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -191,6 +295,10 @@
 "black": "-2",
 "oak": ""
 },
+"mandelbrotov-skup-tus": {
+"black": "-2",
+"oak": ""
+},
 "metropola": {
 "black": "-2",
 "oak": ""
@@ -199,11 +307,19 @@
 "black": "-2",
 "oak": ""
 },
+"metropola-tus": {
+"black": "-2",
+"oak": ""
+},
 "morska-zvezda": {
 "black": "",
 "oak": "-oak"
 },
 "morska-zvezda-roza": {
+"black": "",
+"oak": "-oak"
+},
+"morska-zvezda-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -223,6 +339,10 @@
 "black": "",
 "oak": "-2"
 },
+"orbitalni-grad-tus": {
+"black": "",
+"oak": "-2"
+},
 "oreol": {
 "black": "-2",
 "oak": ""
@@ -232,6 +352,10 @@
 "oak": ""
 },
 "perje": {
+"black": "",
+"oak": "-oak"
+},
+"perje-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -251,11 +375,19 @@
 "black": "",
 "oak": "-oak"
 },
+"ponoc-tus": {
+"black": "",
+"oak": "-oak"
+},
 "predajnik": {
 "black": "",
 "oak": "-oak"
 },
 "predajnik-roza": {
+"black": "",
+"oak": "-oak"
+},
+"predajnik-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -267,7 +399,15 @@
 "black": "",
 "oak": "-oak"
 },
+"prsten-tisine-tus": {
+"black": "",
+"oak": "-oak"
+},
 "prvi-signal": {
+"black": "",
+"oak": "-oak"
+},
+"prvi-signal-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -275,7 +415,15 @@
 "black": "-2",
 "oak": ""
 },
+"rabinovic-tus": {
+"black": "-2",
+"oak": ""
+},
 "resler": {
+"black": "",
+"oak": "-oak"
+},
+"resler-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -283,11 +431,23 @@
 "black": "",
 "oak": "-oak"
 },
+"ruza-tus": {
+"black": "",
+"oak": "-oak"
+},
 "severni-signal": {
 "black": "",
 "oak": "-oak"
 },
+"severni-signal-tus": {
+"black": "",
+"oak": "-oak"
+},
 "snop": {
+"black": "",
+"oak": "-2"
+},
+"snop-tus": {
 "black": "",
 "oak": "-2"
 },
@@ -299,11 +459,23 @@
 "black": "-2",
 "oak": ""
 },
+"spirala-tus": {
+"black": "-2",
+"oak": ""
+},
 "sprot": {
 "black": "-2",
 "oak": ""
 },
+"sprot-tus": {
+"black": "-2",
+"oak": ""
+},
 "stanica": {
+"black": "-2",
+"oak": ""
+},
+"stanica-tus": {
 "black": "-2",
 "oak": ""
 },
@@ -315,11 +487,19 @@
 "black": "",
 "oak": "-2"
 },
+"supernova-tus": {
+"black": "",
+"oak": "-2"
+},
 "svila": {
 "black": "",
 "oak": "-oak"
 },
 "svila-roza": {
+"black": "",
+"oak": "-oak"
+},
+"svila-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -331,6 +511,10 @@
 "black": "",
 "oak": "-2"
 },
+"svitanje-tus": {
+"black": "",
+"oak": "-2"
+},
 "talas": {
 "black": "",
 "oak": "-2"
@@ -339,7 +523,15 @@
 "black": "",
 "oak": "-2"
 },
+"talas-tus": {
+"black": "",
+"oak": "-2"
+},
 "tiha-oluja": {
+"black": "",
+"oak": "-oak"
+},
+"tiha-oluja-tus": {
 "black": "",
 "oak": "-oak"
 },
@@ -351,7 +543,15 @@
 "black": "",
 "oak": "-oak"
 },
+"tomas-tus": {
+"black": "",
+"oak": "-oak"
+},
 "vetrenjaca": {
+"black": "-2",
+"oak": ""
+},
+"vetrenjaca-tus": {
 "black": "-2",
 "oak": ""
 },
@@ -363,6 +563,10 @@
 "black": "",
 "oak": "-2"
 },
+"vitica-tus": {
+"black": "",
+"oak": "-2"
+},
 "vodopad": {
 "black": "-2",
 "oak": ""
@@ -371,7 +575,15 @@
 "black": "-2",
 "oak": ""
 },
+"vodopad-tus": {
+"black": "-2",
+"oak": ""
+},
 "vrtlog": {
+"black": "",
+"oak": "-2"
+},
+"vrtlog-tus": {
 "black": "",
 "oak": "-2"
 }
