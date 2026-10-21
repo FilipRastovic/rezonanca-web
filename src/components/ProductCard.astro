@@ -44,7 +44,7 @@ const SW = SWATCHES as Record<string, string>;
 </script>
 <style>
   /* Minimal gallery card: image, then name + colour dots, then series and price. No borders, no bars. */
-  .card { display: flex; flex-direction: column; color: inherit; }
+  .card { display: flex; flex-direction: column; color: inherit; container-type: inline-size; }
   /* Card image: the print hanging in a room. Hover (desktop): the plain print on a light wall, exactly as shipped. */
   .stage { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; background: linear-gradient(160deg, #f3f1ec, #eeebe5 60%, #e9e6df); }
   .room { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.45s, transform 0.9s cubic-bezier(.2,.7,.2,1); }
@@ -63,7 +63,7 @@ const SW = SWATCHES as Record<string, string>;
   .tones { display: flex; gap: 5px; flex: none; }
   .tones i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(18, 20, 23, 0.12); }
   .meta { display: flex; justify-content: space-between; gap: 12px; font-size: var(--fs-sm); color: var(--muted); }
-  @media (max-width: 600px) {
+  @container (max-width: 240px) {
     .name { font-size: var(--fs-sm); }
     .meta { flex-direction: column; gap: 2px; font-size: var(--fs-2xs); }
     .tones i { width: 8px; height: 8px; }

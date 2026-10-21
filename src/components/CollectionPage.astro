@@ -45,6 +45,12 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
           </a>
         ))}
       </div>}
+      {current && <label class="pick"><span class="mono">{t.collection.filter.series}</span>
+        <select onchange="location.href=this.value">
+          <option value={collectionHref(lang)}>{t.collection.all} ({PRODUCTS.length})</option>
+          {SERIES.map((s) => <option value={collectionHref(lang, s.slug)} selected={current?.slug === s.slug}>{seriesShort(lang, s.key)} ({productsBySeries(s.key).length})</option>)}
+        </select>
+      </label>}
     </div>
   </section>
 
@@ -156,6 +162,13 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
   }
 </script>
 <style>
+  .pick { display: none; }
+  @media (max-width: 700px) {
+    .chips { display: none; }
+    .pick { display: grid; gap: 8px; margin-top: 28px; }
+    .pick .mono { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
+    .pick select { width: 100%; padding: 14px 40px 14px 14px; font: 500 var(--fs-body)/1.2 var(--f-body); color: var(--ice); background: var(--bg-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23121417' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 14px center; border: 1px solid var(--line-strong); border-radius: 0; appearance: none; }
+  }
   .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
   .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
   .crumbs a:hover { color: var(--cyan); }
@@ -172,7 +185,7 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
   @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; gap: 40px; } }
 
   /* All works: filter sidebar + flat grid */
   .all { display: grid; grid-template-columns: 220px 1fr; gap: clamp(28px, 3vw, 48px); align-items: start; }

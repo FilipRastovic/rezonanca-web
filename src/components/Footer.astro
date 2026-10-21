@@ -39,6 +39,8 @@ const t = T[lang].footer;
 <style>
   footer { border-top: 1px solid var(--line); padding: 64px 0 32px; background: var(--bg-1); }
   .grid { display: flex; justify-content: space-between; gap: 40px 64px; flex-wrap: wrap; }
+  .grid > * { min-width: 0; max-width: 100%; }
+  @media (max-width: 500px) { footer :global(.tag) { white-space: normal; line-height: 1.4; } footer :global(.logo) { align-items: flex-start; } }
   .grid > div:first-child { margin-right: auto; }
   p { color: var(--muted); margin: 16px 0 0; }
   .contact { display: flex; flex-direction: column; gap: 10px; font-size: var(--fs-sm); }

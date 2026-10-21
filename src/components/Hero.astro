@@ -55,6 +55,7 @@ const MINIS = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(find
   <div class="wrap">
     <ul class="facts">
       {t.facts.map((f, i) => <li><span class="n">0{i + 1}</span>{f}</li>)}
+      {t.facts.map((f, i) => <li class="dup" aria-hidden="true"><span class="n">0{i + 1}</span>{f}</li>)}
     </ul>
   </div>
 </section>
@@ -105,15 +106,21 @@ const MINIS = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(find
   /* Print facts strip */
   .facts { position: relative; z-index: 2; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
   .facts li { display: flex; align-items: baseline; gap: 14px; padding: 18px 0 0; font-size: var(--fs-sm); color: var(--ice); }
+  .facts .dup { display: none; }
+  @keyframes ticker { to { transform: translateX(calc(-50% - 20px)); } }
   .facts .n { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); color: var(--muted); }
 
   @media (max-width: 900px) {
     .hero { justify-content: flex-start; padding-top: 110px; }
     .grid { grid-template-columns: 1fr; }
     .collage { max-width: 560px; margin-bottom: 36px; }
-    .facts { grid-template-columns: 1fr 1fr; row-gap: 4px; }
+    /* Phones: one line that scrolls by itself */
+    .wrap:has(> .facts) { overflow: hidden; }
+    .facts { display: flex; width: max-content; gap: 40px; padding-top: 16px; animation: ticker 22s linear infinite; }
+    .facts li { padding: 0; white-space: nowrap; }
+    .facts .dup { display: flex; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .title span, .tile img, .pframe img, .caps p { animation: none; }
+    .title span, .tile img, .pframe img, .caps p, .facts { animation: none; }
   }
 </style>

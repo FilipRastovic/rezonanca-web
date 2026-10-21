@@ -34,7 +34,7 @@ if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });
   .hist.compact { padding: var(--space-md) 0; border-top: 1px solid var(--line); }
   .hist.compact h2 { font-size: clamp(20px, 2vw, 28px); }
   .hist.compact :global(.section-head) { margin-bottom: clamp(32px, 4vw, 56px); }
-  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md) var(--gap-col); }
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: var(--space-md) var(--gap-col); }
   h3 { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); font-weight: 500; margin-bottom: 24px; }
   ol { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--line-strong); }
   li { position: relative; padding: 0 0 28px 28px; }

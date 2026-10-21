@@ -65,5 +65,5 @@ const one = ACTIVE_FORMATS.length === 1;
   @media (max-width: 1080px) { .cards:not(.one) { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 760px) { .get, .get ul { grid-template-columns: 1fr; } }
   @media (max-width: 760px) { .cards.one { grid-template-columns: 1fr; } }
-  @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } .d { min-height: 0; } }
+  @media (max-width: 560px) { .cards, .cards:not(.one) { grid-template-columns: 1fr; } .d { min-height: 0; } }
 </style>
