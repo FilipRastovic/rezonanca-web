@@ -5,3 +5,6 @@ dist/
 screenshots/
 .backup/
 .DS_Store
+
+# Social-media tools: run locally by the Social chat, not part of the website
+scripts/social-*.mjs
