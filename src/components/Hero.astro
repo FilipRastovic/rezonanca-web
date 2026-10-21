@@ -38,7 +38,7 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
     </a>
     <a class="mini" href={productHref(lang, MINIS[0].slug)} aria-label={`${MINIS[0].name[lang]} - ${t.mini}`}>
       <span class="art">
-        {MINIS.map((p, i) => <img src={`/minis/${p.slug}.webp`} alt="" width="900" height="900" decoding="async" style={`--i:${i}`} />)}
+        {MINIS.map((p, i) => <img src={`/minis/card-${p.slug}.webp`} alt="" width="900" height="900" decoding="async" style={`--i:${i}`} />)}
       </span>
     </a>
     <div class="caps mono">
@@ -98,9 +98,9 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
   .framed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3); }
   .framed img:first-child { opacity: 1; }
   @keyframes show { 0%, 21% { opacity: 1; } 27%, 94% { opacity: 0; } 100% { opacity: 1; } }
-  .mini { position: absolute; right: calc(100% + 22px); bottom: 0; width: 40%; aspect-ratio: 1; padding: 6%; background: #f4f3ef; box-shadow: var(--frame-shadow); transform: rotate(-3deg); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .mini { position: absolute; right: calc(100% + 22px); bottom: 0; width: 40%; aspect-ratio: 1; background: #fff; box-shadow: var(--frame-shadow); transform: rotate(-3deg); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .mini:hover { transform: rotate(-1deg) translateY(-6px); }
-  .mini .art { position: relative; display: block; width: 100%; height: 100%; background: #050b1e; }
+  .mini .art { position: relative; display: block; width: 100%; height: 100%; background: #fff; } /* the printed mini card (white border + name) */
   .mini img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s + 2.5s - 0.01s); }
   .mini img:first-child { opacity: 1; }
   .caps { position: absolute; left: 0; right: 0; top: calc(100% + 18px); height: 2.6em; font-size: var(--fs-2xs); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }

@@ -1,0 +1,378 @@
+{
+"aizava": {
+"black": "-2",
+"oak": ""
+},
+"aizava-roza": {
+"black": "-2",
+"oak": ""
+},
+"anomalija": {
+"black": "",
+"oak": "-2"
+},
+"aurora": {
+"black": "",
+"oak": "-2"
+},
+"aurora-roza": {
+"black": "",
+"oak": "-2"
+},
+"beskonacnost": {
+"black": "",
+"oak": "-oak"
+},
+"beskonacnost-roza": {
+"black": "",
+"oak": "-oak"
+},
+"blizanci": {
+"black": "",
+"oak": "-oak"
+},
+"blizanci-roza": {
+"black": "",
+"oak": "-oak"
+},
+"caura": {
+"black": "",
+"oak": "-oak"
+},
+"cen": {
+"black": "",
+"oak": "-oak"
+},
+"cetiri-krila": {
+"black": "",
+"oak": "-oak"
+},
+"crvotocina": {
+"black": "",
+"oak": "-oak"
+},
+"dadras": {
+"black": "",
+"oak": "-2"
+},
+"dajsonova-sfera": {
+"black": "",
+"oak": "-oak"
+},
+"dajsonova-sfera-roza": {
+"black": "",
+"oak": "-oak"
+},
+"de-zong": {
+"black": "-2",
+"oak": ""
+},
+"dim": {
+"black": "",
+"oak": "-oak"
+},
+"dolina-morskih-konjica": {
+"black": "",
+"oak": "-2"
+},
+"dolina-morskih-konjica-roza": {
+"black": "",
+"oak": "-2"
+},
+"drvo-signala": {
+"black": "",
+"oak": "-oak"
+},
+"drvo-signala-roza": {
+"black": "",
+"oak": "-oak"
+},
+"dvojna-zvezda": {
+"black": "",
+"oak": "-2"
+},
+"dvojna-zvezda-roza": {
+"black": "",
+"oak": "-2"
+},
+"dvojstvo": {
+"black": "-2",
+"oak": ""
+},
+"dvostruka-spirala": {
+"black": "-2",
+"oak": ""
+},
+"dvostruka-spirala-roza": {
+"black": "-2",
+"oak": ""
+},
+"galaksija": {
+"black": "",
+"oak": "-oak"
+},
+"galaksija-roza": {
+"black": "",
+"oak": "-oak"
+},
+"halvorsen": {
+"black": "",
+"oak": "-oak"
+},
+"halvorsen-roza": {
+"black": "",
+"oak": "-oak"
+},
+"horizont": {
+"black": "",
+"oak": "-2"
+},
+"horizont-roza": {
+"black": "",
+"oak": "-2"
+},
+"kanjon": {
+"black": "-2",
+"oak": ""
+},
+"kanjon-roza": {
+"black": "-2",
+"oak": ""
+},
+"klifordov-veo": {
+"black": "",
+"oak": "-oak"
+},
+"klifordov-veo-roza": {
+"black": "",
+"oak": "-oak"
+},
+"kula": {
+"black": "",
+"oak": "-oak"
+},
+"kula-roza": {
+"black": "",
+"oak": "-oak"
+},
+"lorenc": {
+"black": "",
+"oak": "-oak"
+},
+"lorenc-roza": {
+"black": "",
+"oak": "-oak"
+},
+"magla": {
+"black": "",
+"oak": "-2"
+},
+"magnetar": {
+"black": "",
+"oak": "-oak"
+},
+"magnetar-roza": {
+"black": "",
+"oak": "-oak"
+},
+"mali-mandelbrot": {
+"black": "",
+"oak": "-oak"
+},
+"mali-mandelbrot-roza": {
+"black": "",
+"oak": "-oak"
+},
+"mandelbrotov-skup": {
+"black": "-2",
+"oak": ""
+},
+"mandelbrotov-skup-roza": {
+"black": "-2",
+"oak": ""
+},
+"metropola": {
+"black": "-2",
+"oak": ""
+},
+"metropola-roza": {
+"black": "-2",
+"oak": ""
+},
+"morska-zvezda": {
+"black": "",
+"oak": "-oak"
+},
+"morska-zvezda-roza": {
+"black": "",
+"oak": "-oak"
+},
+"nulta-orbita": {
+"black": "",
+"oak": "-oak"
+},
+"nulta-orbita-roza": {
+"black": "",
+"oak": "-oak"
+},
+"orbitalni-grad": {
+"black": "",
+"oak": "-2"
+},
+"orbitalni-grad-roza": {
+"black": "",
+"oak": "-2"
+},
+"oreol": {
+"black": "-2",
+"oak": ""
+},
+"oreol-roza": {
+"black": "-2",
+"oak": ""
+},
+"perje": {
+"black": "",
+"oak": "-oak"
+},
+"pomracenje": {
+"black": "-2",
+"oak": ""
+},
+"pomracenje-roza": {
+"black": "-2",
+"oak": ""
+},
+"ponoc": {
+"black": "",
+"oak": "-oak"
+},
+"ponoc-roza": {
+"black": "",
+"oak": "-oak"
+},
+"predajnik": {
+"black": "",
+"oak": "-oak"
+},
+"predajnik-roza": {
+"black": "",
+"oak": "-oak"
+},
+"prsten-tisine": {
+"black": "",
+"oak": "-oak"
+},
+"prsten-tisine-roza": {
+"black": "",
+"oak": "-oak"
+},
+"prvi-signal": {
+"black": "",
+"oak": "-oak"
+},
+"rabinovic": {
+"black": "-2",
+"oak": ""
+},
+"resler": {
+"black": "",
+"oak": "-oak"
+},
+"ruza": {
+"black": "",
+"oak": "-oak"
+},
+"severni-signal": {
+"black": "",
+"oak": "-oak"
+},
+"snop": {
+"black": "",
+"oak": "-2"
+},
+"spirala": {
+"black": "-2",
+"oak": ""
+},
+"spirala-roza": {
+"black": "-2",
+"oak": ""
+},
+"sprot": {
+"black": "-2",
+"oak": ""
+},
+"stanica": {
+"black": "-2",
+"oak": ""
+},
+"supernova": {
+"black": "",
+"oak": "-2"
+},
+"supernova-roza": {
+"black": "",
+"oak": "-2"
+},
+"svila": {
+"black": "",
+"oak": "-oak"
+},
+"svila-roza": {
+"black": "",
+"oak": "-oak"
+},
+"svitanje": {
+"black": "",
+"oak": "-2"
+},
+"svitanje-roza": {
+"black": "",
+"oak": "-2"
+},
+"talas": {
+"black": "",
+"oak": "-2"
+},
+"talas-roza": {
+"black": "",
+"oak": "-2"
+},
+"tiha-oluja": {
+"black": "",
+"oak": "-oak"
+},
+"tomas": {
+"black": "",
+"oak": "-oak"
+},
+"tomas-roza": {
+"black": "",
+"oak": "-oak"
+},
+"vetrenjaca": {
+"black": "-2",
+"oak": ""
+},
+"vitica": {
+"black": "",
+"oak": "-2"
+},
+"vitica-roza": {
+"black": "",
+"oak": "-2"
+},
+"vodopad": {
+"black": "-2",
+"oak": ""
+},
+"vodopad-roza": {
+"black": "-2",
+"oak": ""
+},
+"vrtlog": {
+"black": "",
+"oak": "-2"
+}
+}

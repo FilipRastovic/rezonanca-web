@@ -5,6 +5,7 @@ import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
+import ROOM_FRAMES from '../data/room-frames.json';
 import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -27,7 +28,17 @@ const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f
 const PICK = [...ACTIVE_FORMATS].sort((a, b) => minPrice(a) - minPrice(b));
 const F0 = PICK[0];
 const S0 = (Object.entries(PRICES[F0]) as [string, number][]).sort((a, b) => a[1] - b[1])[0][0];
-const miniFirst = F0 === 'mini' || F0 === 'miniprint';
+// The main view follows the chosen format (what you see is what you get): bare print / mounted = the poster drawn
+// with CSS; framed = room shot with that frame colour; Мини урамљен = the card in a small frame; Мини принт = the card.
+const frames: Record<string, { black: string; oak: string }> = Object.fromEntries(
+  ['', ...(p.tones || [])].map((tn) => { const k = imgKey(p.slug, tn); return [k, (ROOM_FRAMES as any)[k]]; }));
+const lookOf = (f: string) => (f === 'framed' ? `framed-${FRAMES[0]}` : f);
+const mainFor = (look: string, k: string): { src: string; fit: string } | null =>
+  look === 'miniprint' ? { src: `/minis/card-${k}.webp`, fit: 'card' }
+  : look === 'mini' ? { src: `/minis/framed-${k}.webp`, fit: 'room' }
+  : look.startsWith('framed-') ? { src: `/rooms/${k}-${lang}${frames[k][look.slice(7) as 'black']}.webp`, fit: 'room' }
+  : null;
+const first = mainFor(lookOf(F0), p.slug);
 const sizeFormats = (s: string) => ACTIVE_FORMATS.filter((f) => (FORMAT_SIZES[f] as string[]).includes(s)).join(' ');
 
 // One gallery per colourway ('' = original); the colour choice swaps the whole set.
@@ -66,7 +77,7 @@ const jsonLd = {
     url: new URL(productHref(lang, p.slug), site).href,
   } } : {}),
 };
-const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
+const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames });
 ---
 <Base lang={lang} title={`${name} - ${seriesName} | Резонанца`} description={p.line[lang]} image={`/posters/${p.slug}-${lang}.webp`}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -82,9 +93,9 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
 
       <div class="layout">
         <div class="gallery">
-          <figure class:list={['main corners', { 'is-mini': miniFirst }]} data-fit="poster" data-look={F0 === 'framed' ? `framed-${FRAMES[0]}` : F0}>
+          <figure class="main corners" data-fit={first ? first.fit : 'poster'} data-look={lookOf(F0)}>
             <button type="button" class="zoom" id="pp-zoom" aria-label={tp.lightbox.open}>
-              <img id="pp-main" src={miniFirst ? `/minis/${p.slug}.webp` : gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
+              <img id="pp-main" src={first ? first.src : gallery[0].src} alt={gallery[0].alt} width="1440" height="1920" fetchpriority="high" />
               <span class="zoom-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
             </button>
           </figure>
@@ -235,7 +246,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
 <script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug }}>window.rzTrack && window.rzTrack('ViewContent', { content_name: vcName, content_ids: [vcId], content_type: 'product' });</script>
 <script>
   const form = document.getElementById('pp-form') as HTMLFormElement;
-  const { prices, lang } = JSON.parse(form.dataset.config!);
+  const { prices, lang, frames } = JSON.parse(form.dataset.config!);
   const priceEl = document.getElementById('pp-price'); // absent while sales are closed
   const orderBtn = document.getElementById('pp-order')!;
   const frameSet = document.getElementById('pp-frame'); // only when a framed format is on sale
@@ -290,13 +301,15 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
     main.src = b.dataset.src!;
     main.alt = b.dataset.alt!;
     fig.dataset.fit = b.dataset.fit!;
-    // Мини урамљен / Мини принт: the poster view becomes the square, art-only mini (what that product really is).
-    if ((fig.dataset.look === 'mini' || fig.dataset.look === 'miniprint') && b.dataset.fit === 'poster') {
-      const tone = String(new FormData(form).get('tone') || 'orig');
-      main.src = `/minis/${orderBtn.dataset.slug}${tone !== 'orig' ? '-' + tone : ''}.webp`;
-      fig.dataset.fit = 'poster';
-      fig.classList.add('is-mini');
-    } else fig.classList.remove('is-mini');
+    // The first view follows the chosen format (same rules as mainFor in the frontmatter).
+    if (b.dataset.fit === 'poster') {
+      const look = fig.dataset.look!, tone = String(new FormData(form).get('tone') || 'orig');
+      const k = orderBtn.dataset.slug + (tone !== 'orig' ? '-' + tone : '');
+      const alt = look === 'miniprint' ? [`/minis/card-${k}.webp`, 'card']
+        : look === 'mini' ? [`/minis/framed-${k}.webp`, 'room']
+        : look.startsWith('framed-') ? [`/rooms/${k}-${lang}${frames[k][look.slice(7)]}.webp`, 'room'] : null;
+      if (alt) { main.src = alt[0]; fig.dataset.fit = alt[1]; }
+    }
   };
   // A new format or frame jumps back to the main view, so the click always shows that variant.
   document.addEventListener('pp:look', () => show(0));
@@ -390,6 +403,9 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
   @media (max-width: 600px) { .lb-prev, .lb-next { top: auto; bottom: 8px; transform: none; } .lb-prev { left: 16px; } .lb-next { right: 16px; } .lightbox img { max-height: calc(100dvh - 150px); } }
   .main[data-fit='poster'] { padding: var(--mat-pad); background: var(--mat); border: 8px solid var(--frame); box-shadow: var(--frame-shadow); }
   .main[data-fit='poster'] img { object-fit: contain; }
+  /* Мини принт: the flat printed card on a dark wall. */
+  .main[data-fit='card'] { padding: 13%; background: radial-gradient(ellipse at 40% 30%, rgba(70, 110, 170, 0.22), transparent 65%), linear-gradient(160deg, #111b2e, #0a1222 60%, #070d1a); }
+  .main[data-fit='card'] img { object-fit: contain; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.7)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5)); }
   /* Per-format look of the poster view (set from the chosen format/frame). */
   .main[data-fit='poster'] { transition: padding 0.35s, border-color 0.35s, background-color 0.35s; }
   .main[data-fit='poster'][data-look='print'] { padding: 3.2%; background: #f4f3ef; border: 1px solid rgba(255,255,255,.08); }
@@ -397,8 +413,6 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
   .main[data-fit='poster'][data-look='framed-oak'] { border: 16px solid #b0835a; border-image: linear-gradient(135deg, #c79a6b, #9c7048 30%, #b88a5f 55%, #8d633f 80%, #b48858) 1; padding: 8%; background: var(--mat); }
   .main[data-fit='poster'][data-look='mounted'] { border: 1px solid #000; padding: 11%; background: #121214; box-shadow: var(--frame-shadow), inset 0 0 0 1px rgba(255,255,255,.04); }
   .main[data-fit='poster'][data-look='mounted'] img { box-shadow: 0 0 0 3px #0a0a0b, 0 0 0 4px rgba(255,255,255,.07); }
-  .main[data-fit='poster'][data-look='miniprint'] { border: 1px solid rgba(255,255,255,.1); padding: 7%; background: #f4f3ef; aspect-ratio: 1; width: 78%; margin: 11% auto; box-shadow: var(--frame-shadow); }
-  .main[data-fit='poster'][data-look='mini'] { box-shadow: var(--frame-shadow), 0 0 0 1px rgba(255,255,255,.14); border: 12px solid #0d0d0f; padding: 11%; background: var(--mat); aspect-ratio: 1; width: 82%; margin: 9% auto; }
   .thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); grid-auto-flow: column; gap: 12px; margin-top: 12px; }
   .thumbs button { padding: 0; border: 1px solid var(--line); background: #000; cursor: pointer; text-align: left; transition: border-color 0.3s; }
   .thumbs button[aria-selected='true'] { border-color: var(--cyan); box-shadow: var(--glow); }
