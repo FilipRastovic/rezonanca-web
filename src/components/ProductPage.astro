@@ -37,8 +37,8 @@ const galleryFor = (tone: string) => {
   const k = imgKey(p.slug, tone), suffix = tone ? ` (${toneName(tone)})` : '';
   return [
     { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${seriesName} - ${name}${suffix}`, fit: 'poster' },
-    // Room shot: the exact print in the approved black-frame scene (scripts/render-rooms.py).
-    { src: `/rooms/${k}-${lang}.webp`, thumb: `/rooms/${k}-${lang}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' },
+    // Room shots: the exact print in three mockup scenes (scripts/render-rooms.py).
+    ...['', '-2', '-3'].map((n) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' })),
     { src: `/details/${k}.webp`, thumb: `/details/${k}.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
   ];
 };
@@ -92,7 +92,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang });
             {gallery.map((g, i) => (
               <button role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-src={g.src} data-alt={g.alt} data-fit={g.fit}>
                 <img src={g.thumb} alt="" loading="lazy" width="200" height="200" />
-                <span class="mono">{tp.gallery[Math.min(i, 3)]}</span>
+                <span class="mono">{tp.gallery[g.fit === 'poster' ? 0 : g.fit === 'room' ? 1 : 2]}</span>
               </button>
             ))}
           </div>
