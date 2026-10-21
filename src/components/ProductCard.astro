@@ -1,6 +1,7 @@
 ---
 import { MIN_PRICE, PRICES_VISIBLE, formatPrice } from '../config';
 import { pad } from '../data/products.js';
+import SWATCHES from '../data/swatches.json';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string }
 const { product: p, lang, eager = false, delay = 0, tone: show = '' } = Astro.props;
@@ -8,7 +9,8 @@ const t = T[lang];
 const series = t.series[p.style as 'structure'];
 const key = `${p.slug}${show ? `-${show}` : ''}`;
 const tone = p.tones?.[0]; // first colourway: shown as colour dots
-const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', violet: '#7a4dff', aurora: '#11c9a8', ember: '#ff9a4a' };
+// One dot per colour version, in that poster's dominant colour (scripts/swatches.mjs).
+const SW = SWATCHES as Record<string, string>;
 ---
 <a class="card" href={productHref(lang, p.slug) + (show ? `?boja=${show}` : '')} data-reveal style={`transition-delay:${delay}ms`}>
   <span class="top mono">
@@ -25,8 +27,7 @@ const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', viol
     <span class="name">{p.name[lang]}{show && <small class="mono">{t.order.tones[show as 'orig']}</small>}</span>
     {tone && (
       <span class="tones" title={['orig', ...p.tones].map((k: string) => t.order.tones[k as 'orig']).join(' · ')}>
-        <i style={`background:linear-gradient(135deg,#ebe8e2 50%,${PAL_GLOW[p.palette] || '#2a8cff'} 50%)`}></i>
-        <i style="background:linear-gradient(135deg,#b23a68 50%,#0fb37d 50%)"></i>
+        {['', ...p.tones].map((tn: string) => <i style={`background:${SW[tn ? `${p.slug}-${tn}` : p.slug]}`}></i>)}
       </span>
     )}
   </span>
@@ -53,7 +54,7 @@ const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', viol
   @media (hover: none) { .art { display: none; } }
   .info { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 14px; border-top: 1px solid var(--line); }
   .tones { display: flex; gap: 5px; flex: none; }
-  .tones i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); }
+  .tones i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(18, 20, 23, 0.12); }
   .name { font: 500 var(--fs-h3)/1.25 var(--f-display); color: var(--ice); }
   .name small { margin-left: 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: #e07aa0; vertical-align: middle; }
   .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding: 14px 16px; border-top: 1px solid var(--line); }

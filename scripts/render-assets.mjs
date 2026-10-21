@@ -227,4 +227,6 @@ if (!only && !tonesOnly) {
     await sharp(Buffer.from(svg)).composite([{ input: art, left: 0, top: 0 }]).jpeg({ quality: 85 }).toFile(out(`og-${lang}.jpg`));
   }
 }
+// Colour dots (cards, product page) from the fresh posters.
+execFileSync('node', [path.join(ROOT, 'scripts/swatches.mjs')], { cwd: ROOT, stdio: 'inherit' });
 console.log(`✓ assets for ${products.length} products`);

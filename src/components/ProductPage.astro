@@ -6,6 +6,7 @@ import History from './History.astro';
 import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import ROOM_FRAMES from '../data/room-frames.json';
+import SWATCHES from '../data/swatches.json';
 import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -55,9 +56,8 @@ const galleryFor = (tone: string) => {
 };
 const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galleryFor(tone)]));
 const gallery = galleries.orig;
-// Swatch: the piece's own colour on navy, or the colourway's ground + core.
-const PAL_GLOW: Record<string, string> = { cyan: '#2a8cff', ice: '#8fa6c8', violet: '#7a4dff', aurora: '#11c9a8', ember: '#ff9a4a' };
-const swatch = (tone: string) => tone === 'roza' ? 'linear-gradient(135deg, #b23a68 50%, #0fb37d 50%)' : `linear-gradient(135deg, #ebe8e2 50%, ${PAL_GLOW[p.palette] || '#2a8cff'} 50%)`;
+// Swatch: one dot in the poster's dominant colour.
+const swatch = (tone: string) => (SWATCHES as Record<string, string>)[imgKey(p.slug, tone)]; // dominant colour, scripts/swatches.mjs
 
 const site = Astro.site!;
 const jsonLd = {
@@ -488,5 +488,5 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   }
   @media (max-width: 420px) { .formats { grid-template-columns: 1fr; } .trust { grid-template-columns: 1fr; } }
   @media (max-width: 600px) { .pills { display: grid; grid-template-columns: 1fr 1fr; } .pill { display: block; } .pill span { display: flex; justify-content: center; width: 100%; } }
-  .tone-sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35); }
+  .tone-sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(18, 20, 23, 0.12); }
 </style>
