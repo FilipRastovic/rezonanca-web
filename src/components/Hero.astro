@@ -1,8 +1,12 @@
 ---
-import { T, collectionHref, type Lang } from '../i18n';
+import { T, collectionHref, productHref, type Lang } from '../i18n';
+import { findProduct } from '../data/products.js';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].hero;
+// Right side: what the shop sells - a framed print (cycling through a few pieces) and a mini print.
+const SHOW = ['halvorsen', 'dolina-morskih-konjica', 'lorenc', 'tomas'].map(findProduct);
+const MINIS = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findProduct);
 const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335°E'; // Novi Sad
 ---
 <section class="hero" aria-label={t.title}>
@@ -18,8 +22,27 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
     </h1>
     <p class="tagline">{t.tagline}</p>
     <p class="lead">{t.lead}</p>
+    <p class="shop mono">{t.shop}</p>
     <div class="actions">
       <a class="btn btn--solid" href={collectionHref(lang)}>{t.primary} <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <div class="showcase" style={`--n:${SHOW.length}`}>
+    <a class="framed" href={productHref(lang, SHOW[0].slug)} aria-label={`${SHOW[0].name[lang]} - ${t.framed}`}>
+      <span class="art">
+      {SHOW.map((p, i) => (
+        <img src={`/posters/${p.slug}-${lang}.webp`} srcset={`/posters/${p.slug}-${lang}.webp 900w, /posters/${p.slug}-${lang}-lg.webp 1440w`} sizes="(max-width: 900px) 60vw, 30vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="900" height="1200" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
+      ))}
+      </span>
+    </a>
+    <a class="mini" href={productHref(lang, MINIS[0].slug)} aria-label={`${MINIS[0].name[lang]} - ${t.mini}`}>
+      <span class="art">
+        {MINIS.map((p, i) => <img src={`/minis/${p.slug}.webp`} alt="" width="900" height="900" decoding="async" style={`--i:${i}`} />)}
+      </span>
+    </a>
+    <div class="caps mono">
+      {SHOW.map((p, i) => <p style={`--i:${i}`}><b>{p.name[lang]}</b>{t.framed}</p>)}
     </div>
   </div>
 
@@ -63,7 +86,28 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
   }
   .tagline { margin: 28px 0 0; font: 300 clamp(14px, 1.3vw, 18px)/1.4 var(--f-display); letter-spacing: 0.04em; color: var(--cyan); text-shadow: var(--glow); }
   .lead { margin: 16px 0 0; max-width: 42ch; color: var(--muted); }
+  .shop { margin: 14px 0 0; max-width: 44ch; font-size: var(--fs-2xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ice); line-height: 1.8; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  /* Showcase: a framed print on the right, cross-fading through a few pieces, plus a mini print in front. */
+  .showcase { position: absolute; z-index: 2; right: calc(var(--gutter) + 2vw); top: 50%; transform: translateY(-46%); height: min(58vh, 620px); aspect-ratio: 3 / 4.05; --cycle: calc(var(--n) * 5s); }
+  .showcase::before { content: ''; position: absolute; inset: -18% -22%; background: radial-gradient(closest-side, rgba(35, 105, 255, 0.28), rgba(80, 230, 255, 0.06) 60%, transparent); pointer-events: none; }
+  .framed { position: absolute; inset: 0; display: block; padding: 7.5%; background: var(--mat); border: 14px solid #b0835a; border-image: linear-gradient(135deg, #c79a6b, #9c7048 30%, #b88a5f 55%, #8d633f 80%, #b48858) 1; box-shadow: var(--frame-shadow), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 40px 120px -30px rgba(35, 105, 255, 0.45); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .framed:hover { transform: translateY(-6px); }
+  .framed .art { position: relative; display: block; width: 100%; height: 100%; background: #050b1e; }
+  .framed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3); }
+  .framed img:first-child { opacity: 1; }
+  @keyframes show { 0%, 21% { opacity: 1; } 27%, 94% { opacity: 0; } 100% { opacity: 1; } }
+  .mini { position: absolute; right: calc(100% + 22px); bottom: 0; width: 40%; aspect-ratio: 1; padding: 6%; background: #f4f3ef; box-shadow: var(--frame-shadow); transform: rotate(-3deg); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .mini:hover { transform: rotate(-1deg) translateY(-6px); }
+  .mini .art { position: relative; display: block; width: 100%; height: 100%; background: #050b1e; }
+  .mini img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s + 2.5s - 0.01s); }
+  .mini img:first-child { opacity: 1; }
+  .caps { position: absolute; left: 0; right: 0; top: calc(100% + 18px); height: 2.6em; font-size: var(--fs-2xs); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+  .caps p { position: absolute; inset: 0 0 auto 0; margin: 0; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); }
+  .caps p:first-child { opacity: 1; }
+  .caps b { display: block; margin-bottom: 4px; color: var(--ice); font-weight: 500; }
+
 
   .readout { position: absolute; z-index: 2; left: 0; right: 0; bottom: 64px; display: flex; gap: clamp(20px, 5vw, 64px); flex-wrap: wrap; font-size: var(--fs-xs); color: var(--ice); }
   .readout div { display: flex; flex-direction: column; gap: 6px; }
@@ -76,8 +120,17 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
   .scroll span { width: 1px; height: 56px; background: linear-gradient(var(--cyan), transparent); animation: drop 2s infinite; }
   @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
+  @media (max-width: 1100px) {
+    .scroll { display: none; }
+    .showcase { right: var(--gutter); height: min(46vh, 460px); }
+  }
+  @media (max-width: 900px) {
+    .hero { justify-content: flex-start; }
+    .content { padding-bottom: 40px; }
+    .showcase { position: relative; right: auto; top: auto; transform: none; height: auto; width: min(56vw, 340px); margin: 0 auto 190px; left: 12vw; }
+  }
   @media (max-width: 700px) {
-    .content { padding-top: 110px; padding-bottom: 180px; }
+    .content { padding-top: 110px; padding-bottom: 40px; }
     .actions { gap: 10px; margin-top: 28px; }
     .actions :global(.btn) { padding: 12px 14px; font-size: var(--fs-2xs); letter-spacing: 0.18em; }
     .readout { bottom: 44px; gap: 16px 28px; }
@@ -85,5 +138,5 @@ const coords = lang === 'sr' ? '45,2671°С  19,8335°И' : '45.2671°N  19.8335
     .scroll { display: none; }
     .frame { inset: 84px 10px 14px; }
   }
-  @media (prefers-reduced-motion: reduce) { .title span, .live i, .scroll span { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .title span, .live i, .scroll span, .framed img, .caps p, .mini img { animation: none; } .mini img:not(:first-child) { display: none; } }
 </style>

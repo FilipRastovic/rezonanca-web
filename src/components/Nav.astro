@@ -20,7 +20,7 @@ const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
 ---
 <header class="nav" id="nav">
   <div class="wrap inner">
-    <a href={home} aria-label="Rezonanca" class="home"><Logo /></a>
+    <a href={home} aria-label="Rezonanca" class="home"><Logo tag={lang === 'sr' ? 'уметнички принтови' : 'art prints'} tagClass="nav-tag" /></a>
     <nav aria-label="Main">
       {links.map(([href, label]) => <a href={href} class:list={{ on: href === path }}>{label}</a>)}
     </nav>
@@ -95,7 +95,8 @@ const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
   .nav.open { backdrop-filter: none; -webkit-backdrop-filter: none; background: transparent; border-color: transparent; }
   .inner { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
   nav { display: flex; gap: 30px; }
-  nav a { font: 500 var(--fs-xs)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); transition: color 0.3s; }
+  nav a { font: 500 var(--fs-xs)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); transition: color 0.3s; white-space: nowrap; }
+  @media (max-width: 1180px) { nav { gap: 22px; } }
   nav a:hover, nav a.on { color: var(--cyan); }
   .right { display: flex; align-items: center; gap: 20px; }
   .lang { display: flex; gap: 6px; font-size: var(--fs-xs); color: var(--muted); }
