@@ -74,7 +74,7 @@ const en: typeof sr = {
     attractor: {
       name: 'Атрактори · Attractors',
       code: 'SERIES A // STRANGE ATTRACTORS',
-      desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by equations that never let the path repeat.',
+      desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by the same equations. Within the picture the path never repeats, and every print is exactly that picture, line for line.',
     },
     mandelbrot: {
       name: 'Манделброт · Mandelbrot',
