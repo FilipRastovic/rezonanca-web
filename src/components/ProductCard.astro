@@ -1,5 +1,5 @@
 ---
-import { MIN_PRICE, PRICES_VISIBLE, formatPrice } from '../config';
+import { PRICES_VISIBLE, minPrice, formatPrice } from '../config';
 import SWATCHES from '../data/swatches.json';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string }
@@ -29,7 +29,7 @@ const SW = SWATCHES as Record<string, string>;
     </span>
     <span class="meta">
       <span>{seriesShort(lang, p.style)}</span>
-      {PRICES_VISIBLE ? <span class="price">{t.card.from} {formatPrice(MIN_PRICE, lang)}</span> : <span>{t.soon.badge}</span>}
+      {PRICES_VISIBLE ? <span class="price">{t.card.from} {formatPrice(minPrice('print'), lang)}</span> : <span>{t.soon.badge}</span>}
     </span>
   </span>
 </a>
@@ -54,5 +54,10 @@ const SW = SWATCHES as Record<string, string>;
   .tones { display: flex; gap: 5px; flex: none; }
   .tones i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(18, 20, 23, 0.12); }
   .meta { display: flex; justify-content: space-between; gap: 12px; font-size: var(--fs-sm); color: var(--muted); }
+  @media (max-width: 600px) {
+    .name { font-size: var(--fs-sm); }
+    .meta { flex-direction: column; gap: 2px; font-size: var(--fs-2xs); }
+    .tones i { width: 8px; height: 8px; }
+  }
   .price { color: var(--ice); }
 </style>
