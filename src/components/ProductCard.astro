@@ -2,8 +2,8 @@
 import { PRICES_VISIBLE, minPrice, formatPrice } from '../config';
 import SWATCHES from '../data/swatches.json';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
-interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string }
-const { product: p, lang, eager = false, delay = 0, tone: show = '' } = Astro.props;
+interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string; wide?: boolean }
+const { product: p, lang, eager = false, delay = 0, tone: show = '', wide = false } = Astro.props;
 const t = T[lang];
 const series = t.series[p.style as 'structure'];
 const key = `${p.slug}${show ? `-${show}` : ''}`;
@@ -13,7 +13,7 @@ const SW = SWATCHES as Record<string, string>;
 ---
 <a class="card" href={productHref(lang, p.slug) + (show ? `?boja=${show}` : '')} data-reveal style={`transition-delay:${delay}ms`}>
   <span class="stage">
-    <img class="room" src={`/rooms/${key}-${lang}-sm.webp`} srcset={`/rooms/${key}-${lang}-sm.webp 480w, /rooms/${key}-${lang}.webp 800w`} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 45vw, 330px" alt={`${series.name} - ${p.name[lang]}${show ? ` (${t.order.tones[show as 'orig']})` : ''}`} width="480" height="640" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <img class="room" src={`/rooms/${key}-${lang}-sm.webp`} srcset={`/rooms/${key}-${lang}-sm.webp 480w, /rooms/${key}-${lang}.webp 800w`} sizes={`(max-width: 600px) 50vw, (max-width: 1100px) 45vw, ${wide ? 540 : 330}px`} alt={`${series.name} - ${p.name[lang]}${show ? ` (${t.order.tones[show as 'orig']})` : ''}`} width="480" height="640" loading={eager ? 'eager' : 'lazy'} decoding="async" />
     <span class="art">
       <img data-hover-src={`/posters/${key}-${lang}.webp`} alt="" width="900" height="1200" decoding="async" />
     </span>

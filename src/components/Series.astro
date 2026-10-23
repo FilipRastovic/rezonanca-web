@@ -20,7 +20,7 @@ const t = T[lang].series;
         <SeriesHeader lang={lang} series={s} />
         <div class="grid">
           {homePicks(s.key).map((p, i) => (
-            <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={Math.min(i, 2) * 100} />
+            <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={Math.min(i, 2) * 100} wide />
           ))}
         </div>
       </div>
@@ -40,7 +40,9 @@ const t = T[lang].series;
   section { background: var(--bg-0); }
   .series { padding-top: clamp(24px, 3vw, 40px); }
   .series + .series { margin-top: clamp(64px, 7vw, 112px); }
-  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
+  /* Desktop: three big room shots per series (like У простору); tablets and phones keep 2×2. */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
+  @media (min-width: 1101px) { .grid > :global(a:nth-of-type(n + 4)) { display: none; } }
   @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; } }
   .all { display: flex; justify-content: center; margin-top: var(--space-block); }
