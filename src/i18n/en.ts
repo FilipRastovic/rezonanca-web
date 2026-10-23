@@ -30,9 +30,9 @@ const en: typeof sr = {
     label: '02 // MANIFESTO',
     lines: ['Every sound', 'leaves a trace.', 'We catch it.'],
     body: [
-      'Somewhere in the silence between two stations, in the hiss of a distant pulsar, in the tremor of a string before it fades - there is a shape. Invisible. Fleeting. Yours.',
-      'Rezonanca catches it. Every poster begins with a single number - a seed - and a set of rules, a design grammar, by which the signal builds its own form: branching, twisting, raising towers of light. The same number always gives the same piece, down to the last line, so the print you receive is exactly the one in the picture. Another number - an entirely new world.',
-      'Every piece is a program - hundreds of lines of JavaScript (p5.js) we wrote by hand. Code doesn’t guess or copy: it draws exactly what we told it to, every line in its place.',
+      'Every piece starts with a single number - a seed - and a few equations and rules. The program computes them hundreds of thousands of times, point by point, and draws the picture from the result.',
+      'The same seed always gives the same picture, down to the last line, so the print you receive is exactly the one on the site. Another seed - a new piece.',
+      'We write the code ourselves, in JavaScript (p5.js), line by line. It doesn’t guess or copy: it draws exactly what the equations say.',
     ],
     pillars: [
       { k: 'HOME', t: 'Silence that glows', d: 'Deep, saturated colours that calm the room at dusk and light up when the sun goes down. Art that breathes with the space.' },
@@ -60,23 +60,23 @@ const en: typeof sr = {
     title: 'Ten series. Fifty-eight signals.',
     structure: {
       name: 'Структура · Structure',
-      code: 'SERIES C // DESIGN GRAMMAR',
-      desc: 'Sound that builds. Thousands of blocks of light grow by the rules of a design grammar - branching, bending and repeating until the signal fades. The architecture of a single moment.',
+      code: 'SERIES C // RECURSIVE RULES',
+      desc: 'Sound that builds. Thousands of blocks of light grow by a set of recursive rules - branching, bending and repeating until the signal fades. The architecture of a single moment.',
     },
     flux: {
       name: 'Ток · Flux',
       code: 'SERIES D // PHASE FLOW',
-      desc: 'Hundreds of threads of light woven into a single ribbon. A signal twisting through space like silk in zero gravity.',
+      desc: 'Hundreds of threads of light woven into a single ribbon. A signal twisting through space like silk.',
     },
     city: {
       name: 'Град · City',
       code: 'SERIES E // SPECTRAL ARCHITECTURE',
-      desc: 'A spectrogram turned into a metropolis. Every tower a frequency, every light a moment of sound. A city that never sleeps, because it never existed.',
+      desc: 'A spectrogram turned into a metropolis. A city that never sleeps.',
     },
     attractor: {
       name: 'Атрактори · Attractors',
       code: 'SERIES A // STRANGE ATTRACTORS',
-      desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by the same equations. Within the picture the path never repeats, and every print is exactly that picture, line for line.',
+      desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by the same equations.',
     },
     mandelbrot: {
       name: 'Манделброт · Mandelbrot',
@@ -91,7 +91,7 @@ const en: typeof sr = {
     orbit: {
       name: 'Орбита · Orbit',
       code: 'SERIES G // FIRST SIGNALS - RADIAL SWEEP',
-      desc: 'A signal circling the void. Rings of waves bending under the gravity of silence - an eye that looks back.',
+      desc: 'A signal circling the void. Waves wound into rings, in polar coordinates: angle instead of time, radius instead of height.',
     },
     viewAll: 'All works in the series',
     works: 'works',
@@ -179,7 +179,7 @@ const en: typeof sr = {
   collection: {
     label: 'COLLECTION // 58 WORKS',
     title: 'Collection',
-    lead: 'Fifty-eight signals, ten series. Every piece is an original design - born from its own number, its own grammar and its own light. You get exactly the print in the picture.',
+    lead: 'Fifty-eight signals, ten series. Every piece is an original design - born from its own number, its own rules and its own light. You get exactly the print in the picture.',
     all: 'All',
     count: 'works',
     filter: { open: 'Filters', series: 'Series', palette: 'Colour', sort: 'Sort', featured: 'Featured', az: 'Name A-Z', bySeries: 'By series', clear: 'Clear filters', empty: 'No works match this selection.' },

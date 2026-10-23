@@ -62,8 +62,8 @@ export const PRODUCTS = [
 
   // ---- Град
   p('metropola', 'city', 3, 'grid', 'cyan', 'Метропола', 'Metropolis',
-    'Спектрограм претворен у град. Свака кула је фреквенција, свако светло - тренутак.',
-    'A spectrogram turned into a city. Every tower a frequency, every light a moment.'),
+    'Спектрограм претворен у град.',
+    'A spectrogram turned into a city.'),
   p('orbitalni-grad', 'city', 4, 'round', 'violet', 'Орбитални град', 'Orbital City',
     'Кружни град око тихог трга и једне куле у средишту - станица у орбити.',
     'A circular city around a quiet plaza and one central spire - a station in orbit.'),
