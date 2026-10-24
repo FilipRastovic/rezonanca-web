@@ -1,0 +1,30 @@
+---
+// Homepage: the history of maths art, from Fibonacci's sunflower to p5.js (same look as History).
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].mathart;
+---
+<section class="ma">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label" data-reveal>{t.label}</p>
+      <h2 data-reveal>{t.title}</h2>
+    </div>
+    <ol data-reveal>
+      {t.items.map((it) => (
+        <li><span class="y">{it.y}</span><p>{it.t}</p></li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .ma { background: var(--bg-0); border-top: 1px solid var(--line); }
+  /* Two columns read top to bottom, each with its own timeline rule. */
+  ol { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: var(--gap-col); }
+  li { position: relative; padding: 0 0 32px 28px; border-left: 1px solid var(--line-strong); break-inside: avoid; }
+  li::before { content: ''; position: absolute; left: -4px; top: 4px; width: 7px; height: 7px; background: var(--cyan); }
+  .y { font: 500 var(--fs-h3)/1 var(--f-display); color: var(--ice); }
+  p { margin: 10px 0 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.75; max-width: 52ch; }
+  @media (max-width: 900px) { ol { columns: 1; } }
+</style>

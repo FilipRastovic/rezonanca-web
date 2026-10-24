@@ -122,6 +122,7 @@ const en: typeof sr = {
     alt: 'Filip Rastović',
     body: [
       'I hold a degree in software engineering and have been programming for more than ten years. I build online stores for brands around the world, and I also make 3D art.',
+      'Away from the screen I design gardens and play music. In a garden you set the conditions, soil, light and water, let it grow, then choose what stays. I work the same way with code.',
       'Rezonanca brings the two together. Every piece is a program I wrote myself, line by line: the maths decides the shape, I choose the number, the colours and the framing. The prints are made in Novi Sad on matte paper, and I ship them myself.',
       'What you see on the site is exactly what arrives on your wall.',
     ],
@@ -300,6 +301,34 @@ const en: typeof sr = {
     f: 'noise(x) = Σₖ 0.5ᵏ · perlin(2ᵏ·x),  k = 0…3',
     param: '4 octaves · falloff 0.5',
     label: 'Perlin noise',
+  },
+  story: { label: 'The story' },
+  nature: {
+    label: 'In nature',
+    attractor: "Lorenz's equations describe warm air rising, cooling and falling, the same motion that builds storm clouds in summer.",
+    mandelbrot: "Ferns, romanesco cauliflower and a sea coast share the property of the set's edge: the part looks like the whole. In 1967 Mandelbrot asked how long the coast of Britain is. The answer depends on how finely you measure.",
+    flame: "The flame descends from Barnsley's fern of 1988: a few rules, picked at random, draw a leaf down to its last vein.",
+    structure: 'Recursive rules for plant growth were first written down in 1968 by biologist Aristid Lindenmayer, watching algae: a cell divides, and each new branch repeats the old one.',
+    flux: 'The ribbons twist into helices, like the tendrils of beans and vines. In 1865 Charles Darwin wrote a whole paper on how climbing plants coil.',
+    city: 'A spectrogram is a picture of sound: time runs left to right, frequency bottom to top. Ornithologists have used it to read birdsong since the 1950s.',
+    ridges: 'Waveforms stacked one behind another read like ridges of hills in fog, each row a little further away.',
+    orbit: 'A signal wound into a circle records the way tree rings do: ring by ring, their width following drought and rain.',
+  },
+  mathart: {
+    label: 'HISTORY',
+    title: 'Where this art comes from',
+    items: [
+      { y: '1202', t: 'Leonardo of Pisa, Fibonacci, writes down the sequence 1, 1, 2, 3, 5, 8... The same numbers set the spiral of seeds in a sunflower and of scales on a pine cone.' },
+      { y: '1917', t: "D'Arcy Thompson publishes On Growth and Form, explaining the shapes of plants, shells and bones with mathematics and physics." },
+      { y: '1963', t: 'Edward Lorenz reduces a model of the atmosphere to three equations and finds chaos: a tiny change at the start changes the whole outcome.' },
+      { y: '1965', t: 'Georg Nees in Stuttgart and Michael Noll in New York show the first drawings made by a program. Frieder Nake starts the same year.' },
+      { y: '1968', t: 'Biologist Aristid Lindenmayer writes down rules for how algae and plants grow. Vera Molnár starts drawing with a computer.' },
+      { y: '1975', t: 'Benoit Mandelbrot coins the word "fractal": a shape whose parts look like the whole, like a coastline, a cloud or romanesco cauliflower.' },
+      { y: '1988', t: 'Michael Barnsley shows that four rules, picked at random, draw a fern leaf down to its last vein.' },
+      { y: '1992', t: 'Scott Draves invents the fractal flame, now one of the best-known forms of code art.' },
+      { y: '2001', t: 'Casey Reas and Ben Fry make Processing, a programming language for artists. p5.js grows out of it in 2013.' },
+      { y: 'today', t: 'Rezonanca: every piece is a p5.js program, drawn line by line and printed in Novi Sad.' },
+    ],
   },
   history: {
     hopf: [

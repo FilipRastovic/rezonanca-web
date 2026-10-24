@@ -5,6 +5,7 @@ interface Props { lang: Lang; series: string; compact?: boolean }
 const { lang, series, compact = false } = Astro.props;
 const t = T[lang];
 const usesNoise = t.noise.uses.includes(series);
+const nature = (t.nature as Record<string, string>)[series];
 const own = t.history[series as 'structure'] ?? [];
 const groups = [{ title: t.series[series as 'structure'].name.split(' · ')[lang === 'sr' ? 0 : 1] ?? '', items: own }];
 if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });
@@ -27,6 +28,12 @@ if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });
         </div>
       ))}
     </div>
+    {nature && (
+      <div class="nature" data-reveal>
+        <h3 class="mono">{t.nature.label}</h3>
+        <p>{nature}</p>
+      </div>
+    )}
   </div>
 </section>
 <style>
@@ -41,4 +48,7 @@ if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });
   li::before { content: ''; position: absolute; left: -4px; top: 4px; width: 7px; height: 7px; background: var(--cyan); }
   .y { font: 500 var(--fs-h3)/1 var(--f-display); color: var(--ice); }
   p { margin: 10px 0 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.75; max-width: 52ch; }
+  .nature { margin-top: var(--space-md); padding-top: 32px; border-top: 1px solid var(--line); }
+  .nature h3 { margin-bottom: 0; }
+  .nature p { max-width: 64ch; font-size: var(--fs-md, 17px); }
 </style>
