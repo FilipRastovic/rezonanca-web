@@ -4,13 +4,13 @@
 export const SERIES = [
   { key: 'attractor', slug: 'atraktori' },
   { key: 'mandelbrot', slug: 'mandelbrot' },
+  { key: 'flame', slug: 'plamen' },
   { key: 'structure', slug: 'struktura' },
   { key: 'flux', slug: 'tok' },
   { key: 'city', slug: 'grad' },
   { key: 'ridges', slug: 'grebeni' },
   { key: 'orbit', slug: 'orbita' },
   { key: 'hopf', slug: 'hopf' },
-  { key: 'flame', slug: 'plamen' },
   { key: 'object', slug: 'objekti' },
 ];
 

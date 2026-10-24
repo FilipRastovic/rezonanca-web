@@ -9,7 +9,7 @@ const { lang } = Astro.props;
 const t = T[lang];
 const ti = t.interiors;
 const scenes = (['living', 'studio'] as const).map((k) => ({ k, ...ti.scenes[k] }));
-const FEATURED = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'object'];
+const FEATURED = ['attractor', 'mandelbrot', 'flame', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'object'];
 const lists = FEATURED.map((k) => productsBySeries(k));
 const flat: any[] = [];
 for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l[i]) flat.push(l[i]);

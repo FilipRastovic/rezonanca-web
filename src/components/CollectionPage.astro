@@ -16,7 +16,7 @@ const info = current ? t.series[current.key as 'structure'] : null;
 const title = current ? `${seriesShort(lang, current.key)} - ${t.collection.title} | Резонанца` : `${t.collection.title} | Резонанца`;
 const description = info ? info.desc : t.collection.lead;
 // All-works view: one flat grid, series interleaved so the first rows show the range.
-const FEATURED = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'object'];
+const FEATURED = ['attractor', 'mandelbrot', 'flame', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'object'];
 const lists = FEATURED.map((k) => productsBySeries(k));
 const flat: any[] = [];
 for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l[i]) flat.push(l[i]);
