@@ -137,7 +137,7 @@ function receipt(o: Order, approved: boolean) {
 <tr><td colspan="2">${l.shipping}</td><td align="right">${money(t.shipping, lang)}</td></tr>
 <tr><td colspan="2"><b>${l.total}</b></td><td align="right"><b>${money(t.total, lang)}</b></td></tr></table>
 <p style="font-size:14px"><b>${l.deliver}</b><br>${esc(c.name)}<br>${esc(c.address)}, ${esc(c.zip)} ${esc(c.city)}<br>${esc(c.phone)}</p>
-<p style="font-size:12px;color:#7a7d82">${l.seller}: ${esc(SELLER.name)}, ${esc(SELLER.address)}, MB ${SELLER.mb}, PIB ${SELLER.pib}<br>${l.help}: ${SHOP.email}, ${SHOP.phone} · ${env_site()}</p></div>`;
+<p style="font-size:12px;color:#7a7d82">${l.seller}: ${esc(SELLER.name)}, ${esc(SELLER.address)}, MB ${SELLER.mb}, PIB ${SELLER.pib}, ${esc(SELLER.activity)}<br>${l.help}: ${SHOP.email}, ${SHOP.phone} · ${env_site()}</p></div>`;
   const subject = approved ? l.okSubject(o.id) : l.failSubject(o.id);
   return { subject, html, to: c.email };
 }

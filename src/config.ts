@@ -36,7 +36,7 @@ export const SELLER = {
   mb: '67800826',
   pib: '114718565',
   address: 'Slavka Rodića 40, 21208 Sremska Kamenica, Srbija',
-  activity: '', // pretežna delatnost + šifra (Prilog 1), e.g. '0000 - ...' - ask Filip / APR
+  activity: '6201 - Računarsko programiranje', // pretežna delatnost + šifra (Prilog 1, APR)
 };
 
 // Analytics. Both load only after the visitor accepts cookies (Consent.astro). An empty string disables it.
