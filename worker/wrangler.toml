@@ -15,4 +15,4 @@ OWNER_EMAIL = "filiporastovic@gmail.com"
 [[d1_databases]]
 binding = "DB"
 database_name = "rezonanca-payments"
-database_id = "REPLACE_AFTER_D1_CREATE"
+database_id = "c3d7b309-24b9-4bdc-bba7-2b399182c904"

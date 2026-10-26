@@ -28,7 +28,7 @@ export const SHOP = {
 // cards = card option at checkout + the bank's required logos (Prilog 1) in the footer and checkout.
 export const PAYMENTS = {
   cards: false, // true once the Worker is deployed and the bank's test passes
-  api: '',
+  api: 'https://rezonanca-payments.filiporastovic.workers.dev',
 };
 
 export const SELLER = {
