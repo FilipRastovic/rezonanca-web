@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { SHOP, SELLER } from '../config';
+import PaymentLogos from './PaymentLogos.astro';
 import { SERIES } from '../data/products.js';
 import { T, collectionHref, seriesShort, legalHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
@@ -27,8 +28,9 @@ const t = T[lang].footer;
       {SHOP.facebook && <a href={SHOP.facebook} rel="noopener" target="_blank">Facebook ↗</a>}
     </div>
   </div>
+  <div class="wrap pay"><PaymentLogos /></div>
   <div class="wrap legal mono">
-    <span>{SELLER.name} · МБ {SELLER.mb} · ПИБ {SELLER.pib} · {SELLER.address}</span>
+    <span>{SELLER.name} · МБ {SELLER.mb} · ПИБ {SELLER.pib}{SELLER.activity && ` · ${lang === 'sr' ? 'Делатност' : 'Activity'} ${SELLER.activity}`} · {SELLER.address}</span>
     <span class="links"><a href={legalHref(lang, 'terms')}>{T[lang].legal.terms.title}</a><a href={legalHref(lang, 'privacy')}>{T[lang].legal.privacy.title}</a><a href={legalHref(lang, 'privacy')} data-consent-open>{T[lang].consent.settings}</a></span>
   </div>
   <div class="wrap bottom mono">
@@ -37,6 +39,7 @@ const t = T[lang].footer;
   </div>
 </footer>
 <style>
+  .pay { padding-top: 28px; padding-bottom: 8px; }
   footer { border-top: 1px solid var(--line); padding: 64px 0 32px; background: var(--bg-1); }
   .grid { display: flex; justify-content: space-between; gap: 40px 64px; flex-wrap: wrap; }
   .grid > * { min-width: 0; max-width: 100%; }

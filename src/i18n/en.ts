@@ -409,6 +409,13 @@ const en: typeof sr = {
     pin: 'NOVI SAD',
     coords: '45.25°N 19.83°E',
   },
+  pay: {
+    title: 'Payment', label: 'PAYMENT', loading: 'Checking your payment...',
+    okTitle: 'Payment successful', okLead: 'Thank you! The amount is reserved on your card and only charged once we ship your parcel. A payment confirmation is on its way to your email.',
+    failTitle: 'Payment failed', failLead: 'Your card was not charged. You can try again or choose cash on delivery.',
+    pendingTitle: 'Waiting for the bank', pendingLead: 'If you completed the payment, the confirmation will reach your email within a few minutes. If it doesn’t, write to us.',
+    order: 'Order', status: 'Status', approved: 'Approved', declined: 'Unsuccessful', code: 'Authorisation code', card: 'Card', retry: 'Try again', home: 'Back to the homepage',
+  },
   cart: {
     nav: 'Cart', title: 'Cart', label: 'CART',
     empty: 'Your cart is empty.', emptyCta: 'Explore the collection',
@@ -416,7 +423,7 @@ const en: typeof sr = {
     remove: 'Remove', subtotal: 'Subtotal', shipping: 'Shipping', total: 'Total',
     toCheckout: 'Continue to checkout', items: 'pcs',
     checkoutTitle: 'Checkout', checkoutLabel: 'CHECKOUT', details: 'Delivery details', summary: 'Your order',
-    place: 'Place order', edit: 'Edit cart', note: 'You only pay on delivery. No card, no account.',
+    place: 'Place order', edit: 'Edit cart', note: 'You only pay on delivery. No card, no account.', noteCards: 'By card, cash on delivery or bank transfer. No account needed.',
     custom: 'I want a custom one-of-one piece',
   },
   soon: {
@@ -490,7 +497,9 @@ const en: typeof sr = {
     zip: 'Postal code',
     note: 'Note (date, coordinates, wishes...)',
     payment: 'Payment',
-    payments: { cod: 'Cash on delivery', bank: 'Bank transfer' },
+    payments: { card: 'Payment card', cod: 'Cash on delivery', bank: 'Bank transfer' },
+    cardNote: 'You enter your card details on Raiffeisen Bank’s secure page. The amount is reserved now and only charged once we ship your parcel.',
+    redirecting: 'Taking you to the bank’s page...',
     total: 'Total',
     totalNote: 'Includes 500 RSD courier shipping. You only pay on delivery.',
     shippingLine: 'Shipping',

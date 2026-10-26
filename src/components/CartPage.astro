@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Waitlist from './Waitlist.astro';
-import { SALES_OPEN } from '../config';
+import { SALES_OPEN, PAYMENTS } from '../config';
 import { T, homeHref, collectionHref, checkoutHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -28,7 +28,7 @@ const t = T[lang].cart;
           <div class="row muted"><span>{t.shipping}</span><span id="cart-shipping"></span></div>
           <div class="row total"><span>{t.total}</span><strong id="cart-total"></strong></div>
           <a class="btn btn--solid go" href={checkoutHref(lang)}>{t.toCheckout} <span class="arrow">→</span></a>
-          <p class="note">{t.note}</p>
+          <p class="note">{PAYMENTS.cards ? t.noteCards : t.note}</p>
           <a class="link mono" href={collectionHref(lang)}>← {t.continue}</a>
         </aside>
       </div>

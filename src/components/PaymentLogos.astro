@@ -1,0 +1,29 @@
+---
+// Raiffeisen Prilog 1 branding: bank logo (linked), 3-D Secure logos (linked, kept apart from the
+// card logos), then the accepted cards. Sizes within the bank's limits (secure 60-155 px, cards 37×23-180×113).
+import { PAYMENTS } from '../config';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+{PAYMENTS.cards && (
+  <div class:list={['paylogos', { compact }]}>
+    <a class="g" href="https://www.raiffeisenbank.rs" target="_blank" rel="noopener"><img src="/pay/raiffeisen.png" alt="Raiffeisen banka" width="173" height="30" loading="lazy" /></a>
+    <span class="g">
+      <a href="https://rs.visa.com/run-your-business/small-business-tools/payment-technology/visa-secure.html" target="_blank" rel="noopener"><img src="/pay/visa-secure.png" alt="Visa Secure" width="60" height="60" loading="lazy" /></a>
+      <a href="https://www.mastercard.rs/sr-rs/korisnici/podrska/sigurnost-i-zastita/identity-check.html" target="_blank" rel="noopener"><img src="/pay/mc-idcheck.png" alt="Mastercard Identity Check" width="80" height="60" loading="lazy" /></a>
+    </span>
+    <span class="g cards">
+      <img src="/pay/visa.png" alt="Visa" width="74" height="24" loading="lazy" />
+      <img src="/pay/mastercard.png" alt="Mastercard" width="40" height="28" loading="lazy" />
+      <img src="/pay/maestro.png" alt="Maestro" width="84" height="24" loading="lazy" />
+      <img src="/pay/dinacard.png" alt="DinaCard" width="60" height="28" loading="lazy" />
+    </span>
+  </div>
+)}
+<style>
+  .paylogos { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 40px; }
+  .g { display: inline-flex; align-items: center; gap: 16px; }
+  .g img { display: block; height: auto; }
+  .cards { padding: 8px 12px; background: #fff; border: 1px solid var(--line); gap: 14px; }
+  .compact { gap: 12px 24px; }
+</style>

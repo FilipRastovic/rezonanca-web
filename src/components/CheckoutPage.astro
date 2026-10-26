@@ -1,13 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import Waitlist from './Waitlist.astro';
-import { SALES_OPEN } from '../config';
+import { SALES_OPEN, PAYMENTS } from '../config';
+import PaymentLogos from './PaymentLogos.astro';
 import { SHOP } from '../config';
 import { T, homeHref, cartHref, collectionHref, legalHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].cart, o = T[lang].order;
-const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHOP.email });
+const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHOP.email, api: PAYMENTS.cards ? PAYMENTS.api : '' });
 ---
 <Base lang={lang} title={`${t.checkoutTitle} | Резонанца`} description={t.checkoutTitle}>
   <section class="page grid-bg">
@@ -36,8 +37,10 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
             <label class="full">{o.note}<textarea name="note" rows="3"></textarea></label>
             <fieldset class="full">
               <legend>{o.payment}</legend>
-              <label class="radio"><input type="radio" name="payment" value="cod" checked /> {o.payments.cod}</label>
+              {PAYMENTS.cards && <label class="radio"><input type="radio" name="payment" value="card" checked /> {o.payments.card}</label>}
+              <label class="radio"><input type="radio" name="payment" value="cod" checked={!PAYMENTS.cards} /> {o.payments.cod}</label>
               <label class="radio"><input type="radio" name="payment" value="bank" /> {o.payments.bank}</label>
+              {PAYMENTS.cards && <div class="cardinfo"><p>{o.cardNote}</p><PaymentLogos compact /></div>}
             </fieldset>
             <label class="radio agree full"><input type="checkbox" name="terms" required value="yes" />
               <span>{lang === 'sr' ? 'Прихватам ' : 'I accept the '}<a href={legalHref(lang, 'terms')} target="_blank">{T[lang].legal.terms.title.toLowerCase()}</a>{lang === 'sr' ? ' и ' : ' and '}<a href={legalHref(lang, 'privacy')} target="_blank">{T[lang].legal.privacy.title.toLowerCase()}</a></span></label>
@@ -52,7 +55,7 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
             <div class="row"><span>{t.subtotal}</span><span id="co-subtotal"></span></div>
             <div class="row muted"><span>{t.shipping}</span><span id="co-shipping"></span></div>
             <div class="row total"><span>{t.total}</span><strong id="co-total"></strong></div>
-            <p class="note">{t.note}</p>
+            <p class="note">{PAYMENTS.cards ? t.noteCards : t.note}</p>
           </aside>
         </div>
       </div>
@@ -70,7 +73,7 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
       </div>
     </div>
   </section>
-  <template id="co-msgs" data-required={o.required} data-error={o.error}></template>
+  <template id="co-msgs" data-required={o.required} data-error={o.error} data-redirecting={o.redirecting}></template>
 </Base>
 <script>
   import { totals, catalog, money, describe, imgFor, clear } from '../scripts/cart';
@@ -137,6 +140,34 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
     };
     submit.disabled = true;
     submit.firstChild!.textContent = submit.dataset.sending! + ' ';
+    if (data.payment === 'card') {
+      // Card: the payments Worker prices the cart, stores the order and signs the request; the buyer
+      // then types the card on the bank's page (we never see it). Result comes back on /placanje/.
+      try {
+        if (!cfg.api) throw new Error('card payments not configured');
+        const res = await fetch(`${cfg.api}/api/checkout`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lang: c.lang, lines, customer: { name: data.name, phone: data.phone, email: data.email, address: data.address, city: data.city, zip: data.zip, note: data.note }, terms: !!terms }),
+        });
+        const json = await res.json();
+        if (!res.ok || !json.action) throw new Error(json.error || 'checkout failed');
+        status.textContent = msgs.redirecting!;
+        const f = document.createElement('form');
+        f.method = 'POST'; f.action = json.action;
+        for (const [k, v] of Object.entries(json.fields as Record<string, string>)) {
+          const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; f.append(i);
+        }
+        document.body.append(f);
+        f.submit();
+      } catch (err) {
+        console.error(err);
+        status.classList.add('err');
+        status.textContent = `${msgs.error} ${cfg.email}`;
+        submit.disabled = false;
+        submit.firstChild!.textContent = submit.dataset.label! + ' ';
+      }
+      return;
+    }
     try {
       if (!cfg.inbox) { console.info('[order demo]', payload); await new Promise((r) => setTimeout(r, 600)); }
       else {
@@ -220,4 +251,6 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
   .demo { font-size: var(--fs-2xs); color: var(--muted); }
   @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .summary { position: static; order: -1; } }
   @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
+  .cardinfo { display: grid; gap: 14px; margin-top: 6px; padding: 16px; border: 1px solid var(--line); background: var(--bg-1); }
+  .cardinfo p { margin: 0; font-size: var(--fs-sm); color: var(--text); }
 </style>

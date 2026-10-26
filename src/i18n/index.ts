@@ -21,7 +21,7 @@ export const checkoutHref = (lang: Lang) => (lang === 'sr' ? '/naplata/' : '/en/
 export const legalHref = (lang: Lang, page: 'terms' | 'privacy') =>
   lang === 'sr' ? (page === 'terms' ? '/uslovi/' : '/privatnost/') : `/en/${page}/`;
 // The same page in the other language. Pairs: Serbian path prefix <-> English path prefix (after /en).
-const PAIRS: [string, string][] = [['/kolekcija/', '/collection/'], ['/uslovi/', '/terms/'], ['/privatnost/', '/privacy/'], ['/korpa/', '/cart/'], ['/naplata/', '/checkout/'], ['/u-prostoru/', '/in-a-room/']];
+const PAIRS: [string, string][] = [['/kolekcija/', '/collection/'], ['/uslovi/', '/terms/'], ['/privatnost/', '/privacy/'], ['/korpa/', '/cart/'], ['/naplata/', '/checkout/'], ['/u-prostoru/', '/in-a-room/'], ['/placanje/', '/payment/']];
 export const altHref = (path: string, to: Lang) => {
   const isEn = path === '/en' || path.startsWith('/en/');
   let rest = isEn ? path.slice(3) || '/' : path;

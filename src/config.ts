@@ -24,11 +24,19 @@ export const SHOP = {
 };
 
 // Legal seller details (Agencija za privredne registre).
+// Card payments (Raiffeisen e-commerce via the UPC gateway). api = the payments Worker (rezonanca-web/worker).
+// cards = card option at checkout + the bank's required logos (Prilog 1) in the footer and checkout.
+export const PAYMENTS = {
+  cards: false, // true once the Worker is deployed and the bank's test passes
+  api: '',
+};
+
 export const SELLER = {
   name: 'FILIP RASTOVIĆ PR SREMSKA KAMENICA',
   mb: '67800826',
   pib: '114718565',
   address: 'Slavka Rodića 40, 21208 Sremska Kamenica, Srbija',
+  activity: '', // pretežna delatnost + šifra (Prilog 1), e.g. '0000 - ...' - ask Filip / APR
 };
 
 // Analytics. Both load only after the visitor accepts cookies (Consent.astro). An empty string disables it.

@@ -1,0 +1,89 @@
+---
+// Card payment result (/placanje/, /en/payment/). The payments Worker redirects here after the bank's
+// page with ?o=<order>&t=<token>; we read the confirmed status from the Worker (the bank's notification
+// is the source of truth, not the browser). Prilog 1: show the payment confirmation, success or failure.
+import Base from '../layouts/Base.astro';
+import PaymentLogos from './PaymentLogos.astro';
+import { PAYMENTS, SHOP, SELLER } from '../config';
+import { T, homeHref, checkoutHref, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = T[lang].pay;
+const cfg = JSON.stringify({ api: PAYMENTS.api, lang });
+---
+<Base lang={lang} title={`${t.title} | Резонанца`} description={t.title}>
+  <section class="page grid-bg">
+    <div class="wrap">
+      <div class="box panel" id="pay" data-config={cfg}>
+        <p class="label">{t.label}</p>
+        <h1 id="pay-title">{t.loading}</h1>
+        <p class="lead" id="pay-lead"></p>
+        <dl class="facts" id="pay-facts" hidden></dl>
+        <ul class="lines" id="pay-lines"></ul>
+        <p class="total" id="pay-total" hidden></p>
+        <div class="actions">
+          <a class="btn btn--solid" id="pay-retry" href={checkoutHref(lang)} hidden>{t.retry} <span class="arrow">→</span></a>
+          <a class="btn" href={homeHref(lang)}>{t.home} <span class="arrow">→</span></a>
+        </div>
+        <p class="seller mono">{SELLER.name} · МБ {SELLER.mb} · ПИБ {SELLER.pib} · {SHOP.email} · {SHOP.phone}</p>
+        <PaymentLogos compact />
+      </div>
+    </div>
+  </section>
+  <template id="pay-t" data-ok-title={t.okTitle} data-ok-lead={t.okLead} data-fail-title={t.failTitle} data-fail-lead={t.failLead}
+    data-pending-title={t.pendingTitle} data-pending-lead={t.pendingLead} data-order={t.order} data-status={t.status}
+    data-approved={t.approved} data-declined={t.declined} data-code={t.code} data-card={t.card} data-total={T[lang].cart.total}></template>
+</Base>
+<script>
+  import { clear } from '../scripts/cart';
+  const box = document.getElementById('pay')!;
+  const cfg = JSON.parse(box.dataset.config!);
+  const t = (document.getElementById('pay-t') as HTMLElement).dataset;
+  const $ = (id: string) => document.getElementById(id)!;
+  const money = (n: number) => `${n.toLocaleString(cfg.lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;
+  const show = (kind: 'ok' | 'fail' | 'pending') => {
+    $('pay-title').textContent = t[`${kind}Title`]!;
+    $('pay-lead').textContent = t[`${kind}Lead`]!;
+    $('pay-retry').hidden = kind !== 'fail';
+    box.dataset.state = kind;
+  };
+  const q = new URLSearchParams(location.search);
+  const o = q.get('o'), tok = q.get('t');
+  const load = async (attempt = 0): Promise<void> => {
+    if (!o || !tok || !cfg.api) return show(q.get('r') === 'ok' ? 'pending' : 'fail');
+    try {
+      const r = await fetch(`${cfg.api}/api/order?o=${encodeURIComponent(o)}&t=${encodeURIComponent(tok)}`);
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error);
+      // The bank's notification can land a moment after the redirect: poll briefly while pending.
+      if (d.status === 'pending' && attempt < 6) { show('pending'); setTimeout(() => load(attempt + 1), 2000); return; }
+      const okk = d.status === 'preauthorized' || d.status === 'captured';
+      show(okk ? 'ok' : d.status === 'pending' ? 'pending' : 'fail');
+      const facts: [string, string][] = [[t.order!, d.order], [t.status!, okk ? t.approved! : t.declined!]];
+      if (okk && d.approvalCode) facts.push([t.code!, d.approvalCode]);
+      if (okk && d.card) facts.push([t.card!, `**** ${d.card}`]);
+      const dl = $('pay-facts'); dl.replaceChildren(); dl.hidden = false;
+      for (const [k, v] of facts) { const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; dl.append(dt, dd); }
+      const ul = $('pay-lines'); ul.replaceChildren();
+      for (const l of d.lines) { const li = document.createElement('li'); li.innerHTML = '<span><b></b><small></small></span><span class="p"></span>'; li.querySelector('b')!.textContent = `${l.name}${l.qty > 1 ? ' × ' + l.qty : ''}`; li.querySelector('small')!.textContent = l.desc; li.querySelector('.p')!.textContent = money(l.price); ul.append(li); }
+      const tot = $('pay-total'); tot.hidden = false; tot.textContent = `${t.total}: ${money(d.total)}`;
+      if (okk) clear();
+    } catch (e) { console.error(e); show('pending'); }
+  };
+  load();
+</script>
+<style>
+  .page { padding-top: clamp(130px, 13vw, 180px); padding-bottom: var(--space-md); background-color: var(--bg-0); min-height: 80vh; }
+  .box { max-width: 720px; display: grid; gap: 20px; }
+  h1 { font-size: clamp(24px, 3vw, 36px); margin: 0; }
+  .lead { margin: 0; color: var(--text); max-width: 56ch; }
+  .facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 24px; margin: 0; font-size: var(--fs-sm); }
+  .facts :global(dt) { color: var(--muted); }
+  .facts :global(dd) { margin: 0; color: var(--ice); }
+  .lines { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .lines :global(li) { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .lines :global(small) { display: block; color: var(--muted); font-size: var(--fs-2xs); }
+  .total { margin: 0; font-weight: 500; color: var(--ice); text-align: right; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .seller { margin: 8px 0 0; font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.04em; }
+</style>
