@@ -208,9 +208,12 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
   const ip = req.headers.get('CF-Connecting-IP') ?? '';
   const allowed = env.NOTIFY_IPS.split(',').map((s) => s.trim()).filter(Boolean);
   const p = await form(req);
+  // forwardUrl sends the buyer to our result page after any outcome (otherwise declines land on the bare site URL).
+  const known = p.OrderID ? await getOrder(env, p.OrderID) : null;
+  const forward = known && known.token === p.SD ? `${known.lang === 'en' ? `${env.SITE_URL}/en/payment/` : `${env.SITE_URL}/placanje/`}?o=${encodeURIComponent(known.id)}&t=${known.token}` : '';
   const echo = (action: 'approve' | 'reverse', reason: string) => new Response(
     [`MerchantID=${p.MerchantID ?? ''}`, `TerminalID=${p.TerminalID ?? ''}`, `OrderID=${p.OrderID ?? ''}`, `Currency=${p.Currency ?? ''}`, `TotalAmount=${p.TotalAmount ?? ''}`,
-      `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, `Response.action=${action}`, `Response.reason=${reason}`, 'Response.forwardUrl='].join('\n'),
+      `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, `Response.action=${action}`, `Response.reason=${reason}`, `Response.forwardUrl=${forward}`].join('\n'),
     { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   if (allowed.length && !allowed.includes(ip)) return new Response('forbidden', { status: 403 });
 
