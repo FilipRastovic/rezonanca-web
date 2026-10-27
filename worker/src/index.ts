@@ -215,7 +215,7 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
     [`MerchantID=${p.MerchantID ?? ''}`, `TerminalID=${p.TerminalID ?? ''}`, `OrderID=${p.OrderID ?? ''}`, `Currency=${p.Currency ?? ''}`, `TotalAmount=${p.TotalAmount ?? ''}`,
       `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, `Response.action=${action}`, `Response.reason=${reason}`, `Response.forwardUrl=${forward}`].join('\n'),
     { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-  if (allowed.length && !allowed.includes(ip)) return new Response('forbidden', { status: 403 });
+  if (allowed.length && !allowed.includes(ip)) { console.log('notify from unlisted ip', ip, p.OrderID); return new Response('forbidden', { status: 403 }); }
 
   const r = await apply(env, ctx, p, ip);
   if (r === 'bad signature' || r === 'unknown order' || r === 'mismatch') return echo('reverse', r);
