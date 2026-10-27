@@ -27,7 +27,7 @@ export const SHOP = {
 // Card payments (Raiffeisen e-commerce via the UPC gateway). api = the payments Worker (rezonanca-web/worker).
 // cards = card option at checkout + the bank's required logos (Prilog 1) in the footer and checkout.
 export const PAYMENTS = {
-  cards: false, // true once the Worker is deployed and the bank's test passes
+  cards: true, // true once the Worker is deployed and the bank's test passes
   api: 'https://rezonanca-payments.filiporastovic.workers.dev',
 };
 
