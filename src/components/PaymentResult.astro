@@ -49,10 +49,15 @@ const cfg = JSON.stringify({ api: PAYMENTS.api, lang });
   };
   const q = new URLSearchParams(location.search);
   const o = q.get('o'), tok = q.get('t');
+  try { localStorage.removeItem('rz-pay'); } catch { /* storage blocked */ }
   const load = async (attempt = 0): Promise<void> => {
     if (!o || !tok || !cfg.api) return show(q.get('r') === 'ok' ? 'pending' : 'fail');
     try {
-      const r = await fetch(`${cfg.api}/api/order?o=${encodeURIComponent(o)}&t=${encodeURIComponent(tok)}`);
+      // back=1: the bank sent the buyer to the site without a result (declined or cancelled). Successful
+      // payments always return through SUCCESS_URL, so the Worker records this one as failed and emails the buyer.
+      const r = q.get('back') && attempt === 0
+        ? await fetch(`${cfg.api}/api/abandon`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ o, t: tok }) })
+        : await fetch(`${cfg.api}/api/order?o=${encodeURIComponent(o)}&t=${encodeURIComponent(tok)}`);
       const d = await r.json();
       if (!r.ok) throw new Error(d.error);
       // The bank's notification can land a moment after the redirect: poll briefly while pending.

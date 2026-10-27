@@ -49,6 +49,15 @@ const canonical = new URL(path, Astro.site);
     <slot name="head" />
     <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>
+      // Declined or cancelled card payments: the bank links back to the bare site URL, not to our result page.
+      try {
+        const p = JSON.parse(localStorage.getItem('rz-pay') || 'null');
+        if (p && /upc\.ua/.test(document.referrer) && Date.now() - p.at < 2 * 3600e3 && !/\/(placanje|payment)\//.test(location.pathname)) {
+          location.replace((p.lang === 'en' ? '/en/payment/' : '/placanje/') + '?o=' + encodeURIComponent(p.o) + '&t=' + encodeURIComponent(p.t) + '&back=1');
+        }
+      } catch (e) { /* storage blocked */ }
+    </script>
   </head>
   <body>
     <Nav lang={lang} />

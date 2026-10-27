@@ -265,9 +265,35 @@ async function back(req: Request, env: Env, ctx: ExecutionContext, success: bool
   return Response.redirect(base + qs, 303);
 }
 
+// No result from the gateway: mark a still-pending order failed and send the buyer the failure email (Prilog 1).
+async function giveUp(env: Env, ctx: ExecutionContext, o: Order) {
+  const r = await env.DB.prepare(`UPDATE orders SET status = 'failed' WHERE id = ? AND status = 'pending'`).bind(o.id).run();
+  if (r.meta.changes) ctx.waitUntil(mailAfterPayment(env, (await getOrder(env, o.id))!, false));
+}
+
+// The buyer came back to the site from the bank's page without passing SUCCESS_URL: declined or cancelled.
+async function abandon(req: Request, env: Env, ctx: ExecutionContext, origin: string | null) {
+  const b = await req.json().catch(() => ({})) as { o?: string; t?: string };
+  const o = await getOrder(env, b.o ?? '');
+  if (!o || o.token !== b.t) return ok({ error: 'not_found' }, origin, 404);
+  await giveUp(env, ctx, o);
+  return describeOrder((await getOrder(env, o.id))!, origin);
+}
+
+// Buyer closed the tab on the bank's page: nothing comes back at all, so give up after 30 minutes.
+async function sweep(env: Env, ctx: ExecutionContext) {
+  const cutoff = new Date(Date.now() - 30 * 60e3).toISOString(), floor = new Date(Date.now() - 2 * 86400e3).toISOString();
+  const { results } = await env.DB.prepare(`SELECT * FROM orders WHERE status = 'pending' AND created_at < ? AND created_at > ?`).bind(cutoff, floor).all<Order>();
+  for (const o of results) await giveUp(env, ctx, o);
+}
+
 async function status(req: Request, env: Env, origin: string | null) {
   const u = new URL(req.url), o = await getOrder(env, u.searchParams.get('o') ?? '');
   if (!o || o.token !== u.searchParams.get('t')) return ok({ error: 'not_found' }, origin, 404);
+  return describeOrder(o, origin);
+}
+
+function describeOrder(o: Order, origin: string | null) {
   const lines: Line[] = JSON.parse(o.lines), t = totals(lines);
   return ok({
     order: o.id, status: o.status, tranCode: o.tran_code, approvalCode: o.approval_code, card: o.proxy_pan ? o.proxy_pan.slice(-4) : null,
@@ -287,10 +313,15 @@ export default {
       if (pathname === '/api/success') return await back(req, env, ctx, true);
       if (pathname === '/api/failure') return await back(req, env, ctx, false);
       if (pathname === '/api/order' && req.method === 'GET') return await status(req, env, origin);
+      if (pathname === '/api/abandon' && req.method === 'POST') return await abandon(req, env, ctx, origin);
       return new Response('Rezonanca payments', { status: 404 });
     } catch (e) {
       console.error(e);
       return ok({ error: 'server' }, origin, 500);
     }
+  },
+  async scheduled(_e: ScheduledController, env: Env, ctx: ExecutionContext) {
+    SITE = env.SITE_URL;
+    await sweep(env, ctx);
   },
 };

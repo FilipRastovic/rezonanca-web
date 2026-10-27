@@ -16,3 +16,6 @@ OWNER_EMAIL = "filiporastovic@gmail.com"
 binding = "DB"
 database_name = "rezonanca-payments"
 database_id = "c3d7b309-24b9-4bdc-bba7-2b399182c904"
+
+[triggers]
+crons = ["*/10 * * * *"]  # sweep: pending card orders older than 30 min -> failed + email
