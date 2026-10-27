@@ -44,17 +44,23 @@ const cors = (origin: string | null): Record<string, string> =>
 // ---------- crypto (RSA-SHA1, PKCS#1 v1.5, as in the bank's PHP openssl_sign / openssl_verify)
 const pemBody = (pem: string) => Uint8Array.from(atob(pem.replace(/-----[^-]+-----/g, '').replace(/\s+/g, '')), (c) => c.charCodeAt(0));
 const enc = new TextEncoder();
-let signKey: Promise<CryptoKey> | null = null, verifyKey: Promise<CryptoKey> | null = null;
+let signKey: Promise<CryptoKey> | null = null;
 const algo = { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-1' };
 async function sign(env: Env, data: string) {
   signKey ??= crypto.subtle.importKey('pkcs8', pemBody(env.MERCHANT_KEY), algo, false, ['sign']);
   const sig = new Uint8Array(await crypto.subtle.sign(algo, await signKey, enc.encode(data)));
   return btoa(String.fromCharCode(...sig));
 }
+// The gateway signs its replies with SHA-512 (the docs say SHA-1, which our requests still use): accept either.
+const verifyKeys: Record<string, Promise<CryptoKey>> = {};
 async function verify(env: Env, data: string, b64: string) {
-  verifyKey ??= crypto.subtle.importKey('spki', pemBody(env.GATEWAY_PUBKEY), algo, false, ['verify']);
-  try { return await crypto.subtle.verify(algo, await verifyKey, Uint8Array.from(atob(b64.replace(/\s+/g, '')), (c) => c.charCodeAt(0)), enc.encode(data)); }
-  catch { return false; }
+  const sig = Uint8Array.from(atob(b64.replace(/ /g, '+').replace(/\s+/g, '')), (c) => c.charCodeAt(0));
+  for (const hash of ['SHA-512', 'SHA-1']) {
+    const a = { name: 'RSASSA-PKCS1-v1_5', hash };
+    verifyKeys[hash] ??= crypto.subtle.importKey('spki', pemBody(env.GATEWAY_PUBKEY), a, false, ['verify']);
+    try { if (await crypto.subtle.verify(a, await verifyKeys[hash], sig, enc.encode(data))) return true; } catch { /* try the next hash */ }
+  }
+  return false;
 }
 
 // ---------- helpers
@@ -208,14 +214,24 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
     { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   if (allowed.length && !allowed.includes(ip)) return new Response('forbidden', { status: 403 });
 
-  const delay = p.Delay ? `,${p.Delay}` : '';
+  const r = await apply(env, ctx, p, ip);
+  if (r === 'bad signature' || r === 'unknown order' || r === 'mismatch') return echo('reverse', r);
+  return echo('approve', 'ok');
+}
+
+// Verifies a gateway result (NOTIFY or the signed SUCCESS/FAILURE post) and records it once.
+async function apply(env: Env, ctx: ExecutionContext, p: Record<string, string>, ip: string) {
   const cur = p.AltCurrency ? `${p.Currency},${p.AltCurrency}` : p.Currency;
   const amt = p.AltTotalAmount ? `${p.TotalAmount},${p.AltTotalAmount}` : p.TotalAmount;
-  const data = `${p.MerchantID};${p.TerminalID};${p.PurchaseTime};${p.OrderID}${delay};${p.XID};${cur};${amt};${p.SD ?? ''};${p.TranCode};${p.ApprovalCode ?? ''};`;
-  if (!(await verify(env, data, p.Signature ?? ''))) return echo('reverse', 'bad signature');
+  // The SUCCESS/FAILURE post leaves Delay out, while the gateway may still sign it (we always send Delay=1).
+  const data = (delay: string) => `${p.MerchantID};${p.TerminalID};${p.PurchaseTime};${p.OrderID}${delay};${p.XID};${cur};${amt};${p.SD ?? ''};${p.TranCode};${p.ApprovalCode ?? ''};`;
+  const tries = [...new Set([p.Delay ? `,${p.Delay}` : '', ',1', ''])].map(data);
+  let signed = false;
+  for (const d of tries) if (await verify(env, d, p.Signature ?? '')) { signed = true; break; }
+  if (!signed) { console.log('bad signature', JSON.stringify({ ...p, Signature: undefined })); return 'bad signature'; }
 
   const o = await getOrder(env, p.OrderID);
-  if (!o) return echo('reverse', 'unknown order');
+  if (!o) return 'unknown order';
   const matches = p.MerchantID === env.MERCHANT_ID && Number(p.TotalAmount) === o.amount && Number(p.Currency) === o.currency && p.SD === o.token;
   const approved = p.TranCode === '000' && matches;
   const already = o.status === 'preauthorized' || o.status === 'failed';
@@ -226,12 +242,14 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
     const fresh = (await getOrder(env, o.id))!;
     ctx.waitUntil(mailAfterPayment(env, fresh, approved));
   }
-  if (p.TranCode === '000' && !matches) return echo('reverse', 'amount or order mismatch');
-  return echo('approve', 'ok');
+  return p.TranCode === '000' && !matches ? 'mismatch' : 'ok';
 }
 
 async function back(req: Request, env: Env, ctx: ExecutionContext, success: boolean) {
   const p = req.method === 'POST' ? await form(req) : Object.fromEntries(new URL(req.url).searchParams);
+  console.log('back', success, Object.keys(p).join(','));
+  // The gateway signs this post too: record it here in case NOTIFY_URL never arrives.
+  if (p.Signature && p.TranCode) await apply(env, ctx, p, req.headers.get('CF-Connecting-IP') ?? '');
   const o = p.OrderID ? await getOrder(env, p.OrderID) : null;
   // Cancelled or failed attempts don't always reach NOTIFY_URL: record them here so the buyer still
   // gets the failure email. Never overrides a result the gateway confirmed.
