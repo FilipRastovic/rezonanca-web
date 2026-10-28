@@ -129,7 +129,8 @@ const REASONS: Record<string, { sr: string; en: string }> = {
 function receipt(o: Order, approved: boolean) {
   const lang = o.lang, l = L[lang], lines: Line[] = JSON.parse(o.lines), c: Customer = JSON.parse(o.customer), t = totals(lines);
   const rows = lines.map((x) => `<tr><td style="padding:6px 0">${esc(product(x.slug).name[lang])}<br><span style="color:#7a7d82;font-size:13px">${esc(describe(x, lang))}</span></td><td align="center">${x.qty}</td><td align="right">${money(unit(x)! * x.qty, lang)}</td></tr>`).join('');
-  const reason = !approved && o.tran_code ? (REASONS[o.tran_code]?.[lang] ?? `${lang === 'sr' ? 'код' : 'code'} ${o.tran_code}`) : '';
+  // No TranCode: the buyer cancelled or left the bank's page (we never got the gateway's result).
+  const reason = approved ? '' : o.tran_code ? (REASONS[o.tran_code]?.[lang] ?? `${lang === 'sr' ? 'код' : 'code'} ${o.tran_code}`) : lang === 'sr' ? 'плаћање није завршено' : 'payment not completed';
   const facts: [string, string][] = [
     [l.order, o.id], [l.date, new Date().toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-GB', { timeZone: 'Europe/Belgrade' })],
     [l.status, approved ? l.ok : l.fail],
