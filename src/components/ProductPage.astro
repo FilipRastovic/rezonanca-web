@@ -4,7 +4,6 @@ import ProductCard from './ProductCard.astro';
 import ProductMath from './ProductMath.astro';
 import History from './History.astro';
 import { STORIES } from '../data/stories.js';
-import MadeInSerbia from './MadeInSerbia.astro';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import ROOM_FRAMES from '../data/room-frames.json';
 import SWATCHES from '../data/swatches.json';
@@ -255,7 +254,6 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
       </div>
     </div>
   </section>
-  <MadeInSerbia lang={lang} compact />
 </Base>
 
 <script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug }}>window.rzTrack && window.rzTrack('ViewContent', { content_name: vcName, content_ids: [vcId], content_type: 'product' });</script>

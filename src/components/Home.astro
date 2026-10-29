@@ -8,7 +8,6 @@ import Formats from './Formats.astro';
 import HowToOrder from './HowToOrder.astro';
 import Faq from './Faq.astro';
 import FinalCta from './FinalCta.astro';
-import MadeInSerbia from './MadeInSerbia.astro';
 import About from './About.astro';
 import MathArt from './MathArt.astro';
 import type { Lang } from '../i18n';
@@ -25,6 +24,6 @@ const { lang } = Astro.props;
   <Formats lang={lang} />
   <HowToOrder lang={lang} />
   <Faq lang={lang} />
-  <MadeInSerbia lang={lang} />
+  {/* MadeInSerbia removed 2026-10-29: printing moves to print on demand, shipping worldwide. */}
   <FinalCta lang={lang} />
 </Base>
