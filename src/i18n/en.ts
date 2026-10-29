@@ -166,6 +166,7 @@ const en: typeof sr = {
       { q: 'How do I pay?', a: 'Cash on delivery to the courier, or bank transfer once we confirm your order. No card details are ever entered on the site.' },
       { q: 'How long does it take?', a: 'Prints 3–5 business days. Courier delivery across Serbia takes 1–2 days, shipping is paid by the buyer.' },
       { q: 'Do I get the same piece as in the picture?', a: 'Yes, exactly that one. Our code draws each piece from a single number - a seed - and the same number always gives exactly the same image. The print you receive is identical to the one on the site.' },
+      { q: 'How do I clean a framed print?', a: 'The frame has clear acrylic glazing, not glass: lighter and it does not shatter. Wipe it with a dry or slightly damp microfibre cloth only. Paper towels and glass cleaners scratch and cloud acrylic.' },
       { q: 'Can I get a piece from my own number or date?', a: 'Of course. Send us a birthday, an anniversary or the coordinates of a place you love - we’ll draw a signal that is only yours.' },
       { q: 'Do you ship abroad?', a: 'We currently ship across Serbia and the region. For other countries, write to us and we’ll work it out.' },
       { q: 'What if I’m not happy?', a: 'If a piece arrives damaged, we replace it, no questions asked. Send us a photo within 7 days.' },
