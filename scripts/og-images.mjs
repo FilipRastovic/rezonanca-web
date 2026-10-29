@@ -1,5 +1,5 @@
 // Light-mode share images (Open Graph, 1200×630 JPG) rendered in Chrome with the site's fonts.
-//   node scripts/og-images.mjs           → public/og-sr.jpg, og-en.jpg, public/og/<slug>-<lang>.jpg
+//   node scripts/og-images.mjs           → public/og-en.jpg, public/og/<slug>-en.jpg
 // Home: wordmark + line + a room shot. Product: name, series, line, its room shot.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -36,7 +36,7 @@ const shoot = async (html, out) => {
   await p.screenshot({ path: out, type: 'jpeg', quality: 86 });
 };
 fs.mkdirSync(path.join(ROOT, 'public/og'), { recursive: true });
-for (const lang of ['sr', 'en']) {
+for (const lang of ['en']) { // English only since 2026-10-29
   const t = T[lang];
   await shoot(page({ lang, label: t.hero.label, title: t.hero.title, big: true, line: t.ogHome, sub: 'rezonanca.art', shot: img(`rooms/halvorsen-${lang}.webp`) }), path.join(ROOT, `public/og-${lang}.jpg`));
   for (const pr of PRODUCTS) {
@@ -45,4 +45,4 @@ for (const lang of ['sr', 'en']) {
   }
 }
 await b.close();
-console.log('og images:', 2 + PRODUCTS.length * 2);
+console.log('og images:', 1 + PRODUCTS.length);

@@ -12,7 +12,7 @@ const en: typeof sr = {
   nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In a room', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
     label: 'Prints · Novi Sad',
-    title: 'РЕЗОНАНЦА',
+    title: 'REZONANCA',
     tagline: 'Sound, frozen in light.',
     lead: 'Pictures drawn with code, line by line, printed on matte paper in Novi Sad.',
     primary: 'Explore the collection',
@@ -59,37 +59,37 @@ const en: typeof sr = {
     label: '01 // SERIES',
     title: 'Ten series. Fifty-eight signals.',
     structure: {
-      name: 'Структура · Structure',
+      name: 'Structure',
       code: 'SERIES C // RECURSIVE RULES',
       desc: 'Sound that builds. Thousands of blocks of light grow by a set of recursive rules - branching, bending and repeating until the signal fades. The architecture of a single moment.',
     },
     flux: {
-      name: 'Ток · Flux',
+      name: 'Flux',
       code: 'SERIES D // PHASE FLOW',
       desc: 'Hundreds of threads of light woven into a single ribbon. A signal twisting through space like silk.',
     },
     city: {
-      name: 'Град · City',
+      name: 'City',
       code: 'SERIES E // SPECTRAL ARCHITECTURE',
       desc: 'A spectrogram turned into a metropolis. A city that never sleeps.',
     },
     attractor: {
-      name: 'Атрактори · Attractors',
+      name: 'Attractors',
       code: 'SERIES A // STRANGE ATTRACTORS',
       desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by the same equations.',
     },
     mandelbrot: {
-      name: 'Манделброт · Mandelbrot',
+      name: 'Mandelbrot',
       code: 'SERIES B // THE SET z² + c',
       desc: 'One equation, infinitely many coastlines. Each picture is a window into the Mandelbrot set, magnified to places no eye has looked before.',
     },
     ridges: {
-      name: 'Гребени · Ridges',
+      name: 'Ridges',
       code: 'SERIES F // FIRST SIGNALS - STACKED SPECTRA',
       desc: 'Where it all began. Dozens of waveforms stacked one behind another, like a landscape captured by a radio telescope at 3 a.m.',
     },
     orbit: {
-      name: 'Орбита · Orbit',
+      name: 'Orbit',
       code: 'SERIES G // FIRST SIGNALS - RADIAL SWEEP',
       desc: 'A signal circling the void. Waves wound into rings, in polar coordinates: angle instead of time, radius instead of height.',
     },
@@ -396,7 +396,7 @@ const en: typeof sr = {
       { y: '1983', t: 'Perlin noise, sampled around a circle, makes seamless rings that close perfectly through all 360°.' },
     ],
   },
-  legal: { terms: { title: 'Услови куповине' }, privacy: { title: 'Политика приватности' } },
+  legal: { terms: { title: 'Terms of sale' }, privacy: { title: 'Privacy policy' } },
   madeIn: {
     label: 'MADE IN SERBIA',
     title: 'Written, printed and packed in Serbia.',

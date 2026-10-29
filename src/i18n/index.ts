@@ -10,25 +10,15 @@ export const seriesShort = (lang: Lang, key: string) => {
   return lang === 'sr' ? parts[0] : parts[parts.length - 1];
 };
 
-// URL helpers - Serbian lives at the root, English under /en/.
-export const homeHref = (lang: Lang) => (lang === 'sr' ? '/' : '/en/');
-export const collectionHref = (lang: Lang, series?: string) =>
-  `${lang === 'sr' ? '/kolekcija/' : '/en/collection/'}${series ? `${series}/` : ''}`;
-export const productHref = (lang: Lang, slug: string) => `${lang === 'sr' ? '' : '/en'}/poster/${slug}/`;
-export const interiorsHref = (lang: Lang) => (lang === 'sr' ? '/u-prostoru/' : '/en/in-a-room/');
-export const cartHref = (lang: Lang) => (lang === 'sr' ? '/korpa/' : '/en/cart/');
-export const checkoutHref = (lang: Lang) => (lang === 'sr' ? '/naplata/' : '/en/checkout/');
+// URL helpers - the site is English only, at the root. Serbian survives only as the legal pages
+// (/uslovi/, /privatnost/), which the law requires in Serbian for buyers in Serbia.
+// `lang` stays in the signatures so components keep one shape.
+export const homeHref = (_lang?: Lang) => '/';
+export const collectionHref = (_lang: Lang, series?: string) => `/collection/${series ? `${series}/` : ''}`;
+export const productHref = (_lang: Lang, slug: string) => `/poster/${slug}/`;
+export const interiorsHref = (_lang?: Lang) => '/in-a-room/';
+export const cartHref = (_lang?: Lang) => '/cart/';
+export const checkoutHref = (_lang?: Lang) => '/checkout/';
+export const paymentHref = (_lang?: Lang) => '/payment/';
 export const legalHref = (lang: Lang, page: 'terms' | 'privacy') =>
-  lang === 'sr' ? (page === 'terms' ? '/uslovi/' : '/privatnost/') : `/en/${page}/`;
-// The same page in the other language. Pairs: Serbian path prefix <-> English path prefix (after /en).
-const PAIRS: [string, string][] = [['/kolekcija/', '/collection/'], ['/uslovi/', '/terms/'], ['/privatnost/', '/privacy/'], ['/korpa/', '/cart/'], ['/naplata/', '/checkout/'], ['/u-prostoru/', '/in-a-room/'], ['/placanje/', '/payment/']];
-export const altHref = (path: string, to: Lang) => {
-  const isEn = path === '/en' || path.startsWith('/en/');
-  let rest = isEn ? path.slice(3) || '/' : path;
-  for (const [srP, enP] of PAIRS) {
-    const [from, into] = isEn ? [enP, srP] : [srP, enP];
-    if (rest.startsWith(from)) { rest = into + rest.slice(from.length); break; }
-  }
-  if (to === 'sr') return isEn ? rest : path;
-  return isEn ? path : '/en' + rest;
-};
+  lang === 'sr' ? (page === 'terms' ? '/uslovi/' : '/privatnost/') : `/${page}/`;

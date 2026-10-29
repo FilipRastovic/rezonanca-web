@@ -1,17 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
 import { LEGAL, UPDATED } from '../data/legal';
-import { T, homeHref, type Lang } from '../i18n';
+import { T, homeHref, legalHref, type Lang } from '../i18n';
+// lang = the text's language. The site around it is always English; the Serbian texts (/uslovi/, /privatnost/)
+// exist because buyers in Serbia must get the terms in Serbian, and each version links to the other.
 interface Props { lang: Lang; page: 'terms' | 'privacy' }
 const { lang, page } = Astro.props;
 const doc = LEGAL[lang][page];
+const other: Lang = lang === 'sr' ? 'en' : 'sr';
+const otherLabel = lang === 'sr' ? `English version: ${LEGAL.en[page].title}` : `На српском: ${LEGAL.sr[page].title}`;
 ---
-<Base lang={lang} title={`${doc.title} | Резонанца`} description={doc.sections[0].p[0]}>
+<Base lang="en" htmlLang={T[lang].htmlLang} title={`${doc.title} | Rezonanca`} description={doc.sections[0].p[0]}>
   <section class="legal grid-bg">
     <div class="wrap narrow">
-      <nav class="crumbs mono"><a href={homeHref(lang)}>{T[lang].product.home}</a><span>/</span><span aria-current="page">{doc.title}</span></nav>
+      <nav class="crumbs mono"><a href={homeHref()}>{T.en.product.home}</a><span>/</span><span aria-current="page">{doc.title}</span></nav>
       <h1>{doc.title}</h1>
       <p class="upd mono">{LEGAL[lang].updated}: {UPDATED}</p>
+      <p class="upd mono"><a href={legalHref(other, page)} hreflang={other} lang={other}>{otherLabel} →</a></p>
       {doc.sections.map((s, i) => (
         <div class="sec">
           <h2><span class="mono">{String(i + 1).padStart(2, '0')}</span>{s.h}</h2>
@@ -27,6 +32,8 @@ const doc = LEGAL[lang][page];
   .crumbs { display: flex; gap: 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
   .crumbs a:hover { color: var(--cyan); }
   h1 { font-size: var(--fs-h1); }
+  .upd a { text-decoration: underline; text-underline-offset: 4px; }
+  .upd a:hover { color: var(--cyan); }
   .upd { margin: 16px 0 0; font-size: var(--fs-2xs); color: var(--muted); letter-spacing: 0.12em; }
   .sec { margin-top: var(--space-md); padding-top: 32px; border-top: 1px solid var(--line); }
   h2 { display: flex; gap: 18px; align-items: baseline; font-size: var(--fs-h3); max-width: none; margin: 0; }

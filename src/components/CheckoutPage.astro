@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 const t = T[lang].cart, o = T[lang].order;
 const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHOP.email, api: PAYMENTS.cards ? PAYMENTS.api : '' });
 ---
-<Base lang={lang} title={`${t.checkoutTitle} | Резонанца`} description={t.checkoutTitle}>
+<Base lang={lang} title={`${t.checkoutTitle} | Rezonanca`} description={t.checkoutTitle}>
   <section class="page grid-bg">
     <div class="wrap">
       <nav class="crumbs mono"><a href={homeHref(lang)}>{T[lang].product.home}</a><span>/</span><a href={cartHref(lang)}>{t.title}</a><span>/</span><span aria-current="page">{t.checkoutTitle}</span></nav>

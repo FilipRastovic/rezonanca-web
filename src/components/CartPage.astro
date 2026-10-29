@@ -7,7 +7,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].cart;
 ---
-<Base lang={lang} title={`${t.title} | Резонанца`} description={t.title}>
+<Base lang={lang} title={`${t.title} | Rezonanca`} description={t.title}>
   <section class="page grid-bg">
     <div class="wrap">
       <nav class="crumbs mono"><a href={homeHref(lang)}>{T[lang].product.home}</a><span>/</span><span aria-current="page">{t.title}</span></nav>

@@ -8,7 +8,7 @@ TERMINAL_ID = "E1731994"
 GATEWAY_URL = "https://ecg.test.upc.ua/rbrs/pay"
 SITE_URL = "https://rezonanca.art"
 NOTIFY_IPS = "195.85.198.16,18.196.61.127,3.120.143.246,18.197.170.36"  # test gateway (bank doc + UPC wiki); production: 195.85.198.15, 217.13.180.171
-MAIL_FROM = "Резонанца <porudzbine@rezonanca.art>"
+MAIL_FROM = "Rezonanca <porudzbine@rezonanca.art>"
 OWNER_EMAIL = "filiporastovic@gmail.com"
 # Secrets (wrangler secret put): MERCHANT_KEY (PKCS#8 PEM), GATEWAY_PUBKEY (SPKI PEM), RESEND_API_KEY
 

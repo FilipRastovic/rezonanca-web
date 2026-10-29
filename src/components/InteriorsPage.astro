@@ -14,7 +14,7 @@ const lists = FEATURED.map((k) => productsBySeries(k));
 const flat: any[] = [];
 for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l[i]) flat.push(l[i]);
 ---
-<Base lang={lang} title={`${ti.page} | Резонанца`} description={ti.allLead}>
+<Base lang={lang} title={`${ti.page} | Rezonanca`} description={ti.allLead}>
   <section class="top">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">

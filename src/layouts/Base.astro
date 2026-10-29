@@ -16,19 +16,20 @@ import CartDrawer from '../components/CartDrawer.astro';
 import CartCatalog from '../components/CartCatalog.astro';
 import Consent from '../components/Consent.astro';
 import { SALES_OPEN } from '../config';
-import { T, altHref, type Lang } from '../i18n';
+import { T, type Lang } from '../i18n';
 
-interface Props { lang: Lang; title?: string; description?: string; image?: string }
+// htmlLang: the language of the page's main text when it differs from the site (the Serbian legal pages).
+interface Props { lang: Lang; title?: string; description?: string; image?: string; htmlLang?: string }
 const { lang } = Astro.props;
 const t = T[lang];
 const title = Astro.props.title ?? t.meta.title;
 const description = Astro.props.description ?? t.meta.description;
-const image = new URL(Astro.props.image ?? `/og-${lang}.jpg`, Astro.site);
+const image = new URL(Astro.props.image ?? '/og-en.jpg', Astro.site);
 const path = Astro.url.pathname;
 const canonical = new URL(path, Astro.site);
 ---
 <!doctype html>
-<html lang={t.htmlLang}>
+<html lang={Astro.props.htmlLang ?? t.htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,24 +38,28 @@ const canonical = new URL(path, Astro.site);
     <meta name="theme-color" content="#fbfaf7" />
     <meta name="facebook-domain-verification" content="zvu0f18rs1v2fn3co2dzllrwqug5fu" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="sr" href={new URL(altHref(path, 'sr'), Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL(altHref(path, 'en'), Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rezonanca" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <slot name="head" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <script is:inline>
       // Declined or cancelled card payments: the bank links back to the bare site URL, not to our result page.
       try {
         const p = JSON.parse(localStorage.getItem('rz-pay') || 'null');
-        if (p && /upc\.ua/.test(document.referrer) && Date.now() - p.at < 2 * 3600e3 && !/\/(placanje|payment)\//.test(location.pathname)) {
-          location.replace((p.lang === 'en' ? '/en/payment/' : '/placanje/') + '?o=' + encodeURIComponent(p.o) + '&t=' + encodeURIComponent(p.t) + '&back=1');
+        if (p && /upc\.ua/.test(document.referrer) && Date.now() - p.at < 2 * 3600e3 && !/\/payment\//.test(location.pathname)) {
+          location.replace('/payment/?o=' + encodeURIComponent(p.o) + '&t=' + encodeURIComponent(p.t) + '&back=1');
         }
       } catch (e) { /* storage blocked */ }
     </script>

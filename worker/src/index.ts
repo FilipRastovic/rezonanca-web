@@ -137,7 +137,7 @@ function receipt(o: Order, approved: boolean) {
     ...(approved ? [[l.code, o.approval_code ?? ''], [l.card, o.proxy_pan ? '**** ' + o.proxy_pan.slice(-4) : ''], [l.rrn, o.rrn ?? '']] as [string, string][] : [[l.reason, reason]] as [string, string][]),
   ];
   const html = `<div style="font-family:Arial,sans-serif;color:#121417;max-width:560px">
-<p style="font-size:18px;font-weight:bold">Резонанца</p><p>${approved ? l.okLead : l.failLead}</p>
+<p style="font-size:18px;font-weight:bold">${lang === 'sr' ? 'Резонанца' : 'Rezonanca'}</p><p>${approved ? l.okLead : l.failLead}</p>
 <table style="font-size:14px;margin:16px 0">${facts.map(([k, v]) => `<tr><td style="color:#7a7d82;padding:2px 16px 2px 0">${k}</td><td>${esc(v)}</td></tr>`).join('')}</table>
 <table width="100%" style="font-size:14px;border-top:1px solid #e2dfd8;border-collapse:collapse"><tr><th align="left">${l.items}</th><th>${l.qty}</th><th align="right">${l.price}</th></tr>${rows}
 <tr><td colspan="2" style="padding-top:8px">${l.subtotal}</td><td align="right">${money(t.subtotal, lang)}</td></tr>
@@ -178,7 +178,7 @@ async function mailAfterPayment(env: Env, o: Order, approved: boolean) {
 async function checkout(req: Request, env: Env, origin: string | null) {
   let body: any;
   try { body = await req.json(); } catch { return ok({ error: 'bad_json' }, origin, 400); }
-  const lang: Lang = body.lang === 'en' ? 'en' : 'sr';
+  const lang: Lang = body.lang === 'sr' ? 'sr' : 'en'; // the site is English only since 2026-10-29
   const lines = Array.isArray(body.lines) ? body.lines : [];
   if (!lines.length || lines.length > 30 || !lines.every(validLine)) return ok({ error: 'bad_cart' }, origin, 400);
   const c = body.customer ?? {};
@@ -211,7 +211,7 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
   const p = await form(req);
   // forwardUrl sends the buyer to our result page after any outcome (otherwise declines land on the bare site URL).
   const known = p.OrderID ? await getOrder(env, p.OrderID) : null;
-  const forward = known && known.token === p.SD ? `${known.lang === 'en' ? `${env.SITE_URL}/en/payment/` : `${env.SITE_URL}/placanje/`}?o=${encodeURIComponent(known.id)}&t=${known.token}` : '';
+  const forward = known && known.token === p.SD ? `${env.SITE_URL}/payment/?o=${encodeURIComponent(known.id)}&t=${known.token}` : '';
   const echo = (action: 'approve' | 'reverse', reason: string) => new Response(
     [`MerchantID=${p.MerchantID ?? ''}`, `TerminalID=${p.TerminalID ?? ''}`, `OrderID=${p.OrderID ?? ''}`, `Currency=${p.Currency ?? ''}`, `TotalAmount=${p.TotalAmount ?? ''}`,
       `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, `Response.action=${action}`, `Response.reason=${reason}`, `Response.forwardUrl=${forward}`].join('\n'),
@@ -261,7 +261,7 @@ async function back(req: Request, env: Env, ctx: ExecutionContext, success: bool
     await env.DB.prepare(`UPDATE orders SET status = 'failed', tran_code = ? WHERE id = ? AND status = 'pending'`).bind(p.TranCode ?? null, o.id).run();
     ctx.waitUntil(mailAfterPayment(env, (await getOrder(env, o.id))!, false));
   }
-  const base = o?.lang === 'en' ? `${env.SITE_URL}/en/payment/` : `${env.SITE_URL}/placanje/`;
+  const base = `${env.SITE_URL}/payment/`;
   const qs = o && p.SD === o.token ? `?o=${encodeURIComponent(o.id)}&t=${o.token}` : `?r=${success ? 'ok' : 'fail'}`;
   return Response.redirect(base + qs, 303);
 }

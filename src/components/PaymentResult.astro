@@ -11,7 +11,7 @@ const { lang } = Astro.props;
 const t = T[lang].pay;
 const cfg = JSON.stringify({ api: PAYMENTS.api, lang });
 ---
-<Base lang={lang} title={`${t.title} | Резонанца`} description={t.title}>
+<Base lang={lang} title={`${t.title} | Rezonanca`} description={t.title}>
   <section class="page grid-bg">
     <div class="wrap">
       <div class="box panel" id="pay" data-config={cfg}>
@@ -25,7 +25,7 @@ const cfg = JSON.stringify({ api: PAYMENTS.api, lang });
           <a class="btn btn--solid" id="pay-retry" href={checkoutHref(lang)} hidden>{t.retry} <span class="arrow">→</span></a>
           <a class="btn" href={homeHref(lang)}>{t.home} <span class="arrow">→</span></a>
         </div>
-        <p class="seller mono">{SELLER.name} · МБ {SELLER.mb} · ПИБ {SELLER.pib} · {SHOP.email} · {SHOP.phone}</p>
+        <p class="seller mono">{SELLER.name} · {lang === 'sr' ? 'МБ' : 'Reg. no.'} {SELLER.mb} · {lang === 'sr' ? 'ПИБ' : 'Tax ID (PIB)'} {SELLER.pib} · {SHOP.email} · {SHOP.phone}</p>
         <PaymentLogos compact />
       </div>
     </div>
