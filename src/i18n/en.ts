@@ -11,7 +11,7 @@ const en: typeof sr = {
   },
   nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In a room', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
-    label: 'Code art · Ships worldwide',
+    label: 'Programmer Art · Ships worldwide',
     title: 'REZONANCA',
     tagline: 'Sound, frozen in light.',
     lead: 'Pictures drawn with code, line by line, printed to order on fine art matte paper and shipped worldwide.',
@@ -325,7 +325,7 @@ const en: typeof sr = {
       { y: '1968', t: 'Biologist Aristid Lindenmayer writes down rules for how algae and plants grow. Vera Molnár starts drawing with a computer.' },
       { y: '1975', t: 'Benoit Mandelbrot coins the word "fractal": a shape whose parts look like the whole, like a coastline, a cloud or romanesco cauliflower.' },
       { y: '1988', t: 'Michael Barnsley shows that four rules, picked at random, draw a fern leaf down to its last vein.' },
-      { y: '1992', t: 'Scott Draves invents the fractal flame, now one of the best-known forms of code art.' },
+      { y: '1992', t: 'Scott Draves invents the fractal flame, now one of the best-known forms of programmer art.' },
       { y: '2001', t: 'Casey Reas and Ben Fry make Processing, a programming language for artists. p5.js grows out of it in 2013.' },
       { y: 'today', t: 'Rezonanca: every piece is a p5.js program, drawn line by line and printed to order.' },
     ],
@@ -341,7 +341,7 @@ const en: typeof sr = {
       { y: '1981', t: 'John Hutchinson describes iterated function systems: a fractal as a set of rules that repeat.' },
       { y: '1988', t: 'Michael Barnsley shows that a few rules and the chaos game draw ferns and clouds.' },
       { y: '1992', t: 'Scott Draves devises the fractal flame: non-linear variations, log density and colour from history.' },
-      { y: 'today', t: 'The flame is one of the best-known forms of code art. Here every piece has its own rules and its own number.' },
+      { y: 'today', t: 'The flame is one of the best-known forms of programmer art. Here every piece has its own rules and its own number.' },
     ],
     object: [
       { y: '1937', t: 'Michael Goldberg describes polyhedra made of hexagons and a few pentagons, the meshes we still use to cover a sphere.' },
@@ -355,7 +355,7 @@ const en: typeof sr = {
       { y: '1982', t: 'Ken Perlin works on the effects for the film Tron and is frustrated that computer images look too "machine-like".' },
       { y: '1983', t: 'Perlin invents his noise and publishes it in 1985 at SIGGRAPH, in the paper "An Image Synthesizer".' },
       { y: '1997', t: 'Perlin receives an Academy Award for Technical Achievement: his noise becomes the basis of smoke, fire and cloud textures in film.' },
-      { y: '2001', t: 'Perlin publishes an improved version and "simplex" noise. Today games, films and code art all over the world use it.' },
+      { y: '2001', t: 'Perlin publishes an improved version and "simplex" noise. Today games, films and programmer art all over the world use it.' },
     ],
     structure: [
       { y: '1956', t: 'Noam Chomsky describes formal grammars: a finite set of rules that can generate infinitely many sentences.' },
@@ -473,7 +473,7 @@ const en: typeof sr = {
     settings: 'Cookies',
   },
   footer: {
-    tagline: 'Code art. Written in code, shipped worldwide.',
+    tagline: 'Programmer Art. Written in code, shipped worldwide.',
     rights: 'All rights reserved.',
     contact: 'Contact',
   },
