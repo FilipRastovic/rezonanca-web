@@ -1,0 +1,9 @@
+# Serves the Gelato print files from the private R2 bucket to Gelato only:
+# GET /f/<FILE_TOKEN>/<key>.pdf  (FILE_TOKEN is a Worker secret, copy in ~/.config/rezonanca/print-file-token)
+name = "rezonanca-files"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+[[r2_buckets]]
+binding = "PRINT"
+bucket_name = "rezonanca-print"
