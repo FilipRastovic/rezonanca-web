@@ -17,7 +17,7 @@ FRAMED = ['poster-black-frame-minimalist-1-34', 'wooden-frame-summer-background-
 EXTRA = ['a3-poster-minimalist-1', 'a3-poster-minimalist-2']
 OUTDOOR = 'a4-poster-laying-outdoor-34'  # sparingly: every 7th product
 SCENES = FRAMED  # homepage interiors pick from these
-BORDER = 0.04
+BORDER = 0  # the poster images are the Gelato print sheets, white border included (2026-10-30)
 scenes = json.loads((SC / 'scenes.json').read_text())
 
 # Products in the collection's default ("featured") order: series interleaved, as in CollectionPage.astro,
@@ -115,7 +115,7 @@ def render_minis(keys):
 # Files: <key>-<lang>.webp (+ -sm) = shot 1 (card image, gallery); <key>-<lang>-2/-3.webp (+ -sm) = more gallery shots.
 skip_rooms = '--frames' in sys.argv  # oak shots + minis + manifest only, keep existing room shots
 for key, shots in [] if skip_rooms else jobs:
-    for lang in ('sr', 'en'):
+    for lang in ('en',):  # English only since 2026-10-29
         for n, name in enumerate(shots):
             res, q = compose(key, name, lang)
             res = crop34(res, q)
@@ -126,13 +126,13 @@ for key, shots in [] if skip_rooms else jobs:
 
 for key, shots in jobs:
     if frames[key]['oak'] == '-oak':
-        for lang in ('sr', 'en'):
+        for lang in ('en',):
             res, q = compose(key, OAK, lang)
             crop34(res, q).resize((800, 1067), Image.LANCZOS).save(OUT / f'{key}-{lang}-oak.webp', quality=70, method=6)
         print('oak', key)
 
 if jobs:
-    render_minis([k for k, _ in jobs])
+    pass  # minis are off the site (Gelato range, 2026-10-30)
     mf = WEB / 'src/data/room-frames.json'
     merged = {} if not want or not mf.exists() else json.loads(mf.read_text())  # partial run: update only these keys
     merged.update(frames)
