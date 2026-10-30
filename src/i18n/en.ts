@@ -197,7 +197,7 @@ const en: typeof sr = {
     qty: 'Quantity',
     order: 'Order',
     total: 'Total',
-    priceNote: '+ 500 RSD shipping. No payment on the site - pay on delivery or by bank transfer after we confirm.',
+    priceNote: 'Free shipping worldwide. Pay by card.',
     trust: ['Ships worldwide', 'Made to order', 'Fine art matte paper, 300 DPI', 'Safe packaging'],
     gallery: ['Poster', 'In a room', 'Detail'],
     lightbox: { open: 'View full screen', close: 'Close', prev: 'Previous', next: 'Next' },
@@ -427,7 +427,7 @@ const en: typeof sr = {
     custom: 'I want a custom one-of-one piece',
   },
   soon: {
-    priceOpenNote: 'Online sales open soon. Choose a format and size and leave your email - we will tell you first.',
+    priceOpenNote: 'Free shipping worldwide. Online sales open soon - leave your email and we will tell you first.',
     badge: 'Coming soon',
     priceSoon: 'Online sales open soon',
     priceNote: 'Prices are not final yet. Choose a size and leave your email - we’ll tell you first when this piece goes on sale.',

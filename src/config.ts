@@ -2,7 +2,7 @@
 // waitlist signups (emailed via FormSubmit like orders). Set to true once prices are final.
 export const SALES_OPEN = false;
 // Prices shown on the site even while sales are closed (waitlist instead of ordering). Filip, 2026-10-14.
-export const PRICES_VISIBLE = false; // hidden 2026-10-29 (Filip) until Gelato sizes + final prices are set
+export const PRICES_VISIBLE = true; // Gelato EUR prices shown 2026-10-30 (Filip); hidden 2026-10-29 until then
 
 // Shop settings - edit these before going live.
 export const SHOP = {
