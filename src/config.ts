@@ -19,8 +19,8 @@ export const SHOP = {
   // Set to '' for demo mode (orders are only logged to the console).
   orderInbox: 'filiporastovic@gmail.com',
   editionSize: 50,
-  currency: 'RSD',
-  shipping: 500, // courier, paid by the customer
+  currency: 'EUR',
+  shipping: 0, // included in the price (Gelato ships worldwide)
 };
 
 // Legal seller details (Agencija za privredne registre).
@@ -46,36 +46,35 @@ export const ANALYTICS = {
   clarity: 'yzmig7kv3w', // Microsoft Clarity project ID (heatmaps + session recordings)
 };
 
-// Product range 2026-10-14 (BUSINESS-PLAN.md): each format has its own sizes and prices.
-export const SIZES = ['15x15', '28x35', '30x40', '50x70'] as const; // 28x35 = Temu 11×14" black mat (print 20×25 inside)
+// Product range 2026-10-30: only what Gelato prints (BUSINESS-PLAN.md section 5, "EN range on Gelato").
+// Both sizes are 3:4 like the art. Minis, mounted and 50×70 are gone (Gelato can't make them).
+export const SIZES = ['30x40', '45x60'] as const;
 export type Size = (typeof SIZES)[number];
 export const DEFAULT_SIZE: Size = '30x40'; // preselected on product pages
 
 export const FORMATS = ['print', 'framed', 'mounted', 'mini', 'miniprint', 'edition', 'metal'] as const;
 export type Format = (typeof FORMATS)[number];
 
-// Formats offered on the site. edition/metal stay in code but hidden until tested.
-export const ACTIVE_FORMATS: Format[] = ['print', 'framed', 'mini', 'miniprint']; // 'mounted' (картонски оквир 28×35) paused 2026-10-21, Filip
+// Formats offered on the site: Gelato Fine Art poster, unframed or in a 12 mm wood frame with plexiglass.
+export const ACTIVE_FORMATS: Format[] = ['print', 'framed'];
 
-// Which sizes each format comes in. Mounted is sized by the mat (Temu 11×14" = 28×35 cm, 20×25 print inside);
-// add '20x25' (8×10" mat, ~13×18 print) once those mats are bought and tested.
 export const FORMAT_SIZES: Record<Format, Size[]> = {
-  print: ['30x40', '50x70'],
-  framed: ['30x40', '50x70'],
-  mounted: ['28x35'],
-  mini: ['15x15'],
-  miniprint: ['15x15'],
+  print: ['30x40', '45x60'],
+  framed: ['30x40', '45x60'],
+  mounted: [],
+  mini: [],
+  miniprint: [],
   edition: [],
   metal: [],
 };
 
-// Prices in RSD per format and size (launch proposal 2026-10-14, see BUSINESS-PLAN.md).
+// Prices in EUR incl. shipping (Business, 2026-10-28). USD for outside Europe once the bank answers.
 export const PRICES: Record<Format, Partial<Record<Size, number>>> = {
-  print: { '30x40': 2490, '50x70': 3990 },
-  framed: { '30x40': 5490, '50x70': 8990 },
-  mounted: { '28x35': 2290 },
-  mini: { '15x15': 1990 },
-  miniprint: { '15x15': 690 },
+  print: { '30x40': 39, '45x60': 55 },
+  framed: { '30x40': 99, '45x60': 149 },
+  mounted: {},
+  mini: {},
+  miniprint: {},
   edition: {},
   metal: {},
 };
@@ -83,8 +82,16 @@ export const minPrice = (f: Format) => Math.min(...Object.values(PRICES[f]) as n
 export const MIN_PRICE = Math.min(...ACTIVE_FORMATS.map(minPrice));
 export const MAX_PRICE = Math.max(...ACTIVE_FORMATS.flatMap((f) => Object.values(PRICES[f]) as number[]));
 
-// Frame colours offered for 'framed'.
+// Gelato product per format, size and frame (checked against the Gelato product API 2026-10-30).
+const GP = (s: string) => `${s}_200-gsm-80lb-enhanced-uncoated`;
+const GSIZE: Record<Size, string> = { '30x40': '300x400-mm-12x16-inch', '45x60': '450x600-mm-18x24-inch' };
+const GFRAME = { black: 'black_wood', oak: 'natural-wood_wood' } as const;
+export const gelatoProduct = (format: Format, size: Size, frame: 'black' | 'oak' = 'black') =>
+  format === 'framed'
+    ? GP(`framed_fine_arts_poster_geo_simplified_product_12-0_${GFRAME[frame]}_w12xt22-mm_plexiglass_ver_${GSIZE[size]}_${GSIZE[size]}`)
+    : GP(`fine_arts_poster_geo_simplified_product_12-0_ver_${GSIZE[size]}`);
+
+// Frame colours offered for 'framed'. 'oak' = Gelato's natural wood (key kept: room shots are named after it).
 export const FRAMES = ['black', 'oak'] as const;
 
-export const formatPrice = (n: number, lang: 'sr' | 'en') =>
-  `${n.toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;
+export const formatPrice = (n: number, _lang?: 'sr' | 'en') => `€${n.toLocaleString('en-US')}`;

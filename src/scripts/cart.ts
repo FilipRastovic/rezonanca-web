@@ -34,14 +34,14 @@ export function add(line: Line) {
   const hit = lines.find((l) => same(l, line));
   if (hit) hit.qty = Math.min(20, hit.qty + line.qty); else lines.push(line);
   write(lines);
-  (window as any).rzTrack?.('AddToCart', { content_ids: [line.slug], value: (c.prices[line.format]?.[line.size] ?? 0) * line.qty, currency: 'RSD' });
+  (window as any).rzTrack?.('AddToCart', { content_ids: [line.slug], value: (c.prices[line.format]?.[line.size] ?? 0) * line.qty, currency: 'EUR' });
 }
 export const setQty = (i: number, qty: number) => { const l = read(); if (l[i]) { l[i].qty = Math.max(1, Math.min(20, qty)); write(l); } };
 export const remove = (i: number) => { const l = read(); l.splice(i, 1); write(l); };
 export const clear = () => write([]);
 export const count = () => read().reduce((a, l) => a + l.qty, 0);
 
-export const money = (n: number) => `${n.toLocaleString(catalog().lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;
+export const money = (n: number) => `€${n.toLocaleString('en-US')}`;
 export const unitPrice = (l: Line) => catalog().prices[l.format]?.[l.size] ?? 0;
 export function totals() {
   const lines = read();

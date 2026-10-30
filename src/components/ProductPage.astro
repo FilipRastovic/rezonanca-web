@@ -264,7 +264,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   const orderBtn = document.getElementById('pp-order')!;
   const frameSet = document.getElementById('pp-frame'); // only when a framed format is on sale
   const editionEl = document.getElementById('pp-edition');
-  const money = (n: number) => `${n.toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-US')} RSD`;
+  const money = (n: number) => `€${n.toLocaleString('en-US')}`;
 
   const update = () => {
     const d = new FormData(form);
@@ -281,7 +281,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
     const qty = Math.max(1, Math.min(20, parseInt(String(d.get('qty')), 10) || 1));
     if (priceEl && prices[format]?.[size]) priceEl.textContent = money(prices[format][size] * qty);
     if (frameSet) frameSet.hidden = !['framed', 'edition'].includes(format);
-    // The main poster view shows what you'd get: bare print, black/oak frame, black mat, or the framed mini.
+    // The main poster view shows what you'd get: bare print or the black / natural wood frame.
     const look = format === 'framed' ? `framed-${String(d.get('frame') || 'black')}` : format;
     const figEl = document.querySelector<HTMLElement>('.main')!;
     const changed = figEl.dataset.look !== look;
