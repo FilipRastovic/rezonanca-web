@@ -278,6 +278,13 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
       </div>
     </div>
   </section>
+
+  <section class="recent" id="pp-recent" hidden data-slug={p.slug} data-from={PRICES_VISIBLE ? `${tp.from} ${formatPrice(minPrice('print'), lang)}` : ''}>
+    <div class="wrap">
+      <h2>{tp.recent}</h2>
+      <div class="recent-grid"></div>
+    </div>
+  </section>
 </Base>
 
 <script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug }}>window.rzTrack && window.rzTrack('ViewContent', { content_name: vcName, content_ids: [vcId], content_type: 'product' });</script>
@@ -325,6 +332,25 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
     add({ slug: d.slug!, format: d.format!, size: d.size!, frame: d.frame, qty: +(d.qty || 1), ...(d.tone && d.tone !== 'orig' ? { tone: d.tone } : {}) });
     document.dispatchEvent(new CustomEvent('cart:open'));
   });
+  // Recently viewed: last pieces this visitor opened (localStorage), newest first, current one left out.
+  {
+    const sec = document.getElementById('pp-recent')!;
+    const here = sec.dataset.slug!;
+    let seen: string[] = [];
+    try { seen = JSON.parse(localStorage.getItem('rz-recent') || '[]'); } catch { /* storage blocked */ }
+    const { products } = JSON.parse(document.getElementById('rz-catalog')!.textContent!);
+    const show = seen.filter((s) => s !== here && products[s]).slice(0, 4);
+    try { localStorage.setItem('rz-recent', JSON.stringify([here, ...seen.filter((s) => s !== here)].slice(0, 12))); } catch { /* storage blocked */ }
+    if (show.length) {
+      const esc = (x: string) => x.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+      sec.querySelector('.recent-grid')!.innerHTML = show.map((s) => {
+        const p = products[s];
+        return `<a class="rv" href="${p.href}"><span class="rv-img"><img src="${p.img}" alt="${esc(p.name)}" width="900" height="1200" loading="lazy" decoding="async"></span><span class="rv-name">${esc(p.name)}</span>${sec.dataset.from ? `<span class="rv-price">${esc(sec.dataset.from)}</span>` : ''}</a>`;
+      }).join('');
+      sec.hidden = false;
+    }
+  }
+
   // "Also bought with" quick add: the unframed print in the default size.
   document.querySelectorAll<HTMLButtonElement>('[data-quick]').forEach((b) => b.addEventListener('click', () => {
     add({ slug: b.dataset.quick!, format: 'print', size: b.dataset.size!, qty: 1 });
@@ -582,6 +608,16 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 20px; font-size: var(--fs-2xs); letter-spacing: 0.12em; text-transform: uppercase; }
   dt { color: var(--muted); } dd { margin: 4px 0 0; color: var(--ice); }
 
+  .recent { background: var(--bg-0); padding-block: var(--space-md); border-top: 1px solid var(--line); }
+  .recent h2 { margin: 0 auto clamp(36px, 4vw, 56px); max-width: none; text-align: center; font-size: clamp(22px, 2.4vw, 34px); }
+  .recent-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 1.8vw, 28px); }
+  .recent-grid :global(.rv) { display: grid; gap: 8px; justify-items: center; text-align: center; min-width: 0; }
+  .recent-grid :global(.rv-img) { display: block; width: 100%; background: var(--bg-1); border: 1px solid var(--line); margin-bottom: 8px; transition: border-color 0.3s; }
+  .recent-grid :global(.rv:hover .rv-img) { border-color: var(--line-strong); }
+  .recent-grid :global(.rv-img img) { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+  .recent-grid :global(.rv-name) { font: 500 var(--fs-body)/1.3 var(--f-body); color: var(--ice); }
+  .recent-grid :global(.rv-price) { font-size: var(--fs-sm); color: var(--muted); }
+  @media (max-width: 800px) { .recent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .related { background: var(--bg-0); padding: var(--space-md) 0; border-top: 1px solid var(--line); }
   .rel-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(36px, 4vw, 64px); }
   .rel-head h2 { margin: 0; font-size: clamp(20px, 2vw, 28px); }

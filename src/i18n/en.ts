@@ -216,6 +216,7 @@ const en: typeof sr = {
       { t: 'Real wood frames', sub: 'Black or natural wood', body: 'Wooden frame, 22 mm deep, with plexiglass that is lighter and safer than glass. Arrives ready to hang.' },
       { t: 'Made to order', sub: 'Free shipping worldwide', body: 'Each print is made for you when you order and packed to arrive flawless, wherever you are.' },
     ],
+    recent: 'Recently viewed',
     alsoBought: 'Also bought with',
     sizingTitle: 'Sizing',
     sizingBody: '30 × 40 cm (12 × 16 in) or 45 × 60 cm (18 × 24 in), with a white border around the picture. Framed prints come in a black or natural wood frame (12 mm wide) with plexiglass, ready to hang.',
