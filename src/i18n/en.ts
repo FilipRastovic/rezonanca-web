@@ -211,6 +211,11 @@ const en: typeof sr = {
     shipTitle: 'Shipping & payment',
     shipBody: 'Free shipping worldwide. Every print is made to order within a few business days and shipped worldwide, packed to arrive flawless. You see the delivery estimate for your country when you order.',
     edition: 'Limited edition: at most 50 numbered copies, with a certificate.',
+    promise: [
+      { t: 'Fine art paper', sub: '200 gsm enhanced matte', body: 'Printed on thick uncoated art paper at 300 DPI. Rich colour, razor-sharp lines, no glare.' },
+      { t: 'Real wood frames', sub: 'Black or natural wood', body: 'Wooden frame, 22 mm deep, with plexiglass that is lighter and safer than glass. Arrives ready to hang.' },
+      { t: 'Made to order', sub: 'Free shipping worldwide', body: 'Each print is made for you when you order and packed to arrive flawless, wherever you are.' },
+    ],
     alsoBought: 'Also bought with',
     sizingTitle: 'Sizing',
     sizingBody: '30 × 40 cm (12 × 16 in) or 45 × 60 cm (18 × 24 in), with a white border around the picture. Framed prints come in a black or natural wood frame (12 mm wide) with plexiglass, ready to hang.',
