@@ -291,7 +291,7 @@ export const URL_SLUG = {
   'stanica': 'station',
   'anomalija': 'anomaly',
 };
-for (const x of PRODUCTS) x.url = URL_SLUG[x.slug];
+for (const x of PRODUCTS) x.url = URL_SLUG[x.slug] ?? x.slug; // new piece without an entry: its key is the address
 
 export const TONES = ['roza', 'tus'];
 const NO_TONE = {
