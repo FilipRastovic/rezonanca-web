@@ -1,0 +1,64 @@
+---
+// Instagram posts (src/data/instagram.json, from scripts/sync-instagram.mjs) + follow links to all three profiles.
+// On a product page the posts of that piece come first, then the latest ones.
+import POSTS from '../data/instagram.json';
+import { SHOP } from '../config';
+import { T, type Lang } from '../i18n';
+interface Props { lang: Lang; slug?: string; limit?: number }
+const { lang, slug, limit = 4 } = Astro.props;
+const t = T[lang].social;
+const mine = slug ? POSTS.filter((x) => x.slugs.includes(slug)) : [];
+const posts = [...mine, ...POSTS.filter((x) => !mine.includes(x))].slice(0, limit);
+const links = [
+  { name: 'Instagram', href: SHOP.instagram, d: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm5.2-1.6a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z' },
+  { name: 'TikTok', href: SHOP.tiktok, d: 'M14 3v11.5a3.5 3.5 0 1 1-3-3.46M14 3c.4 2.6 2.2 4.3 5 4.6' },
+  { name: 'Facebook', href: SHOP.facebook, d: 'M14 8h2.5V4.5H14A3.5 3.5 0 0 0 10.5 8v2.5H8V14h2.5v7H14v-7h2.5l.5-3.5h-3V8.6c0-.4.2-.6.6-.6z' },
+].filter((l) => l.href);
+---
+{posts.length > 0 && (
+<section class="social">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="kicker">{t.label}</p>
+        <h2><a href={SHOP.instagram} rel="noopener" target="_blank">@rezonanca.art</a></h2>
+      </div>
+      <div class="follow">
+        {links.map((l) => (
+          <a href={l.href} rel="noopener" target="_blank" aria-label={`${l.name} - @rezonanca.art`}>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d={l.d} /></svg>
+            <span>{l.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="posts">
+      {posts.map((x) => (
+        <a class="post" href={x.url} rel="noopener" target="_blank" aria-label={`${t.open} (${x.type === 'reel' ? 'Reel' : 'Instagram'})`}>
+          <img src={x.img} alt="" width="600" height="750" loading="lazy" decoding="async" />
+          {x.type !== 'image' && <span class="badge" aria-hidden="true">{x.type === 'reel'
+            ? <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z" /></svg>
+            : <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 8h11v11H8z" /><path d="M5 16V5h11" /></svg>}</span>}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+)}
+
+<style>
+  .social { background: var(--bg-0); padding-block: var(--space-md); border-top: 1px solid var(--line); }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(28px, 3vw, 44px); }
+  .kicker { margin: 0 0 10px; font: 500 var(--fs-2xs)/1.4 var(--f-body); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
+  h2 { font-size: clamp(22px, 2.4vw, 34px); }
+  h2 a:hover { color: var(--muted); }
+  .follow { display: flex; flex-wrap: wrap; gap: 10px; }
+  .follow a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border: 1px solid var(--line-strong); font-size: var(--fs-sm); color: var(--ice); transition: border-color 0.2s; }
+  .follow a:hover { border-color: var(--ice); }
+  .posts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 16px); }
+  .post { position: relative; display: block; overflow: hidden; background: var(--bg-1); }
+  .post img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform 0.5s; }
+  .post:hover img { transform: scale(1.03); }
+  .badge { position: absolute; top: 10px; right: 10px; color: #fff; filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5)); }
+  @media (max-width: 700px) { .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .follow a span { display: none; } .follow a { padding: 11px; } }
+</style>

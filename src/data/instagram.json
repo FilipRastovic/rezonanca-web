@@ -1,0 +1,42 @@
+[
+ {
+  "id": "DfNGt1uvVbI",
+  "url": "https://www.instagram.com/reel/DfNGt1uvVbI/",
+  "type": "reel",
+  "date": "2026-11-01",
+  "img": "/social/DfNGt1uvVbI.webp",
+  "slugs": [
+   "dim"
+  ]
+ },
+ {
+  "id": "DfLAwU5nyiP",
+  "url": "https://www.instagram.com/p/DfLAwU5nyiP/",
+  "type": "carousel",
+  "date": "2026-10-31",
+  "img": "/social/DfLAwU5nyiP.webp",
+  "slugs": [
+   "aurora"
+  ]
+ },
+ {
+  "id": "DfIixkbF9Uv",
+  "url": "https://www.instagram.com/p/DfIixkbF9Uv/",
+  "type": "carousel",
+  "date": "2026-10-30",
+  "img": "/social/DfIixkbF9Uv.webp",
+  "slugs": [
+   "metropola"
+  ]
+ },
+ {
+  "id": "DfGAKRSo9yU",
+  "url": "https://www.instagram.com/p/DfGAKRSo9yU/",
+  "type": "carousel",
+  "date": "2026-10-29",
+  "img": "/social/DfGAKRSo9yU.webp",
+  "slugs": [
+   "klifordov-veo"
+  ]
+ }
+]

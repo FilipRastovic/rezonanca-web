@@ -12,8 +12,11 @@ const t = T[lang];
 const current = SERIES.find((s) => s.slug === seriesSlug);
 const shown = current ? [current] : SERIES;
 const info = current ? t.series[current.key as 'structure'] : null;
-const title = current ? `${seriesShort(lang, current.key)} - ${t.collection.title} | Rezonanca` : `${t.collection.title} | Rezonanca`;
-const description = info ? info.desc : t.collection.lead;
+const title = current ? `${info!.seo.title} | Rezonanca` : t.seo.collectionTitle;
+const description = info ? info.seo.desc : t.seo.collectionDesc;
+const site = Astro.site!;
+const crumbs = [[t.product.home, homeHref(lang)], [t.collection.title, collectionHref(lang)], ...(current ? [[seriesShort(lang, current.key), collectionHref(lang, current.slug)]] : [])];
+const jsonLd = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) };
 // All-works view: one flat grid, series interleaved so the first rows show the range.
 const FEATURED = ['attractor', 'mandelbrot', 'flame', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'object'];
 const lists = FEATURED.map((k) => productsBySeries(k));
@@ -25,6 +28,7 @@ const f = t.collection.filter;
 const pink = flat.filter((p) => p.tones?.includes('roza'));
 ---
 <Base lang={lang} title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <section class="top grid-bg">
     <div class="wrap">
       <nav class="crumbs mono" aria-label="Breadcrumb">
@@ -33,7 +37,7 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
                  : <span aria-current="page">{t.collection.title}</span>}
       </nav>
       <p class="label">{current ? info!.code : t.collection.label}</p>
-      <h1>{current ? info!.name : t.collection.title}</h1>
+      <h1>{current ? info!.seo.h1 : t.seo.collectionH1}</h1>
       <p class="lead">{current ? info!.desc : t.collection.lead}</p>
 
       {current && <div class="chips mono" role="list">

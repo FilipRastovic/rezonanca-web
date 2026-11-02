@@ -8,6 +8,7 @@ import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey 
 import ROOM_FRAMES from '../data/room-frames.json';
 import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
+import SocialFeed from './SocialFeed.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; slug: string }
 const { lang, slug } = Astro.props;
@@ -18,6 +19,7 @@ const series = seriesOf(p)!;
 const info = t.series[p.style as 'structure'];
 const seriesName = seriesShort(lang, p.style);
 const name = p.name[lang];
+const noun = info.seo.noun; // search phrase for this series, e.g. "Strange Attractor Poster"
 const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug).slice(0, 4);
 const others = SERIES.filter((s) => s.key !== p.style);
 // "Also bought with": two pieces from other series, picked per product so they differ from page to page.
@@ -50,7 +52,7 @@ const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];
 const galleryFor = (tone: string) => {
   const k = imgKey(p.slug, tone), suffix = tone ? ` (${toneName(tone)})` : '';
   return [
-    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${seriesName} - ${name}${suffix}`, fit: 'poster' },
+    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${name}${suffix} - ${noun.toLowerCase()}`, fit: 'poster' },
     // Room shots: the exact print in three mockup scenes (scripts/render-rooms.py).
     ...['', '-2', '-3'].map((n) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' })),
     { src: `/details/${k}.webp`, thumb: `/details/${k}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
@@ -60,26 +62,37 @@ const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galler
 const gallery = galleries.orig;
 
 const site = Astro.site!;
-const jsonLd = {
+const url = new URL(productHref(lang, p.slug), site).href;
+// Search phrase first (Google cuts descriptions at ~155 characters), then the piece's own line.
+const description = `${name} ${noun.toLowerCase()} ${t.seo.productDesc} ${p.line[lang]}`;
+const jsonLd = [{
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: `${name} - ${seriesName}`,
-  description: p.line[lang],
-  image: new URL(gallery[0].src, site).href,
+  name: `${name} ${noun}`,
+  description,
+  url,
+  image: [gallery[0].src, gallery[1].src, `/framed/${p.slug}-black.webp`].map((x) => new URL(x, site).href),
   sku: `RZ-${p.slug}`,
+  category: 'Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork',
   brand: { '@type': 'Brand', name: 'Rezonanca' },
-  ...(SALES_OPEN ? { offers: {
+  ...(SALES_OPEN || PRICES_VISIBLE ? { offers: {
     '@type': 'AggregateOffer',
     priceCurrency: SHOP.currency,
     lowPrice: MIN_PRICE,
     highPrice: MAX_PRICE,
-    availability: 'https://schema.org/InStock',
-    url: new URL(productHref(lang, p.slug), site).href,
+    // Made to order once sales open; until then the page takes waitlist sign-ups.
+    availability: SALES_OPEN ? 'https://schema.org/MadeToOrder' : 'https://schema.org/PreOrder',
+    url,
   } } : {}),
-};
+}, {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [[t.product.home, homeHref(lang)], [t.collection.title, collectionHref(lang)], [seriesName, collectionHref(lang, series.slug)], [name, productHref(lang, p.slug)]]
+    .map(([n, h], i) => ({ '@type': 'ListItem', position: i + 1, name: n, item: new URL(h, site).href })),
+}];
 const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames });
 ---
-<Base lang={lang} title={`${name} - ${seriesName} | Rezonanca`} description={p.line[lang]} image={`/og/${p.slug}-${lang}.jpg`}>
+<Base lang={lang} title={`${name} ${noun} | Rezonanca`} description={description} image={`/og/${p.slug}-${lang}.jpg`}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <section class="product grid-bg">
@@ -262,6 +275,8 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   )}
   <ProductMath lang={lang} slug={p.slug} style={p.style} />
   <History lang={lang} series={p.style} compact />
+
+  <SocialFeed lang={lang} slug={p.slug} />
 
   <section class="related">
     <div class="wrap">
