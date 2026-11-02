@@ -5,12 +5,14 @@ import SeriesHeader from './SeriesHeader.astro';
 import SeriesMath from './SeriesMath.astro';
 import History from './History.astro';
 import { SERIES, PRODUCTS, productsBySeries } from '../data/products.js';
-import { T, homeHref, collectionHref, seriesShort, type Lang } from '../i18n';
+import { guideFor } from '../data/guides';
+import { T, homeHref, collectionHref, guideHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; seriesSlug?: string }
 const { lang, seriesSlug } = Astro.props;
 const t = T[lang];
 const current = SERIES.find((s) => s.slug === seriesSlug);
 const shown = current ? [current] : SERIES;
+const guide = current ? guideFor(current.key) : undefined;
 const info = current ? t.series[current.key as 'structure'] : null;
 const title = current ? `${info!.seo.title} | Rezonanca` : t.seo.collectionTitle;
 const description = info ? info.seo.desc : t.seo.collectionDesc;
@@ -39,6 +41,7 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
       <p class="label">{current ? info!.code : t.collection.label}</p>
       <h1>{current ? info!.seo.h1 : t.seo.collectionH1}</h1>
       <p class="lead">{current ? info!.desc : t.collection.lead}</p>
+      {guide && <a class="guide mono" href={guideHref(guide.slug)}>{t.guide.read}: {guide.h1} →</a>}
 
       {current && <div class="chips mono" role="list">
         <a role="listitem" href={collectionHref(lang)} class:list={{ on: !current }}>{t.collection.all} <i>{PRODUCTS.length}</i></a>
@@ -177,6 +180,8 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
   .crumbs [aria-current] { color: var(--ice); }
   h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; }
   .lead { margin-top: 20px; }
+  .guide { display: inline-block; margin-top: 20px; font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); text-decoration: underline; text-underline-offset: 5px; }
+  .guide:hover { color: var(--cyan); }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
   .chips a { display: inline-flex; align-items: center; gap: 10px; padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); transition: border-color 0.3s, color 0.3s, background 0.3s; }
   .chips a:hover { border-color: var(--line-strong); color: var(--ice); }

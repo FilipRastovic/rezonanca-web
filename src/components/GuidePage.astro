@@ -1,0 +1,141 @@
+---
+// A guide (src/data/guides.ts): the maths of a series in plain English, with our posters as figures
+// and the series' pieces at the end.
+import Base from '../layouts/Base.astro';
+import ProductCard from './ProductCard.astro';
+import { GUIDES } from '../data/guides';
+import { PRODUCTS, productsBySeries, SERIES } from '../data/products.js';
+import { T, homeHref, collectionHref, productHref, guideHref, seriesShort } from '../i18n';
+interface Props { slug: string }
+const g = GUIDES.find((x) => x.slug === Astro.props.slug)!;
+const t = T.en;
+const s = SERIES.find((x) => x.key === g.series)!;
+const site = Astro.site!;
+const url = new URL(guideHref(g.slug), site).href;
+const byKey = (k: string) => PRODUCTS.find((p) => p.slug === k)!;
+const firstPiece = g.sections.find((x) => x.piece)!.piece!;
+const crumbs = [[t.product.home, homeHref()], [t.guide.title, guideHref()], [g.h1, guideHref(g.slug)]];
+const jsonLd = [
+  {
+    '@context': 'https://schema.org', '@type': 'Article', headline: g.h1, description: g.desc, url, mainEntityOfPage: url,
+    image: new URL(`/posters/${firstPiece}-en-lg.webp`, site).href, datePublished: g.updated, dateModified: g.updated,
+    author: { '@type': 'Organization', name: 'Rezonanca', url: site.href }, publisher: { '@type': 'Organization', name: 'Rezonanca', logo: { '@type': 'ImageObject', url: new URL('/icon-512.png', site).href } },
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: g.faq.map((x) => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a } })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
+];
+const pieces = productsBySeries(g.series);
+const others = GUIDES.filter((x) => x.slug !== g.slug);
+---
+<Base lang="en" title={`${g.title} | Rezonanca`} description={g.desc} image={`/posters/${firstPiece}-en-lg.webp`}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article>
+    <header class="top grid-bg">
+      <div class="wrap narrow">
+        <nav class="crumbs mono" aria-label="Breadcrumb">
+          <a href={homeHref()}>{t.product.home}</a><span>/</span><a href={guideHref()}>{t.guide.title}</a><span>/</span><span aria-current="page">{g.h1}</span>
+        </nav>
+        <p class="label">{g.kicker}</p>
+        <h1>{g.h1}</h1>
+        <p class="lead">{g.lead}</p>
+        <ol class="toc mono">
+          {g.sections.map((x, i) => <li><a href={`#s${i + 1}`}><span>{String(i + 1).padStart(2, '0')}</span>{x.h}</a></li>)}
+        </ol>
+      </div>
+    </header>
+
+    <div class="body wrap narrow">
+      {g.sections.map((x, i) => {
+        const p = x.piece ? byKey(x.piece) : null;
+        return (
+          <section class="sec" id={`s${i + 1}`}>
+            <h2><span class="mono">{String(i + 1).padStart(2, '0')}</span>{x.h}</h2>
+            {x.p.map((para) => <p>{para}</p>)}
+            {x.f && <pre class="codebox">{x.f.split('\n').map((l) => <code>{l}</code>)}</pre>}
+            {p && (
+              <figure>
+                <a href={productHref('en', p.slug)}>
+                  <img src={`/posters/${p.slug}-en.webp`} alt={`${p.name.en} - ${t.series[p.style as 'attractor'].seo.noun.toLowerCase()}`} width="900" height="1200" loading="lazy" decoding="async" />
+                </a>
+                <figcaption class="mono"><span>{x.caption}</span><a href={productHref('en', p.slug)}>{t.guide.seePoster} →</a></figcaption>
+              </figure>
+            )}
+          </section>
+        );
+      })}
+
+      <section class="sec faq">
+        <h2><span class="mono">FAQ</span>{t.guide.faq}</h2>
+        {g.faq.map((x) => (
+          <details>
+            <summary>{x.q}</summary>
+            <p>{x.a}</p>
+          </details>
+        ))}
+      </section>
+    </div>
+  </article>
+
+  <section class="shop">
+    <div class="wrap">
+      <div class="shop-head">
+        <div>
+          <p class="label">{t.series[g.series as 'attractor'].code}</p>
+          <h2>{t.series[g.series as 'attractor'].seo.h1}</h2>
+        </div>
+        <a class="all mono" href={collectionHref('en', s.slug)}>{t.guide.allIn} {seriesShort('en', s.key)} ({pieces.length}) →</a>
+      </div>
+      <div class="grid">
+        {pieces.slice(0, 8).map((p, i) => <ProductCard product={p} lang="en" delay={(i % 4) * 90} />)}
+      </div>
+      {others.length > 0 && (
+        <p class="more mono">{t.guide.more}: {others.map((o) => <a href={guideHref(o.slug)}>{o.h1}</a>)}</p>
+      )}
+    </div>
+  </section>
+</Base>
+<style>
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  .narrow { max-width: calc(780px + 2 * var(--gutter)); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover { color: var(--cyan); }
+  .crumbs [aria-current] { color: var(--ice); }
+  h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; text-wrap: balance; }
+  .lead { margin-top: 24px; font-size: var(--fs-body); line-height: 1.75; color: var(--text); max-width: 65ch; }
+  .toc { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 2px; font-size: var(--fs-xs); }
+  .toc a { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--text); transition: color 0.2s; }
+  .toc a:hover { color: var(--ice); }
+  .toc span { color: var(--cyan); min-width: 2ch; }
+  .body { padding-bottom: var(--space-md); }
+  .sec { padding-top: clamp(40px, 5vw, 64px); scroll-margin-top: 90px; }
+  h2 { display: flex; gap: 18px; align-items: baseline; font-size: var(--fs-h3); max-width: none; margin: 0; text-wrap: balance; }
+  h2 .mono { font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-label); flex: none; }
+  .sec p { margin: 18px 0 0; color: var(--text); font-size: var(--fs-body); line-height: 1.8; max-width: 68ch; }
+  .codebox { margin: 28px 0 0; padding: 18px 0; background: #121417; color: #e9e6df; counter-reset: ln; overflow-x: auto; white-space: normal; }
+  .codebox code { position: relative; display: block; padding: 6px 20px 6px 52px; font: 400 var(--fs-sm)/1.7 var(--f-code); color: #e9e6df; counter-increment: ln; white-space: pre; }
+  .codebox code::before { content: counter(ln, decimal-leading-zero); position: absolute; left: 18px; top: 7px; color: #6b6f77; font-size: var(--fs-2xs); }
+  figure { margin: 32px 0 0; max-width: 460px; }
+  figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; background: var(--bg-1); box-shadow: 0 18px 40px rgba(18, 20, 23, 0.12); }
+  figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin-top: 14px; font-size: var(--fs-2xs); letter-spacing: 0.06em; color: var(--muted); }
+  figcaption a { color: var(--ice); text-transform: uppercase; letter-spacing: var(--track-ui); }
+  figcaption a:hover { color: var(--cyan); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq details:first-of-type { margin-top: 20px; border-top: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 18px 28px 18px 0; position: relative; list-style: none; font-weight: 500; color: var(--ice); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; position: absolute; right: 4px; top: 16px; color: var(--muted); font-size: 18px; }
+  .faq details[open] summary::after { content: '−'; }
+  .faq details p { margin: 0 0 20px; }
+  .shop { background: var(--bg-1); border-top: 1px solid var(--line); padding-block: var(--space-md); }
+  .shop-head { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 16px 32px; margin-bottom: clamp(28px, 3vw, 44px); }
+  .shop-head h2 { display: block; margin-top: 14px; font-size: clamp(22px, 2.4vw, 34px); }
+  .all { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); }
+  .all:hover { color: var(--cyan); }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 32px); }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; gap: 40px; } }
+  .more { margin-top: clamp(40px, 4vw, 56px); font-size: var(--fs-xs); color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  .more a { color: var(--ice); text-decoration: underline; text-underline-offset: 4px; }
+  .more a:hover { color: var(--cyan); }
+</style>

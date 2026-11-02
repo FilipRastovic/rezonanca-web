@@ -1,0 +1,55 @@
+---
+// Guides index: one card per guide, with the poster it opens with.
+import Base from '../../layouts/Base.astro';
+import { GUIDES } from '../../data/guides';
+import { T, homeHref, guideHref } from '../../i18n';
+const t = T.en;
+const site = Astro.site!;
+const jsonLd = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [[t.product.home, homeHref()], [t.guide.title, guideHref()]].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) };
+---
+<Base lang="en" title={`${t.guide.metaTitle} | Rezonanca`} description={t.guide.metaDesc}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="top grid-bg">
+    <div class="wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href={homeHref()}>{t.product.home}</a><span>/</span><span aria-current="page">{t.guide.title}</span></nav>
+      <p class="label">{t.guide.label}</p>
+      <h1>{t.guide.h1}</h1>
+      <p class="lead">{t.guide.lead}</p>
+    </div>
+  </section>
+  <section class="list">
+    <div class="wrap grid">
+      {GUIDES.map((g) => {
+        const piece = g.sections.find((x) => x.piece)!.piece;
+        return (
+          <a class="card" href={guideHref(g.slug)}>
+            <img src={`/posters/${piece}-en.webp`} alt="" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="k mono">{g.kicker}</span>
+            <h2>{g.h1}</h2>
+            <p>{g.desc}</p>
+            <span class="go mono">{t.guide.read} →</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+</Base>
+<style>
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover { color: var(--cyan); }
+  .crumbs [aria-current] { color: var(--ice); }
+  h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; }
+  .lead { margin-top: 20px; }
+  .list { background: var(--bg-1); padding-block: var(--space-md); }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 3vw, 48px); }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  .card { display: grid; gap: 12px; align-content: start; }
+  .card img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; background: var(--bg-0); margin-bottom: 8px; transition: opacity 0.3s; }
+  .card:hover img { opacity: 0.9; }
+  .k { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
+  h2 { font-size: var(--fs-h3); }
+  .card p { margin: 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.7; }
+  .go { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); }
+  .card:hover .go { color: var(--cyan); }
+</style>

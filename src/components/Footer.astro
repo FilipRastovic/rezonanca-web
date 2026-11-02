@@ -3,7 +3,8 @@ import Logo from './Logo.astro';
 import { SHOP, SELLER } from '../config';
 import PaymentLogos from './PaymentLogos.astro';
 import { SERIES } from '../data/products.js';
-import { T, collectionHref, seriesShort, legalHref, type Lang } from '../i18n';
+import { GUIDES } from '../data/guides';
+import { T, collectionHref, seriesShort, legalHref, guideHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].footer;
@@ -18,6 +19,10 @@ const t = T[lang].footer;
       <span class="k">{T[lang].nav.collection}</span>
       <a href={collectionHref(lang)}>{T[lang].collection.all}</a>
       {SERIES.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
+    </div>
+    <div class="contact mono">
+      <span class="k">{T[lang].guide.title}</span>
+      {GUIDES.map((g) => <a href={guideHref(g.slug)}>{g.h1}</a>)}
     </div>
     <div class="contact mono">
       <span class="k">{t.contact}</span>

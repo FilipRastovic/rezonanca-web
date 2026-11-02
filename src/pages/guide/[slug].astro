@@ -1,0 +1,6 @@
+---
+import GuidePage from '../../components/GuidePage.astro';
+import { GUIDES } from '../../data/guides';
+export const getStaticPaths = () => GUIDES.map((g) => ({ params: { slug: g.slug } }));
+---
+<GuidePage slug={Astro.params.slug!} />

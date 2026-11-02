@@ -17,6 +17,7 @@ export const seriesShort = (lang: Lang, key: string) => {
 export const homeHref = (_lang?: Lang) => '/';
 export const collectionHref = (_lang: Lang, series?: string) => `/collection/${series ? `${series}/` : ''}`;
 export const productHref = (_lang: Lang, slug: string) => `/poster/${(URL_SLUG as Record<string, string>)[slug] ?? slug}/`;
+export const guideHref = (slug?: string) => `/guide/${slug ? `${slug}/` : ''}`;
 export const interiorsHref = (_lang?: Lang) => '/in-a-room/';
 export const cartHref = (_lang?: Lang) => '/cart/';
 export const checkoutHref = (_lang?: Lang) => '/checkout/';
