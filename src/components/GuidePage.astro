@@ -5,7 +5,7 @@ import Base from '../layouts/Base.astro';
 import ProductCard from './ProductCard.astro';
 import { GUIDES } from '../data/guides';
 import { PRODUCTS, productsBySeries, SERIES } from '../data/products.js';
-import { T, homeHref, collectionHref, productHref, guideHref, seriesShort } from '../i18n';
+import { T, homeHref, collectionHref, productHref, guideHref, seriesShort, nounLc } from '../i18n';
 interface Props { slug: string }
 const g = GUIDES.find((x) => x.slug === Astro.props.slug)!;
 const t = T.en;
@@ -55,7 +55,7 @@ const others = GUIDES.filter((x) => x.slug !== g.slug);
             {p && (
               <figure>
                 <a href={productHref('en', p.slug)}>
-                  <img src={`/posters/${p.slug}-en.webp`} alt={`${p.name.en} - ${t.series[p.style as 'attractor'].seo.noun.toLowerCase()}`} width="900" height="1200" loading="lazy" decoding="async" />
+                  <img src={`/posters/${p.slug}-en.webp`} alt={`${p.name.en} - ${nounLc(t.series[p.style as 'attractor'].seo.noun)}`} width="900" height="1200" loading="lazy" decoding="async" />
                 </a>
                 <figcaption class="mono"><span>{x.caption}</span><a href={productHref('en', p.slug)}>{t.guide.seePoster} →</a></figcaption>
               </figure>

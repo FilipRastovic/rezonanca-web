@@ -83,7 +83,7 @@ const en: typeof sr = {
       name: 'Attractors',
       code: 'SERIES A // STRANGE ATTRACTORS',
       desc: 'Chaos has a shape. Each picture is the path of a single point through space, computed hundreds of thousands of times by the same equations.',
-      seo: { title: 'Strange Attractor Posters - Lorenz & Thomas Art Prints', h1: 'Strange attractor posters', desc: 'Strange attractor posters drawn in code: Lorenz, Thomas, Aizawa, Halvorsen and more chaos theory art prints on fine art matte paper. Free shipping worldwide.', noun: 'Strange Attractor Poster' },
+      seo: { title: 'Strange Attractor Posters - Lorenz & Thomas Art', h1: 'Strange attractor posters', desc: 'Strange attractor posters drawn in code: Lorenz, Thomas, Aizawa, Halvorsen and more chaos theory art prints on fine art matte paper. Free shipping worldwide.', noun: 'Strange Attractor Poster' },
     },
     mandelbrot: {
       name: 'Mandelbrot',
@@ -187,7 +187,7 @@ const en: typeof sr = {
     cta: 'Order a poster',
   },
   tiles: { label: 'COLLECTIONS', title: 'Choose a series.', all: 'All works' },
-  guide: { title: 'Guides', seePoster: 'See the poster', faq: 'Questions', allIn: 'All', more: 'More guides', read: 'Read the guide', label: 'GUIDES // THE MATHS', h1: 'The maths behind the posters', lead: 'Plain-English guides to the maths our posters are drawn from: the equations, the history and how each picture is computed.', metaTitle: 'Math Art Guides - Strange Attractors and the Mandelbrot Set', metaDesc: 'Plain-English guides to strange attractors, chaos theory and the Mandelbrot set, with the real equations behind our math art posters.' },
+  guide: { title: 'Guides', seePoster: 'See the poster', faq: 'Questions', allIn: 'All', more: 'More guides', read: 'Read the guide', label: 'GUIDES // THE MATHS', h1: 'The maths behind the posters', lead: 'Plain-English guides to the maths our posters are drawn from: the equations, the history and how each picture is computed.', metaTitle: 'Math Art Guides - Chaos, Fractals and 4D Geometry', metaDesc: 'Plain-English guides to strange attractors, chaos theory and the Mandelbrot set, with the real equations behind our math art posters.' },
   social: { label: 'Follow along', open: 'Open on Instagram' },
   seo: {
     homeTitle: 'Math Art Posters & Prints, Drawn in Code | Rezonanca',
@@ -196,6 +196,7 @@ const en: typeof sr = {
     collectionH1: 'Math art posters',
     collectionDesc: 'Browse 58 math art posters: strange attractors, Mandelbrot fractals, fractal flames, Hopf fibrations and sound waves. Drawn in code, printed on fine art paper.',
     productDesc: 'on fine art matte paper, framed or unframed. Free shipping worldwide.',
+    productTail: ['Fine art matte print, framed or unframed.', 'Free shipping worldwide.'],
   },
   collection: {
     label: 'COLLECTION // 58 WORKS',

@@ -9,7 +9,8 @@ import ROOM_FRAMES from '../data/room-frames.json';
 import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
 import Waitlist from './Waitlist.astro';
 import SocialFeed from './SocialFeed.astro';
-import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
+import { T, homeHref, collectionHref, productHref, seriesShort, type Lang, nounLc, guideHref } from '../i18n';
+import { guideFor } from '../data/guides';
 interface Props { lang: Lang; slug: string }
 const { lang, slug } = Astro.props;
 const p = findProduct(slug)!;
@@ -52,7 +53,7 @@ const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];
 const galleryFor = (tone: string) => {
   const k = imgKey(p.slug, tone), suffix = tone ? ` (${toneName(tone)})` : '';
   return [
-    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${name}${suffix} - ${noun.toLowerCase()}`, fit: 'poster' },
+    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${name}${suffix} - ${nounLc(noun)}`, fit: 'poster' },
     // Room shots: the exact print in three mockup scenes (scripts/render-rooms.py).
     ...['', '-2', '-3'].map((n) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' })),
     { src: `/details/${k}.webp`, thumb: `/details/${k}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
@@ -64,7 +65,11 @@ const gallery = galleries.orig;
 const site = Astro.site!;
 const url = new URL(productHref(lang, p.slug), site).href;
 // Search phrase first (Google cuts descriptions at ~155 characters), then the piece's own line.
-const description = `${name} ${noun.toLowerCase()} ${t.seo.productDesc} ${p.line[lang]}`;
+// Keyword phrase first, then the piece's line, then shop facts while it stays within ~158 characters (Google cuts the rest).
+const fit = (parts: string[]) => parts.reduce((d, x) => (d && `${d} ${x}`.length > 158 ? d : d ? `${d} ${x}` : x), '');
+const lineShort = p.line[lang].split(/(?<=[.!?])\s|\s-\s/)[0].replace(/[.!?]?$/, '.');
+const guide = guideFor(p.style);
+const description = fit([`${name} ${nounLc(noun)}:`, lineShort, ...t.seo.productTail]);
 const jsonLd = [{
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -215,7 +220,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
           <div class="acc">
             <details>
               <summary>{tp.about}</summary>
-              <p>{info.desc}</p>
+              <p>{info.desc}{guide && <> <a class="acc-link" href={guideHref(guide.slug)}>{guide.h1}</a></>}</p>
               <dl class="mono">
                 <div><dt>{tp.aboutGen}</dt><dd>{pad(p.seed)}</dd></div>
                 <div><dt>{tp.style}</dt><dd>{seriesName}</dd></div>
@@ -609,6 +614,8 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
   .acc summary::after { content: '+'; color: var(--cyan); }
   .acc details[open] summary::after { content: '–'; }
   .acc p { margin: 0 0 20px; color: var(--ice); font-size: var(--fs-sm); line-height: 1.65; }
+  .acc-link { text-decoration: underline; text-underline-offset: 3px; }
+  .acc-link:hover { color: var(--cyan); }
   .also { margin-top: 44px; }
   .also h2 { margin: 0 0 20px; font: 500 var(--fs-xs)/1.3 var(--f-body); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); }
   .also-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }

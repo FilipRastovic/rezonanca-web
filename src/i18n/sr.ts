@@ -195,6 +195,7 @@ export default {
     collectionH1: 'Math art posters',
     collectionDesc: 'Browse 58 math art posters: strange attractors, Mandelbrot fractals, fractal flames, Hopf fibrations and sound waves. Drawn in code, printed on fine art paper.',
     productDesc: 'on fine art matte paper, framed or unframed. Free shipping worldwide.',
+    productTail: [] as string[],
   },
   collection: {
     label: 'КОЛЕКЦИЈА // 58 РАДОВА',

@@ -1,12 +1,14 @@
 ---
 // "The maths behind this piece": the real equations, parameters and measurements
 // recorded by the generator while rendering this exact product (src/data/math/<slug>.json).
-import { T, type Lang } from '../i18n';
+import { T, guideHref, type Lang } from '../i18n';
+import { guideFor } from '../data/guides';
 interface Props { lang: Lang; slug: string; style: string }
 const { lang, slug, style } = Astro.props;
 const t = T[lang].math;
 const all = import.meta.glob('../data/math/*.json', { eager: true, import: 'default' }) as Record<string, any>;
 const m = all[`../data/math/${slug}.json`];
+const guide = guideFor(style);
 const dec = (v: number, d = 3) => v.toLocaleString(lang === 'sr' ? 'sr-RS' : 'en-US', { maximumFractionDigits: d });
 const show = (v: unknown) => (typeof v === 'number' ? dec(v, 6) : String(v).replace(/(\d)\.(\d)/g, lang === 'sr' ? '$1,$2' : '$1.$2'));
 const known = (k: string) => k in (t.keys as Record<string, string>);
@@ -39,6 +41,7 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ..
         <p class="label">{t.label}</p>
         <h2>{t.title}</h2>
         <p class="lead">{t.lead}</p>
+        {guide && <a class="guide mono" href={guideHref(guide.slug)}>{T.en.guide.read}: {guide.h1} →</a>}
       </div>
       <div class="grid">
         <div class="block eq">
@@ -70,6 +73,8 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ..
   .pm .lead { font-size: var(--fs-body); color: var(--text); }
   .head { margin-bottom: clamp(32px, 4vw, 56px); }
   .head .lead { margin-top: 20px; }
+  .guide { display: inline-block; margin-top: 18px; font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); text-decoration: underline; text-underline-offset: 5px; }
+  .guide:hover { color: var(--cyan); }
   .grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--gap-col); align-items: start; }
   .block { padding: 0; }
   .eq { --c: var(--cyan); }

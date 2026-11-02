@@ -11,8 +11,8 @@ export const GUIDES: Guide[] = [
   {
     slug: 'what-is-a-strange-attractor',
     series: 'attractor',
-    title: 'What Is a Strange Attractor? Lorenz, Chaos and the Butterfly Effect',
-    desc: 'A strange attractor is the shape chaos settles into. A plain-English guide to the Lorenz, Thomas and Clifford attractors, with the equations and how they are drawn.',
+    title: 'What Is a Strange Attractor? Lorenz and Chaos',
+    desc: 'A strange attractor is the shape chaos settles into. A plain-English guide to the Lorenz, Thomas and Clifford attractors, with their equations.',
     h1: 'What is a strange attractor?',
     kicker: 'Guide // Chaos theory',
     lead: 'A strange attractor is the shape a chaotic system settles into. The motion never repeats and can\'t be predicted for long, yet it always stays on the same delicate shape. Here is what that means, with the equations behind our posters.',
@@ -95,7 +95,7 @@ export const GUIDES: Guide[] = [
   {
     slug: 'mandelbrot-set-explained',
     series: 'mandelbrot',
-    title: 'The Mandelbrot Set Explained: z² + c, Fractals and Deep Zooms',
+    title: 'The Mandelbrot Set Explained: z² + c and Fractals',
     desc: 'The Mandelbrot set explained in plain English: one equation, z² + c, the escape radius, seahorse valley, minibrots and how a deep zoom is computed and coloured.',
     h1: 'The Mandelbrot set explained',
     kicker: 'Guide // Fractals',
@@ -185,8 +185,8 @@ export const GUIDES: Guide[] = [
   {
     slug: 'what-is-a-fractal-flame',
     series: 'flame',
-    title: 'What Is a Fractal Flame? The Chaos Game, IFS and Flame Art',
-    desc: 'How fractal flames are made: the chaos game, iterated function systems, non-linear variations and log-density colour, explained with the rules behind our flame posters.',
+    title: 'What Is a Fractal Flame? The Chaos Game Explained',
+    desc: 'How fractal flames are made: the chaos game, iterated function systems, non-linear variations and log-density colour, in plain English.',
     h1: 'What is a fractal flame?',
     kicker: 'Guide // Fractals',
     lead: 'A fractal flame is a picture made by a single point jumping millions of times between a few simple rules picked at random. Where it lands most often, the image glows. Here is how a handful of rules turns into smoke, feathers and petals.',
@@ -261,8 +261,8 @@ export const GUIDES: Guide[] = [
   {
     slug: 'hopf-fibration-explained',
     series: 'hopf',
-    title: 'The Hopf Fibration Explained: Linked Circles from the Fourth Dimension',
-    desc: 'The Hopf fibration explained in plain English: the 3-sphere, linked circles, nested tori and stereographic projection, with the maths behind our 4D geometry posters.',
+    title: 'The Hopf Fibration Explained: Circles from 4D',
+    desc: 'The Hopf fibration in plain English: the 3-sphere, linked circles, nested tori and stereographic projection, with the maths behind our 4D posters.',
     h1: 'The Hopf fibration explained',
     kicker: 'Guide // 4D geometry',
     lead: 'The Hopf fibration fills a four-dimensional sphere entirely with circles, every one of them linked with every other like the links of a chain. Here is what that means, and how it is brought down into our three dimensions to be drawn.',

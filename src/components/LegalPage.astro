@@ -10,7 +10,7 @@ const doc = LEGAL[lang][page];
 const other: Lang = lang === 'sr' ? 'en' : 'sr';
 const otherLabel = lang === 'sr' ? `English version: ${LEGAL.en[page].title}` : `На српском: ${LEGAL.sr[page].title}`;
 ---
-<Base lang="en" htmlLang={T[lang].htmlLang} title={`${doc.title} | Rezonanca`} description={doc.sections[0].p[0]}>
+<Base lang="en" htmlLang={T[lang].htmlLang} title={`${doc.title} | Rezonanca`} description={doc.sections[0].p[0].length > 158 ? doc.sections[0].p[0].slice(0, doc.sections[0].p[0].lastIndexOf(' ', 155)) + '…' : doc.sections[0].p[0]}>
   <section class="legal grid-bg">
     <div class="wrap narrow">
       <nav class="crumbs mono"><a href={homeHref()}>{T.en.product.home}</a><span>/</span><span aria-current="page">{doc.title}</span></nav>

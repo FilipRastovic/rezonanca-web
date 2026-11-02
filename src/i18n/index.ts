@@ -24,3 +24,6 @@ export const checkoutHref = (_lang?: Lang) => '/checkout/';
 export const paymentHref = (_lang?: Lang) => '/payment/';
 export const legalHref = (lang: Lang, page: 'terms' | 'privacy') =>
   lang === 'sr' ? (page === 'terms' ? '/uslovi/' : '/privatnost/') : `/${page}/`;
+
+// Series noun in running text: lower case, but names stay capitalised ("Mandelbrot fractal poster").
+export const nounLc = (noun: string) => noun.replace(/\b(?!Mandelbrot|Hopf|Lorenz|Thomas)[A-Z][a-z-]*/g, (w) => w.toLowerCase());
