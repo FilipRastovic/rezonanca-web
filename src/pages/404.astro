@@ -1,0 +1,42 @@
+---
+// Not found: GitHub Pages serves /404.html for any missing address. Points people back to the shop and the guides.
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { findProduct } from '../data/products.js';
+import { GUIDES } from '../data/guides';
+import { T, homeHref, collectionHref, guideHref } from '../i18n';
+const t = T.en;
+const picks = ['lorenc', 'dolina-morskih-konjica', 'tomas', 'snop'].map(findProduct);
+---
+<Base lang="en" title="Page not found | Rezonanca" description="This page doesn't exist. Browse the collection of math art posters drawn in code.">
+  <meta slot="head" name="robots" content="noindex" />
+  <section class="top grid-bg">
+    <div class="wrap">
+      <p class="label">ERROR 404 // SIGNAL LOST</p>
+      <h1>This page doesn't exist.</h1>
+      <p class="lead">The address may have changed, or there was a typo in the link. The posters are all still here.</p>
+      <div class="actions">
+        <a class="btn btn--solid" href={collectionHref('en')}>{t.hero.primary} <span class="arrow">→</span></a>
+        <a class="btn" href={homeHref()}>{t.product.home}</a>
+      </div>
+      <p class="guides mono">{t.guide.title}: {GUIDES.map((g) => <a href={guideHref(g.slug)}>{g.h1}</a>)}</p>
+    </div>
+  </section>
+  <section class="list">
+    <div class="wrap grid">
+      {picks.map((p, i) => <ProductCard product={p} lang="en" delay={i * 90} />)}
+    </div>
+  </section>
+</Base>
+<style>
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; }
+  .lead { margin-top: 20px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .guides { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 32px; font-size: var(--fs-xs); color: var(--muted); }
+  .guides a { color: var(--ice); text-decoration: underline; text-underline-offset: 4px; }
+  .guides a:hover { color: var(--cyan); }
+  .list { background: var(--bg-1); padding-block: var(--space-md); }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2vw, 32px); }
+  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

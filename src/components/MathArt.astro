@@ -1,6 +1,7 @@
 ---
 // Homepage: the history of maths art, from Fibonacci's sunflower to p5.js (same look as History).
-import { T, type Lang } from '../i18n';
+import { T, guideHref, type Lang } from '../i18n';
+import { GUIDES } from '../data/guides';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].mathart;
@@ -16,6 +17,10 @@ const t = T[lang].mathart;
         <li><span class="y">{it.y}</span><p>{it.t}</p></li>
       ))}
     </ol>
+    <nav class="guides" aria-label={T.en.guide.title}>
+      <span class="k mono">{T.en.guide.h1}</span>
+      {GUIDES.map((g) => <a href={guideHref(g.slug)}>{g.h1} →</a>)}
+    </nav>
   </div>
 </section>
 <style>
@@ -26,5 +31,9 @@ const t = T[lang].mathart;
   li::before { content: ''; position: absolute; left: -4px; top: 4px; width: 7px; height: 7px; background: var(--cyan); }
   .y { font: 500 var(--fs-h3)/1 var(--f-display); color: var(--ice); }
   p { margin: 10px 0 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.75; max-width: 52ch; }
+  .guides { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 28px; margin-top: 24px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .guides .k { flex-basis: 100%; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
+  .guides a { font-size: var(--fs-sm); color: var(--ice); text-decoration: underline; text-underline-offset: 4px; }
+  .guides a:hover { color: var(--cyan); }
   @media (max-width: 900px) { ol { columns: 1; } }
 </style>
