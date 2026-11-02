@@ -29,7 +29,7 @@ const f = t.collection.filter;
 // Pink colourway cards: hidden until the Розе colour filter is on.
 const pink = flat.filter((p) => p.tones?.includes('roza'));
 ---
-<Base lang={lang} title={title} description={description}>
+<Base lang={lang} title={title} description={description} image={current ? `/og/${productsBySeries(current.key)[0].slug}-en.jpg` : undefined}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <section class="top grid-bg">
     <div class="wrap">
