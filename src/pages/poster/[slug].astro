@@ -1,6 +1,12 @@
 ---
 import ProductPage from '../../components/ProductPage.astro';
+import Moved from '../../components/Moved.astro';
 import { PRODUCTS } from '../../data/products.js';
-export const getStaticPaths = () => PRODUCTS.map((p) => ({ params: { slug: p.slug } }));
+// The address is the English url; the page works with the internal slug. Old (Serbian) addresses forward.
+export const getStaticPaths = () => [
+  ...PRODUCTS.map((p) => ({ params: { slug: p.url }, props: { key: p.slug } })),
+  ...PRODUCTS.filter((p) => p.slug !== p.url).map((p) => ({ params: { slug: p.slug }, props: { to: `/poster/${p.url}/` } })),
+];
+const { key, to } = Astro.props;
 ---
-<ProductPage lang="en" slug={Astro.params.slug} />
+{to ? <Moved to={to} /> : <ProductPage lang="en" slug={key} />}

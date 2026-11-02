@@ -1,17 +1,19 @@
 // Product catalogue - single source of truth for the shop and for scripts/render-assets.mjs.
 // `style` + `variant` + `palette` + `seed` reproduce each artwork exactly in ../waveform-poster.
 
+// slug = the public address (/collection/<slug>/), English for search since 2026-11-02; old = the Serbian address it
+// replaced, which now forwards (astro.config.mjs).
 export const SERIES = [
-  { key: 'attractor', slug: 'atraktori' },
-  { key: 'mandelbrot', slug: 'mandelbrot' },
-  { key: 'flame', slug: 'plamen' },
-  { key: 'structure', slug: 'struktura' },
-  { key: 'flux', slug: 'tok' },
-  { key: 'city', slug: 'grad' },
-  { key: 'ridges', slug: 'grebeni' },
-  { key: 'orbit', slug: 'orbita' },
-  { key: 'hopf', slug: 'hopf' },
-  { key: 'object', slug: 'objekti' },
+  { key: 'attractor', slug: 'strange-attractors', old: 'atraktori' },
+  { key: 'mandelbrot', slug: 'mandelbrot', old: 'mandelbrot' },
+  { key: 'flame', slug: 'fractal-flames', old: 'plamen' },
+  { key: 'structure', slug: 'recursive-structures', old: 'struktura' },
+  { key: 'flux', slug: 'flux', old: 'tok' },
+  { key: 'city', slug: 'city', old: 'grad' },
+  { key: 'ridges', slug: 'ridges', old: 'grebeni' },
+  { key: 'orbit', slug: 'orbit', old: 'orbita' },
+  { key: 'hopf', slug: 'hopf-fibrations', old: 'hopf' },
+  { key: 'object', slug: 'objects', old: 'objekti' },
 ];
 
 const p = (slug, style, seed, variant, palette, sr, en, lineSr, lineEn) =>
@@ -227,6 +229,70 @@ for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 // Colourways offered next to the original (generator ?tone=, see waveform-poster TONES).
 // Skipped where the colourway doesn't work: fine ridge meshes turn to haze, thin single lines vanish.
 // roza = deep rose ground (2026-10-11); tus = Туш, black ink on white paper (2026-10-21, light rebrand).
+// Public product addresses (/poster/<url>/), English for search since 2026-11-02. `slug` stays the internal key
+// (images, print files, cart, payments, pixel); the old /poster/<slug>/ addresses forward (astro.config.mjs).
+export const URL_SLUG = {
+  'predajnik': 'transmitter',
+  'galaksija': 'galaxy',
+  'drvo-signala': 'signal-tree',
+  'dvojna-zvezda': 'binary-star',
+  'dajsonova-sfera': 'dyson-sphere',
+  'supernova': 'supernova',
+  'aurora': 'aurora',
+  'dvostruka-spirala': 'double-helix',
+  'horizont': 'horizon',
+  'beskonacnost': 'infinity',
+  'vodopad': 'waterfall',
+  'svila': 'silk',
+  'metropola': 'metropolis',
+  'orbitalni-grad': 'orbital-city',
+  'kanjon': 'canyon',
+  'kula': 'tower',
+  'talas': 'wave',
+  'ponoc': 'midnight',
+  'lorenc': 'lorenz-attractor',
+  'aizava': 'aizawa-attractor',
+  'tomas': 'thomas-attractor',
+  'halvorsen': 'halvorsen-attractor',
+  'klifordov-veo': 'clifford-attractor',
+  'de-zong': 'de-jong-attractor',
+  'resler': 'rossler-attractor',
+  'cen': 'chen-attractor',
+  'dadras': 'dadras-attractor',
+  'sprot': 'sprott-attractor',
+  'rabinovic': 'rabinovich-attractor',
+  'cetiri-krila': 'four-wing-attractor',
+  'mandelbrotov-skup': 'mandelbrot-set',
+  'dolina-morskih-konjica': 'seahorse-valley',
+  'spirala': 'mandelbrot-spiral',
+  'mali-mandelbrot': 'minibrot',
+  'vitica': 'mandelbrot-tendril',
+  'morska-zvezda': 'mandelbrot-starfish',
+  'prvi-signal': 'first-signal',
+  'tiha-oluja': 'silent-storm',
+  'severni-signal': 'northern-signal',
+  'magla': 'fog',
+  'blizanci': 'twin-peaks',
+  'svitanje': 'dawn',
+  'nulta-orbita': 'orbit-zero',
+  'prsten-tisine': 'ring-of-silence',
+  'magnetar': 'magnetar',
+  'pomracenje': 'eclipse',
+  'crvotocina': 'wormhole',
+  'oreol': 'halo',
+  'snop': 'hopf-fibration',
+  'dvojstvo': 'duality',
+  'vrtlog': 'vortex',
+  'caura': 'cocoon',
+  'perje': 'feathers',
+  'dim': 'smoke',
+  'ruza': 'rose',
+  'vetrenjaca': 'pinwheel',
+  'stanica': 'station',
+  'anomalija': 'anomaly',
+};
+for (const x of PRODUCTS) x.url = URL_SLUG[x.slug];
+
 export const TONES = ['roza', 'tus'];
 const NO_TONE = {
   roza: ['resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'],
@@ -253,4 +319,5 @@ export const productsBySeries = (key) => {
 export const homePicks = (key) => (HOME_PICKS[key] ? HOME_PICKS[key].map(findProduct) : productsBySeries(key).slice(0, 4));
 export const seriesOf = (product) => SERIES.find((s) => s.key === product.style);
 export const findProduct = (slug) => PRODUCTS.find((x) => x.slug === slug);
+export const findByUrl = (url) => PRODUCTS.find((x) => x.url === url);
 export const pad = (n) => String(n).padStart(5, '0');

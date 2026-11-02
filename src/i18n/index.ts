@@ -1,5 +1,6 @@
 import sr from './sr';
 import en from './en';
+import { URL_SLUG } from '../data/products.js';
 
 export type Lang = 'sr' | 'en';
 export const T = { sr, en };
@@ -15,7 +16,7 @@ export const seriesShort = (lang: Lang, key: string) => {
 // `lang` stays in the signatures so components keep one shape.
 export const homeHref = (_lang?: Lang) => '/';
 export const collectionHref = (_lang: Lang, series?: string) => `/collection/${series ? `${series}/` : ''}`;
-export const productHref = (_lang: Lang, slug: string) => `/poster/${slug}/`;
+export const productHref = (_lang: Lang, slug: string) => `/poster/${(URL_SLUG as Record<string, string>)[slug] ?? slug}/`;
 export const interiorsHref = (_lang?: Lang) => '/in-a-room/';
 export const cartHref = (_lang?: Lang) => '/cart/';
 export const checkoutHref = (_lang?: Lang) => '/checkout/';

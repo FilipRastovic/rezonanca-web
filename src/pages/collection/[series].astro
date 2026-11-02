@@ -1,6 +1,12 @@
 ---
 import CollectionPage from '../../components/CollectionPage.astro';
+import Moved from '../../components/Moved.astro';
 import { SERIES } from '../../data/products.js';
-export const getStaticPaths = () => SERIES.map((s) => ({ params: { series: s.slug } }));
+// English series addresses; the old (Serbian) ones forward.
+export const getStaticPaths = () => [
+  ...SERIES.map((s) => ({ params: { series: s.slug }, props: {} })),
+  ...SERIES.filter((s) => s.old !== s.slug).map((s) => ({ params: { series: s.old }, props: { to: `/collection/${s.slug}/` } })),
+];
+const { to } = Astro.props;
 ---
-<CollectionPage lang="en" seriesSlug={Astro.params.series} />
+{to ? <Moved to={to} /> : <CollectionPage lang="en" seriesSlug={Astro.params.series} />}

@@ -1,0 +1,18 @@
+---
+// Forwarding page for an old address: keeps the query (UTM tags, ?boja=) and #hash, which a plain meta refresh drops.
+interface Props { to: string }
+const { to } = Astro.props;
+const canonical = new URL(to, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Moved</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <script is:inline define:vars={{ to }}>location.replace(to + location.search + location.hash);</script>
+    <meta http-equiv="refresh" content={`0;url=${to}`} />
+  </head>
+  <body><a href={to}>{canonical}</a></body>
+</html>
