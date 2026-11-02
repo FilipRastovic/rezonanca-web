@@ -44,7 +44,7 @@ const en: typeof sr = {
     hopf: {
       name: 'Hopf',
       code: 'SERIES H // HOPF FIBRATION',
-      desc: 'Shapes from the fourth dimension. Thousands of circles, each passing through every other, brought down into our space as nested tori of light.',
+      desc: 'Shapes from the fourth dimension. Hundreds of circles, each linked with every other like links of a chain, brought down into our space as nested tori of light.',
       seo: { title: 'Hopf Fibration Posters - 4D Geometry Art Prints', h1: 'Hopf fibration posters', desc: 'Hopf fibration posters: circles from the fourth dimension brought down as nested tori of light. 4D geometry art prints, free shipping worldwide.', noun: 'Hopf Fibration Poster' },
     },
     flame: {
@@ -275,7 +275,7 @@ const en: typeof sr = {
     hopf: [
       { t: 'A circle in four dimensions', d: 'The three-sphere S³ lives in four-dimensional space. In 1931 Heinz Hopf found that it can be divided entirely into circles, so that every pair of circles is linked like two links of a chain.', f: 'S¹ → S³ → S²' },
       { t: 'Every point, one circle', d: 'Each point on an ordinary sphere corresponds to one circle in S³. The program picks points along parallels or a spiral and draws the circle for each.', f: '(z₁, z₂) ↦ (2z₁z̄₂, |z₁|² − |z₂|²)' },
-      { t: 'Down into our space', d: 'Stereographic projection brings the fourth dimension down into ours, the way a map brings the Earth onto paper. Circles stay circles, and each passes through every other.', f: 'p ↦ (x, y, z) / (1 − w)' },
+      { t: 'Down into our space', d: 'Stereographic projection brings the fourth dimension down into ours, the way a map brings the Earth onto paper. Circles stay circles, and each one stays linked with every other without ever touching it.', f: 'p ↦ (x, y, z) / (1 − w)' },
     ],
     flame: [
       { t: 'The chaos game', d: 'A point jumps millions of times, and at each jump it picks one of a few rules at random. Where it lands most often, the image glows brightest. Scott Draves devised the method in 1992.', f: 'xₙ₊₁ = Fᵢ(xₙ),  i random' },
@@ -363,7 +363,7 @@ const en: typeof sr = {
     hopf: [
       { y: '1931', t: 'Heinz Hopf discovers the map from the three-sphere to the sphere and proves that all its circles are linked.' },
       { y: '1975', t: 'Physicists recognise the Hopf fibration in the magnetic monopole and in the quantum mechanics of spin.' },
-      { y: '2010', t: 'Jos Leys, Étienne Ghys and Aurélien Alvarez make the films "Dimensions", showing the Hopf fibration to the world.' },
+      { y: '2008', t: 'Jos Leys, Étienne Ghys and Aurélien Alvarez make the films "Dimensions", showing the Hopf fibration to the world.' },
       { y: 'today', t: 'Here every piece draws thousands of real circles from the fourth dimension, computed point by point.' },
     ],
     flame: [

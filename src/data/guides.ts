@@ -182,6 +182,149 @@ export const GUIDES: Guide[] = [
       { q: 'Who discovered the Mandelbrot set?', a: 'Robert Brooks and Peter Matelski drew an early picture of it in 1978. Benoit Mandelbrot made the first detailed images at IBM around 1980, and Adrien Douady and John Hubbard named it after him.' },
     ],
   },
+  {
+    slug: 'what-is-a-fractal-flame',
+    series: 'flame',
+    title: 'What Is a Fractal Flame? The Chaos Game, IFS and Flame Art',
+    desc: 'How fractal flames are made: the chaos game, iterated function systems, non-linear variations and log-density colour, explained with the rules behind our flame posters.',
+    h1: 'What is a fractal flame?',
+    kicker: 'Guide // Fractals',
+    lead: 'A fractal flame is a picture made by a single point jumping millions of times between a few simple rules picked at random. Where it lands most often, the image glows. Here is how a handful of rules turns into smoke, feathers and petals.',
+    updated: '2026-11-02',
+    sections: [
+      {
+        h: 'The chaos game',
+        p: [
+          'Draw three corners of a triangle and put a point anywhere. Now pick one corner at random and move the point halfway towards it. Repeat. After a few thousand jumps the points form the Sierpinski triangle, a fractal of triangles inside triangles, even though every single jump was random.',
+          'This is the chaos game, popularised by the mathematician Michael Barnsley. The randomness only decides the order of the jumps. The shape itself is fixed by the rules.',
+        ],
+        f: 'xₙ₊₁ = Fᵢ(xₙ),   i chosen at random',
+      },
+      {
+        h: 'Iterated function systems',
+        p: [
+          'Each rule in the chaos game is a function that shrinks, turns and shifts the plane. A set of such rules is called an iterated function system, or IFS, described by John Hutchinson in 1981. Its fractal is the one shape that every rule maps back onto part of itself.',
+          'In 1988 Barnsley showed in his book Fractals Everywhere that just four of these rules draw a fern, down to the smallest leaflet. This is the Barnsley fern, and it made the idea famous.',
+        ],
+        f: 'A(x, y) = (a·x + b·y + c,  d·x + e·y + f)',
+      },
+      {
+        h: 'From fern to flame',
+        p: [
+          'Plain IFS rules only use straight-line maps, so their fractals look crisp and geometric. In 1992 the programmer Scott Draves added a bend: after the straight-line step, each rule passes the point through a non-linear function called a variation, such as sine, sphere, swirl, spiral or horseshoe.',
+          'The variations curve the plane, and the result no longer looks like geometry. It looks like smoke, silk and fire, which is where the name comes from. Draves later used flames in Electric Sheep, a screensaver started in 1999 that shares flames between thousands of computers.',
+        ],
+        f: 'F(x) = Σ wⱼ·Vⱼ(A·x)',
+        piece: 'dim',
+        caption: 'Smoke: a few rules with threefold symmetry, about 10 million points.',
+      },
+      {
+        h: 'Brightness on a log scale',
+        p: [
+          'A flame is a histogram: the program counts how many times the point lands on each pixel. Some pixels are hit millions of times and others only a few, so a straight count would show a bright blob and nothing else.',
+          'Flames use the logarithm of the count instead. That compresses the range, so the dense core still glows while the faintest wisps stay visible. It is the same trick the eye uses to see both a bright window and a dark room.',
+        ],
+        f: 'L = log(1 + n) / log(1 + nₘₐₓ)',
+      },
+      {
+        h: 'Colour from history',
+        p: [
+          'Each rule carries its own colour value. Every time the point jumps, its colour moves halfway towards the colour of the rule it just used. A pixel\'s colour is then the average of the colours of all the points that landed on it.',
+          'So the colour records where the point has been, not just where it is. Regions built mostly by one rule take its colour, and regions where several rules meet blend them.',
+        ],
+        piece: 'perje',
+        caption: 'Feathers: colour follows which rules each point came through.',
+      },
+      {
+        h: 'Symmetry',
+        p: [
+          'Add one more rule that simply rotates the point by a fixed angle, and the whole flame gains rotational symmetry. With a rotation of a fifth of a turn, every feature repeats five times around the centre, like the petals of a flower.',
+        ],
+        piece: 'ruza',
+        caption: 'Rose: fivefold symmetry around a warm core.',
+      },
+      {
+        h: 'How our flame posters are made',
+        p: [
+          'For each piece the program chooses two to four rules, each with its own straight-line map and one or two variations from a set of twelve, and sometimes a rotational symmetry. It tests many candidate sets of rules and keeps one whose flame fills the page well, neither collapsed to a dot nor scattered into dust.',
+          'It then runs the chaos game for about ten million points, builds the log-density image and maps the colour history to the palette. The rules are fixed by the piece\'s number, so the same piece always comes out the same.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is a fractal flame?', a: 'A fractal flame is an image made by the chaos game with non-linear rules: a point jumps millions of times between a few functions picked at random, and the picture shows how often it lands on each pixel, on a log scale, coloured by the rules it passed through.' },
+      { q: 'Who invented fractal flames?', a: 'Scott Draves devised the fractal flame algorithm in 1992, building on iterated function systems (John Hutchinson, 1981) and the chaos game popularised by Michael Barnsley.' },
+      { q: 'What is the difference between a fractal flame and an IFS fractal?', a: 'A classic IFS fractal like the Barnsley fern uses only straight-line maps and draws points as on or off. A flame adds non-linear variations, log-density brightness and colour from the rules, which gives its soft, smoky look.' },
+      { q: 'Are fractal flames really fractals?', a: 'Yes. Each is the attractor of an iterated function system: the shape that the rules map back onto itself, with detail repeating at smaller and smaller scales.' },
+    ],
+  },
+  {
+    slug: 'hopf-fibration-explained',
+    series: 'hopf',
+    title: 'The Hopf Fibration Explained: Linked Circles from the Fourth Dimension',
+    desc: 'The Hopf fibration explained in plain English: the 3-sphere, linked circles, nested tori and stereographic projection, with the maths behind our 4D geometry posters.',
+    h1: 'The Hopf fibration explained',
+    kicker: 'Guide // 4D geometry',
+    lead: 'The Hopf fibration fills a four-dimensional sphere entirely with circles, every one of them linked with every other like the links of a chain. Here is what that means, and how it is brought down into our three dimensions to be drawn.',
+    updated: '2026-11-02',
+    sections: [
+      {
+        h: 'A sphere in four dimensions',
+        p: [
+          'An ordinary circle is all the points at distance 1 from a centre in the flat plane. An ordinary sphere is the same idea in three dimensions. The three-sphere, written S³, is the same idea once more, in four dimensions: all the points (x, y, z, w) with x² + y² + z² + w² = 1.',
+          'We can\'t see four dimensions directly, but we can compute in them. A handy way is to pair the four coordinates into two complex numbers, z₁ = x + iy and z₂ = z + iw, so a point of S³ is a pair with |z₁|² + |z₂|² = 1.',
+        ],
+        f: '|z₁|² + |z₂|² = 1',
+      },
+      {
+        h: 'Hopf\'s map',
+        p: [
+          'In 1931 the mathematician Heinz Hopf found a map that sends every point of S³ to a point on an ordinary sphere S². Many points of S³ land on the same spot of S², and they always form a circle. So S³ is filled completely with circles, one circle for every point of the ordinary sphere, and no two circles share a point.',
+          'A space filled with circles in this tidy way is called a fibration, and each circle is a fibre. Written as symbols, the circle S¹ sits inside the three-sphere S³, which lies over the sphere S².',
+        ],
+        f: 'S¹ → S³ → S²\n(z₁, z₂) ↦ (2z₁z̄₂,  |z₁|² − |z₂|²)',
+      },
+      {
+        h: 'Every circle linked with every other',
+        p: [
+          'The surprising part: any two of these circles are linked. They never touch, yet you couldn\'t pull them apart without cutting one, just like two links of a chain. Hopf proved that this linking can\'t be undone by any smooth deformation, which made the fibration a landmark of topology.',
+          'Take all the points on one circle of latitude of the ordinary sphere. Their fibres sweep out a torus, a doughnut shape, wound with circles that twist around it. Different latitudes give nested tori, one inside the next.',
+        ],
+        piece: 'snop',
+        caption: 'Fibration: nested tori, each wound with linked circles.',
+      },
+      {
+        h: 'Down into our space',
+        p: [
+          'To draw S³ we use stereographic projection, the same trick that maps the globe onto flat paper. Pick one point of S³ as the pole, then send every other point along a straight line from the pole into ordinary three-dimensional space.',
+          'This projection keeps circles as circles. The only exception is the fibre through the pole itself, which becomes a straight line running off to infinity. Every other fibre becomes an ordinary round circle, still linked with all the rest.',
+        ],
+        f: 'p ↦ (x, y, z) / (1 − w)',
+      },
+      {
+        h: 'Where it turns up in physics',
+        p: [
+          'The Hopf fibration appears well beyond pure geometry. The state of a qubit, the basic unit of quantum information, is a point of S³ up to a phase, and the Bloch sphere that physicists draw is exactly the S² at the bottom of the Hopf map. It also shows up in the mathematics of the magnetic monopole and of spinning rigid bodies.',
+          'The films Dimensions by Jos Leys, Étienne Ghys and Aurélien Alvarez brought pictures of it to a wide audience.',
+        ],
+      },
+      {
+        h: 'How our Hopf posters are made',
+        p: [
+          'For each piece the program picks between 100 and 320 points on the ordinary sphere, either along several circles of latitude, which gives nested tori, or along a spiral from pole to pole, which gives a vortex. For every point it computes the matching circle in S³ at 260 points around it.',
+          'Each circle is projected stereographically, turned to the chosen viewing angle and drawn as a fine line of light, brighter towards the front. Nothing is approximated by hand: every ring on the poster is one exact fibre of the Hopf map.',
+        ],
+        piece: 'vrtlog',
+        caption: 'Vortex: fibres over a spiral on the sphere.',
+      },
+    ],
+    faq: [
+      { q: 'What is the Hopf fibration in simple terms?', a: 'It is a way of filling the four-dimensional sphere S³ completely with circles, one for each point of an ordinary sphere, so that every pair of circles is linked like two links of a chain.' },
+      { q: 'Why are the circles linked?', a: 'Because of how the Hopf map twists S³ around the sphere below it. Hopf proved in 1931 that the linking is a topological fact: no smooth deformation of the map can undo it.' },
+      { q: 'How can you draw something from four dimensions?', a: 'With stereographic projection, which maps the four-dimensional sphere into ordinary 3D space and keeps circles as circles. The 3D picture is then viewed from an angle, like any object.' },
+      { q: 'What are the tori in Hopf fibration pictures?', a: 'The circles that lie over one circle of latitude on the ordinary sphere sweep out a torus. Several latitudes give nested tori, each wound with linked circles.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => g.series === series);

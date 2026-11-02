@@ -235,8 +235,8 @@ export const STORIES = {
     en: "The same circles, gathered around two centres. In the same year, 1931, Paul Dirac described the magnetic monopole, and it later turned out that his mathematics hides exactly the Hopf fibration.",
   },
   vrtlog: {
-    sr: 'Овде програм бира тачке на сфери по спирали, па се њихови кругови у пројекцији увлаче ка средини. Сваки круг и даље пролази кроз сваки други, ма колико се спирала збила.',
-    en: 'Here the program picks points on the sphere along a spiral, so their circles draw inwards in the projection. Every circle still passes through every other, however tightly the spiral winds.',
+    sr: 'Овде програм бира тачке на сфери по спирали, па се њихови кругови у пројекцији увлаче ка средини. Сваки круг је и даље уланчан са сваким другим, ма колико се спирала збила.',
+    en: 'Here the program picks points on the sphere along a spiral, so their circles draw inwards in the projection. Every circle is still linked with every other, however tightly the spiral winds.',
   },
   caura: {
     sr: 'Исти сноп гледан са стране, па се торуси издужују у чауру. Свилена буба плете чауру од једне нити, а овде је сваки прстен засебан круг из четврте димензије.',
