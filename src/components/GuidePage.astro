@@ -9,7 +9,7 @@ import { T, homeHref, collectionHref, productHref, guideHref, seriesShort, nounL
 interface Props { slug: string }
 const g = GUIDES.find((x) => x.slug === Astro.props.slug)!;
 const t = T.en;
-const s = SERIES.find((x) => x.key === g.series)!;
+const s = SERIES.find((x) => x.key === g.series);
 const site = Astro.site!;
 const url = new URL(guideHref(g.slug), site).href;
 const byKey = (k: string) => PRODUCTS.find((p) => p.slug === k)!;
@@ -24,7 +24,11 @@ const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: g.faq.map((x) => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a } })) },
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
 ];
-const pieces = productsBySeries(g.series);
+const pieces = g.shop ? g.shop.map(byKey) : productsBySeries(g.series);
+const shopLabel = s ? t.series[g.series as 'attractor'].code : t.guide.giftLabel;
+const shopH2 = s ? t.series[g.series as 'attractor'].seo.h1 : t.guide.giftH2;
+const allHref = s ? collectionHref('en', s.slug) : collectionHref('en');
+const allText = s ? `${t.guide.allIn} ${seriesShort('en', s.key)} (${pieces.length})` : `${t.guide.allPosters} (${PRODUCTS.length})`;
 const others = GUIDES.filter((x) => x.slug !== g.slug);
 ---
 <Base lang="en" title={`${g.title} | Rezonanca`} description={g.desc} image={`/posters/${firstPiece}-en-lg.webp`}>
@@ -80,10 +84,10 @@ const others = GUIDES.filter((x) => x.slug !== g.slug);
     <div class="wrap">
       <div class="shop-head">
         <div>
-          <p class="label">{t.series[g.series as 'attractor'].code}</p>
-          <h2>{t.series[g.series as 'attractor'].seo.h1}</h2>
+          <p class="label">{shopLabel}</p>
+          <h2>{shopH2}</h2>
         </div>
-        <a class="all mono" href={collectionHref('en', s.slug)}>{t.guide.allIn} {seriesShort('en', s.key)} ({pieces.length}) →</a>
+        <a class="all mono" href={allHref}>{allText} →</a>
       </div>
       <div class="grid">
         {pieces.slice(0, 8).map((p, i) => <ProductCard product={p} lang="en" delay={(i % 4) * 90} />)}

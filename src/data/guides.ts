@@ -5,6 +5,8 @@ export interface GuideSection { h: string; p: string[]; f?: string; piece?: stri
 export interface Guide {
   slug: string; series: string; title: string; desc: string; h1: string; kicker: string; lead: string;
   updated: string; sections: GuideSection[]; faq: { q: string; a: string }[];
+  // Gift-style guides: a hand-picked shop grid instead of one series (series is then '').
+  shop?: string[];
 }
 
 export const GUIDES: Guide[] = [
@@ -325,6 +327,80 @@ export const GUIDES: Guide[] = [
       { q: 'What are the tori in Hopf fibration pictures?', a: 'The circles that lie over one circle of latitude on the ordinary sphere sweep out a torus. Several latitudes give nested tori, each wound with linked circles.' },
     ],
   },
+  {
+    slug: 'math-gifts',
+    series: '',
+    shop: ['lorenc', 'mandelbrotov-skup', 'snop', 'klifordov-veo', 'tomas', 'dolina-morskih-konjica', 'metropola', 'dim'],
+    title: 'Math Gifts for Mathematicians, Physicists and Coders',
+    desc: 'Math gift ideas that look good on a wall: Lorenz, Mandelbrot and Hopf posters drawn from real equations, for mathematicians, physicists and programmers.',
+    h1: 'Math gifts for people who love equations',
+    kicker: 'Guide // Gifts',
+    lead: 'A good math gift is one the person actually puts on the wall. These posters are drawn from real equations, so they read as art to everyone and as maths to the one who knows. Here is which piece suits whom.',
+    updated: '2026-11-02',
+    sections: [
+      {
+        h: 'For the physicist: the Lorenz attractor',
+        p: [
+          'The Lorenz attractor is where chaos theory began: three equations from a 1963 weather model, and the first picture of the butterfly effect. Anyone who has studied physics, meteorology or differential equations will recognise the two wings at once.',
+          'The poster is the real solution of the equations, 260,000 steps long, with σ = 10, ρ = 28 and β = 8/3 printed in the corner.',
+        ],
+        piece: 'lorenc',
+        caption: 'Lorenz: the classic chaos theory gift.',
+      },
+      {
+        h: 'For the mathematician: the Mandelbrot set',
+        p: [
+          'The most famous fractal, defined by one line, z² + c. The full set is the safe choice; a deep zoom such as Seahorse Valley is the one that starts conversations, because only someone who knows the set will recognise where it comes from.',
+        ],
+        piece: 'mandelbrotov-skup',
+        caption: 'The Mandelbrot set: one equation, an infinite coastline.',
+      },
+      {
+        h: 'For the topologist: the Hopf fibration',
+        p: [
+          'Circles from the fourth dimension, every one linked with every other. The Hopf fibration is a favourite of geometers and topologists, and of physicists too, since it is the shape behind the Bloch sphere of a qubit. It rarely appears on posters, which makes it a gift they won\'t already own.',
+        ],
+        piece: 'snop',
+        caption: 'Fibration: nested tori of linked circles.',
+      },
+      {
+        h: 'For the programmer: the Clifford attractor',
+        p: [
+          'Two lines of code with four sines and cosines, iterated millions of times. Programmers like the Clifford attractor because they can write it in a minute and still be surprised by what it draws. Every one of our posters is computed this way, by a program written line by line.',
+        ],
+        piece: 'klifordov-veo',
+        caption: 'Clifford\'s Veil: four constants, one silk-like veil.',
+      },
+      {
+        h: 'For the music lover: sound waves',
+        p: [
+          'Not every math gift has to look like maths. The sound wave series turns signals into landscapes and cities, built from sine waves, envelopes and Perlin noise. It suits engineers, musicians and anyone who works with audio.',
+        ],
+        piece: 'metropola',
+        caption: 'Metropolis: a spectrogram turned into a city.',
+      },
+      {
+        h: 'Choosing a size and frame',
+        p: [
+          'Every poster comes in 30 × 40 cm (12 × 16 in) or 45 × 60 cm (18 × 24 in). The smaller size suits a desk, an office or a gift you aren\'t sure where they will hang. The larger one works above a sofa or a bed.',
+          'Framed prints arrive in a black or natural wood frame with plexiglass, ready to hang, which makes them the easiest gift: no trip to a framer. Black suits the darker pieces; natural wood softens them for a warmer room.',
+        ],
+      },
+      {
+        h: 'Ordering a gift',
+        p: [
+          'Each poster is printed to order on fine art matte paper and shipped worldwide with free shipping. Because every print is made when you order, order a little earlier before holidays. You can send it straight to the person\'s address.',
+          'Every product page explains the maths behind that exact piece: its equations, parameters and measurements. That makes a good message to go with the gift.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is a good gift for a mathematician?', a: 'Something that shows real maths rather than a joke about it. A poster of the Mandelbrot set, a strange attractor or the Hopf fibration, drawn from the actual equations, works on any wall and still means something to a mathematician.' },
+      { q: 'What is a good gift for a physicist?', a: 'The Lorenz attractor, the original picture of chaos and the butterfly effect, or the Hopf fibration, which appears in quantum mechanics as the geometry of a qubit.' },
+      { q: 'Can I ship a poster directly to someone else?', a: 'Yes. Enter their address at checkout. Shipping is free worldwide.' },
+      { q: 'Which size should I choose for a gift?', a: '30 × 40 cm is the safe choice when you don\'t know the wall. Choose 45 × 60 cm for a statement piece above a sofa or bed.' },
+    ],
+  },
 ];
 
-export const guideFor = (series: string) => GUIDES.find((g) => g.series === series);
+export const guideFor = (series: string) => GUIDES.find((g) => g.series && g.series === series);

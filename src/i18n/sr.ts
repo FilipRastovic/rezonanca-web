@@ -186,7 +186,7 @@ export default {
     cta: 'Поручи постер',
   },
   tiles: { label: 'КОЛЕКЦИЈЕ', title: 'Изабери серију.', all: 'Сви радови' },
-  guide: { title: 'Водичи', seePoster: 'Погледај постер', faq: 'Питања', allIn: 'Сви', more: 'Још водича', read: 'Прочитај водич', label: 'ВОДИЧИ // МАТЕМАТИКА', h1: 'Математика иза постера', lead: 'Водичи кроз математику из које су нацртани постери.', metaTitle: 'Водичи', metaDesc: 'Водичи кроз математику иза постера.' },
+  guide: { allPosters: '', giftLabel: '', giftH2: '', title: 'Водичи', seePoster: 'Погледај постер', faq: 'Питања', allIn: 'Сви', more: 'Још водича', read: 'Прочитај водич', label: 'ВОДИЧИ // МАТЕМАТИКА', h1: 'Математика иза постера', lead: 'Водичи кроз математику из које су нацртани постери.', metaTitle: 'Водичи', metaDesc: 'Водичи кроз математику иза постера.' },
   social: { label: 'Follow along', open: 'Open on Instagram' },
   seo: {
     homeTitle: 'Math Art Posters & Prints, Drawn in Code | Rezonanca',
