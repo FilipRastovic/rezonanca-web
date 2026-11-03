@@ -7,6 +7,8 @@ export interface Guide {
   updated: string; sections: GuideSection[]; faq: { q: string; a: string }[];
   // Gift-style guides: a hand-picked shop grid instead of one series (series is then '').
   shop?: string[];
+  // Other series this guide explains (their collection and product pages link to it too).
+  also?: string[];
 }
 
 export const GUIDES: Guide[] = [
@@ -401,6 +403,158 @@ export const GUIDES: Guide[] = [
       { q: 'Which size should I choose for a gift?', a: '30 × 40 cm is the safe choice when you don\'t know the wall. Choose 45 × 60 cm for a statement piece above a sofa or bed.' },
     ],
   },
+  {
+    slug: 'perlin-noise-explained',
+    series: 'ridges',
+    also: ['orbit', 'city', 'flux', 'structure'],
+    title: 'Perlin Noise Explained: Octaves and Gradients',
+    desc: 'Perlin noise explained in plain English: what it is, how gradients and octaves work, and how it turns sound waves into the landscapes on our posters.',
+    h1: 'Perlin noise explained',
+    kicker: 'Guide // Code',
+    lead: 'Perlin noise is the most famous trick in computer graphics: a way to make randomness look natural. Clouds in films, mountains in games and the lines on our sound wave posters all use it. Here is how it works.',
+    updated: '2026-11-03',
+    sections: [
+      {
+        h: 'Why plain randomness looks wrong',
+        p: [
+          'Ask a computer for random numbers and draw them as a line, and you get static: every value jumps with no relation to the one before. Nature doesn\'t look like that. A coastline, a cloud or a mountain ridge changes gradually, with large shapes and small details at the same time.',
+          'What we want is randomness that is smooth: nearby points get similar values, distant points get unrelated ones. That is exactly what Perlin noise gives.',
+        ],
+      },
+      {
+        h: 'Ken Perlin and Tron',
+        p: [
+          'Ken Perlin worked on the computer graphics of the film Tron (1982) and was frustrated by how machine-like computer images looked. In 1983 he developed a noise function to give surfaces a natural texture, and published it in 1985. In 1997 he received an Academy Award for Technical Achievement for it.',
+          'Since then it has been used for clouds, fire, marble, terrain and water in countless films and games, and it is built into creative coding tools such as Processing and p5.js.',
+        ],
+      },
+      {
+        h: 'How it works: gradients on a grid',
+        p: [
+          'Imagine a grid laid over space. At every grid point the function picks a random direction, a gradient. To get the value at any point in between, it looks at the nearby grid points, measures how far the point lies along each of their directions, and blends those numbers with a smooth curve.',
+          'Because the blending is smooth, the result has no jumps. Because the directions are random, it has no visible pattern. And because the same coordinates always give the same value, the noise can be computed again at any time, identically.',
+        ],
+        f: 'fade(t) = 6t⁵ − 15t⁴ + 10t³',
+      },
+      {
+        h: 'Octaves: large shapes and fine detail',
+        p: [
+          'One layer of Perlin noise gives gentle hills. Real landscapes have hills, rocks and pebbles at once. So the noise is added up in layers called octaves: each layer twice as fine as the last and, typically, half as strong.',
+          'Our program uses four octaves with a falloff of 0.5, so the first layer sets the broad swell of a line and the last adds the slight roughness that makes it look drawn rather than ruled.',
+        ],
+        f: 'noise(x) = Σₖ 0.5ᵏ · perlin(2ᵏ·x),   k = 0…3',
+      },
+      {
+        h: 'From noise to sound waves',
+        p: [
+          'On First Signal, from the Ridges series, each of the 56 lines is one waveform. A Gaussian envelope decides where the signal is loud, a carrier wave makes it oscillate, and two noise layers shape it: one for the slow swell, one for the fine texture. Every line samples the noise at a slightly different row, so neighbouring lines look related but never identical.',
+          'Stacked one behind another, with each line hiding the ones behind it, the waveforms read as a mountain range at night.',
+        ],
+        f: 'yᵢ(t) = bᵢ − A·env(t)·(n₁(t)² + |sin(2π·f·t + φᵢ)|³·n₂(t))',
+        piece: 'prvi-signal',
+        caption: 'First Signal: 56 waveforms shaped by two layers of noise.',
+      },
+      {
+        h: 'Noise around a circle',
+        p: [
+          'On the Orbit posters the same signal is wound into rings. There is a catch: if you sample noise along a straight line and bend it into a circle, the end won\'t meet the start and the ring breaks. The fix is to sample the noise along a circle in noise space itself, at (cos θ, sin θ), so the values return exactly to where they began.',
+        ],
+        f: 'rᵢ(θ) = Rᵢ + A·env(θ)·noise(cos θ, sin θ, i)',
+        piece: 'nulta-orbita',
+        caption: 'Orbit Zero: 40 rings, each a seamless loop of noise.',
+      },
+      {
+        h: 'The same seed, the same picture',
+        p: [
+          'Perlin noise looks random but is fully determined by its seed. Our programs fix the seed for each piece, so the same equations and the same seed always draw the same lines. That is why every print of a piece is identical to the image you see on its page.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is Perlin noise in simple terms?', a: 'A function that returns smooth random values: nearby inputs give similar outputs, so it looks like natural variation rather than static. It is used for clouds, terrain, textures and organic lines.' },
+      { q: 'What are octaves in Perlin noise?', a: 'Layers of noise added together, each one finer and weaker than the last. A few octaves give both large shapes and small detail, like hills with rocks on them.' },
+      { q: 'Who invented Perlin noise?', a: 'Ken Perlin, in 1983, after working on the film Tron. He published it in 1985 and received an Academy Award for Technical Achievement in 1997.' },
+      { q: 'What is the difference between Perlin noise and random noise?', a: 'Random noise has no relation between neighbouring values, so it looks like static. Perlin noise changes smoothly, so it looks like something from nature.' },
+    ],
+  },
+  {
+    slug: 'fractal-art',
+    series: '',
+    shop: ['mandelbrotov-skup', 'dolina-morskih-konjica', 'dim', 'perje', 'lorenc', 'klifordov-veo', 'drvo-signala', 'snop'],
+    title: 'Fractal Art: What It Is and How It Is Made',
+    desc: 'What fractal art is, where it came from and how it is made: the Mandelbrot set, fractal flames, strange attractors and recursive rules, with real examples.',
+    h1: 'Fractal art: what it is and how it is made',
+    kicker: 'Guide // Fractals',
+    lead: 'Fractal art is art made from shapes that repeat at every scale, computed rather than drawn by hand. Here is what makes a shape a fractal, where the art form came from, and the main kinds of fractal art you will see on our walls and elsewhere.',
+    updated: '2026-11-03',
+    sections: [
+      {
+        h: 'What a fractal is',
+        p: [
+          'A fractal is a shape whose parts look like the whole. Zoom into a fern leaf and each leaflet is a small fern; zoom into a coastline and the bays have bays. Mathematically, a fractal has detail at every scale and a dimension that isn\'t a whole number.',
+          'The Koch snowflake is the classic example: replace the middle third of every edge with a small triangle, forever. The outline becomes infinitely long while enclosing a finite area, and its dimension is about 1.26, more than a line and less than a surface.',
+        ],
+        f: 'D = log 4 / log 3 ≈ 1.262',
+      },
+      {
+        h: 'Where fractal art came from',
+        p: [
+          'Mathematicians found fractal shapes long before anyone could see them properly: Georg Cantor\'s set in 1883, Helge von Koch\'s snowflake in 1904, Wacław Sierpiński\'s triangle in 1915. Without computers, they were mostly seen as curiosities.',
+          'In 1975 Benoit Mandelbrot coined the word "fractal", and his 1982 book The Fractal Geometry of Nature showed that clouds, mountains and coastlines follow the same rules. Computer images of the Mandelbrot set spread through magazines in the 1980s, and fractal art became one of the first art forms made entirely with code.',
+        ],
+      },
+      {
+        h: 'Escape-time fractals: the Mandelbrot set',
+        p: [
+          'The best-known kind of fractal art comes from repeating one equation for every point of the plane and colouring each point by how quickly the numbers escape to infinity. The Mandelbrot set, z² + c, is the classic. Its edge holds endless spirals, and deep zooms show places no one has seen before.',
+        ],
+        piece: 'dolina-morskih-konjica',
+        caption: 'Seahorse Valley: a deep zoom into the Mandelbrot set.',
+      },
+      {
+        h: 'Fractal flames',
+        p: [
+          'A fractal flame is drawn by a single point jumping millions of times between a few random rules. Where it lands most often, the image glows. Invented by Scott Draves in 1992, flames have a soft, smoky look quite unlike the hard edges of the Mandelbrot set.',
+        ],
+        piece: 'dim',
+        caption: 'Smoke: a fractal flame with threefold symmetry.',
+      },
+      {
+        h: 'Strange attractors',
+        p: [
+          'Strange attractors come from chaos theory: the path of a point moving by a set of equations, like the Lorenz system. The path never repeats and folds into layers within layers, which gives the shape a fractal dimension. The Lorenz attractor\'s is about 2.06.',
+        ],
+        piece: 'lorenc',
+        caption: 'Lorenz: the original strange attractor.',
+      },
+      {
+        h: 'Recursive rules',
+        p: [
+          'Another family grows from rules that call themselves: "a branch is a line, then two smaller branches". The biologist Aristid Lindenmayer wrote such rules for plant growth in 1968, and artists later turned them into drawing programs. Each rule is simple; applied thousands of times, it builds trees, coral and architecture.',
+        ],
+        piece: 'drvo-signala',
+        caption: 'Signal Tree: blocks of light grown by recursive rules.',
+      },
+      {
+        h: 'Is fractal art real art?',
+        p: [
+          'The equations are discovered, not invented, but the picture is chosen. Someone decides where to look in the Mandelbrot set, which rules to combine in a flame, which angle to view an attractor from, which colours to use and when a piece is finished. Like photography, the medium does much of the work, and the eye does the rest.',
+        ],
+      },
+      {
+        h: 'Fractal art on a wall',
+        p: [
+          'Fractals suit large prints because they reward a closer look: the detail keeps going. Our posters are printed on fine art matte paper at 300 DPI, so the fine filaments stay sharp up close. Every product page lists the exact equations and parameters behind its piece.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is fractal art?', a: 'Art made from fractals, shapes with detail that repeats at every scale, computed from mathematical rules rather than drawn by hand. The main kinds are escape-time fractals like the Mandelbrot set, fractal flames, strange attractors and recursive rule systems.' },
+      { q: 'How is fractal art made?', a: 'With a program that applies a mathematical rule many times, from thousands to millions of iterations, and turns the results into colour and brightness. The artist chooses the rule, the view, the colours and the final composition.' },
+      { q: 'Who invented fractal art?', a: 'No single person. Benoit Mandelbrot coined the word "fractal" in 1975 and made the first detailed images of the Mandelbrot set around 1980; fractal art grew from the computer images that followed in the 1980s.' },
+      { q: 'What is the most famous fractal?', a: 'The Mandelbrot set, defined by repeating z² + c. Its boundary is infinitely detailed and full of spirals and small copies of the whole set.' },
+    ],
+  },
 ];
 
-export const guideFor = (series: string) => GUIDES.find((g) => g.series && g.series === series);
+export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
