@@ -10,6 +10,10 @@ const t = T[lang].hero;
 const SHOW = ([['halvorsen', ''], ['dolina-morskih-konjica', '-2'], ['lorenc', '-2'], ['aizava', '-2']] as const).map(([s, n]) => ({ ...findProduct(s), shot: n }));
 // Tilted framed print: its own pieces (two pink colourways for variety); [slug, poster key].
 const TILT = [['tomas', 'tomas'], ['dvostruka-spirala', 'dvostruka-spirala-roza'], ['perje', 'perje'], ['kula', 'kula-roza']];
+// Only the first frame of each slideshow loads with the page; the later ones load after it (script below),
+// long before their turn comes, so they never compete with the first view.
+const late = (i: number, src: string, srcset?: string) =>
+  i === 0 ? { src, srcset } : { 'data-late-src': src, 'data-late-srcset': srcset };
 const MORE = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findProduct);
 ---
 <section class="hero" aria-label={t.title}>
@@ -31,17 +35,17 @@ const MORE = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findP
       <div class="side">
         <a class="tilt" href={productHref(lang, TILT[0][0])} aria-label={`${findProduct(TILT[0][0]).name[lang]} - ${t.framed}`}>
           <span class="pframe">
-            {TILT.map(([, key], i) => <img src={`/posters/${key}-${lang}.webp`} alt="" width="900" height="1200" decoding="async" style={`--i:${i}; --off:1.2s`} />)}
+            {TILT.map(([, key], i) => <img {...late(i, `/posters/${key}-${lang}.webp`)} alt="" width="900" height="1200" decoding="async" style={`--i:${i}; --off:1.2s`} />)}
           </span>
         </a>
         <a class="tile mini" href={productHref(lang, MORE[0].slug)} aria-label={`${MORE[0].name[lang]} - ${t.framedLg}`}>
-          {MORE.map((p, i) => <img src={`/rooms/${p.slug}-${lang}-3-sm.webp`} alt="" width="540" height="720" decoding="async" style={`--i:${i}; --off:2.5s`} />)}
+          {MORE.map((p, i) => <img {...late(i, `/rooms/${p.slug}-${lang}-3-sm.webp`)} alt="" width="540" height="720" decoding="async" style={`--i:${i}; --off:2.5s`} />)}
         </a>
       </div>
       <figure class="main-shot">
         <a class="tile big" href={productHref(lang, SHOW[0].slug)} aria-label={`${SHOW[0].name[lang]} - ${t.framed}`}>
           {SHOW.map((p, i) => (
-            <img src={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp`} srcset={`/rooms/${p.slug}-${lang}${p.shot}-sm.webp 480w, /rooms/${p.slug}-${lang}${p.shot}.webp 800w`} sizes="(max-width: 900px) 64vw, 34vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
+            <img {...late(i, `/rooms/${p.slug}-${lang}${p.shot}-sm.webp`, `/rooms/${p.slug}-${lang}${p.shot}-sm.webp 480w, /rooms/${p.slug}-${lang}${p.shot}.webp 800w`)} sizes="(max-width: 900px) 64vw, 34vw" alt={i === 0 ? `${p.name[lang]} - ${t.framed}` : ''} style={`--i:${i}`} width="540" height="720" fetchpriority={i === 0 ? 'high' : 'low'} decoding="async" />
           ))}
         </a>
         <figcaption class="caps">
@@ -63,6 +67,11 @@ const MORE = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findP
 <script>
   import { mountHeroLines } from '../scripts/hero-lines';
   mountHeroLines(document.getElementById('hero-lines')!);
+  const fill = () => document.querySelectorAll<HTMLImageElement>('img[data-late-src]').forEach((img) => {
+    if (img.dataset.lateSrcset) img.srcset = img.dataset.lateSrcset;
+    img.src = img.dataset.lateSrc!;
+  });
+  document.readyState === 'complete' ? fill() : addEventListener('load', fill, { once: true });
 </script>
 
 <style>
