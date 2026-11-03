@@ -214,11 +214,15 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
   const forward = known && known.token === p.SD ? `${env.SITE_URL}/payment/?o=${encodeURIComponent(known.id)}&t=${known.token}` : '';
   const echo = (action: 'approve' | 'reverse', reason: string) => new Response(
     [`MerchantID=${p.MerchantID ?? ''}`, `TerminalID=${p.TerminalID ?? ''}`, `OrderID=${p.OrderID ?? ''}`, `Currency=${p.Currency ?? ''}`, `TotalAmount=${p.TotalAmount ?? ''}`,
-      `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, `Response.action=${action}`, `Response.reason=${reason}`, `Response.forwardUrl=${forward}`].join('\n'),
+      `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, ...(p.Delay ? [`Delay=${p.Delay}`] : []), `Response.action=${action}`, `Response.reason=${reason}`, `Response.forwardUrl=${forward}`].join('\n'),
     { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-  if (allowed.length && !allowed.includes(ip)) { console.log('notify from unlisted ip', ip, p.OrderID); return new Response('forbidden', { status: 403 }); }
+  // The signature (gateway key) is what proves a notify is genuine. The IP list is only logged: rejecting an
+  // unlisted gateway IP would silently drop real results (UPC reported 2026-11-03 that no notify got through).
+  if (allowed.length && !allowed.includes(ip)) console.log('notify from unlisted ip', ip, p.OrderID);
 
   const r = await apply(env, ctx, p, ip);
+  ctx.waitUntil(env.DB.prepare(`INSERT INTO notify_log (at, ip, order_id, tran_code, result) VALUES (?, ?, ?, ?, ?)`)
+    .bind(new Date().toISOString(), ip, p.OrderID ?? null, p.TranCode ?? null, r).run().catch((e) => console.error('notify_log', e)));
   if (r === 'bad signature' || r === 'unknown order' || r === 'mismatch') return echo('reverse', r);
   return echo('approve', 'ok');
 }

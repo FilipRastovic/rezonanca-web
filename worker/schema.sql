@@ -18,3 +18,6 @@ CREATE TABLE IF NOT EXISTS orders (
   shipped_at TEXT, captured_at TEXT
 );
 CREATE INDEX IF NOT EXISTS orders_created ON orders (created_at);
+
+-- Every NOTIFY_URL call as it arrives (diagnosis: did the gateway reach us, from which IP, with what result).
+CREATE TABLE IF NOT EXISTS notify_log (at TEXT NOT NULL, ip TEXT, order_id TEXT, tran_code TEXT, result TEXT);
