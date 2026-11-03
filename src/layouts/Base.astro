@@ -15,7 +15,6 @@ import Footer from '../components/Footer.astro';
 import CartDrawer from '../components/CartDrawer.astro';
 import CartCatalog from '../components/CartCatalog.astro';
 import Consent from '../components/Consent.astro';
-import MusicPlayer from '../components/MusicPlayer.astro';
 import { SALES_OPEN } from '../config';
 import { T, type Lang } from '../i18n';
 
@@ -71,7 +70,6 @@ const canonical = new URL(path, Astro.site);
     <Footer lang={lang} />
     <CartCatalog lang={lang} />
     {SALES_OPEN && <CartDrawer lang={lang} />}
-    <MusicPlayer />
     <Consent lang={lang} />
     <script>
       // Scroll reveal.

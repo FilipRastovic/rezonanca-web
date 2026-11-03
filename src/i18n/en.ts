@@ -497,7 +497,7 @@ const en: typeof sr = {
   },
   consent: {
     text: 'We use cookies to measure visits and ads (Meta, Google). They only switch on if you accept.',
-    more: 'More',
+    more: 'Privacy policy',
     accept: 'Accept',
     reject: 'Decline',
     settings: 'Cookies',
