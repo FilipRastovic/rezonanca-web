@@ -89,7 +89,19 @@ const totals = (lines: Line[]) => {
   const subtotal = lines.reduce((a, l) => a + unit(l)! * l.qty, 0);
   return { subtotal, shipping: SHOP.shipping, total: subtotal + SHOP.shipping };
 };
-const form = async (req: Request) => Object.fromEntries((await req.formData()).entries()) as Record<string, string>;
+// Gateway posts are normally form-urlencoded, but read any body (text/plain, no content type, multipart) without throwing.
+const parse = (ct: string, body: string) => {
+  if (/multipart\/form-data/i.test(ct)) return null;
+  const t = body.trim();
+  if (t.startsWith('{')) { try { return Object.fromEntries(Object.entries(JSON.parse(t)).map(([k, v]) => [k, String(v)])); } catch { /* fall through */ } }
+  // Form-encoded, or Parameter=Value lines.
+  return Object.fromEntries(new URLSearchParams(t.includes('&') || !t.includes('\n') ? t : t.split(/\r?\n/).join('&')).entries());
+};
+const form = async (req: Request) => {
+  const ct = req.headers.get('Content-Type') ?? '';
+  if (/multipart\/form-data/i.test(ct)) return Object.fromEntries((await req.formData()).entries()) as Record<string, string>;
+  return parse(ct, await req.text()) as Record<string, string>;
+};
 const getOrder = (env: Env, id: string) => env.DB.prepare('SELECT * FROM orders WHERE id = ?').bind(id).first<Order>();
 
 // ---------- emails (Prilog 1: confirmation to the buyer after every attempt, success or failure)
@@ -208,6 +220,11 @@ async function checkout(req: Request, env: Env, origin: string | null) {
 async function notify(req: Request, env: Env, ctx: ExecutionContext) {
   const ip = req.headers.get('CF-Connecting-IP') ?? '';
   const allowed = env.NOTIFY_IPS.split(',').map((s) => s.trim()).filter(Boolean);
+  // Log the raw call first, so even a request we can't handle leaves a trace (content type + body without Signature).
+  const ct = req.headers.get('Content-Type') ?? '';
+  const raw = /multipart/i.test(ct) ? '' : await req.clone().text();
+  ctx.waitUntil(env.DB.prepare(`INSERT INTO notify_log (at, ip, order_id, tran_code, result) VALUES (?, ?, ?, ?, ?)`)
+    .bind(new Date().toISOString(), ip, null, null, `raw ${ct} | ${raw.replace(/Signature=[^&\n]*/g, 'Signature=…').slice(0, 1500)}`).run().catch(() => {}));
   const p = await form(req);
   // forwardUrl sends the buyer to our result page after any outcome (otherwise declines land on the bare site URL).
   const known = p.OrderID ? await getOrder(env, p.OrderID) : null;
@@ -314,7 +331,13 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin) });
     try {
       if (pathname === '/api/checkout' && req.method === 'POST') return await checkout(req, env, origin);
-      if (pathname === '/api/notify' && req.method === 'POST') return await notify(req, env, ctx);
+      if (pathname === '/api/notify' && req.method === 'POST') {
+        try { return await notify(req, env, ctx); } catch (e) {
+          console.error('notify', e);
+          ctx.waitUntil(env.DB.prepare(`INSERT INTO notify_log (at, ip, result) VALUES (?, ?, ?)`).bind(new Date().toISOString(), req.headers.get('CF-Connecting-IP') ?? '', `error ${String(e).slice(0, 500)}`).run().catch(() => {}));
+          return new Response('Response.action=reverse\nResponse.reason=merchant error\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+        }
+      }
       if (pathname === '/api/success') return await back(req, env, ctx, true);
       if (pathname === '/api/failure') return await back(req, env, ctx, false);
       if (pathname === '/api/order' && req.method === 'GET') return await status(req, env, origin);
