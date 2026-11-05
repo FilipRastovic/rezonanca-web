@@ -83,12 +83,13 @@ export const MIN_PRICE = Math.min(...ACTIVE_FORMATS.map(minPrice));
 export const MAX_PRICE = Math.max(...ACTIVE_FORMATS.flatMap((f) => Object.values(PRICES[f]) as number[]));
 
 // Gelato product per format, size and frame (checked against the Gelato product API 2026-10-30).
+// Framed = the ready-to-hang (mounted) variant, same as on Etsy (2026-11-05); the plain one arrives unassembled.
 const GP = (s: string) => `${s}_200-gsm-80lb-enhanced-uncoated`;
 const GSIZE: Record<Size, string> = { '30x40': '300x400-mm-12x16-inch', '45x60': '450x600-mm-18x24-inch' };
 const GFRAME = { black: 'black_wood', oak: 'natural-wood_wood' } as const;
 export const gelatoProduct = (format: Format, size: Size, frame: 'black' | 'oak' = 'black') =>
   format === 'framed'
-    ? GP(`framed_fine_arts_poster_geo_simplified_product_12-0_${GFRAME[frame]}_w12xt22-mm_plexiglass_ver_${GSIZE[size]}_${GSIZE[size]}`)
+    ? GP(`framed_fine_arts_poster_mounted_geo_simplified_product_12-0_${GFRAME[frame]}_w12xt22-mm_poster-mounting_plexiglass_ver_${GSIZE[size]}_${GSIZE[size]}`)
     : GP(`fine_arts_poster_geo_simplified_product_12-0_ver_${GSIZE[size]}`);
 
 // Frame colours offered for 'framed'. 'oak' = Gelato's natural wood (key kept: room shots are named after it).
