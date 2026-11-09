@@ -7,31 +7,30 @@
 import json, subprocess, sys
 from pathlib import Path
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFilter
 
 WEB = Path(__file__).resolve().parent.parent
 SC = WEB.parent / 'social/mockups/scenes'
 OUT = WEB / 'public/rooms'
 # Framed scenes rotate as the card image (shot 1) and a second gallery shot; boards/outdoor are the third shot.
-FRAMED = ['poster-black-frame-minimalist-1-34', 'wooden-frame-summer-background-2-1-34', 'poster-black-frame-minimalist-2-34', 'poster-aesthetic']
-EXTRA = ['a3-poster-minimalist-1', 'a3-poster-minimalist-2']
-OUTDOOR = 'a4-poster-laying-outdoor-34'  # sparingly: every 7th product
-SCENES = FRAMED  # homepage interiors pick from these
+# Art Deco interiors (EasyEasyMockup, 2026-11-09, same set as Etsy). Gold frames are recoloured black (GOLD = band width in px).
+FRAMED = ['contemporary-art-deco-1-34', 'contemporary-art-deco-9-frame', 'contemporary-art-deco-6-34', 'contemporary-art-deco-14-34',
+          'contemporary-art-deco-11-frame', 'contemporary-art-deco-22-34', 'contemporary-art-deco-19-frame']
+GOLD = {'contemporary-art-deco-1-34': 34, 'contemporary-art-deco-6-34': 34, 'contemporary-art-deco-11-frame': 34, 'contemporary-art-deco-19-frame': 75}
 BORDER = 0  # the poster images are the Gelato print sheets, white border included (2026-10-30)
 scenes = json.loads((SC / 'scenes.json').read_text())
 
 # Products in the collection's default ("featured") order: series interleaved, as in CollectionPage.astro,
 # so neighbouring cards on the shop grid get different scenes.
-FEATURED_JS = "const F=['attractor','mandelbrot','structure','flux','orbit','city','ridges','hopf','flame','object'];const L=F.map(k=>m.productsBySeries(k));const o=[];for(let i=0;o.length<m.PRODUCTS.length;i++)for(const l of L)if(l[i])o.push(l[i]);"
+FEATURED_JS = "const F=['attractor','mandelbrot','flame','structure','flux','orbit','city','ridges','hopf','object'];const L=F.map(k=>m.productsBySeries(k));const o=[];for(let i=0;o.length<m.PRODUCTS.length;i++)for(const l of L)if(l[i])o.push(l[i]);"
 prods = json.loads(subprocess.check_output(['node', '-e', "import('./src/data/products.js').then(m=>{" + FEATURED_JS + "console.log(JSON.stringify(o.map(p=>[p.slug,p.tones||[]])))})"], cwd=WEB))
 jobs = []  # (key, [scene for shot 1, 2, 3])
 for i, (slug, tones) in enumerate(prods):
-    third = OUTDOOR if i % 7 == 3 else EXTRA[i % 2]
-    shots = [FRAMED[i % 4], FRAMED[(i + 2) % 4], third]
+    shots = [FRAMED[i % 7], FRAMED[(i + 3) % 7], FRAMED[(i + 5) % 7]]
     for k in [slug] + [f'{slug}-{t}' for t in tones]:
         jobs.append((k, shots))
 # Homepage "У простору" scenes: (file key, poster, scene) → public/interiors/<file>-<lang>.webp, whole scene 1600w.
-INTERIORS = [('living', 'halvorsen', 'poster-black-frame-minimalist-1-34'), ('studio', 'spirala', 'poster-black-frame-minimalist-2-34')]
+INTERIORS = [('living', 'halvorsen', 'contemporary-art-deco-1-34'), ('studio', 'spirala', 'contemporary-art-deco-14-34')]
 interiors = '--interiors' in sys.argv
 want = [a for a in sys.argv[1:] if not a.startswith('--') and (sys.argv.index(a) == 0 or sys.argv[sys.argv.index(a) - 1] != '--test')]
 all_jobs = list(jobs)
@@ -53,6 +52,21 @@ def sheet(art, w, h, border=BORDER):
     paper.paste(a, ((w - a.width) // 2, (h - a.height) // 2))
     return paper
 
+def recolour(B, q, band):
+    """Gold/brass pixels in a band just outside the opening -> black, keeping their light and shading (as etsy/etsy-mockups.py)."""
+    H, W = B.shape[:2]
+    x0, y0, x1, y1 = q[:, 0].min(), q[:, 1].min(), q[:, 0].max(), q[:, 1].max()
+    ring = Image.new('L', (W, H), 0); d = ImageDraw.Draw(ring)
+    d.rectangle([x0 - band, y0 - band, x1 + band, y1 + band], fill=255); d.rectangle([x0 + 2, y0 + 2, x1 - 2, y1 - 2], fill=0)
+    R = np.asarray(ring.filter(ImageFilter.GaussianBlur(3)), np.float32) / 255
+    hsv = np.asarray(Image.fromarray(np.clip(B, 0, 255).astype(np.uint8)).convert('HSV'), np.float32)
+    h, s, v = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    gold = np.clip((s - 70) / 40, 0, 1) * np.clip((v - 20) / 15, 0, 1) * ((h >= 11) & (h <= 36))
+    m = np.asarray(Image.fromarray((R * gold * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.0)), np.float32)[..., None] / 255
+    L = (0.3 * B[..., 0] + 0.59 * B[..., 1] + 0.11 * B[..., 2])[..., None]
+    new = (14 + L * 0.16 + np.maximum(L - 170, 0) * 0.5) * np.ones(3)
+    return B * (1 - m) + np.clip(new, 0, 255) * m
+
 cache = {}
 def compose(key, name, lang, art=None, border=None):
     """The poster (exact print image) placed and lit in the scene; returns the whole scene + its frame quad.
@@ -61,6 +75,7 @@ def compose(key, name, lang, art=None, border=None):
         bg = Image.open(SC / f'{name}.jpg').convert('RGB')
         M = np.asarray(Image.open(SC / f'{name}-mask.png'), np.float32)[..., None] / 255
         B = np.asarray(bg, np.float32)
+        if name in GOLD: B = recolour(B, np.array(scenes[name]['quad']), GOLD[name]); bg = Image.fromarray(B.astype(np.uint8))
         ref = np.percentile(B[M[..., 0] > 0.5], 85, axis=0)
         light = B / np.maximum(ref, 1)
         cache[name] = (bg, B, M, np.where(light > 1, 1 + (light - 1) * 0.6, light))
@@ -84,14 +99,14 @@ def crop34(res, q):
 # --test <key>: one poster in every scene → public/rooms/_test-<scene>.webp (not used by the site)
 if '--test' in sys.argv:
     key = sys.argv[sys.argv.index('--test') + 1]
-    for name in FRAMED + EXTRA + [OUTDOOR]:
-        res, q = compose(key, name, 'sr')
+    for name in FRAMED:
+        res, q = compose(key, name, 'en')
         crop34(res, q).resize((540, 720), Image.LANCZOS).save(OUT / f'_test-{name}.webp', quality=80)
     jobs = []
 
 # Product page main image for "Принт урамљен": a black-frame and an oak-frame room shot per key. Reuse a gallery
 # shot when it already has that frame; otherwise render <key>-<lang>-oak.webp. Manifest → src/data/room-frames.json.
-BLACK = {'poster-black-frame-minimalist-1-34', 'poster-black-frame-minimalist-2-34', 'poster-aesthetic'}
+BLACK = set(FRAMED)
 OAK = 'wooden-frame-summer-background-2-1-34'
 frames = {}
 for key, shots in jobs:
@@ -141,7 +156,9 @@ if '--minis' in sys.argv:
     render_minis(want or [k for k, _ in all_jobs])
 
 for file, key, name in INTERIORS if interiors else []:
-    for lang in ('sr', 'en'):
-        res, _ = compose(key, name, lang)
-        res.resize((1200, round(res.height * 1200 / res.width)), Image.LANCZOS).save(WEB / f'public/interiors/{file}-{lang}.webp', quality=72, method=6)
+    for lang in ('en',):
+        res, q = compose(key, name, lang)
+        # 3:2 band of the (square) scene, the frame a little above the middle, so the CSS crops (3:2, 16:10) keep it whole
+        h = round(res.width * 2 / 3); y0 = int(min(max(q[:, 1].mean() - h * 0.45, 0), res.height - h))
+        res.crop((0, y0, res.width, y0 + h)).resize((1600, 1067), Image.LANCZOS).save(WEB / f'public/interiors/{file}-{lang}.webp', quality=72, method=6)
     print('interior', file, key)

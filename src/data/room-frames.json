@@ -1,35 +1,35 @@
 {
 "aizava": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "aizava-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "aizava-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "anomalija": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "anomalija-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "aurora": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "aurora-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "aurora-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "beskonacnost": {
 "black": "",
@@ -85,11 +85,11 @@
 },
 "dadras": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dadras-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dajsonova-sfera": {
 "black": "",
@@ -104,12 +104,12 @@
 "oak": "-oak"
 },
 "de-zong": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "de-zong-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "dim": {
 "black": "",
@@ -121,15 +121,15 @@
 },
 "dolina-morskih-konjica": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dolina-morskih-konjica-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dolina-morskih-konjica-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "drvo-signala": {
 "black": "",
@@ -145,35 +145,35 @@
 },
 "dvojna-zvezda": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dvojna-zvezda-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dvojna-zvezda-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "dvojstvo": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "dvojstvo-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "dvostruka-spirala": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "dvostruka-spirala-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "dvostruka-spirala-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "galaksija": {
 "black": "",
@@ -201,27 +201,27 @@
 },
 "horizont": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "horizont-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "horizont-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "kanjon": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "kanjon-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "kanjon-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "klifordov-veo": {
 "black": "",
@@ -261,7 +261,7 @@
 },
 "magla": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "magnetar": {
 "black": "",
@@ -288,28 +288,28 @@
 "oak": "-oak"
 },
 "mandelbrotov-skup": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "mandelbrotov-skup-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "mandelbrotov-skup-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "metropola": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "metropola-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "metropola-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "morska-zvezda": {
 "black": "",
@@ -333,23 +333,23 @@
 },
 "orbitalni-grad": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "orbitalni-grad-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "orbitalni-grad-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "oreol": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "oreol-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "perje": {
 "black": "",
@@ -360,12 +360,12 @@
 "oak": "-oak"
 },
 "pomracenje": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "pomracenje-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "ponoc": {
 "black": "",
@@ -412,12 +412,12 @@
 "oak": "-oak"
 },
 "rabinovic": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "rabinovic-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "resler": {
 "black": "",
@@ -445,51 +445,51 @@
 },
 "snop": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "snop-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "spirala": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "spirala-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "spirala-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "sprot": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "sprot-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "stanica": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "stanica-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "supernova": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "supernova-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "supernova-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "svila": {
 "black": "",
@@ -505,27 +505,27 @@
 },
 "svitanje": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "svitanje-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "svitanje-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "talas": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "talas-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "talas-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "tiha-oluja": {
 "black": "",
@@ -548,43 +548,43 @@
 "oak": "-oak"
 },
 "vetrenjaca": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "vetrenjaca-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "vitica": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "vitica-roza": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "vitica-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "vodopad": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "vodopad-roza": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "vodopad-tus": {
-"black": "-2",
-"oak": ""
+"black": "",
+"oak": "-oak"
 },
 "vrtlog": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 },
 "vrtlog-tus": {
 "black": "",
-"oak": "-2"
+"oak": "-oak"
 }
 }

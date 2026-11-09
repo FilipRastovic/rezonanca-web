@@ -115,8 +115,8 @@ const en: typeof sr = {
     title: 'Light that changes a room.',
     lead: 'Rezonanca posters don’t shout. They wait for the lights to dim - and then they take over the space.',
     scenes: {
-      living: { t: 'Desk corner', d: 'Halvorsen in a black frame, on the wall above a desk.' },
-      studio: { t: 'By the window', d: 'Spiral in a black frame, in afternoon light.' },
+      living: { t: 'Living room', d: 'Halvorsen in a black frame, above a velvet sofa.' },
+      studio: { t: 'Hallway', d: 'Spiral in a black frame, by a sunlit staircase.' },
     },
     cta: 'See everything in a room',
     page: 'In a room',
