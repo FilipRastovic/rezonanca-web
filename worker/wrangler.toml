@@ -8,6 +8,7 @@ MERCHANT_ID = "678008264724FFE"
 TERMINAL_ID = "4724001E"
 GATEWAY_URL = "https://ecommerce.raiffeisenbank.rs/rbrs/pay"
 SITE_URL = "https://rezonanca.art"
+API_URL = "https://rezonanca-payments.filiporastovic.workers.dev"  # this Worker (forwardUrl after payment)
 NOTIFY_IPS = "217.13.180.171,195.85.198.15"  # production gateway (UPC 2026-11-05 + bank doc); only logged, the signature is what counts
 MAIL_FROM = "Rezonanca <porudzbine@rezonanca.art>"
 OWNER_EMAIL = "filiporastovic@gmail.com"

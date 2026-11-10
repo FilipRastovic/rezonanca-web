@@ -19,6 +19,7 @@ export interface Env {
   TERMINAL_ID: string;
   GATEWAY_URL: string;
   SITE_URL: string;
+  API_URL: string;
   NOTIFY_IPS: string; // comma-separated; empty = don't check (local tests only)
   MAIL_FROM: string;
   OWNER_EMAIL: string;
@@ -284,7 +285,8 @@ async function notify(req: Request, env: Env, ctx: ExecutionContext) {
   const p = await form(req);
   // forwardUrl sends the buyer to our result page after any outcome (otherwise declines land on the bare site URL).
   const known = p.OrderID ? await getOrder(env, p.OrderID) : null;
-  const forward = known && known.token === p.SD ? `${env.SITE_URL}/payment/?o=${encodeURIComponent(known.id)}&t=${known.token}` : '';
+  // Via our own /api/back: the gateway POSTs to forwardUrl, and GitHub Pages answers a POST with 405.
+  const forward = known && known.token === p.SD ? `${env.API_URL}/api/back?o=${encodeURIComponent(known.id)}&t=${known.token}` : '';
   const echo = (action: 'approve' | 'reverse', reason: string) => new Response(
     [`MerchantID=${p.MerchantID ?? ''}`, `TerminalID=${p.TerminalID ?? ''}`, `OrderID=${p.OrderID ?? ''}`, `Currency=${p.Currency ?? ''}`, `TotalAmount=${p.TotalAmount ?? ''}`,
       `XID=${p.XID ?? ''}`, `PurchaseTime=${p.PurchaseTime ?? ''}`, ...(p.Delay ? [`Delay=${p.Delay}`] : []), `Response.action=${action}`, `Response.reason=${reason}`, `Response.forwardUrl=${forward}`].join('\n'),
@@ -407,6 +409,12 @@ export default {
           ctx.waitUntil(env.DB.prepare(`INSERT INTO notify_log (at, ip, result) VALUES (?, ?, ?)`).bind(new Date().toISOString(), req.headers.get('CF-Connecting-IP') ?? '', `error ${String(e).slice(0, 500)}`).run().catch(() => {}));
           return new Response('Response.action=reverse\nResponse.reason=merchant error\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
         }
+      }
+      if (pathname === '/api/back') {
+        // forwardUrl target (any method): send the buyer on to the site's result page with a GET.
+        const q = new URL(req.url).searchParams, o = q.get('o') ?? '', t = q.get('t') ?? '';
+        const qs = /^[A-Z0-9]{1,20}$/.test(o) && /^[a-f0-9]{16,64}$/.test(t) ? `?o=${o}&t=${t}` : '';
+        return Response.redirect(`${env.SITE_URL}/payment/${qs}`, 303);
       }
       if (pathname === '/api/success') return await back(req, env, ctx, true);
       if (pathname === '/api/failure') return await back(req, env, ctx, false);
