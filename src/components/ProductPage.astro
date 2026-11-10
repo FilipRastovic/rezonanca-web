@@ -6,7 +6,7 @@ import History from './History.astro';
 import { STORIES } from '../data/stories.js';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import ROOM_FRAMES from '../data/room-frames.json';
-import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, PRICES_RSD, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice, formatRsd, formatUsd, USD_PER_EUR } from '../config';
+import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, PRICES_RSD, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice, formatRsd, formatUsd, USD_PER_EUR, COUNTRIES } from '../config';
 import Waitlist from './Waitlist.astro';
 import SocialFeed from './SocialFeed.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang, nounLc, guideHref } from '../i18n';
@@ -88,6 +88,27 @@ const jsonLd = [{
     // Made to order once sales open; until then the page takes waitlist sign-ups.
     availability: SALES_OPEN ? 'https://schema.org/MadeToOrder' : 'https://schema.org/PreOrder',
     url,
+    ...(SALES_OPEN ? {
+      // Free worldwide shipping and the 14-day withdrawal right (legal.ts), for Google merchant listings and answer engines.
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: SHOP.currency },
+        shippingDestination: COUNTRIES.map((c) => ({ '@type': 'DefinedRegion', addressCountry: c })),
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' },
+          transitTime: { '@type': 'QuantitativeValue', minValue: 3, maxValue: 10, unitCode: 'DAY' },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: COUNTRIES,
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 14,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
+      },
+    } : {}),
   } } : {}),
 }, {
   '@context': 'https://schema.org',

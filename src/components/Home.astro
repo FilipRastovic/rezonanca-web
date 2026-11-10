@@ -20,6 +20,7 @@ const seo = T[lang].seo;
 const site = Astro.site!.href;
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'Organization', name: 'Rezonanca', url: site, logo: new URL('/icon-512.png', site).href, email: SHOP.email,
+    description: seo.homeDesc, address: { '@type': 'PostalAddress', addressLocality: 'Novi Sad', addressCountry: 'RS' },
     sameAs: [SHOP.instagram, SHOP.tiktok, SHOP.facebook, SHOP.etsy].filter(Boolean) },
   { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Rezonanca', url: site },
 ];

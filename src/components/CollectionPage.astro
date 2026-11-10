@@ -31,7 +31,8 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
 ---
 <Base lang={lang} title={title} description={description} image={current ? `/og/${productsBySeries(current.key)[0].slug}-en.jpg` : undefined}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  <section class="top grid-bg">
+  <section class:list={['top grid-bg', { art: !current }]}>
+    {!current && <img class="top-art" src="/interiors/collection-hero-1800.webp" srcset="/interiors/collection-hero-1100.webp 1100w, /interiors/collection-hero-1800.webp 1800w" sizes="60vw" width="1800" height="1215" alt="Clifford's Veil, framed in black, on the wall of a dark bar room" fetchpriority="high" decoding="async" />}
     <div class="wrap">
       <nav class="crumbs mono" aria-label="Breadcrumb">
         <a href={homeHref(lang)}>{t.product.home}</a><span>/</span>
@@ -175,6 +176,18 @@ const pink = flat.filter((p) => p.tones?.includes('roza'));
     .pick select { width: 100%; padding: 14px 40px 14px 14px; font: 500 var(--fs-body)/1.2 var(--f-body); color: var(--ice); background: var(--bg-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23121417' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 14px center; border: 1px solid var(--line-strong); border-radius: 0; appearance: none; }
   }
   .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  /* All-works header: a room shot bleeds off the right edge and fades in from the middle (text stays on the plain left half). */
+  .top.art { position: relative; overflow: hidden; }
+  .top.art .wrap { position: relative; }
+  .top.art .wrap > * { max-width: min(620px, 44vw); }
+  /* Starts under the 69px site header so the frame is never hidden behind it. */
+  .top-art { --fade: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.12) 18%, rgba(0, 0, 0, 0.45) 34%, rgba(0, 0, 0, 0.82) 48%, #000 60%);
+    position: absolute; top: 69px; right: 0; height: calc(100% - 69px); width: auto; aspect-ratio: 40 / 27; max-width: 62%; object-fit: cover; object-position: 72% 50%;
+    -webkit-mask-image: var(--fade); mask-image: var(--fade); }
+  @media (max-width: 900px) {
+    .top.art .wrap > * { max-width: none; }
+    .top-art { display: none; }
+  }
   .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
   .crumbs a:hover { color: var(--cyan); }
   .crumbs [aria-current] { color: var(--ice); }
