@@ -473,13 +473,23 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   const lb = document.getElementById('pp-lightbox') as HTMLDialogElement;
   const lbImg = document.getElementById('lb-img') as HTMLImageElement;
   const lbCount = document.getElementById('lb-count')!;
+  // Swap the photo only once the next one is fully decoded, so a half-loaded image never shows
+  // (Brave painted it dimmed on first view). Opening the viewer preloads the whole gallery.
+  let lbToken = 0;
   const lbShow = (i: number) => {
     if (desktop.matches) current = wrap(i); else show(i);
     const v = viewOf(current);
-    lbImg.src = v.src;
-    lbImg.alt = v.alt;
     lbCount.textContent = `${current + 1} / ${thumbs.length}`;
+    const token = ++lbToken;
+    const next = new Image();
+    next.src = v.src;
+    next.decode().catch(() => {}).then(() => {
+      if (token !== lbToken) return;
+      lbImg.src = v.src;
+      lbImg.alt = v.alt;
+    });
   };
+  const lbPreload = () => thumbs.forEach((_, j) => { new Image().src = viewOf(j).src; });
   // Swipe the main image left/right to browse the gallery (phones). A swipe never opens the full-screen view.
   let sx: number | null = null, sy = 0, swiped = false;
   fig.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiped = false; }, { passive: true });
@@ -503,10 +513,11 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   document.getElementById('pp-zoom')!.addEventListener('click', (e) => {
     if (swiped) { swiped = false; e.preventDefault(); return; }
     lbShow(desktop.matches ? 0 : current);
+    lbPreload();
     lb.showModal();
     document.documentElement.style.overflow = 'hidden';
   });
-  stack.forEach((b) => b.addEventListener('click', () => { lbShow(+b.dataset.i!); lb.showModal(); document.documentElement.style.overflow = 'hidden'; }));
+  stack.forEach((b) => b.addEventListener('click', () => { lbShow(+b.dataset.i!); lbPreload(); lb.showModal(); document.documentElement.style.overflow = 'hidden'; }));
   lb.addEventListener('close', () => { document.documentElement.style.overflow = ''; });
   lb.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
