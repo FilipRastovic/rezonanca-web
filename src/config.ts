@@ -107,6 +107,10 @@ export const gelatoProduct = (format: Format, size: Size, frame: 'black' | 'oak'
 export const FRAMES = ['black', 'oak'] as const;
 
 export const formatPrice = (n: number, _lang?: 'sr' | 'en') => `€${n.toLocaleString('en-US')}`;
+// Approximate USD shown next to EUR for information only (card is charged in RSD). Update when EUR/USD moves a lot.
+export const USD_PER_EUR = 1.16;
+export const usd = (eur: number) => Math.round(eur * USD_PER_EUR);
+export const formatUsd = (eur: number) => `≈ $${usd(eur).toLocaleString('en-US')}`;
 export const formatRsd = (n: number) => `${n.toLocaleString('en-US')} RSD`;
 
 // Delivery countries (ISO 3166-1 alpha-2): everywhere Gelato ships, minus sanctioned destinations. Names come from Intl.DisplayNames.

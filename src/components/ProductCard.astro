@@ -1,5 +1,5 @@
 ---
-import { PRICES_VISIBLE, minPrice, formatPrice } from '../config';
+import { PRICES_VISIBLE, minPrice, formatPrice, formatUsd } from '../config';
 import SWATCHES from '../data/swatches.json';
 import { T, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { product: any; lang: Lang; eager?: boolean; delay?: number; tone?: string; wide?: boolean }
@@ -29,7 +29,7 @@ const SW = SWATCHES as Record<string, string>;
     </span>
     <span class="meta">
       <span>{seriesShort(lang, p.style)}</span>
-      {PRICES_VISIBLE ? <span class="price">{t.card.from} {formatPrice(minPrice('print'), lang)}</span> : <span>{t.soon.badge}</span>}
+      {PRICES_VISIBLE ? <span class="price">{t.card.from} {formatPrice(minPrice('print'), lang)} · {formatUsd(minPrice('print'))}</span> : <span>{t.soon.badge}</span>}
     </span>
   </span>
 </a>
