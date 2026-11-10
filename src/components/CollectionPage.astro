@@ -28,11 +28,17 @@ const PALETTES = ['cyan', 'ice', 'violet', 'aurora', 'ember'] as const;
 const f = t.collection.filter;
 // Pink colourway cards: hidden until the Розе colour filter is on.
 const pink = flat.filter((p) => p.tones?.includes('roza'));
+// Header room shot per page (public/interiors/collection-hero-<key>-<w>.webp): the piece shown, framed in black.
+const HERO: Record<string, string> = { all: 'klifordov-veo', attractor: 'tomas', mandelbrot: 'vitica', flame: 'perje', structure: 'predajnik', flux: 'aurora',
+  city: 'metropola', ridges: 'prvi-signal', orbit: 'nulta-orbita', hopf: 'snop', object: 'stanica' };
+const heroKey = current ? current.key : 'all';
+const heroImg = (w: number) => `/interiors/collection-hero-${heroKey === 'all' ? '' : `${heroKey}-`}${w}.webp`;
+const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
 ---
 <Base lang={lang} title={title} description={description} image={current ? `/og/${productsBySeries(current.key)[0].slug}-en.jpg` : undefined}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  <section class:list={['top grid-bg', { art: !current }]}>
-    {!current && <img class="top-art" src="/interiors/collection-hero-1800.webp" srcset="/interiors/collection-hero-1100.webp 1100w, /interiors/collection-hero-1800.webp 1800w" sizes="60vw" width="1800" height="1215" alt="Clifford's Veil, framed in black, on the wall of a dark bar room" fetchpriority="high" decoding="async" />}
+  <section class:list={['top grid-bg', { art: !!heroName }]}>
+    {heroName && <img class="top-art" src={heroImg(1800)} srcset={`${heroImg(1100)} 1100w, ${heroImg(1800)} 1800w`} sizes="60vw" width="1800" height="1215" alt={`${heroName}, framed in black, in a room`} fetchpriority="high" decoding="async" />}
     <div class="wrap">
       <nav class="crumbs mono" aria-label="Breadcrumb">
         <a href={homeHref(lang)}>{t.product.home}</a><span>/</span>
