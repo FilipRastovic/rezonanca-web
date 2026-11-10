@@ -64,14 +64,19 @@ const cfg = JSON.stringify({ api: PAYMENTS.api, lang });
       if (d.status === 'pending' && attempt < 6) { show('pending'); setTimeout(() => load(attempt + 1), 2000); return; }
       const okk = d.status === 'preauthorized' || d.status === 'captured';
       show(okk ? 'ok' : d.status === 'pending' ? 'pending' : 'fail');
+      if (okk) {
+        // Report the purchase once per order (pixel/GA4 only run after cookie consent).
+        let seen = false; try { seen = !!localStorage.getItem('rz-paid-' + d.order); localStorage.setItem('rz-paid-' + d.order, '1'); } catch { /* private mode */ }
+        if (!seen) (window as any).rzTrack?.('Purchase', { value: d.eur ?? 0, currency: 'EUR', content_ids: d.lines.map((l: any) => l.name), num_items: d.lines.reduce((a: number, l: any) => a + l.qty, 0) });
+      }
       const facts: [string, string][] = [[t.order!, d.order], [t.status!, okk ? t.approved! : t.declined!]];
       if (okk && d.approvalCode) facts.push([t.code!, d.approvalCode]);
       if (okk && d.card) facts.push([t.card!, `**** ${d.card}`]);
       const dl = $('pay-facts'); dl.replaceChildren(); dl.hidden = false;
       for (const [k, v] of facts) { const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; dl.append(dt, dd); }
       const ul = $('pay-lines'); ul.replaceChildren();
-      for (const l of d.lines) { const li = document.createElement('li'); li.innerHTML = '<span><b></b><small></small></span><span class="p"></span>'; li.querySelector('b')!.textContent = `${l.name}${l.qty > 1 ? ' × ' + l.qty : ''}`; li.querySelector('small')!.textContent = l.desc; li.querySelector('.p')!.textContent = money(l.price); ul.append(li); }
-      const tot = $('pay-total'); tot.hidden = false; tot.textContent = `${t.total}: ${money(d.total)}`;
+      for (const l of d.lines) { const li = document.createElement('li'); li.innerHTML = '<span><b></b><small></small></span><span class="p"></span>'; li.querySelector('b')!.textContent = `${l.name}${l.qty > 1 ? ' × ' + l.qty : ''}`; li.querySelector('small')!.textContent = l.desc; li.querySelector('.p')!.textContent = l.eur ? `€${l.eur.toLocaleString('en-US')} · ${money(l.price)}` : money(l.price); ul.append(li); }
+      const tot = $('pay-total'); tot.hidden = false; tot.textContent = `${t.total}: ${d.eur ? `€${d.eur.toLocaleString('en-US')} · ` : ''}${money(d.total)}`;
       if (okk) clear();
     } catch (e) { console.error(e); show('pending'); }
   };

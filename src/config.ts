@@ -1,12 +1,12 @@
 // Sales switch. false = "coming soon": prices hidden, cart/checkout disabled, product pages collect
 // waitlist signups (emailed via FormSubmit like orders). Set to true once prices are final.
-export const SALES_OPEN = false;
+export const SALES_OPEN = true; // opened 2026-11-10: card payments live (Raiffeisen, RSD), orders go to Gelato
 // Prices shown on the site even while sales are closed (waitlist instead of ordering). Filip, 2026-10-14.
 export const PRICES_VISIBLE = true; // Gelato EUR prices shown 2026-10-30 (Filip); hidden 2026-10-29 until then
 
 // Shop settings - edit these before going live.
 export const SHOP = {
-  name: 'Резонанца',
+  name: 'Rezonanca',
   email: 'filiporastovic@gmail.com',
   phone: '+381 63 171 4561',
   // Social profiles (footer links; an empty string hides that link).
@@ -19,7 +19,7 @@ export const SHOP = {
   // Set to '' for demo mode (orders are only logged to the console).
   orderInbox: 'filiporastovic@gmail.com',
   editionSize: 50,
-  currency: 'EUR',
+  currency: 'EUR', // shown; the card is charged in RSD (PRICES_RSD)
   shipping: 0, // included in the price (Gelato ships worldwide)
 };
 
@@ -78,6 +78,17 @@ export const PRICES: Record<Format, Partial<Record<Size, number>>> = {
   edition: {},
   metal: {},
 };
+// What the card is charged: RSD only (Raiffeisen, 2026-11-10: no other currency in Serbia). Fixed prices from the
+// NBS middle rate (~117.2 RSD/EUR, Nov 2026) rounded up; shown next to the EUR price. Re-check if the rate moves > 2%.
+export const PRICES_RSD: Record<Format, Partial<Record<Size, number>>> = {
+  print: { '30x40': 4590, '45x60': 6490 },
+  framed: { '30x40': 11690, '45x60': 17490 },
+  mounted: {},
+  mini: {},
+  miniprint: {},
+  edition: {},
+  metal: {},
+};
 export const minPrice = (f: Format) => Math.min(...Object.values(PRICES[f]) as number[]);
 export const MIN_PRICE = Math.min(...ACTIVE_FORMATS.map(minPrice));
 export const MAX_PRICE = Math.max(...ACTIVE_FORMATS.flatMap((f) => Object.values(PRICES[f]) as number[]));
@@ -96,3 +107,9 @@ export const gelatoProduct = (format: Format, size: Size, frame: 'black' | 'oak'
 export const FRAMES = ['black', 'oak'] as const;
 
 export const formatPrice = (n: number, _lang?: 'sr' | 'en') => `€${n.toLocaleString('en-US')}`;
+export const formatRsd = (n: number) => `${n.toLocaleString('en-US')} RSD`;
+
+// Delivery countries (ISO 3166-1 alpha-2): everywhere Gelato ships, minus sanctioned destinations. Names come from Intl.DisplayNames.
+export const COUNTRIES = 'AD AE AL AM AR AT AU AZ BA BE BG BH BR CA CH CL CN CO CR CY CZ DE DK DO EC EE EG ES FI FR GB GE GR GT HK HR HU ID IE IL IN IS IT JO JP KE KR KW KZ LB LI LK LT LU LV MA MC MD ME MK MT MU MX MY NG NL NO NZ OM PA PE PH PK PL PR PT QA RO RS SA SE SG SI SK SM TH TN TR TW UA US UY VN ZA'.split(' ');
+// Gelato needs a state/province for these.
+export const STATE_COUNTRIES = ['US', 'CA', 'AU'];

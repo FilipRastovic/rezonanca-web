@@ -6,7 +6,7 @@ import History from './History.astro';
 import { STORIES } from '../data/stories.js';
 import { SERIES, PRODUCTS, findProduct, seriesOf, productsBySeries, pad, imgKey } from '../data/products.js';
 import ROOM_FRAMES from '../data/room-frames.json';
-import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice } from '../config';
+import { SHOP, SIZES, ACTIVE_FORMATS, FORMAT_SIZES, FRAMES, PRICES, PRICES_RSD, SALES_OPEN, PRICES_VISIBLE, MIN_PRICE, MAX_PRICE, minPrice, formatPrice, formatRsd } from '../config';
 import Waitlist from './Waitlist.astro';
 import SocialFeed from './SocialFeed.astro';
 import { T, homeHref, collectionHref, productHref, seriesShort, type Lang, nounLc, guideHref } from '../i18n';
@@ -95,7 +95,7 @@ const jsonLd = [{
   itemListElement: [[t.product.home, homeHref(lang)], [t.collection.title, collectionHref(lang)], [seriesName, collectionHref(lang, series.slug)], [name, productHref(lang, p.slug)]]
     .map(([n, h], i) => ({ '@type': 'ListItem', position: i + 1, name: n, item: new URL(h, site).href })),
 }];
-const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames });
+const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OPEN ? PRICES_RSD : {}, lang, frames });
 ---
 <Base lang={lang} title={`${name} ${noun} | Rezonanca`} description={description} image={`/og/${p.slug}-${lang}.jpg`}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -149,6 +149,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
           {SALES_OPEN || PRICES_VISIBLE ? (
             <div class="price">
               <strong id="pp-price">{formatPrice(PRICES[F0][S0 as keyof (typeof PRICES)[typeof F0]]!, lang)}</strong>
+              {SALES_OPEN && <small id="pp-rsd"><span>{formatRsd(PRICES_RSD[F0][S0 as keyof (typeof PRICES_RSD)[typeof F0]]!)}</span> · {tp.rsdNote}</small>}
             </div>
           ) : (
             <div class="price soon">
@@ -310,7 +311,8 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
 <script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug }}>window.rzTrack && window.rzTrack('ViewContent', { content_name: vcName, content_ids: [vcId], content_type: 'product' });</script>
 <script>
   const form = document.getElementById('pp-form') as HTMLFormElement;
-  const { prices, lang, frames } = JSON.parse(form.dataset.config!);
+  const { prices, rsd, lang, frames } = JSON.parse(form.dataset.config!);
+  const rsdEl = document.getElementById('pp-rsd');
   const priceEl = document.getElementById('pp-price'); // absent while sales are closed
   const orderBtn = document.getElementById('pp-order')!;
   const frameSet = document.getElementById('pp-frame'); // only when a framed format is on sale
@@ -331,6 +333,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, lang, frames 
     const size = String(new FormData(form).get('size'));
     const qty = Math.max(1, Math.min(20, parseInt(String(d.get('qty')), 10) || 1));
     if (priceEl && prices[format]?.[size]) priceEl.textContent = money(prices[format][size] * qty);
+    if (rsdEl && rsd[format]?.[size]) rsdEl.querySelector('span')!.textContent = `${(rsd[format][size] * qty).toLocaleString('en-US')} RSD`;
     if (frameSet) frameSet.hidden = !['framed', 'edition'].includes(format);
     // The main poster view shows what you'd get: bare print or the black / natural wood frame.
     const look = format === 'framed' ? `framed-${String(d.get('frame') || 'black')}` : format;

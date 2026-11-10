@@ -1,3 +1,10 @@
+-- Gelato fulfilment (2026-11-10). Existing DB: run these ALTERs once.
+-- ALTER TABLE orders ADD COLUMN gelato_id TEXT;      -- Gelato order id
+-- ALTER TABLE orders ADD COLUMN gelato_status TEXT;  -- placing | error | Gelato fulfillmentStatus
+-- ALTER TABLE orders ADD COLUMN gelato_error TEXT;
+-- ALTER TABLE orders ADD COLUMN tracking TEXT;       -- JSON tracking links
+-- ALTER TABLE orders ADD COLUMN warned_at TEXT;      -- "not shipped after 5 days" email sent
+
 -- Card orders + the transaction log the bank requires us to keep for 13 months.
 CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,          -- OrderID sent to the gateway
@@ -6,7 +13,7 @@ CREATE TABLE IF NOT EXISTS orders (
   purchase_time TEXT NOT NULL,  -- yyMMddHHmmss, Belgrade time, as signed
   lang TEXT NOT NULL,
   amount INTEGER NOT NULL,      -- para (RSD × 100), shipping included
-  currency INTEGER NOT NULL,    -- 941 = RSD
+  currency INTEGER NOT NULL,    -- 941 = RSD (the only currency Raiffeisen accepts)
   lines TEXT NOT NULL,          -- JSON cart lines
   customer TEXT NOT NULL,       -- JSON name, phone, email, address, city, zip, note
   ip TEXT,                      -- buyer IP at checkout
@@ -15,7 +22,8 @@ CREATE TABLE IF NOT EXISTS orders (
   notify_raw TEXT,              -- gateway notification (without signature)
   notified_at TEXT,
   emails TEXT,                  -- JSON log of confirmation emails sent
-  shipped_at TEXT, captured_at TEXT
+  shipped_at TEXT, captured_at TEXT,
+  gelato_id TEXT, gelato_status TEXT, gelato_error TEXT, tracking TEXT, warned_at TEXT
 );
 CREATE INDEX IF NOT EXISTS orders_created ON orders (created_at);
 

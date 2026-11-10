@@ -3,7 +3,8 @@
 export type Line = { slug: string; format: string; size: string; frame?: string; tone?: string; qty: number };
 type Catalog = {
   lang: 'sr' | 'en';
-  prices: Record<string, Record<string, number>>;
+  prices: Record<string, Record<string, number>>; // EUR, shown
+  rsd: Record<string, Record<string, number>>; // RSD, what the card is charged
   shipping: number;
   products: Record<string, { name: string; img: string; href: string; series: string }>;
   formats: Record<string, string>;
@@ -42,12 +43,14 @@ export const clear = () => write([]);
 export const count = () => read().reduce((a, l) => a + l.qty, 0);
 
 export const money = (n: number) => `€${n.toLocaleString('en-US')}`;
+export const rsdMoney = (n: number) => `${n.toLocaleString('en-US')} RSD`;
 export const unitPrice = (l: Line) => catalog().prices[l.format]?.[l.size] ?? 0;
 export function totals() {
   const lines = read();
   const subtotal = lines.reduce((a, l) => a + unitPrice(l) * l.qty, 0);
   const shipping = lines.length ? catalog().shipping : 0;
-  return { lines, subtotal, shipping, total: subtotal + shipping };
+  const rsd = lines.reduce((a, l) => a + (catalog().rsd[l.format]?.[l.size] ?? 0) * l.qty, 0);
+  return { lines, subtotal, shipping, total: subtotal + shipping, rsd };
 }
 export function describe(l: Line) {
   const c = catalog();

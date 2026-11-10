@@ -3,12 +3,14 @@ import Base from '../layouts/Base.astro';
 import Waitlist from './Waitlist.astro';
 import { SALES_OPEN, PAYMENTS } from '../config';
 import PaymentLogos from './PaymentLogos.astro';
-import { SHOP } from '../config';
+import { SHOP, COUNTRIES, STATE_COUNTRIES } from '../config';
 import { T, homeHref, cartHref, collectionHref, legalHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].cart, o = T[lang].order;
-const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHOP.email, api: PAYMENTS.cards ? PAYMENTS.api : '' });
+const cfg = JSON.stringify({ email: SHOP.email, api: PAYMENTS.api });
+const dn = new Intl.DisplayNames(['en'], { type: 'region' });
+const countries = COUNTRIES.map((cc) => [cc, dn.of(cc) ?? cc]).sort((a, b) => a[1].localeCompare(b[1]));
 ---
 <Base lang={lang} title={`${t.checkoutTitle} | Rezonanca`} description={t.checkoutTitle}>
   <section class="page grid-bg">
@@ -28,25 +30,26 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
         <div class="layout">
           <form id="co-form" class="fields panel" novalidate data-config={cfg}>
             <h2 class="h mono">{t.details}</h2>
-            <label class="full">{o.name}<input name="name" required autocomplete="name" /></label>
-            <label>{o.phone}<input name="phone" type="tel" required autocomplete="tel" /></label>
+            <label>{o.firstName}<input name="firstName" required autocomplete="given-name" /></label>
+            <label>{o.lastName}<input name="lastName" required autocomplete="family-name" /></label>
             <label>{o.email}<input name="email" type="email" required autocomplete="email" /></label>
-            <label class="full">{o.address}<input name="address" required autocomplete="street-address" /></label>
+            <label>{o.phone}<input name="phone" type="tel" required autocomplete="tel" /></label>
+            <label class="full">{o.country}<select name="country" required autocomplete="country" data-states={STATE_COUNTRIES.join(',')}>
+              <option value="" disabled selected></option>
+              {countries.map(([cc, n]) => <option value={cc}>{n}</option>)}
+            </select></label>
+            <label class="full">{o.address}<input name="address" required autocomplete="address-line1" /></label>
+            <label class="full">{o.address2}<input name="address2" autocomplete="address-line2" /></label>
             <label>{o.city}<input name="city" required autocomplete="address-level2" /></label>
-            <label>{o.zip}<input name="zip" required autocomplete="postal-code" inputmode="numeric" /></label>
-            <label class="full">{o.note}<textarea name="note" rows="3"></textarea></label>
-            <fieldset class="full">
-              <legend>{o.payment}</legend>
-              {PAYMENTS.cards && <label class="radio"><input type="radio" name="payment" value="card" checked /> {o.payments.card}</label>}
-              <label class="radio"><input type="radio" name="payment" value="cod" checked={!PAYMENTS.cards} /> {o.payments.cod}</label>
-              <label class="radio"><input type="radio" name="payment" value="bank" /> {o.payments.bank}</label>
-              {PAYMENTS.cards && <div class="cardinfo"><p>{o.cardNote}</p><PaymentLogos compact /></div>}
-            </fieldset>
+            <label>{o.zip}<input name="zip" required autocomplete="postal-code" /></label>
+            <label class="full" id="co-state" hidden>{o.state}<input name="state" autocomplete="address-level1" /></label>
+            <label class="full">{o.note}<textarea name="note" rows="2"></textarea></label>
+            <div class="cardinfo full"><p><strong>{o.payments.card}</strong> · {o.cardNote}</p><PaymentLogos compact /></div>
             <label class="radio agree full"><input type="checkbox" name="terms" required value="yes" />
-              <span>{lang === 'sr' ? 'Прихватам ' : 'I accept the '}<a href={legalHref(lang, 'terms')} target="_blank">{T[lang].legal.terms.title.toLowerCase()}</a>{lang === 'sr' ? ' и ' : ' and '}<a href={legalHref(lang, 'privacy')} target="_blank">{T[lang].legal.privacy.title.toLowerCase()}</a></span></label>
+              <span>I accept the <a href={legalHref(lang, 'terms')} target="_blank">{T[lang].legal.terms.title.toLowerCase()}</a> and <a href={legalHref(lang, 'privacy')} target="_blank">{T[lang].legal.privacy.title.toLowerCase()}</a></span></label>
             <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <p class="status full" role="status" aria-live="polite"></p>
-            <button class="btn btn--solid submit full" type="submit" data-label={t.place} data-sending={o.sending}>{t.place} <span class="arrow">→</span></button>
+            <button class="btn btn--solid submit full" type="submit" data-label={o.payNow} data-sending={o.sending}>{o.payNow} <span class="arrow">→</span></button>
           </form>
 
           <aside class="summary panel">
@@ -55,36 +58,39 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
             <div class="row"><span>{t.subtotal}</span><span id="co-subtotal"></span></div>
             <div class="row muted"><span>{t.shipping}</span><span id="co-shipping"></span></div>
             <div class="row total"><span>{t.total}</span><strong id="co-total"></strong></div>
-            <p class="note">{PAYMENTS.cards ? t.noteCards : t.note}</p>
+            <div class="row charged"><span>{t.charged}</span><strong id="co-rsd"></strong></div>
+            <p class="note">{t.fx}</p>
           </aside>
         </div>
       </div>
 
-      <div id="co-done" class="done panel" hidden aria-live="polite">
-        <div class="check" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27 l8 8 l15 -17"/></svg></div>
-        <h2>{o.doneTitle}</h2>
-        <p class="lead">{o.doneLead}</p>
-        <ul class="lines" id="co-done-lines"></ul>
-        <p class="donetotal"><span>{t.total}</span> <strong id="co-done-total"></strong></p>
-        <p class="note">{o.doneNote} <a href={`mailto:${SHOP.email}`}>{SHOP.email}</a></p>
-        <p class="demo mono" hidden>{o.demo}</p>
-        <a class="btn btn--solid" href={homeHref(lang)}>{o.doneClose} <span class="arrow">→</span></a>
-      </div>
       </div>
     </div>
   </section>
-  <template id="co-msgs" data-required={o.required} data-error={o.error} data-redirecting={o.redirecting}></template>
+  <template id="co-msgs" data-required={o.required} data-error={o.error} data-redirecting={o.redirecting} data-free={t.free}></template>
 </Base>
 <script>
-  import { totals, catalog, money, describe, imgFor, clear } from '../scripts/cart';
+  import { totals, catalog, money, rsdMoney, describe, imgFor } from '../scripts/cart';
   const form = document.getElementById('co-form') as HTMLFormElement;
   const cfg = JSON.parse(form.dataset.config!);
   const msgs = (document.getElementById('co-msgs') as HTMLElement).dataset;
   const status = form.querySelector('.status') as HTMLElement;
   const submit = form.querySelector('.submit') as HTMLButtonElement;
+  const country = form.elements.namedItem('country') as HTMLSelectElement;
+  const stateBox = document.getElementById('co-state')!, stateIn = stateBox.querySelector('input')!;
+  const states = country.dataset.states!.split(',');
 
-  const fillLines = (ul: HTMLElement) => {
-    const c = catalog(), { lines } = totals();
+  // Preselect the visitor's country from the browser language (e.g. en-GB -> GB), if we ship there.
+  const guess = (navigator.languages || [navigator.language]).map((l) => l.split('-')[1]?.toUpperCase()).find((cc) => cc && [...country.options].some((o) => o.value === cc));
+  if (guess) country.value = guess;
+  const syncState = () => { const need = states.includes(country.value); stateBox.hidden = !need; stateIn.required = need; };
+  country.addEventListener('change', syncState); syncState();
+
+  const render = () => {
+    const c = catalog(), { lines, subtotal, shipping, total, rsd } = totals();
+    document.getElementById('co-empty')!.hidden = lines.length > 0;
+    document.getElementById('co-main')!.hidden = lines.length === 0;
+    const ul = document.getElementById('co-lines')!;
     ul.innerHTML = '';
     for (const l of lines) {
       const p = c.products[l.slug];
@@ -97,103 +103,58 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
       li.querySelector('.p')!.textContent = money(c.prices[l.format][l.size] * l.qty);
       ul.append(li);
     }
-  };
-  const render = () => {
-    const { lines, subtotal, shipping, total } = totals();
-    if (!document.getElementById('co-done')!.hidden) return;
-    document.getElementById('co-empty')!.hidden = lines.length > 0;
-    document.getElementById('co-main')!.hidden = lines.length === 0;
-    fillLines(document.getElementById('co-lines')!);
     document.getElementById('co-subtotal')!.textContent = money(subtotal);
-    document.getElementById('co-shipping')!.textContent = money(shipping);
+    document.getElementById('co-shipping')!.textContent = shipping ? money(shipping) : msgs.free!;
     document.getElementById('co-total')!.textContent = money(total);
+    document.getElementById('co-rsd')!.textContent = rsdMoney(rsd);
   };
   document.addEventListener('cart:change', render);
   render();
 
+  const fail = () => {
+    status.classList.add('err');
+    status.textContent = `${msgs.error} ${cfg.email}`;
+    submit.disabled = false;
+    submit.firstChild!.textContent = submit.dataset.label! + ' ';
+  };
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     status.classList.remove('err');
     let firstBad: HTMLElement | null = null;
-    for (const el of form.querySelectorAll<HTMLInputElement>('input[required]')) {
-      const bad = el.type === 'checkbox' ? !el.checked : !el.checkValidity() || !el.value.trim();
+    for (const el of form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input[required], select[required]')) {
+      const bad = el instanceof HTMLInputElement && el.type === 'checkbox' ? !el.checked : !el.checkValidity() || !el.value.trim();
       el.setAttribute('aria-invalid', String(bad));
       if (bad && !firstBad) firstBad = el;
     }
     if (firstBad) { status.classList.add('err'); status.textContent = msgs.required!; firstBad.focus(); return; }
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     if (data.botcheck) return;
-    const c = catalog(), { lines, subtotal, shipping, total } = totals();
-    const items = lines.map((l) => `${l.qty} × ${c.products[l.slug]?.name} (${l.slug}) - ${describe(l)} = ${money(c.prices[l.format][l.size] * l.qty)}`).join('\n');
-    const { botcheck, terms, ...fields } = data;
-    const payload = {
-      _subject: `${cfg.shop} - поруџбина: ${lines.reduce((a, l) => a + l.qty, 0)} ком. / ${money(total)}`,
-      _template: 'table',
-      _replyto: data.email,
-      ...fields,
-      items,
-      subtotal: money(subtotal),
-      shipping: money(shipping),
-      total: money(total),
-      terms_accepted: terms ? 'yes' : 'no',
-      language: c.lang,
-    };
+    const c = catalog(), { lines } = totals();
     submit.disabled = true;
     submit.firstChild!.textContent = submit.dataset.sending! + ' ';
-    if (data.payment === 'card') {
-      // Card: the payments Worker prices the cart, stores the order and signs the request; the buyer
-      // then types the card on the bank's page (we never see it). Result comes back on /placanje/.
-      try {
-        if (!cfg.api) throw new Error('card payments not configured');
-        const res = await fetch(`${cfg.api}/api/checkout`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ lang: c.lang, lines, customer: { name: data.name, phone: data.phone, email: data.email, address: data.address, city: data.city, zip: data.zip, note: data.note }, terms: !!terms }),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.action) throw new Error(json.error || 'checkout failed');
-        status.textContent = msgs.redirecting!;
-        const f = document.createElement('form');
-        f.method = 'POST'; f.action = json.action;
-        for (const [k, v] of Object.entries(json.fields as Record<string, string>)) {
-          const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; f.append(i);
-        }
-        // The bank sends declined/cancelled buyers to the bare site URL: Base.astro uses this to bring them to the result page.
-        try { localStorage.setItem('rz-pay', JSON.stringify({ o: json.order, t: json.fields.SD, lang: c.lang, at: Date.now() })); } catch { /* private mode */ }
-        document.body.append(f);
-        f.submit();
-      } catch (err) {
-        console.error(err);
-        status.classList.add('err');
-        status.textContent = `${msgs.error} ${cfg.email}`;
-        submit.disabled = false;
-        submit.firstChild!.textContent = submit.dataset.label! + ' ';
-      }
-      return;
-    }
+    // The payments Worker prices the cart (in RSD), stores the order and signs the request; the buyer
+    // then types the card on the bank's page (we never see it). The result comes back on /payment/.
     try {
-      if (!cfg.inbox) { console.info('[order demo]', payload); await new Promise((r) => setTimeout(r, 600)); }
-      else {
-        const res = await fetch(`https://formsubmit.co/ajax/${cfg.inbox}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (String(json.success) !== 'true') throw new Error(json.message);
+      const customer = Object.fromEntries(['firstName', 'lastName', 'email', 'phone', 'country', 'address', 'address2', 'city', 'zip', 'state', 'note'].map((k) => [k, data[k] ?? '']));
+      const res = await fetch(`${cfg.api}/api/checkout`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lang: c.lang, lines, customer, terms: !!data.terms }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.action) throw new Error(json.error || 'checkout failed');
+      status.textContent = msgs.redirecting!;
+      const f = document.createElement('form');
+      f.method = 'POST'; f.action = json.action;
+      for (const [k, v] of Object.entries(json.fields as Record<string, string>)) {
+        const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; f.append(i);
       }
-      (window as any).rzTrack?.('Purchase', { value: subtotal, currency: 'RSD', content_ids: lines.map((l) => l.slug), num_items: lines.reduce((a, l) => a + l.qty, 0) });
-      fillLines(document.getElementById('co-done-lines')!);
-      document.getElementById('co-done-total')!.textContent = money(total);
-      (document.querySelector('#co-done .demo') as HTMLElement).hidden = !!cfg.inbox;
-      document.getElementById('co-main')!.hidden = true;
-      document.getElementById('co-done')!.hidden = false;
-      scrollTo({ top: 0 });
-      clear();
+      // The bank sends declined/cancelled buyers to the bare site URL: Base.astro uses this to bring them to the result page.
+      try { localStorage.setItem('rz-pay', JSON.stringify({ o: json.order, t: json.fields.SD, lang: c.lang, at: Date.now() })); } catch { /* private mode */ }
+      document.body.append(f);
+      f.submit();
     } catch (err) {
       console.error(err);
-      status.classList.add('err');
-      status.textContent = `${msgs.error} ${cfg.email}`;
-    } finally {
-      submit.disabled = false;
-      submit.firstChild!.textContent = submit.dataset.label! + ' ';
+      fail();
     }
   });
 </script>
@@ -211,6 +172,10 @@ const cfg = JSON.stringify({ inbox: SHOP.orderInbox, shop: SHOP.name, email: SHO
   .fields .h { grid-column: 1 / -1; margin-bottom: 6px; max-width: none; }
   .full { grid-column: 1 / -1; }
   label, legend { display: flex; flex-direction: column; gap: 8px; font: 500 var(--fs-2xs)/1 var(--f-mono); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
+  select { width: 100%; padding: 13px 14px; background: rgba(251, 250, 247, 0.8); border: 1px solid var(--line); color: var(--ice); font: 400 16px/1.3 var(--f-body); letter-spacing: 0; text-transform: none; border-radius: 0; }
+  select:focus { outline: none; border-color: var(--cyan); }
+  .charged { font-size: var(--fs-sm); color: var(--text); }
+  .charged strong { font-weight: 500; color: var(--ice); }
   input, textarea { width: 100%; padding: 13px 14px; background: rgba(251, 250, 247, 0.8); border: 1px solid var(--line); color: var(--ice); font: 400 16px/1.3 var(--f-body); letter-spacing: 0; text-transform: none; border-radius: 0; }
   input:focus, textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(18, 20, 23, 0.072); }
   [aria-invalid='true'] { border-color: #ff5f7a; }

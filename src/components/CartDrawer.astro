@@ -14,7 +14,7 @@ const t = T[lang].cart;
     <ul class="lines" id="drawer-lines"></ul>
     <div class="sum">
       <div><span>{t.subtotal}</span><strong id="drawer-subtotal"></strong></div>
-      <div class="muted"><span>{t.shipping}</span><span id="drawer-shipping"></span></div>
+      <div class="muted"><span>{t.shipping}</span><span id="drawer-shipping" data-free={t.free}></span></div>
     </div>
     <div class="actions">
       <a class="btn btn--solid" href={checkoutHref(lang)}>{t.toCheckout} <span class="arrow">→</span></a>
@@ -42,7 +42,7 @@ const t = T[lang].cart;
       ul.append(li);
     }
     document.getElementById('drawer-subtotal')!.textContent = money(subtotal);
-    document.getElementById('drawer-shipping')!.textContent = '+ ' + money(shipping);
+    const sh = document.getElementById('drawer-shipping')!; sh.textContent = shipping ? '+ ' + money(shipping) : sh.dataset.free!;
   };
   document.addEventListener('cart:open', () => { render(); dlg.showModal(); });
   dlg.addEventListener('click', (e) => { if (e.target === dlg || (e.target as Element).closest('[data-drawer-close]')) dlg.close(); });

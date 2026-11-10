@@ -6,7 +6,7 @@ const seller = `${SELLER.name}, MB ${SELLER.mb}, PIB ${SELLER.pib}${SELLER.activ
 const cards = PAYMENTS.cards;
 const contact = `${SHOP.email} · ${SHOP.phone}`;
 const ship = SALES_OPEN ? `${SHOP.shipping} RSD` : '';
-export const UPDATED = cards ? '26.10.2026.' : '10.10.2026.';
+export const UPDATED = cards ? '10.11.2026.' : '10.10.2026.';
 
 type Section = { h: string; p: string[] };
 
@@ -57,17 +57,16 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
       title: 'Terms of sale',
       sections: [
         { h: 'Seller', p: [`The seller is ${seller}. Contact: ${contact}.`] },
-        { h: 'Ordering and the contract', p: ['You send an order through the form on the site. The contract is concluded when we confirm your order by phone or email, within 24 hours at the latest. Until then you can freely change or cancel it.'] },
-        { h: 'Prices and payment', p: [`Prices are in Serbian dinars (RSD) and are final: the seller is not registered for VAT. Shipping${ship ? ' of ' + ship : ' at the courier’s rates'} is added and paid by the customer. ${cards ? 'You pay by payment card (Visa, Mastercard, Maestro, DinaCard) on the site, cash on delivery to the courier, or by bank transfer after we confirm the order.' : 'Nothing is paid on the site and no card details are entered: you pay cash on delivery to the courier, or by bank transfer after we confirm the order.'}`,
-          ...(cards ? [
-            'Card payments are processed by Raiffeisen banka a.d. Beograd. You enter your card details on the bank’s secure page, with Visa Secure or Mastercard Identity Check verification. Confidential data is transmitted encrypted (TLS) and is never available to the seller. Your card is charged in Serbian dinars (RSD).',
-            'The order amount is reserved on your card when you pay and only charged once we ship your parcel. Right after paying, successfully or not, you receive an email confirmation with your order number and the transaction status.',
-          ] : [])] },
-        { h: 'Production and delivery', p: ['Prints are made in 3–5 business days. Courier delivery within Serbia takes 1–2 business days. We confirm the exact timing when we confirm your order. We only ship to addresses in Serbia.'] },
-        ...(cards ? [{ h: 'Refunds', p: [
-          'If you cancel your order before it ships, the reservation on your card is released and nothing is charged. How quickly the reserved funds are released depends on the bank that issued your card.',
-          'If goods are returned and a customer who paid by payment card is refunded, in part or in full and for whatever reason, the refund is made only through the Visa, Mastercard, Maestro and DinaCard payment methods: at our request the bank returns the funds to the cardholder’s account. If you paid cash on delivery or by transfer, we refund your bank account.',
-        ] }] : []),
+        { h: 'Ordering and the contract', p: ['You order through the checkout on the site and pay by card. The contract is concluded when your card payment is approved; you receive a confirmation by email right away. If you want to change or cancel an order, write to us as soon as possible: once it has gone to print we can no longer change it.'] },
+        { h: 'Prices and payment', p: ['Prices are shown in euros (EUR) together with the amount in Serbian dinars (RSD) and are final: the seller is not registered for VAT. Shipping is included. You pay by payment card (Visa, Mastercard, Maestro, DinaCard) on the site.',
+          'Your card is charged in Serbian dinars (RSD), the amount shown at checkout. If your card is in another currency, your bank converts the amount at its own exchange rate, so the amount on your statement may differ slightly from the euro price.',
+          'Card payments are processed by Raiffeisen banka a.d. Beograd. You enter your card details on the bank’s secure page, with Visa Secure or Mastercard Identity Check verification. Confidential data is transmitted encrypted (TLS) and is never available to the seller.',
+          'The order amount is reserved on your card when you pay and only charged once your order ships. Right after paying, successfully or not, you receive an email confirmation with your order number and the transaction status.'] },
+        { h: 'Production and delivery', p: ['Every print is made to order and usually ships within 2-5 business days. We ship worldwide to the countries listed at checkout; delivery usually takes 3-10 business days after shipping, depending on the destination. You receive the tracking link by email when your order ships. Shipping is free. Buyers outside Serbia may have to pay import duties or taxes set by their country.'] },
+        { h: 'Refunds', p: [
+          'If your order is cancelled before it ships, the reservation on your card is released and nothing is charged. How quickly the reserved funds are released depends on the bank that issued your card.',
+          'If goods are returned and a customer who paid by payment card is refunded, in part or in full and for whatever reason, the refund is made only through the Visa, Mastercard, Maestro and DinaCard payment methods: at our request the bank returns the funds to the cardholder’s account, in Serbian dinars (RSD).',
+        ] },
         { h: 'Right of withdrawal', p: [
           'You may withdraw from the contract within 14 days of receiving the piece, without giving a reason. Just send us a clear statement by email (e.g. "I withdraw from the contract for order no. …", with your name, address and date of receipt).',
           'Return the piece within 14 days of sending the statement, undamaged and in its original packaging. Return shipping is paid by the customer. We refund you within 14 days of receiving your statement, and may wait until the piece arrives back.',
@@ -82,9 +81,9 @@ export const LEGAL: Record<'sr' | 'en', { terms: { title: string; sections: Sect
       title: 'Privacy policy',
       sections: [
         { h: 'Data controller', p: [`The data controller is ${seller}. Contact for data questions: ${SHOP.email}.`] },
-        { h: 'What we collect', p: ['Only what you enter in the order form (name, phone, email, address and note) or on the waitlist (email or phone and the piece you’re interested in). We never collect card details.' + (cards ? ' After a card payment the bank only sends us the transaction status, authorisation code, reference number and the last four digits of the card. We keep these, together with the order, address and the IP address it was placed from, for 13 months, as card scheme rules require.' : '')] },
+        { h: 'What we collect', p: ['Only what you enter at checkout (name, phone, email, delivery address and note) or on the waitlist (email or phone and the piece you’re interested in). We never collect card details.' + (cards ? ' After a card payment the bank only sends us the transaction status, authorisation code, reference number and the last four digits of the card. We keep these, together with the order, address and the IP address it was placed from, for 13 months, as card scheme rules require.' : '')] },
         { h: 'Why we use it', p: ['To confirm, produce and deliver your order and stay in touch about it (legal basis: performance of a contract), or to tell you when a waitlisted piece goes on sale (legal basis: your consent, which you can withdraw at any time). We send no other marketing messages.'] },
-        { h: 'Who we share it with', p: ['The courier (name, address, phone) for delivery, FormSubmit, the service that forwards the order form to our email,' + (cards ? ' Raiffeisen Bank and its card processor for card payments, Cloudflare, where the order record is stored, and Resend, which sends the email confirmations,' : '') + ' and - only if you accept cookies - Meta (Facebook/Instagram), Google and Microsoft (Clarity), to measure visits and ads. We never sell your data.'] },
+        { h: 'Who we share it with', p: ['Gelato, our print-on-demand partner, and its couriers (name, delivery address, email, phone) to print and deliver your order; Raiffeisen Bank and its card processor for card payments; Cloudflare, where the order record is stored; Resend, which sends the email confirmations; FormSubmit, which forwards waitlist signups to our email; and - only if you accept cookies - Meta (Facebook/Instagram), Google and Microsoft (Clarity), to measure visits and ads. We never sell your data.'] },
         { h: 'How long we keep it', p: ['As long as needed for the order and any complaints, and as long as accounting regulations require.'] },
         { h: 'Your rights', p: ['You may request access to your data, correction, deletion or restriction of processing, and you may object. If you believe your rights have been violated, you can contact the Serbian Commissioner for Information of Public Importance and Personal Data Protection.'] },
         { h: 'Cookies', p: ['If you choose “Accept” on the banner, the site loads the Meta Pixel, Google Analytics and Microsoft Clarity. They record which pages you visit and whether you joined the waitlist or ordered, so we can measure visits and how our ads perform. Clarity also records mouse movement, clicks and scrolling so we can see what isn’t working on the site; what you type into form fields is not recorded. If you enter an email or phone, Meta turns it into an encrypted hash in your browser and uses it only to match your account. If you choose “Decline”, none of this loads. You can change your choice at any time via the “Cookies” link at the bottom of the page. Your cart and cookie choice are stored only in your browser.'] },
