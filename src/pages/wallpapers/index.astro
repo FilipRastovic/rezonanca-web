@@ -1,0 +1,82 @@
+---
+// Free wallpapers (Marketing, 2026-11-11): six attractors in phone + desktop sizes, no email gate.
+// Files in public/wallpapers/ (from marketing/wallpapers-2026-11/), each piece links to its poster page.
+import Base from '../../layouts/Base.astro';
+import { findProduct } from '../../data/products.js';
+import { homeHref, productHref } from '../../i18n';
+const site = Astro.site!;
+// [product slug, file name]
+const WALLS = [['klifordov-veo', 'cliffords-veil'], ['halvorsen', 'halvorsen'], ['lorenc', 'lorenz'], ['aizava', 'aizawa'], ['tomas', 'thomas'], ['de-zong', 'de-jong']]
+  .map(([slug, file]) => ({ p: findProduct(slug)!, file }));
+const phone = (f: string) => `/wallpapers/phone-${f}-1440x3120.jpg`;
+const desktop = (f: string) => `/wallpapers/desktop-${f}-3840x2160.jpg`;
+const title = 'Free Strange Attractor Wallpapers, Phone and 4K Desktop | Rezonanca';
+const desc = 'Six strange attractor wallpapers drawn in code: Lorenz, Aizawa, Halvorsen, Thomas, De Jong and Clifford. Free for phone (1440x3120) and 4K desktop.';
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['Wallpapers', '/wallpapers/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
+  { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Free strange attractor wallpapers', description: desc, url: new URL('/wallpapers/', site).href,
+    hasPart: WALLS.map(({ p, file }) => ({ '@type': 'ImageObject', name: `${p.name.en} wallpaper`, contentUrl: new URL(desktop(file), site).href, thumbnailUrl: new URL(`/wallpapers/preview-${file}-720.webp`, site).href, creator: { '@type': 'Organization', name: 'Rezonanca' } })) },
+];
+---
+<Base lang="en" title={title} description={desc}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="top grid-bg">
+    <div class="wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href={homeHref()}>Home</a><span>/</span><span aria-current="page">Wallpapers</span></nav>
+      <p class="label">Free download</p>
+      <h1>Strange attractor wallpapers</h1>
+      <p class="lead">Six chaotic systems, each one path followed for hundreds of thousands of steps and drawn in code. Free for your phone (1440x3120, fits every iPhone and most Android phones) and your desktop (3840x2160, 4K). No sign-up.</p>
+    </div>
+  </section>
+  <section class="list">
+    <div class="wrap grid">
+      {WALLS.map(({ p, file }) => (
+        <article class="card">
+          <a class="shot" href={phone(file)} target="_blank" rel="noopener">
+            <img src={`/wallpapers/preview-${file}-360.webp`} srcset={`/wallpapers/preview-${file}-360.webp 360w, /wallpapers/preview-${file}-720.webp 720w`} sizes="(max-width: 560px) 90vw, (max-width: 900px) 45vw, 30vw" alt={`${p.name.en} attractor phone wallpaper`} width="720" height="1560" loading="lazy" decoding="async" />
+          </a>
+          <h2>{p.name.en}</h2>
+          <p>{p.line.en}</p>
+          <div class="dl">
+            <a class="btn btn--solid" href={phone(file)} download data-wall={`${file} phone`}>Phone <span class="mono">1440x3120</span></a>
+            <a class="btn" href={desktop(file)} download data-wall={`${file} desktop`}>Desktop <span class="mono">3840x2160</span></a>
+          </div>
+          <a class="go mono" href={productHref('en', p.slug)}>Get it as a print →</a>
+        </article>
+      ))}
+    </div>
+    <div class="wrap note">
+      <p>For personal use: set them as your wallpaper, share them with a link back. Every piece is also a fine art print, unframed or framed, shipped worldwide.</p>
+      <a class="btn" href="/collection/strange-attractors/">See all strange attractors</a>
+    </div>
+  </section>
+</Base>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-wall]').forEach((a) =>
+    a.addEventListener('click', () => (window as any).rzTrack?.('file_download', { content_name: a.dataset.wall })));
+</script>
+<style>
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover { color: var(--cyan); }
+  .crumbs [aria-current] { color: var(--ice); }
+  h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; text-wrap: balance; }
+  .lead { margin-top: 20px; max-width: 62ch; }
+  .list { background: var(--bg-1); padding-block: var(--space-md); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 3vw, 48px); }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .card { display: grid; gap: 12px; align-content: start; }
+  .shot img { width: 100%; height: auto; aspect-ratio: 1440 / 3120; object-fit: cover; background: var(--bg-0); margin-bottom: 8px; transition: opacity 0.3s; }
+  @media (max-width: 560px) { .shot img { aspect-ratio: 3 / 4; object-position: 50% 45%; } }
+  .shot:hover img { opacity: 0.9; }
+  h2 { font-size: var(--fs-h3); }
+  .card p { margin: 0; color: var(--text); font-size: var(--fs-sm); line-height: 1.7; }
+  .dl { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .dl .btn { flex: 1 1 140px; justify-content: center; gap: 8px; }
+  .dl .mono { font-size: var(--fs-2xs); opacity: 0.75; }
+  .go { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); }
+  .go:hover { color: var(--cyan); }
+  .note { display: grid; gap: 20px; justify-items: start; margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--line); }
+  .note p { margin: 0; max-width: 62ch; color: var(--text); }
+</style>

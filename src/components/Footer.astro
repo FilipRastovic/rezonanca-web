@@ -23,6 +23,7 @@ const t = T[lang].footer;
     <div class="contact mono">
       <span class="k">{T[lang].guide.title}</span>
       {GUIDES.map((g) => <a href={guideHref(g.slug)}>{g.h1}</a>)}
+      {lang === 'en' && <a href="/wallpapers/">Free wallpapers</a>}
     </div>
     <div class="contact mono">
       <span class="k">{t.contact}</span>

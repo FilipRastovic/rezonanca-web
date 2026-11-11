@@ -32,6 +32,7 @@ export const GET = ({ site }: { site: URL }) => {
 - [Collection, all works](${u(collectionHref('en'))})
 - [In a room: the posters in interiors](${u(interiorsHref())})
 - [Guides: the maths behind the art](${u(guideHref())})
+- [Free strange attractor wallpapers, phone and 4K desktop](${u('/wallpapers/')})
 - [Terms](${u(legalHref('en', 'terms'))}), [Privacy](${u(legalHref('en', 'privacy'))})
 
 ## Series
