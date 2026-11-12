@@ -1,0 +1,161 @@
+---
+// "Play with the equation" (Marketing → Web, 2026-11-12, approved prototype explore/play/index.html).
+// Clifford map, a/b/c/d sliders, live redraw on a canvas. Maths and canvas kept as in the prototype;
+// layout uses only the site's shared tokens and classes so it follows the site's look.
+import Base from '../../layouts/Base.astro';
+import { homeHref, productHref, collectionHref } from '../../i18n';
+const site = Astro.site!;
+const veilHref = productHref('en', 'klifordov-veo');
+const allHref = collectionHref('en');
+const title = 'Play with the Equation: Clifford Attractor | Rezonanca';
+const desc = 'Move four numbers and watch a strange attractor redraw live in your browser: the Clifford map behind our Clifford\'s Veil print. Download your version as a phone wallpaper.';
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['Play', '/play/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
+  { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Play with the equation', description: desc, url: new URL('/play/', site).href, applicationCategory: 'EducationalApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, creator: { '@type': 'Organization', name: 'Rezonanca' } },
+];
+---
+<Base lang="en" title={title} description={desc}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="top grid-bg">
+    <div class="wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href={homeHref()}>Home</a><span>/</span><span aria-current="page">Play</span></nav>
+      <p class="label">Made with code</p>
+      <h1>Play with the equation</h1>
+      <p class="lead">Every image here is one equation. Each step lands one point; millions of steps draw the shape. Move a number and watch it redraw.</p>
+    </div>
+  </section>
+  <section class="list">
+    <div class="wrap play">
+      <div class="pl-stage">
+        <canvas id="c" width="1200" height="1200" aria-label="Clifford attractor drawn live from the numbers on this page"></canvas>
+        <p class="pl-count mono" id="count"></p>
+      </div>
+      <div class="pl-panel">
+        <div class="pl-eq" id="eq"></div>
+        <label class="sl"><span>a</span><input id="a" type="range" min="-3" max="3" step="0.01" /><output id="ao"></output></label>
+        <label class="sl"><span>b</span><input id="b" type="range" min="-3" max="3" step="0.01" /><output id="bo"></output></label>
+        <label class="sl"><span>c</span><input id="cc" type="range" min="-3" max="3" step="0.01" /><output id="co"></output></label>
+        <label class="sl"><span>d</span><input id="d" type="range" min="-3" max="3" step="0.01" /><output id="do"></output></label>
+        <div class="pl-row">
+          <button class="btn" type="button" id="rand">Surprise me</button>
+          <button class="btn" type="button" id="reset">Back to Clifford's Veil</button>
+          <button class="btn" type="button" id="wall">Download as phone wallpaper</button>
+        </div>
+        <a class="btn btn--solid pl-main" id="main" href={veilHref} data-veil={veilHref} data-all={allHref}>Get Clifford's Veil on your wall</a>
+        <p class="pl-note">Some numbers collapse to a few dots or a single loop. That is the maths: only some settings are chaotic. Try another.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<script>
+const VEIL = { a: 1.7, b: 1.7, c: 0.6, d: 1.2 };
+const ids = { a: 'a', b: 'b', c: 'cc', d: 'd' } as const;
+type K = keyof typeof ids;
+const $ = (id: string) => document.getElementById(id)!;
+const cv = $('c') as HTMLCanvasElement, ctx = cv.getContext('2d')!;
+const N = cv.width, TOTAL = 4e6, PER_FRAME = 250000;
+let p = { ...VEIL }, hist: Float32Array, done = 0, x = 0.1, y = 0.1, raf = 0, bounds = { s: 1 };
+const main = $('main') as HTMLAnchorElement;
+
+// Ice palette: deep navy ground -> ice blue -> pale ice (capped below white).
+const STOPS: [number, number[]][] = [[0, [7, 11, 20]], [0.35, [38, 70, 130]], [0.7, [120, 165, 235]], [1, [216, 230, 245]]];
+function ice(t: number) {
+  for (let i = 1; i < STOPS.length; i++) if (t <= STOPS[i][0]) {
+    const [t0, c0] = STOPS[i - 1], [t1, c1] = STOPS[i], k = (t - t0) / (t1 - t0);
+    return c0.map((v, j) => v + (c1[j] - v) * k);
+  }
+  return STOPS[STOPS.length - 1][1];
+}
+const LUT = Array.from({ length: 256 }, (_, i) => ice(i / 255));
+
+const fmt = (v: number) => (v >= 0 ? ' ' : '') + v.toFixed(2);
+const isVeil = () => (Object.keys(VEIL) as K[]).every((k) => Math.abs(p[k] - VEIL[k]) < 0.005);
+function showEq() {
+  $('eq').innerHTML =
+    `x<sub>n+1</sub> = sin(<b>${p.a.toFixed(2)}</b>·y) + <b>${p.c.toFixed(2)}</b>·cos(<b>${p.a.toFixed(2)}</b>·x)<br>` +
+    `y<sub>n+1</sub> = sin(<b>${p.b.toFixed(2)}</b>·x) + <b>${p.d.toFixed(2)}</b>·cos(<b>${p.b.toFixed(2)}</b>·y)`;
+  for (const k in ids) { ($(ids[k as K]) as HTMLInputElement).value = String(p[k as K]); $(k + 'o').textContent = fmt(p[k as K]); }
+  // Main button: the Veil numbers sell the Veil; anything else points to all prints.
+  const veil = isVeil();
+  main.href = veil ? main.dataset.veil! : main.dataset.all!;
+  main.textContent = veil ? "Get Clifford's Veil on your wall" : 'See all prints';
+}
+
+function start() {
+  cancelAnimationFrame(raf);
+  // Clifford map lives in [-1-|c|, 1+|c|] x [-1-|d|, 1+|d|]; fit it with a margin.
+  const sx = 1 + Math.abs(p.c), sy = 1 + Math.abs(p.d), s = Math.max(sx, sy) * 1.08;
+  bounds = { s };
+  hist = new Float32Array(N * N); done = 0; x = 0.1; y = 0.1;
+  showEq(); raf = requestAnimationFrame(step);
+}
+
+function step() {
+  const { a, b, c, d } = p, s = bounds.s, k = N / (2 * s);
+  for (let i = 0; i < PER_FRAME; i++) {
+    const nx = Math.sin(a * y) + c * Math.cos(a * x), ny = Math.sin(b * x) + d * Math.cos(b * y);
+    x = nx; y = ny;
+    const px = ((x + s) * k) | 0, py = ((s - y) * k) | 0;
+    if (px >= 0 && py >= 0 && px < N && py < N) hist[py * N + px]++;
+  }
+  done += PER_FRAME; draw();
+  $('count').textContent = `${(done / 1e6).toFixed(2)} million points`;
+  if (done < TOTAL) raf = requestAnimationFrame(step);
+}
+
+function draw(target: CanvasRenderingContext2D = ctx, W = N, H = N, offY = 0) {
+  let max = 0; for (let i = 0; i < hist.length; i++) if (hist[i] > max) max = hist[i];
+  const lm = Math.log1p(max) || 1, img = target.createImageData(W, H), px = img.data;
+  const g0 = LUT[0];
+  for (let i = 0; i < W * H; i++) { px[i * 4] = g0[0]; px[i * 4 + 1] = g0[1]; px[i * 4 + 2] = g0[2]; px[i * 4 + 3] = 255; }
+  for (let yy = 0; yy < N; yy++) {
+    const ty = yy + offY; if (ty < 0 || ty >= H) continue;
+    const xo = ((W - N) / 2) | 0;
+    for (let xx = 0; xx < N; xx++) {
+      const h = hist[yy * N + xx]; if (!h) continue;
+      const t = Math.pow(Math.log1p(h) / lm, 0.8), col = LUT[Math.min(255, (t * 255) | 0)], o = (ty * W + xx + xo) * 4;
+      px[o] = col[0]; px[o + 1] = col[1]; px[o + 2] = col[2];
+    }
+  }
+  target.putImageData(img, 0, 0);
+}
+
+for (const k in ids) $(ids[k as K]).addEventListener('input', (e) => { p[k as K] = +(e.target as HTMLInputElement).value; start(); });
+$('reset').onclick = () => { p = { ...VEIL }; start(); };
+$('rand').onclick = () => {
+  const r = () => +(Math.random() * 6 - 3).toFixed(2);
+  p = { a: r(), b: r(), c: +(Math.random() * 2 - 1).toFixed(2), d: +(Math.random() * 2 - 1).toFixed(2) }; start();
+  (window as any).rzTrack?.('play_surprise');
+};
+$('wall').onclick = () => {
+  const W = 1440, H = 3120, w = document.createElement('canvas'); w.width = W; w.height = H;
+  const off = Math.round(H * 0.55 - N / 2); // art sits below the lock-screen clock
+  draw(w.getContext('2d')!, W, H, off);
+  w.toBlob((b) => { if (!b) return; const l = document.createElement('a'); l.href = URL.createObjectURL(b); l.download = 'rezonanca-attractor-1440x3120.png'; l.click(); });
+  (window as any).rzTrack?.('file_download', { content_name: `play-${p.a}-${p.b}-${p.c}-${p.d}` });
+};
+start();
+</script>
+<style>
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover { color: var(--cyan); }
+  .crumbs [aria-current] { color: var(--ice); }
+  h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; text-wrap: balance; }
+  .lead { margin-top: 20px; max-width: 62ch; }
+  .list { background: var(--bg-1); padding-block: var(--space-md); }
+  .play { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); gap: var(--gap-col); align-items: start; }
+  @media (max-width: 860px) { .play { grid-template-columns: minmax(0, 1fr); } }
+  canvas { width: 100%; aspect-ratio: 1 / 1; display: block; box-shadow: var(--frame-shadow); }
+  .pl-count { margin: 12px 0 0; font-size: var(--fs-2xs); color: var(--muted); }
+  .pl-panel { display: grid; gap: 4px; }
+  .pl-eq { font: 400 var(--fs-sm)/1.8 var(--f-code); color: var(--text); background: var(--bg-card); border: 1px solid var(--line); padding: 14px 16px; margin-bottom: 14px; overflow-x: auto; white-space: nowrap; }
+  .pl-eq :global(b) { color: var(--ice); font-weight: 600; }
+  .sl { display: grid; grid-template-columns: 20px minmax(0, 1fr) 52px; align-items: center; gap: 12px; padding: 8px 0; font: 400 var(--fs-sm)/1 var(--f-code); color: var(--ice); }
+  .sl input { width: 100%; accent-color: var(--ice); }
+  .sl output { text-align: right; color: var(--text); white-space: pre; }
+  .pl-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 14px; }
+  .pl-row .btn { flex: 1 1 140px; justify-content: center; }
+  .pl-main { justify-content: center; }
+  .pl-note { margin: 14px 0 0; font-size: var(--fs-sm); color: var(--muted); }
+</style>

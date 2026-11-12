@@ -33,6 +33,7 @@ export const GET = ({ site }: { site: URL }) => {
 - [In a room: the posters in interiors](${u(interiorsHref())})
 - [Guides: the maths behind the art](${u(guideHref())})
 - [Free strange attractor phone wallpapers](${u('/wallpapers/')})
+- [Play with the equation: Clifford attractor drawn live](${u('/play/')})
 - [Terms](${u(legalHref('en', 'terms'))}), [Privacy](${u(legalHref('en', 'privacy'))})
 
 ## Series
