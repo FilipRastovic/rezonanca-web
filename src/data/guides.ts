@@ -20,7 +20,7 @@ export const GUIDES: Guide[] = [
     h1: 'What is a strange attractor?',
     kicker: 'Guide // Chaos theory',
     lead: 'A strange attractor is the shape a chaotic system settles into. The motion never repeats and can\'t be predicted for long, yet it always stays on the same delicate shape. Here is what that means, with the equations behind our posters.',
-    updated: '2026-11-02',
+    updated: '2026-11-13',
     sections: [
       {
         h: 'A point that follows a rule',
@@ -99,11 +99,11 @@ export const GUIDES: Guide[] = [
   {
     slug: 'mandelbrot-set-explained',
     series: 'mandelbrot',
-    title: 'The Mandelbrot Set Explained: z² + c and Fractals',
+    title: 'Mandelbrot Set Explained: z = z² + c in Plain English',
     desc: 'The Mandelbrot set explained in plain English: one equation, z² + c, the escape radius, seahorse valley, minibrots and how a deep zoom is computed and coloured.',
-    h1: 'The Mandelbrot set explained',
+    h1: 'The Mandelbrot set explained: z = z² + c',
     kicker: 'Guide // Fractals',
-    lead: 'The Mandelbrot set is the most famous fractal, and its whole definition fits on one line. Here is how that one line produces an endless coastline of spirals, seahorses and tiny copies of itself, and how our posters are computed from it.',
+    lead: 'The Mandelbrot set is the set of complex numbers c for which z = z² + c, started at z = 0 and repeated forever, never runs off to infinity. It is the most famous fractal, and that one line is its whole definition. Here is how that one line produces an endless coastline of spirals, seahorses and tiny copies of itself, and how our posters are computed from it.',
     updated: '2026-11-02',
     sections: [
       {
@@ -481,12 +481,12 @@ export const GUIDES: Guide[] = [
     slug: 'fractal-art',
     series: '',
     shop: ['mandelbrotov-skup', 'dolina-morskih-konjica', 'dim', 'perje', 'lorenc', 'klifordov-veo', 'drvo-signala', 'snop'],
-    title: 'Fractal Art: What It Is and How It Is Made',
+    title: 'Fractal Art: Meaning, Types and Examples',
     desc: 'What fractal art is, where it came from and how it is made: the Mandelbrot set, fractal flames, strange attractors and recursive rules, with real examples.',
-    h1: 'Fractal art: what it is and how it is made',
+    h1: 'Fractal art: meaning, types and examples',
     kicker: 'Guide // Fractals',
     lead: 'Fractal art is art made from shapes that repeat at every scale, computed rather than drawn by hand. Here is what makes a shape a fractal, where the art form came from, and the main kinds of fractal art you will see on our walls and elsewhere.',
-    updated: '2026-11-03',
+    updated: '2026-11-13',
     sections: [
       {
         h: 'What a fractal is',
