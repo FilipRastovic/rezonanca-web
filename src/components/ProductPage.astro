@@ -24,10 +24,15 @@ const noun = info.seo.noun; // search phrase for this series, e.g. "Strange Attr
 // "Fibration" + "Hopf Fibration Poster" -> "Hopf Fibration Poster"; "The Mandelbrot Set" + "Mandelbrot Fractal Poster" -> "The Mandelbrot Set Fractal Poster".
 const nameWords = name.toLowerCase().split(/\s+/);
 const nounWords = noun.split(' ');
-const fullName = nameWords.every((w) => nounWords.some((n) => n.toLowerCase() === w))
+// Pieces with their own name keep the maths name for search (p.sys): "Cup - Clifford Attractor Poster".
+const fullName = p.sys ? `${name} - ${p.sys} Poster`
+  : nameWords.every((w) => nounWords.some((n) => n.toLowerCase() === w))
   ? noun
   : `${name} ${nounWords.filter((n) => !nameWords.includes(n.toLowerCase())).join(' ')}`;
-const fullNameLc = fullName.startsWith(name) ? `${name} ${nounLc(fullName.slice(name.length + 1))}` : nounLc(fullName);
+const fullNameLc = p.sys ? `${name} - ${p.sys} poster`
+  : fullName.startsWith(name) ? `${name} ${nounLc(fullName.slice(name.length + 1))}` : nounLc(fullName);
+// What the piece is, without its name (image alt text): "Clifford Attractor poster".
+const kindLc = p.sys ? `${p.sys} poster` : fullNameLc.startsWith(name) ? fullNameLc.slice(name.length + 1) : fullNameLc;
 const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug).slice(0, 4);
 const others = SERIES.filter((s) => s.key !== p.style);
 // "Also bought with": two pieces from other series, picked per product so they differ from page to page.
@@ -60,7 +65,7 @@ const toneName = (tone: string) => t.order.tones[(tone || 'orig') as 'orig'];
 const galleryFor = (tone: string) => {
   const k = imgKey(p.slug, tone), suffix = tone ? ` (${toneName(tone)})` : '';
   return [
-    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${name}${suffix} - ${fullNameLc.startsWith(name) ? fullNameLc.slice(name.length + 1) : fullNameLc}`, fit: 'poster' },
+    { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${name}${suffix} - ${kindLc}`, fit: 'poster' },
     // Room shots: the exact print in three mockup scenes (scripts/render-rooms.py).
     ...['', '-2', '-3'].map((n) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' })),
     { src: `/details/${k}.webp`, thumb: `/details/${k}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },

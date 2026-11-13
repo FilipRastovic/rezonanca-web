@@ -1,0 +1,37 @@
+{
+  "kind": "pendulum",
+  "style": "chaos",
+  "equations": [
+    "L = T − V",
+    "d/dt ∂L/∂θ̇ᵢ = ∂L/∂θᵢ",
+    "h = −(cos θ₁ + cos θ₂)"
+  ],
+  "params": [
+    [
+      "arms",
+      "equal length and mass"
+    ],
+    [
+      "start θ₁",
+      "0 … π"
+    ],
+    [
+      "start θ₂",
+      "0 … 1.3π"
+    ],
+    [
+      "time T",
+      "6 s"
+    ],
+    [
+      "integrator",
+      "RK4"
+    ]
+  ],
+  "stats": [
+    [
+      "pendulums",
+      "12 000 000 (one per pixel)"
+    ]
+  ]
+}

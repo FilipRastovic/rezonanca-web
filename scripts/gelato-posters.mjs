@@ -3,16 +3,18 @@
 // ../print-files/gelato/SPREMNO-*/<key>-30x40.jpg (300 DPI, 4 mm bleed) → trim the bleed →
 //   public/posters/<key>-en-lg.webp (1440×1920, product page) + <key>-en.webp (900×1200, cards, cart)
 import sharp from 'sharp';
-import { readdirSync } from 'node:fs';
+import { readdirSync, existsSync } from 'node:fs';
 import { PRODUCTS } from '../src/data/products.js';
 
 const ROOT = new URL('../../print-files/gelato/', import.meta.url).pathname;
-const DIR = ROOT + readdirSync(ROOT).filter((d) => d.startsWith('SPREMNO-')).sort().at(-1) + '/';
+// Each key's sheet from whichever SPREMNO-* set has it (newest first).
+const DIRS = readdirSync(ROOT).filter((d) => d.startsWith('SPREMNO-')).sort().reverse().map((d) => ROOT + d + '/');
+const dirOf = (k) => DIRS.find((d) => existsSync(d + `${k}-30x40.jpg`));
 const BLEED = Math.round((4 / 25.4) * 300); // 4 mm at 300 DPI
 const want = process.argv.slice(2);
 const keys = PRODUCTS.flatMap((p) => [p.slug, ...(p.tones || []).map((t) => `${p.slug}-${t}`)]).filter((k) => !want.length || want.includes(k));
 for (const k of keys) {
-  const src = sharp(DIR + `${k}-30x40.jpg`);
+  const src = sharp(dirOf(k) + `${k}-30x40.jpg`);
   const { width, height } = await src.metadata();
   const trimmed = await src.extract({ left: BLEED, top: BLEED, width: width - 2 * BLEED, height: height - 2 * BLEED }).toBuffer();
   await sharp(trimmed).resize(1440, 1920, { fit: 'cover' }).webp({ quality: 86 }).toFile(`public/posters/${k}-en-lg.webp`);

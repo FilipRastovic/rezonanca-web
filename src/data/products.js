@@ -13,6 +13,8 @@ export const SERIES = [
   { key: 'ridges', slug: 'ridges', old: 'grebeni' },
   { key: 'orbit', slug: 'orbit', old: 'orbita' },
   { key: 'hopf', slug: 'hopf-fibrations', old: 'hopf' },
+  { key: 'chaos', slug: 'double-pendulum', old: 'double-pendulum' },
+  { key: 'inversion', slug: 'circle-inversion', old: 'circle-inversion' },
   { key: 'object', slug: 'objects', old: 'objekti' },
 ];
 
@@ -20,6 +22,10 @@ const p = (slug, style, seed, variant, palette, sr, en, lineSr, lineEn) =>
   ({ slug, style, seed, variant, palette, name: { sr, en }, line: { sr: lineSr, en: lineEn } });
 // pa(): artwork rendered by explore/apstrakt/apstrakt.html instead of the poster generator.
 const pa = (slug, style, seed, variant, palette, render, sr, en, lineSr, lineEn) => ({ ...p(slug, style, seed, variant, palette, sr, en, lineSr, lineEn), render });
+
+// pr(): artwork rendered outside the shop scripts (explore/kaos, explore/klein). Images come from the Gelato print
+// sheets via scripts/prerendered-assets.mjs; scripts/render-assets.mjs skips them.
+const pr = (slug, style, seed, variant, palette, en, lineEn) => ({ ...p(slug, style, seed, variant, palette, en, en, lineEn, lineEn), pre: true });
 
 export const PRODUCTS = [
   // ---- Структура
@@ -29,13 +35,13 @@ export const PRODUCTS = [
   p('galaksija', 'structure', 4, 'spiral', 'violet', 'Галаксија', 'Galaxy',
     'Сваки зрак се увија у истом смеру, док се звук не претвори у спиралну галаксију.',
     'Every ray curls the same way, until the sound becomes a spiral galaxy.'),
-  p('drvo-signala', 'structure', 4, 'tree', 'aurora', 'Дрво сигнала', 'Signal Tree',
+  p('drvo-signala', 'structure', 4, 'tree', 'aurora', 'Дрво сигнала', 'Signal',
     'Из једног корена, сигнал расте и грана се као живо биће од светлости.',
     'From a single root, the signal grows and branches like a living thing made of light.'),
   p('dvojna-zvezda', 'structure', 7, 'twin', 'cyan', 'Двојна звезда', 'Binary Star',
     'Два језгра, једна фреквенција. Поља силе што их вежу једно за друго.',
     'Two cores, one frequency. Field lines binding them to each other.'),
-  p('dajsonova-sfera', 'structure', 4, 'shell', 'ember', 'Дајсонова сфера', 'Dyson Sphere',
+  p('dajsonova-sfera', 'structure', 4, 'shell', 'ember', 'Дајсонова сфера', 'Sphere',
     'Прстенови светлости саграђени око звезде - архитектура цивилизације која слуша.',
     'Rings of light built around a star - the architecture of a civilisation that listens.'),
   p('supernova', 'structure', 8, 'burst', 'ice', 'Супернова', 'Supernova',
@@ -83,39 +89,39 @@ export const PRODUCTS = [
     'Thousands of small buildings in silver silence. The city at 3 a.m.'),
 
   // ---- Атрактори
-  p('lorenc', 'attractor', 1, 'lorenz', 'cyan', 'Лоренц', 'Lorenz',
+  p('lorenc', 'attractor', 1, 'lorenz', 'cyan', 'Лоренц', 'Tightly Woven',
     'Лептир који је изазвао олују. Три једначине за атмосферу, и ниједна путања се никад не понови.',
     'The butterfly that started a storm. Three equations for the atmosphere, and no path ever repeats.'),
-  p('aizava', 'attractor', 1, 'aizawa', 'violet', 'Аизава', 'Aizawa',
+  p('aizava', 'attractor', 1, 'aizawa', 'violet', 'Аизава', 'Whirlwind',
     'Сфера исплетена из једне нити, пробијена цеви кроз средину. Кретање које никад не стаје на исто место.',
     'A sphere woven from a single thread, pierced by a tube through its heart. Motion that never lands in the same place.'),
-  p('tomas', 'attractor', 2, 'thomas', 'aurora', 'Томас', 'Thomas',
+  p('tomas', 'attractor', 2, 'thomas', 'aurora', 'Томас', 'Together',
     'Честица у лавиринту синусних таласа. Најједноставније могуће једначине, најсложенији могући пут.',
     'A particle in a labyrinth of sine waves. The simplest possible equations, the most tangled possible path.'),
-  p('halvorsen', 'attractor', 2, 'halvorsen', 'ember', 'Халворсен', 'Halvorsen',
+  p('halvorsen', 'attractor', 2, 'halvorsen', 'ember', 'Халворсен', 'Waves',
     'Три крила савијена једно око другог, симетрија која се руши сваког тренутка.',
     'Three wings folded around each other, a symmetry breaking in every instant.'),
-  p('klifordov-veo', 'attractor', 1, 'clifford', 'ice', 'Клифордов вео', "Clifford's Veil",
+  p('klifordov-veo', 'attractor', 1, 'clifford', 'ice', 'Клифордов вео', 'Cup',
     'Милиони тачака, свака израчуната из претходне. Заједно цртају тканину коју нико није дизајнирао.',
     'Millions of points, each computed from the last. Together they draw a fabric no one designed.'),
-  p('de-zong', 'attractor', 3, 'dejong', 'cyan', 'Де Жонг', 'De Jong',
+  p('de-zong', 'attractor', 3, 'dejong', 'cyan', 'Де Жонг', 'Teardrop',
     'Четири броја и две једначине. Петља светлости која се враћа, а никад не затвара.',
     'Four numbers and two equations. A loop of light that keeps returning but never closes.'),
 
   // ---- Манделброт
-  p('mandelbrotov-skup', 'mandelbrot', 1, 'full', 'cyan', 'Манделбротов скуп', 'The Mandelbrot Set',
+  p('mandelbrotov-skup', 'mandelbrot', 1, 'full', 'cyan', 'Манделбротов скуп', 'Brot',
     'z² + c. Најпознатији облик у математици, бесконачна обала око једног острва.',
     'z² + c. The most famous shape in mathematics, an infinite coastline around a single island.'),
   p('dolina-morskih-konjica', 'mandelbrot', 1, 'seahorse', 'violet', 'Долина морских коњица', 'Seahorse Valley',
     'Хиљаду пута увеличано. Спирале које се увијају у спирале, док се не изгубиш.',
     'Magnified a thousand times. Spirals curling into spirals until you lose your way.'),
-  p('spirala', 'mandelbrot', 1, 'spiral', 'aurora', 'Спирала', 'Spiral',
+  p('spirala', 'mandelbrot', 1, 'spiral', 'aurora', 'Спирала', 'Far Out There',
     'Дубоко у пукотини скупа, вртлог који никад не стиже до дна.',
     'Deep in a crack of the set, a whirlpool that never reaches the bottom.'),
-  p('mali-mandelbrot', 'mandelbrot', 1, 'minibrot', 'ember', 'Мали Манделброт', 'Minibrot',
+  p('mali-mandelbrot', 'mandelbrot', 1, 'minibrot', 'ember', 'Мали Манделброт', 'Mini',
     'На крају дугачке антене, савршена копија целог скупа. Бесконачност у малом.',
     'At the end of the long antenna, a perfect copy of the whole set. Infinity in miniature.'),
-  p('vitica', 'mandelbrot', 1, 'tendril', 'ice', 'Витица', 'Tendril',
+  p('vitica', 'mandelbrot', 1, 'tendril', 'ice', 'Витица', 'Snowflake',
     'Танке гране леда што расту из севера скупа, свака са истим обликом као цела.',
     'Thin branches of ice growing from the north of the set, each one shaped like the whole.'),
   p('morska-zvezda', 'mandelbrot', 1, 'starfish', 'cyan', 'Морска звезда', 'Starfish',
@@ -149,7 +155,7 @@ export const PRODUCTS = [
   p('prsten-tisine', 'orbit', 16, 'turbulent', 'ice', 'Прстен тишине', 'Ring of Silence',
     'Прстенови изобличени шумом у топографску мапу тишине - земља које нема ни на једној карти.',
     'Rings warped by noise into a topographic map of silence - land found on no chart.'),
-  p('magnetar', 'orbit', 21, 'shatter', 'cyan', 'Магнетар', 'Magnetar',
+  p('magnetar', 'orbit', 21, 'shatter', 'cyan', 'Магнетар', 'Magnetic',
     'Поље толико јако да кида сопствене прстенове у лукове светлости.',
     'A field so strong it tears its own rings into arcs of light.'),
   p('pomracenje', 'orbit', 4, 'eclipse', 'ember', 'Помрачење', 'Eclipse',
@@ -162,25 +168,25 @@ export const PRODUCTS = [
     'Неколико светлих прстенова, мирних као ореол око месеца.',
     'A few bright rings, calm as a halo around the moon.'),
   // Rendered by explore/apstrakt/apstrakt.html (render: [mode, seed, pal]), not by waveform-poster.
-  pa('resler', 'attractor', 1, 'sistem', 'aurora', ['atraktor', 1, 'aurora'], 'Реслер', 'Rössler',
+  pa('resler', 'attractor', 1, 'sistem', 'aurora', ['atraktor', 1, 'aurora'], 'Реслер', 'Bullseye',
     'Спирала која се увија у пераје, најједноставнији хаос: само једна нелинеарна чланица у три једначине.',
     'A spiral that curls into a fin, the simplest chaos: a single non-linear term in three equations.'),
-  pa('cen', 'attractor', 2, 'sistem', 'ember', ['atraktor', 2, 'zar'], 'Чен', 'Chen',
+  pa('cen', 'attractor', 2, 'sistem', 'ember', ['atraktor', 2, 'zar'], 'Чен', 'Tears',
     'Оштра крила која се савијају једно око другог, рођак Лоренцовог атрактора.',
     'Sharp wings folding around each other, a cousin of the Lorenz attractor.'),
-  pa('dadras', 'attractor', 3, 'sistem', 'aurora', ['atraktor', 3, 'aurora'], 'Дадрас', 'Dadras',
+  pa('dadras', 'attractor', 3, 'sistem', 'aurora', ['atraktor', 3, 'aurora'], 'Дадрас', 'Hold me',
     'Вртлог који се на средини пресавија, као трака светлости ухваћена у ветру.',
     'A vortex that folds in the middle, like a ribbon of light caught in the wind.'),
-  pa('sprot', 'attractor', 4, 'sistem', 'violet', ['atraktor', 4, 'ponoc'], 'Спрот', 'Sprott',
+  pa('sprot', 'attractor', 4, 'sistem', 'violet', ['atraktor', 4, 'ponoc'], 'Спрот', 'Helmet',
     'Облик медузе са таласом кроз средину, из каталога најједноставнијих хаотичних система.',
     'A jellyfish shape with a wave through its middle, from a catalogue of the simplest chaotic systems.'),
-  pa('rabinovic', 'attractor', 5, 'sistem', 'ember', ['atraktor', 5, 'zar'], 'Рабинович', 'Rabinovich',
+  pa('rabinovic', 'attractor', 5, 'sistem', 'ember', ['atraktor', 5, 'zar'], 'Рабинович', 'Sandwich',
     'Шкољка од хиљада петљи, систем Рабиновича и Фабриканта из физике плазме.',
     'A shell of thousands of loops, the Rabinovich-Fabrikant system from plasma physics.'),
-  pa('cetiri-krila', 'attractor', 6, 'sistem', 'aurora', ['atraktor', 6, 'aurora'], 'Четири крила', 'Four Wings',
+  pa('cetiri-krila', 'attractor', 6, 'sistem', 'aurora', ['atraktor', 6, 'aurora'], 'Четири крила', "We're a Company",
     'Четири вртлога која се преплићу у једну фигуру, као лептир у огледалу.',
     'Four vortices woven into one figure, like a butterfly in a mirror.'),
-  pa('snop', 'hopf', 3, 'snop', 'ember', ['hopf', 3, 'zar'], 'Сноп', 'Fibration',
+  pa('snop', 'hopf', 3, 'snop', 'ember', ['hopf', 3, 'zar'], 'Сноп', 'Fiber',
     'Угнежђени торуси од стотина кругова, где је сваки круг уланчан са сваким другим.',
     'Nested tori of hundreds of circles, where every circle is linked with every other.'),
   pa('dvojstvo', 'hopf', 2, 'snop', 'aurora', ['hopf', 2, 'aurora'], 'Двојство', 'Duality',
@@ -201,9 +207,23 @@ export const PRODUCTS = [
   pa('ruza', 'flame', 4, 'plamen', 'violet', ['plamen', 4, 'ponoc'], 'Ружа', 'Rose',
     'Латице од милиона тачака око топлог језгра, са петоструком симетријом.',
     'Petals of millions of points around a warm core, with fivefold symmetry.'),
-  pa('vetrenjaca', 'flame', 6, 'plamen', 'aurora', ['plamen', 6, 'aurora'], 'Ветрењача', 'Pinwheel',
+  pa('vetrenjaca', 'flame', 6, 'plamen', 'aurora', ['plamen', 6, 'aurora'], 'Ветрењача', 'Windmill',
     'Четири крака светлости која се окрећу око средишта, као ветрењача у тами.',
     'Four arms of light turning around a centre, like a pinwheel in the dark.'),
+  // Liquid: double pendulum (explore/kaos/final, approved 2026-11-14). Names by Filip.
+  pr('chaos-1', 'chaos', 1, 'pendulum', 'ember', 'Flamingo',
+    'Each pixel is a double pendulum let go from rest; blue and amber show how high its lower arm swings after six seconds.'),
+  pr('chaos-2', 'chaos', 2, 'pendulum', 'violet', 'Watercolor',
+    'Violet and mint folds where pendulums that start a hair apart end up in completely different places.'),
+  pr('chaos-3', 'chaos', 3, 'pendulum', 'gold', 'Brushstroke',
+    'A gold stroke along the edge of chaos: on one side neighbouring pendulums agree, on the other no two do.'),
+  // Deep Inside: circle inversion fractal (explore/klein/final, approved 2026-11-14).
+  pr('inversion-1', 'inversion', 1, 'inversion', 'ember', 'Flower',
+    'Fold into a square, turn inside out in a circle, fourteen times over: blue lace grows wherever the stretch piles up.'),
+  pr('inversion-2', 'inversion', 2, 'inversion', 'ember', 'Eternity',
+    'A cross of cream and blue where the pattern repeats inside itself, scale after scale.'),
+  pr('inversion-3', 'inversion', 3, 'inversion', 'gold', 'Holes',
+    'The same fourteen folds as Flower, in gold lace around deep navy pools.'),
   // Објекти: particle worlds rendered by explore/kiber/kiber.html (mode=objekat), not by waveform-poster.
   p('stanica', 'object', 8, 'objekat', 'ember', 'Станица', 'Station',
     'Хексагонални свет у плавом сјају, са ћилибарним прстеном прашине и месецима на ивици орбите.',
@@ -231,6 +251,17 @@ for (const x of PRODUCTS) x.boost = BOOST[x.slug] ?? 0.6;
 // roza = deep rose ground (2026-10-11); tus = Туш, black ink on white paper (2026-10-21, light rebrand).
 // Public product addresses (/poster/<url>/), English for search since 2026-11-02. `slug` stays the internal key
 // (images, print files, cart, payments, pixel); the old /poster/<slug>/ addresses forward (astro.config.mjs).
+// Maths name for search titles, for pieces whose own name doesn't say it (Filip renamed them 2026-11-14):
+// title = "<name> - <sys> Poster", e.g. "Cup - Clifford Attractor Poster".
+const SYS = {
+  tomas: 'Thomas Attractor', halvorsen: 'Halvorsen Attractor', 'klifordov-veo': 'Clifford Attractor', 'de-zong': 'De Jong Attractor',
+  lorenc: 'Lorenz Attractor', aizava: 'Aizawa Attractor', resler: 'Rössler Attractor', sprot: 'Sprott Attractor',
+  'cetiri-krila': 'Four-Wing Attractor', dadras: 'Dadras Attractor', cen: 'Chen Attractor', rabinovic: 'Rabinovich-Fabrikant Attractor',
+  'mandelbrotov-skup': 'Mandelbrot Set', spirala: 'Mandelbrot Spiral', 'mali-mandelbrot': 'Minibrot', vitica: 'Mandelbrot Tendril',
+  snop: 'Hopf Fibration',
+};
+for (const x of PRODUCTS) x.sys = SYS[x.slug];
+
 export const URL_SLUG = {
   'predajnik': 'transmitter',
   'galaksija': 'galaxy',
@@ -290,13 +321,19 @@ export const URL_SLUG = {
   'vetrenjaca': 'pinwheel',
   'stanica': 'station',
   'anomalija': 'anomaly',
+  'chaos-1': 'flamingo-double-pendulum',
+  'chaos-2': 'watercolor-double-pendulum',
+  'chaos-3': 'brushstroke-double-pendulum',
+  'inversion-1': 'flower-circle-inversion',
+  'inversion-2': 'eternity-circle-inversion',
+  'inversion-3': 'holes-circle-inversion',
 };
 for (const x of PRODUCTS) x.url = URL_SLUG[x.slug] ?? x.slug; // new piece without an entry: its key is the address
 
 export const TONES = ['roza', 'tus'];
 const NO_TONE = {
-  roza: ['resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'],
-  tus: ['magla', 'nulta-orbita', 'pomracenje', 'oreol', 'crvotocina'], // weak on white paper (Filip 2026-10-21)
+  roza: ['chaos-1', 'chaos-2', 'chaos-3', 'inversion-1', 'inversion-2', 'inversion-3', 'resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'],
+  tus: ['chaos-1', 'chaos-2', 'chaos-3', 'inversion-1', 'inversion-2', 'inversion-3', 'magla', 'nulta-orbita', 'pomracenje', 'oreol', 'crvotocina'], // weak on white paper (Filip 2026-10-21)
 };
 for (const x of PRODUCTS) x.tones = TONES.filter((t) => !NO_TONE[t].includes(x.slug));
 // Image file key for a product in a colourway ('' = original).

@@ -51,6 +51,18 @@ export default {
       desc: 'Светлост као дим и свила. Милиони тачака скачу између неколико правила изабраних насумично, а њихови трагови граде облике какве ниједна рука не би нацртала.',
       seo: { title: 'Fractal Flame Posters - Abstract Math Art Prints', h1: 'Fractal flame posters', desc: 'Fractal flame posters: millions of points following a few random rules, drawn in code. Abstract math art prints on fine art paper, free shipping worldwide.', noun: 'Fractal Flame Poster' },
     },
+    chaos: {
+      name: 'Liquid',
+      code: 'SERIES J // DOUBLE PENDULUM',
+      desc: 'Millions of double pendulums, one per pixel, each let go from rest at a slightly different angle. Colour is how high the lower arm is a few seconds later. Where neighbours agree the paint runs smooth; where chaos starts it folds into fine streaks.',
+      seo: { title: 'Double Pendulum Posters - Chaos Theory Art Prints', h1: 'Double pendulum posters', desc: 'Double pendulum posters: millions of pendulums, one per pixel, coloured by how they swing. Chaos theory art prints made with code, free shipping worldwide.', noun: 'Double Pendulum Poster' },
+    },
+    inversion: {
+      name: 'Deep Inside',
+      code: 'SERIES K // CIRCLE INVERSION',
+      desc: 'One move repeated fourteen times: fold the plane into a square, then turn it inside out in a circle. Lace grows wherever the folds stretch space the most, finer and finer until it is smaller than a pixel.',
+      seo: { title: 'Circle Inversion Fractal Posters - Math Art Prints', h1: 'Circle inversion fractal posters', desc: 'Circle inversion fractal posters: fold into a square, turn inside out in a circle, repeat. Lace-like math art prints made with code, free shipping worldwide.', noun: 'Circle Inversion Fractal Poster' },
+    },
     object: {
       name: 'Објекти',
       code: 'СЕРИЈА Ж // ХЕКС ОБЈЕКТИ',
@@ -273,6 +285,16 @@ export default {
     },
   },
   seriesMath: {
+    chaos: [
+      { t: 'One pendulum per pixel', d: 'A double pendulum is one arm hanging from the end of another. Every pixel is its own pendulum: across the image the starting angle of the upper arm changes, down the image the lower arm. All of them start at rest.', f: 'pixel (x, y) → θ₁(0), θ₂(0)' },
+      { t: 'Equations of motion', d: 'Each pendulum follows the laws of motion for two equal arms and equal masses, written with Lagrange\'s method and solved step by step with the Runge-Kutta method (RK4) for a few seconds.', f: 'L = T − V,  d/dt ∂L/∂θ̇ = ∂L/∂θ' },
+      { t: 'Colour is the height', d: 'After a few seconds the program measures how high the end of the lower arm is and turns that into colour. Smooth areas are pendulums that swing together; the fine streaks are where a tiny change in the start gives a completely different swing. That is chaos.', f: 'h = −(cos θ₁ + cos θ₂)  at t = T' },
+    ],
+    inversion: [
+      { t: 'Fold into a square', d: 'Each point of the plane is reflected back into the square from −1 to 1, like folding a sheet of paper until it fits.', f: 'x, y → fold into [−1, 1]' },
+      { t: 'Turn inside out', d: 'Inversion in a circle swaps inside and outside: points near the centre fly far away and far points come close. Then everything is scaled by s.', f: 'z → s·z / |z|²' },
+      { t: 'Fourteen times', d: 'The two moves repeat 14 times for every pixel. The colour is how much the point was stretched along the way. Lines stop where the detail gets smaller than one pixel, so the lace stays sharp on paper.', f: 'repeat 14×,  colour = total stretch' },
+    ],
     hopf: [
       { t: 'Круг у четири димензије', d: 'Тродимензионална сфера S³ живи у четвородимензионалном простору. Хајнц Хопф је 1931. открио да се она може потпуно поделити на кругове, тако да сваки пар кругова буде уланчан као две карике.', f: 'S¹ → S³ → S²' },
       { t: 'Свака тачка, један круг', d: 'Свакој тачки на обичној сфери одговара један круг у S³. Програм бира тачке по паралелама или по спирали и за сваку црта њен круг.', f: '(z₁, z₂) ↦ (2z₁z̄₂, |z₁|² − |z₂|²)' },
@@ -361,6 +383,16 @@ export default {
     ],
   },
   history: {
+    chaos: [
+      { y: '1788', t: 'Joseph-Louis Lagrange publishes his Analytical Mechanics, the method still used to write down how a double pendulum moves.' },
+      { y: '1963', t: 'Edward Lorenz finds that a tiny change in the starting numbers of a weather model gives a completely different forecast.' },
+      { y: 'today', t: 'Here every pixel is one pendulum, millions of them, simulated side by side.' },
+    ],
+    inversion: [
+      { y: '1880s', t: 'Henri Poincaré and Felix Klein study shapes made by repeating inversions in circles, whose edges turn out to be endlessly detailed.' },
+      { y: '2002', t: 'David Mumford, Caroline Series and David Wright publish "Indra\'s Pearls", drawing these fractals by computer.' },
+      { y: 'today', t: 'Here every piece repeats a fold and an inversion 14 times for each of millions of pixels.' },
+    ],
     hopf: [
       { y: '1931', t: 'Хајнц Хопф открива пресликавање тросфере на сферу и доказује да су сви кругови уланчани.' },
       { y: '1975', t: 'Физичари препознају Хопфов сноп у магнетном монополу и у квантној механици спина.' },
@@ -483,8 +515,9 @@ export default {
       ],
     },
   },
-  palettes: { cyan: 'Цијан', ice: 'Лед', violet: 'Љубичаста', aurora: 'Аурора', ember: 'Жар' },
+  palettes: { cyan: 'Цијан', ice: 'Лед', violet: 'Љубичаста', aurora: 'Аурора', ember: 'Жар', gold: 'Gold' },
   variants: {
+    pendulum: 'Pendulum', inversion: 'Inversion',
     sistem: 'Систем', snop: 'Сноп', plamen: 'Пламен',
     objekat: 'Објекат',
     burst: 'Експлозија', spiral: 'Спирала', tree: 'Дрво', twin: 'Двојна', shell: 'Љуска',

@@ -34,7 +34,8 @@ const roomsOnly = process.argv.includes('--rooms-only');
 const tonesOnly = process.argv.includes('--tones-only');
 const arg = process.argv.slice(2).find((a) => !a.startsWith('--'));
 const only = arg ? arg.split(',') : null;
-const products = only ? PRODUCTS.filter((p) => only.includes(p.slug)) : PRODUCTS;
+// pre: rendered outside (explore/kaos, explore/klein); their images come from scripts/prerendered-assets.mjs.
+const products = (only ? PRODUCTS.filter((p) => only.includes(p.slug)) : PRODUCTS).filter((p) => !p.pre);
 // Every image set to build: the original ('' tone) and each colourway.
 const sets = products.flatMap((p) => [...(tonesOnly ? [] : ['']), ...(p.tones || [])].map((tone) => ({ p, tone, key: imgKey(p.slug, tone) })));
 const posterPng = (slug, lang) => path.join(TMP, `${slug}-${lang}.png`);

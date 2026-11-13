@@ -1,0 +1,37 @@
+{
+  "kind": "inversion",
+  "style": "inversion",
+  "equations": [
+    "x, y → fold into [−1, 1]",
+    "z → s·z / |z|²",
+    "colour = total stretch"
+  ],
+  "params": [
+    [
+      "s",
+      1.18
+    ],
+    [
+      "offset",
+      "0.3, 0.3"
+    ],
+    [
+      "rotation",
+      0.3
+    ],
+    [
+      "zoom",
+      1.6
+    ],
+    [
+      "repeats",
+      14
+    ]
+  ],
+  "stats": [
+    [
+      "pixels",
+      "12 000 000"
+    ]
+  ]
+}

@@ -22,7 +22,7 @@ scenes = json.loads((SC / 'scenes.json').read_text())
 
 # Products in the collection's default ("featured") order: series interleaved, as in CollectionPage.astro,
 # so neighbouring cards on the shop grid get different scenes.
-FEATURED_JS = "const F=['attractor','mandelbrot','flame','structure','flux','orbit','city','ridges','hopf','object'];const L=F.map(k=>m.productsBySeries(k));const o=[];for(let i=0;o.length<m.PRODUCTS.length;i++)for(const l of L)if(l[i])o.push(l[i]);"
+FEATURED_JS = "const F=['attractor','mandelbrot','flame','structure','flux','orbit','city','ridges','hopf','chaos','inversion','object'];const L=F.map(k=>m.productsBySeries(k));const o=[];for(let i=0;o.length<m.PRODUCTS.length;i++)for(const l of L)if(l[i])o.push(l[i]);"
 prods = json.loads(subprocess.check_output(['node', '-e', "import('./src/data/products.js').then(m=>{" + FEATURED_JS + "console.log(JSON.stringify(o.map(p=>[p.slug,p.tones||[]])))})"], cwd=WEB))
 jobs = []  # (key, [scene for shot 1, 2, 3])
 for i, (slug, tones) in enumerate(prods):

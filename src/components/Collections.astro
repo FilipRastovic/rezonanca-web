@@ -8,9 +8,9 @@ const t = T[lang];
 // Cover piece per series, shown hanging in a room (public/rooms, scripts/render-rooms.py).
 const COVER: Record<string, string> = {
   object: 'anomalija', hopf: 'snop', flame: 'perje', attractor: 'halvorsen', mandelbrot: 'spirala', structure: 'predajnik', flux: 'aurora',
-  orbit: 'pomracenje', city: 'metropola', ridges: 'svitanje',
+  orbit: 'pomracenje', city: 'metropola', ridges: 'svitanje', chaos: 'chaos-1', inversion: 'inversion-2',
 };
-const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'object'];
+const ORDER = ['attractor', 'mandelbrot', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'flame', 'chaos', 'inversion', 'object'];
 const tiles = ORDER.map((k) => SERIES.find((s) => s.key === k)!);
 const ALL = 'dvostruka-spirala'; // 'all works' tile
 ---

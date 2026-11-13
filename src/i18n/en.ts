@@ -53,6 +53,18 @@ const en: typeof sr = {
       desc: 'Light like smoke and silk. Millions of points jump between a few rules chosen at random, and their traces build shapes no hand would draw.',
       seo: { title: 'Fractal Flame Posters - Abstract Math Art Prints', h1: 'Fractal flame posters', desc: 'Fractal flame posters: millions of points following a few random rules, drawn in code. Abstract math art prints on fine art paper, free shipping worldwide.', noun: 'Fractal Flame Poster' },
     },
+    chaos: {
+      name: 'Liquid',
+      code: 'SERIES J // DOUBLE PENDULUM',
+      desc: 'Millions of double pendulums, one per pixel, each let go from rest at a slightly different angle. Colour is how high the lower arm is a few seconds later. Where neighbours agree the paint runs smooth; where chaos starts it folds into fine streaks.',
+      seo: { title: 'Double Pendulum Posters - Chaos Theory Art Prints', h1: 'Double pendulum posters', desc: 'Double pendulum posters: millions of pendulums, one per pixel, coloured by how they swing. Chaos theory art prints made with code, free shipping worldwide.', noun: 'Double Pendulum Poster' },
+    },
+    inversion: {
+      name: 'Deep Inside',
+      code: 'SERIES K // CIRCLE INVERSION',
+      desc: 'One move repeated fourteen times: fold the plane into a square, then turn it inside out in a circle. Lace grows wherever the folds stretch space the most, finer and finer until it is smaller than a pixel.',
+      seo: { title: 'Circle Inversion Fractal Posters - Math Art Prints', h1: 'Circle inversion fractal posters', desc: 'Circle inversion fractal posters: fold into a square, turn inside out in a circle, repeat. Lace-like math art prints made with code, free shipping worldwide.', noun: 'Circle Inversion Fractal Poster' },
+    },
     object: {
       name: 'Objects',
       code: 'SERIES G // HEX OBJECTS',
@@ -60,7 +72,7 @@ const en: typeof sr = {
       seo: { title: 'Sci-Fi Planet Posters - Particle Art Prints', h1: 'Sci-fi planet posters', desc: 'Sci-fi planet posters: worlds built from millions of points of light, with hexagonal shells, rings and moons. Drawn in code, free shipping worldwide.', noun: 'Sci-Fi Planet Poster' },
     },
     label: '01 // SERIES',
-    title: 'Ten series. Fifty-eight signals.',
+    title: 'Twelve series. Sixty-four signals.',
     structure: {
       name: 'Structure',
       code: 'SERIES C // RECURSIVE RULES',
@@ -115,7 +127,7 @@ const en: typeof sr = {
     title: 'Light that changes a room.',
     lead: 'Rezonanca posters don’t shout. They wait for the lights to dim - and then they take over the space.',
     scenes: {
-      living: { t: 'Living room', d: 'Halvorsen in a black frame, above a velvet sofa.' },
+      living: { t: 'Living room', d: 'Waves (Halvorsen attractor) in a black frame, above a velvet sofa.' },
       studio: { t: 'Hallway', d: 'Spiral in a black frame, by a sunlit staircase.' },
     },
     cta: 'See everything in a room',
@@ -201,7 +213,7 @@ const en: typeof sr = {
   collection: {
     label: 'COLLECTION // 58 WORKS',
     title: 'Collection',
-    lead: 'Fifty-eight signals, ten series. Every piece is an original design - born from its own number, its own rules and its own light. You get exactly the print in the picture.',
+    lead: 'Sixty-four signals, twelve series. Every piece is an original design - born from its own number, its own rules and its own light. You get exactly the print in the picture.',
     all: 'All',
     count: 'works',
     filter: { open: 'Filters', series: 'Series', palette: 'Colour', sort: 'Sort', featured: 'Featured', az: 'Name A-Z', bySeries: 'By series', clear: 'Clear filters', empty: 'No works match this selection.' },
@@ -274,6 +286,16 @@ const en: typeof sr = {
     },
   },
   seriesMath: {
+    chaos: [
+      { t: 'One pendulum per pixel', d: 'A double pendulum is one arm hanging from the end of another. Every pixel is its own pendulum: across the image the starting angle of the upper arm changes, down the image the lower arm. All of them start at rest.', f: 'pixel (x, y) → θ₁(0), θ₂(0)' },
+      { t: 'Equations of motion', d: 'Each pendulum follows the laws of motion for two equal arms and equal masses, written with Lagrange\'s method and solved step by step with the Runge-Kutta method (RK4) for a few seconds.', f: 'L = T − V,  d/dt ∂L/∂θ̇ = ∂L/∂θ' },
+      { t: 'Colour is the height', d: 'After a few seconds the program measures how high the end of the lower arm is and turns that into colour. Smooth areas are pendulums that swing together; the fine streaks are where a tiny change in the start gives a completely different swing. That is chaos.', f: 'h = −(cos θ₁ + cos θ₂)  at t = T' },
+    ],
+    inversion: [
+      { t: 'Fold into a square', d: 'Each point of the plane is reflected back into the square from −1 to 1, like folding a sheet of paper until it fits.', f: 'x, y → fold into [−1, 1]' },
+      { t: 'Turn inside out', d: 'Inversion in a circle swaps inside and outside: points near the centre fly far away and far points come close. Then everything is scaled by s.', f: 'z → s·z / |z|²' },
+      { t: 'Fourteen times', d: 'The two moves repeat 14 times for every pixel. The colour is how much the point was stretched along the way. Lines stop where the detail gets smaller than one pixel, so the lace stays sharp on paper.', f: 'repeat 14×,  colour = total stretch' },
+    ],
     hopf: [
       { t: 'A circle in four dimensions', d: 'The three-sphere S³ lives in four-dimensional space. In 1931 Heinz Hopf found that it can be divided entirely into circles, so that every pair of circles is linked like two links of a chain.', f: 'S¹ → S³ → S²' },
       { t: 'Every point, one circle', d: 'Each point on an ordinary sphere corresponds to one circle in S³. The program picks points along parallels or a spiral and draws the circle for each.', f: '(z₁, z₂) ↦ (2z₁z̄₂, |z₁|² − |z₂|²)' },
@@ -362,6 +384,16 @@ const en: typeof sr = {
     ],
   },
   history: {
+    chaos: [
+      { y: '1788', t: 'Joseph-Louis Lagrange publishes his Analytical Mechanics, the method still used to write down how a double pendulum moves.' },
+      { y: '1963', t: 'Edward Lorenz finds that a tiny change in the starting numbers of a weather model gives a completely different forecast.' },
+      { y: 'today', t: 'Here every pixel is one pendulum, millions of them, simulated side by side.' },
+    ],
+    inversion: [
+      { y: '1880s', t: 'Henri Poincaré and Felix Klein study shapes made by repeating inversions in circles, whose edges turn out to be endlessly detailed.' },
+      { y: '2002', t: 'David Mumford, Caroline Series and David Wright publish "Indra\'s Pearls", drawing these fractals by computer.' },
+      { y: 'today', t: 'Here every piece repeats a fold and an inversion 14 times for each of millions of pixels.' },
+    ],
     hopf: [
       { y: '1931', t: 'Heinz Hopf discovers the map from the three-sphere to the sphere and proves that all its circles are linked.' },
       { y: '1975', t: 'Physicists recognise the Hopf fibration in the magnetic monopole and in the quantum mechanics of spin.' },
@@ -485,8 +517,9 @@ const en: typeof sr = {
       ],
     },
   },
-  palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember' },
+  palettes: { cyan: 'Cyan', ice: 'Ice', violet: 'Violet', aurora: 'Aurora', ember: 'Ember', gold: 'Gold' },
   variants: {
+    pendulum: 'Pendulum', inversion: 'Inversion',
     sistem: 'System', snop: 'Fibration', plamen: 'Flame',
     objekat: 'Object',
     burst: 'Burst', spiral: 'Spiral', tree: 'Tree', twin: 'Twin', shell: 'Shell',

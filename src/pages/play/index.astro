@@ -8,7 +8,7 @@ const site = Astro.site!;
 const veilHref = productHref('en', 'klifordov-veo');
 const allHref = collectionHref('en');
 const title = 'Play with the Equation: Clifford Attractor | Rezonanca';
-const desc = 'Move four numbers and watch a strange attractor redraw live: the Clifford map behind our Clifford\'s Veil print. Save your version as a phone wallpaper.';
+const desc = 'Move four numbers and watch a strange attractor redraw live: the Clifford map behind our print Cup. Save your version as a phone wallpaper.';
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['Play', '/play/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
   { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Play with the equation', description: desc, url: new URL('/play/', site).href, applicationCategory: 'EducationalApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, creator: { '@type': 'Organization', name: 'Rezonanca' } },
@@ -38,10 +38,10 @@ const jsonLd = [
         <label class="sl"><span>d</span><input id="d" type="range" min="-3" max="3" step="0.01" /><output id="do"></output></label>
         <div class="pl-row">
           <button class="btn" type="button" id="rand">Surprise me</button>
-          <button class="btn" type="button" id="reset">Back to Clifford's Veil</button>
+          <button class="btn" type="button" id="reset">Back to Cup</button>
           <button class="btn" type="button" id="wall">Download as phone wallpaper</button>
         </div>
-        <a class="btn btn--solid pl-main" id="main" href={veilHref} data-veil={veilHref} data-all={allHref}>Get Clifford's Veil on your wall</a>
+        <a class="btn btn--solid pl-main" id="main" href={veilHref} data-veil={veilHref} data-all={allHref}>Get Cup on your wall</a>
         <p class="pl-note">Some numbers collapse to a few dots or a single loop. That is the maths: only some settings are chaotic. Try another.</p>
       </div>
     </div>
@@ -78,7 +78,7 @@ function showEq() {
   // Main button: the Veil numbers sell the Veil; anything else points to all prints.
   const veil = isVeil();
   main.href = veil ? main.dataset.veil! : main.dataset.all!;
-  main.textContent = veil ? "Get Clifford's Veil on your wall" : 'See all prints';
+  main.textContent = veil ? 'Get Cup on your wall' : 'See all prints';
 }
 
 function start() {

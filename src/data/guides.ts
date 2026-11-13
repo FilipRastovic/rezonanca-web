@@ -533,7 +533,7 @@ export const GUIDES: Guide[] = [
           'Another family grows from rules that call themselves: "a branch is a line, then two smaller branches". The biologist Aristid Lindenmayer wrote such rules for plant growth in 1968, and artists later turned them into drawing programs. Each rule is simple; applied thousands of times, it builds trees, coral and architecture.',
         ],
         piece: 'drvo-signala',
-        caption: 'Signal Tree: blocks of light grown by recursive rules.',
+        caption: 'Signal: blocks of light grown by recursive rules.',
       },
       {
         h: 'Is fractal art real art?',
