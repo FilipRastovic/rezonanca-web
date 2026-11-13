@@ -329,7 +329,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   </section>
 </Base>
 
-<script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug }}>window.rzTrack && window.rzTrack('ViewContent', { content_name: vcName, content_ids: [vcId], content_type: 'product' });</script>
+<script is:inline define:vars={{ vcName: p.name[lang], vcId: p.slug, vcPrice: PRICES[F0][S0 as keyof (typeof PRICES)[typeof F0]] ?? 0 }}>window.rzTrack && window.rzTrack('ViewContent', { items: [{ item_id: vcId, item_name: vcName, price: vcPrice, quantity: 1 }], value: vcPrice, currency: 'EUR' });</script>
 <script>
   const form = document.getElementById('pp-form') as HTMLFormElement;
   const { prices, rsd, usd, lang, frames } = JSON.parse(form.dataset.config!);

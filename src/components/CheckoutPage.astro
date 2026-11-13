@@ -70,7 +70,7 @@ const countries = COUNTRIES.map((cc) => [cc, dn.of(cc) ?? cc]).sort((a, b) => a[
   <template id="co-msgs" data-required={o.required} data-error={o.error} data-redirecting={o.redirecting} data-free={t.free}></template>
 </Base>
 <script>
-  import { totals, catalog, money, rsdMoney, describe, imgFor } from '../scripts/cart';
+  import { totals, catalog, money, rsdMoney, describe, imgFor, gaItem } from '../scripts/cart';
   const form = document.getElementById('co-form') as HTMLFormElement;
   const cfg = JSON.parse(form.dataset.config!);
   const msgs = (document.getElementById('co-msgs') as HTMLElement).dataset;
@@ -130,6 +130,8 @@ const countries = COUNTRIES.map((cc) => [cc, dn.of(cc) ?? cc]).sort((a, b) => a[
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     if (data.botcheck) return;
     const c = catalog(), { lines } = totals();
+    const items = lines.map(gaItem);
+    (window as any).rzTrack?.('InitiateCheckout', { items, value: items.reduce((a, i) => a + i.price * i.quantity, 0), currency: 'EUR' });
     submit.disabled = true;
     submit.firstChild!.textContent = submit.dataset.sending! + ' ';
     // The payments Worker prices the cart (in RSD), stores the order and signs the request; the buyer

@@ -35,7 +35,14 @@ export function add(line: Line) {
   const hit = lines.find((l) => same(l, line));
   if (hit) hit.qty = Math.min(20, hit.qty + line.qty); else lines.push(line);
   write(lines);
-  (window as any).rzTrack?.('AddToCart', { content_ids: [line.slug], value: (c.prices[line.format]?.[line.size] ?? 0) * line.qty, currency: 'EUR' });
+  const item = gaItem(line);
+  (window as any).rzTrack?.('AddToCart', { items: [item], value: item.price * item.quantity, currency: 'EUR' });
+}
+// GA4 ecommerce item for a cart line (rzTrack derives the Meta params from it).
+export function gaItem(l: Line) {
+  const c = catalog();
+  const variant = [c.formats[l.format] ?? l.format, l.size, l.frame && (c.frames[l.frame] ?? l.frame), l.tone && (c.tones[l.tone] ?? l.tone)].filter(Boolean).join(' / ');
+  return { item_id: l.slug, item_name: c.products[l.slug]?.name ?? l.slug, item_variant: variant, price: c.prices[l.format]?.[l.size] ?? 0, quantity: l.qty };
 }
 export const setQty = (i: number, qty: number) => { const l = read(); if (l[i]) { l[i].qty = Math.max(1, Math.min(20, qty)); write(l); } };
 export const remove = (i: number) => { const l = read(); l.splice(i, 1); write(l); };

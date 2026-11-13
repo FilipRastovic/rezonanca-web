@@ -67,7 +67,7 @@ const cfg = JSON.stringify({ api: PAYMENTS.api, lang });
       if (okk) {
         // Report the purchase once per order (pixel/GA4 only run after cookie consent).
         let seen = false; try { seen = !!localStorage.getItem('rz-paid-' + d.order); localStorage.setItem('rz-paid-' + d.order, '1'); } catch { /* private mode */ }
-        if (!seen) (window as any).rzTrack?.('Purchase', { value: d.eur ?? 0, currency: 'EUR', content_ids: d.lines.map((l: any) => l.name), num_items: d.lines.reduce((a: number, l: any) => a + l.qty, 0) });
+        if (!seen) (window as any).rzTrack?.('Purchase', { transaction_id: d.order, value: d.eur ?? 0, currency: 'EUR', items: d.lines.map((l: any) => ({ item_id: l.slug ?? l.name, item_name: l.name, item_variant: l.desc, price: l.qty ? (l.eur ?? 0) / l.qty : 0, quantity: l.qty })) });
       }
       const facts: [string, string][] = [[t.order!, d.order], [t.status!, okk ? t.approved! : t.declined!]];
       if (okk && d.approvalCode) facts.push([t.code!, d.approvalCode]);

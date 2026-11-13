@@ -15,10 +15,25 @@ const on = !!(ANALYTICS.metaPixel || ANALYTICS.ga4 || ANALYTICS.clarity);
       (function () {
         var w = window, q = [], loaded = false;
         var get = function () { try { return localStorage.getItem('rz-consent'); } catch (e) { return null; } };
+        // Call sites pass GA4 ecommerce params ({ items: [{ item_id, item_name, item_variant, price, quantity }], value,
+        // currency, transaction_id }); Meta gets content_ids / contents / num_items built from the same items.
+        var STD = { PageView: 1, ViewContent: 1, Lead: 1, AddToCart: 1, InitiateCheckout: 1, Purchase: 1 };
+        var GA = { PageView: 'page_view', ViewContent: 'view_item', Lead: 'generate_lead', AddToCart: 'add_to_cart', InitiateCheckout: 'begin_checkout', Purchase: 'purchase' };
         var send = function (name, params) {
-          if (w.fbq) w.fbq('track', name, params || {});
+          var p = params || {}, it = p.items, m = p;
+          if (it) {
+            m = { content_type: 'product', value: p.value, currency: p.currency,
+              content_ids: it.map(function (i) { return i.item_id; }),
+              contents: it.map(function (i) { return { id: i.item_id, quantity: i.quantity, item_price: i.price }; }),
+              num_items: it.reduce(function (a, i) { return a + (i.quantity || 1); }, 0) };
+            if (it.length === 1) m.content_name = it[0].item_name;
+          }
+          if (w.fbq) {
+            var how = STD[name] ? 'track' : 'trackCustom';
+            if (p.transaction_id) w.fbq(how, name, m, { eventID: p.transaction_id }); else w.fbq(how, name, m);
+          }
           if (w.clarity) w.clarity('event', name);
-          if (w.gtag) w.gtag('event', { PageView: 'page_view', ViewContent: 'view_item', Lead: 'generate_lead', AddToCart: 'add_to_cart', Purchase: 'purchase' }[name] || name, params || {});
+          if (w.gtag) w.gtag('event', GA[name] || name, p);
         };
         w.rzLoad = function () {
           if (loaded) return; loaded = true;

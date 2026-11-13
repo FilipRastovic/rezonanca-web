@@ -392,7 +392,7 @@ function describeOrder(o: Order, origin: string | null) {
   return ok({
     order: o.id, status: o.status, tranCode: o.tran_code, approvalCode: o.approval_code, card: o.proxy_pan ? o.proxy_pan.slice(-4) : null,
     total: t.total, subtotal: t.subtotal, shipping: t.shipping, eur: t.eur,
-    lines: lines.map((l) => ({ name: product(l.slug).name.en, desc: describe(l, 'en'), qty: l.qty, price: unit(l)! * l.qty, eur: unitEur(l)! * l.qty })),
+    lines: lines.map((l) => ({ slug: l.slug, name: product(l.slug).name.en, desc: describe(l, 'en'), qty: l.qty, price: unit(l)! * l.qty, eur: unitEur(l)! * l.qty })),
   }, origin);
 }
 
