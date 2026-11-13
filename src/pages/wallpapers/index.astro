@@ -14,7 +14,7 @@ const WALLS = [
 ] as { file: string; name: string; eq: string; print?: string }[];
 const full = (f: string) => `/wallpapers/${f}-1440x3120.jpg`;
 const title = 'Free Strange Attractor Phone Wallpapers | Rezonanca';
-const desc = 'Six strange attractor phone wallpapers drawn in code: Clifford, De Jong and Thomas in ice blue. Free download, 1440x3120, fits every iPhone and most Android phones.';
+const desc = 'Six strange attractor phone wallpapers made with code: Clifford, De Jong and Thomas in ice blue. Free download, 1440x3120, fits any phone.';
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['Wallpapers', '/wallpapers/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
   { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Free strange attractor phone wallpapers', description: desc, url: new URL('/wallpapers/', site).href,

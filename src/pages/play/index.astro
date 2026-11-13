@@ -8,7 +8,7 @@ const site = Astro.site!;
 const veilHref = productHref('en', 'klifordov-veo');
 const allHref = collectionHref('en');
 const title = 'Play with the Equation: Clifford Attractor | Rezonanca';
-const desc = 'Move four numbers and watch a strange attractor redraw live in your browser: the Clifford map behind our Clifford\'s Veil print. Download your version as a phone wallpaper.';
+const desc = 'Move four numbers and watch a strange attractor redraw live: the Clifford map behind our Clifford\'s Veil print. Save your version as a phone wallpaper.';
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['Play', '/play/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
   { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Play with the equation', description: desc, url: new URL('/play/', site).href, applicationCategory: 'EducationalApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, creator: { '@type': 'Organization', name: 'Rezonanca' } },
