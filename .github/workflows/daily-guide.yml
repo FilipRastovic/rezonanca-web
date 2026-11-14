@@ -1,0 +1,114 @@
+name: Daily guide
+
+# Writes one new /guide/ page a day from seo/guide-queue.md (instructions: seo/daily-guide.md),
+# checks it, commits it and deploys the site. 08:00 UTC = 09:00 in Novi Sad (winter).
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Write a guide even if one went out today'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: daily-guide
+  cancel-in-progress: false
+
+jobs:
+  guide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Skip if a guide is already out today
+        id: today
+        run: |
+          D=$(TZ=Europe/Belgrade date +%F)
+          echo "date=$D" >> "$GITHUB_OUTPUT"
+          if [ "${{ inputs.force }}" != "true" ] && grep -q "DONE $D" seo/guide-queue.md; then echo "skip=1" >> "$GITHUB_OUTPUT"; echo "Already published today."; fi
+
+      - name: Write the guide
+        if: steps.today.outputs.skip != '1'
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude -p "Run the daily guide job exactly as written in seo/daily-guide.md. Today is ${{ steps.today.outputs.date }}." \
+            --dangerously-skip-permissions --max-turns 80 < /dev/null | tee "$RUNNER_TEMP/claude.log"
+
+      - name: Check the result
+        if: steps.today.outputs.skip != '1'
+        id: check
+        run: |
+          set -e
+          for f in $(git status --porcelain | awk '{print $2}'); do
+            case "$f" in
+              src/data/guides.ts|seo/guide-queue.md|seo/daily-log.md) ;;
+              *) echo "::error::Unexpected change: $f"; exit 1 ;;
+            esac
+          done
+          if git diff --quiet src/data/guides.ts; then
+            echo "No new guide written (see log)."; echo "new=0" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          DEL=$(git diff --numstat src/data/guides.ts | awk '{print $2}')
+          [ "$DEL" = "0" ] || { echo "::error::guides.ts had $DEL lines removed; only additions allowed"; exit 1; }
+          ADDED=$(git diff -U0 src/data/guides.ts | grep '^+' | grep -v '^+++')
+          SLUG=$(echo "$ADDED" | grep -oE "slug: '[a-z0-9-]+'" | head -1 | cut -d"'" -f2)
+          [ -n "$SLUG" ] || { echo "::error::No slug in the new guide"; exit 1; }
+          if echo "$ADDED" | grep -nE '—|–'; then echo "::error::Em/en dash in new guide"; exit 1; fi
+          if echo "$ADDED" | grep -niE 'generative|\bAI\b|artificial intelligence|unique|one of a kind|printed (in|by)|€|\$[0-9]'; then echo "::error::Brand rule word in new guide"; exit 1; fi
+          npm run build
+          npm run check-links | tee "$RUNNER_TEMP/links.txt"
+          grep -q 'broken 0' "$RUNNER_TEMP/links.txt" || { echo "::error::Broken links"; exit 1; }
+          test -f "dist/guide/$SLUG/index.html" || { echo "::error::Page not built"; exit 1; }
+          WORDS=$(sed -e 's/<[^>]*>/ /g' "dist/guide/$SLUG/index.html" | wc -w)
+          echo "Words on page: $WORDS"
+          TITLE=$(grep -o '<title>[^<]*' "dist/guide/$SLUG/index.html" | sed 's/<title>//')
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          echo "new=1" >> "$GITHUB_OUTPUT"
+
+      - name: Commit
+        if: steps.today.outputs.skip != '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/guides.ts seo/guide-queue.md seo/daily-log.md
+          git diff --cached --quiet && exit 0
+          if [ "${{ steps.check.outputs.new }}" = "1" ]; then MSG="Guide: ${{ steps.check.outputs.title }}"; else MSG="Daily guide: queue/log update"; fi
+          git commit -m "$MSG" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git push
+
+      - name: Deploy and tell search engines
+        if: steps.check.outputs.new == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run deploy-pages.yml --ref main
+          sleep 15
+          RID=$(gh run list --workflow deploy-pages.yml --limit 1 --json databaseId --jq '.[0].databaseId')
+          gh run watch "$RID" --exit-status
+          URL="https://rezonanca.art/guide/${{ steps.check.outputs.slug }}/"
+          for i in 1 2 3 4 5 6; do
+            [ "$(curl -s -o /dev/null -w '%{http_code}' "$URL")" = "200" ] && break; sleep 20
+          done
+          curl -sf -o /dev/null "$URL" || { echo "::error::$URL not live"; exit 1; }
+          node scripts/indexnow.mjs "/guide/${{ steps.check.outputs.slug }}/" /guide/
+          echo "Published $URL" >> "$GITHUB_STEP_SUMMARY"
