@@ -406,7 +406,7 @@ export const GUIDES: Guide[] = [
   {
     slug: 'perlin-noise-explained',
     series: 'ridges',
-    also: ['orbit', 'city', 'flux', 'structure'],
+    also: ['flux', 'structure'],
     title: 'Perlin Noise Explained: Octaves and Gradients',
     desc: 'Perlin noise explained in plain English: what it is, how gradients and octaves work, and how it turns sound waves into the landscapes on our posters.',
     h1: 'Perlin noise explained',
