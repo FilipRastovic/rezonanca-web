@@ -7,7 +7,7 @@ Claude may add new lines at the end from Search Console queries (positions 5-30 
 
 ## Queue
 - [x] sound-wave-art | sound wave art, spectrogram, music wall art, gift for musician (Etsy) | tiha-oluja, nulta-orbita, metropola | waveform vs spectrogram, harmonics, envelope - DONE 2026-11-14 https://rezonanca.art/guide/sound-wave-art/
-- [ ] clifford-attractor | clifford attractor, clifford attractor equation, strange attractor (Etsy) | klifordov-veo, de-zong | the two-line map, what a b c d do, link to /play/ to try it live (Show HN 17-18 Nov)
+- [x] clifford-attractor | clifford attractor, clifford attractor equation, strange attractor (Etsy) | klifordov-veo, de-zong | the two-line map, what a b c d do, link to /play/ to try it live (Show HN 17-18 Nov) - DONE 2026-11-14 https://rezonanca.art/guide/clifford-attractor/
 - [ ] double-pendulum | double pendulum, double pendulum chaos, chaos theory art (Etsy) | chaos-1, chaos-2, chaos-3 | why two linked pendulums are chaotic, the equations, sensitivity to start; series has no guide yet, use series: 'chaos'
 - [ ] lorenz-attractor | lorenz attractor, lorenz system equations, butterfly effect | lorenc | sigma rho beta, what each does, how it is plotted; deeper than the strange attractor guide section
 - [ ] algorithmic-art | algorithmic art (Etsy), algorithmic art history, art made with code | drvo-signala, aurora, metropola | Vera Molnar, Frieder Nake, Manfred Mohr, plotters; what an algorithm adds; never say "generative"

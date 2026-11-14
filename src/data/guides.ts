@@ -642,6 +642,90 @@ export const GUIDES: Guide[] = [
       { q: 'Is sound wave art a good gift for a musician?', a: 'It suits musicians, sound engineers and anyone who works with audio, because the picture uses the same waveforms and spectrograms they see in their software every day.' },
     ],
   },
+  {
+    slug: 'clifford-attractor',
+    series: '',
+    shop: ['klifordov-veo', 'de-zong', 'tomas', 'halvorsen', 'lorenc', 'aizava'],
+    title: 'Clifford Attractor: Equation and Parameters',
+    desc: 'The Clifford attractor is a two-line map of sines and cosines. See the equation, what a, b, c and d change, how it is plotted, and try it live.',
+    h1: 'Clifford attractor: equation and parameters',
+    kicker: 'Guide // Strange attractors',
+    lead: 'The Clifford attractor is a strange attractor defined by two lines: each new point (x, y) is computed from the previous one with sines and cosines and four constants, a, b, c and d. Here is the equation, what each constant does, how millions of points become a picture, and how to try it yourself.',
+    updated: '2026-11-14',
+    sections: [
+      {
+        h: 'The equation',
+        p: [
+          'The Clifford attractor is a map, not a flow. There are no derivatives and no time steps to integrate. You take a point, apply the rule once to get the next point, and repeat. Every point depends only on the one before it.',
+          'The rule uses the point\'s two coordinates crosswise: the new x is built from the old y, and the new y from the old x. The constants a and b set how fast the sine and cosine waves oscillate, and c and d set how strongly the cosine terms push the point.',
+        ],
+        f: 'xₙ₊₁ = sin(a·yₙ) + c·cos(a·xₙ)\nyₙ₊₁ = sin(b·xₙ) + d·cos(b·yₙ)',
+      },
+      {
+        h: 'Why the points stay in a box',
+        p: [
+          'A sine and a cosine can never leave the range from −1 to 1. So the new x always lies between −1 − |c| and 1 + |c|, and the new y between −1 − |d| and 1 + |d|. However many steps you take, the point cannot escape this rectangle.',
+          'That is why the map needs no scaling tricks: the picture always fits in a known frame. What happens inside the frame depends entirely on the four constants. For many choices the points settle onto a fixed point or a short cycle and the picture is dull. For others they never repeat, and that is the strange attractor.',
+        ],
+        f: '|xₙ| ≤ 1 + |c|,   |yₙ| ≤ 1 + |d|',
+      },
+      {
+        h: 'What a, b, c and d do',
+        p: [
+          'There is no single dial for each visual effect, because the terms are tangled together. Still, some rules of thumb hold. Larger a and b make the sine and cosine waves faster, so the veil folds more times and looks finer and more crowded. Values near zero give a smooth, simple sweep.',
+          'The constants c and d scale the cosine terms. When both are small the sine terms dominate and the picture is more symmetric. When they grow, the shape stretches and the frame gets wider. Moving any constant by a few hundredths can change the whole shape, which is the sign of a chaotic map. This is also why the same four numbers always reproduce the same picture, and why a slightly different set gives a different one.',
+        ],
+      },
+      {
+        h: 'From points to a picture',
+        p: [
+          'One orbit is a list of points. To see the attractor you iterate for millions of steps and count how many times the orbit lands in each pixel of a grid. Pixels that are visited often are bright, and pixels that are visited rarely are dim. The picture is a density map.',
+          'A common practice is to skip the first few hundred points, so the orbit has time to reach the attractor before counting starts. After that, every point lands on or very near the attractor, and the veils appear as the counts build up. Nothing about the picture is random: the same constants and the same starting point always give the same image.',
+        ],
+        f: 'density(pixel) = number of orbit points inside the pixel',
+      },
+      {
+        h: 'Is it chaotic? The Lyapunov exponent',
+        p: [
+          'To test whether a choice of constants is chaotic, follow two orbits that start almost together and measure how fast they separate. The average rate of separation is the Lyapunov exponent λ. If λ is positive, nearby orbits drift apart exponentially, and the motion is chaotic. If it is zero or negative, the orbit settles into a cycle.',
+          'Our program measures this while it draws. For the Clifford piece Cup, with a = 1.7, b = 1.7, c = 0.6 and d = 1.2, it found λ = 0.349 over 3,372,754 iterations, which is positive. The guide to strange attractors explains why a positive exponent makes long-range prediction impossible.',
+        ],
+        f: '|δₙ| ≈ |δ₀|·e^(λ·n),   λ > 0',
+        piece: 'klifordov-veo',
+        caption: 'Cup: Clifford map, a = 1.7, b = 1.7, c = 0.6, d = 1.2, 3,372,754 iterations, λ = 0.349.',
+      },
+      {
+        h: 'The Peter de Jong attractor',
+        p: [
+          'A close relative is the Peter de Jong attractor. It uses the same ingredients, sines of one coordinate and cosines of the other, but with two sines and two cosines of different constants, and with the cosine terms subtracted and no scaling factors.',
+          'Because all four constants sit inside the trigonometric functions, the frame is always the same size, from −2 to 2. Our piece Teardrop uses a = −2.2584, b = 0.4335, c = −0.6238 and d = −2.4105, with λ = 0.397.',
+        ],
+        f: 'xₙ₊₁ = sin(a·yₙ) − cos(b·xₙ)\nyₙ₊₁ = sin(c·xₙ) − cos(d·yₙ)',
+        piece: 'de-zong',
+        caption: 'Teardrop: Peter de Jong map, a = −2.2584, b = 0.4335, c = −0.6238, d = −2.4105, λ = 0.397.',
+      },
+      {
+        h: 'Try it yourself',
+        p: [
+          'The fastest way to understand the four constants is to move them. On the play page you can change a, b, c and d with sliders and watch the Clifford attractor redraw live in your browser, then save your version as a phone wallpaper.',
+          'Small steps show the most. Try a = b first, since the two sine waves then run at the same speed, and compare it with a and b far apart. Change one constant by 0.05 and see which parts of the shape move and which stay. You will find regions where the picture changes smoothly, and sudden jumps where it becomes a different shape.',
+        ],
+      },
+      {
+        h: 'Our Clifford poster',
+        p: [
+          'Cup is the Clifford attractor drawn by a program written in JavaScript, with the constants and iteration count listed above. Nothing is painted by hand: the shape, the shading and the glow all come from the equation. The product page lists the exact equations, parameters and measurements.',
+          'For attractors defined by differential equations instead of maps, see the Lorenz and Thomas pieces in the attractor series. What you see on the page is exactly the print you get, on fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is the Clifford attractor?', a: 'It is a strange attractor defined by a two-line map. Each new point is computed from the previous one using sines and cosines and four constants a, b, c and d, and millions of iterations draw a veil-like shape.' },
+      { q: 'What is the Clifford attractor equation?', a: 'xₙ₊₁ = sin(a·yₙ) + c·cos(a·xₙ) and yₙ₊₁ = sin(b·xₙ) + d·cos(b·yₙ). Starting from any point, you apply both lines again and again and plot every point.' },
+      { q: 'What is the difference between the Clifford and Peter de Jong attractors?', a: 'They are close relatives. Clifford uses scaling factors c and d on the cosine terms, while Peter de Jong puts all four constants inside the sines and cosines and subtracts the cosines.' },
+      { q: 'Why does the Clifford attractor look different for different parameters?', a: 'The map is chaotic, so small changes to a, b, c or d change how the orbit folds and stretches. Some choices give a cycle, and others give a detailed attractor.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
