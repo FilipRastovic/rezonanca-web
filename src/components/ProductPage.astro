@@ -96,6 +96,8 @@ const jsonLd = [{
     priceCurrency: SHOP.currency,
     lowPrice: MIN_PRICE,
     highPrice: MAX_PRICE,
+    // One offer per format and size on sale (print / framed x 30x40 / 45x60).
+    offerCount: ACTIVE_FORMATS.reduce((n, f) => n + FORMAT_SIZES[f].filter((s) => PRICES[f][s] != null).length, 0),
     // Made to order once sales open; until then the page takes waitlist sign-ups.
     availability: SALES_OPEN ? 'https://schema.org/MadeToOrder' : 'https://schema.org/PreOrder',
     url,
