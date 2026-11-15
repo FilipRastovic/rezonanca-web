@@ -14,7 +14,14 @@ const on = !!(ANALYTICS.metaPixel || ANALYTICS.ga4 || ANALYTICS.clarity);
     <script is:inline define:vars={{ px: ANALYTICS.metaPixel, ga: ANALYTICS.ga4, cl: ANALYTICS.clarity }}>
       (function () {
         var w = window, q = [], loaded = false;
-        var get = function () { try { return localStorage.getItem('rz-consent'); } catch (e) { return null; } };
+        // Owner opt-out: open any page with ?notrack once per browser (?notrack=off undoes it). Nothing loads or
+        // counts there afterwards (GA4, Meta, Clarity) and the banner stays hidden.
+        try {
+          var nt = new URLSearchParams(location.search).get('notrack');
+          if (nt === 'off') localStorage.removeItem('rz-notrack'); else if (nt !== null) localStorage.setItem('rz-notrack', '1');
+        } catch (e) {}
+        var off = function () { try { return localStorage.getItem('rz-notrack') === '1'; } catch (e) { return false; } };
+        var get = function () { return off() ? 'no' : (function () { try { return localStorage.getItem('rz-consent'); } catch (e) { return null; } })(); };
         // Call sites pass GA4 ecommerce params ({ items: [{ item_id, item_name, item_variant, price, quantity }], value,
         // currency, transaction_id }); Meta gets content_ids / contents / num_items built from the same items.
         var STD = { PageView: 1, ViewContent: 1, Lead: 1, AddToCart: 1, InitiateCheckout: 1, Purchase: 1 };
@@ -69,14 +76,14 @@ const on = !!(ANALYTICS.metaPixel || ANALYTICS.ga4 || ANALYTICS.clarity);
     <script is:inline>
       (function () {
         var box = document.getElementById('consent');
-        var c = null; try { c = localStorage.getItem('rz-consent'); } catch (e) {}
+        var c = null; try { c = localStorage.getItem('rz-notrack') === '1' ? 'no' : localStorage.getItem('rz-consent'); } catch (e) {}
         if (!c) box.hidden = false;
         box.addEventListener('click', function (e) {
           var b = e.target.closest('[data-consent]'); if (!b) return;
           var v = b.dataset.consent, prev = null;
           try { prev = localStorage.getItem('rz-consent'); localStorage.setItem('rz-consent', v); } catch (e) {}
           box.hidden = true;
-          if (v === 'yes') window.rzLoad();
+          if (v === 'yes' && !(function () { try { return localStorage.getItem('rz-notrack') === '1'; } catch (e) { return false; } })()) window.rzLoad();
           else if (prev === 'yes') location.reload(); // withdraw: reload so nothing stays loaded
         });
         document.addEventListener('click', function (e) {
