@@ -726,6 +726,98 @@ export const GUIDES: Guide[] = [
       { q: 'Why does the Clifford attractor look different for different parameters?', a: 'The map is chaotic, so small changes to a, b, c or d change how the orbit folds and stretches. Some choices give a cycle, and others give a detailed attractor.' },
     ],
   },
+  {
+    slug: 'double-pendulum',
+    series: 'chaos',
+    title: 'Double Pendulum Chaos: Equations and Sensitivity',
+    desc: 'Two pendulums joined end to end move chaotically. See the equations, why tiny differences grow, and how we draw 12 million pendulums as pictures.',
+    h1: 'Double pendulum chaos: equations and sensitivity',
+    kicker: 'Guide // Chaos',
+    lead: 'A double pendulum is a pendulum hanging from the end of another pendulum, and its motion is chaotic: two starts that differ by a hair end up in completely different places. Here are the equations, the reason small differences grow, and how we turn millions of pendulums into pictures.',
+    updated: '2026-11-15',
+    sections: [
+      {
+        h: 'Two arms, two angles',
+        p: [
+          'Take a rod that swings from a fixed pivot. At its lower end, attach a second rod that swings freely. That is the whole machine. A single pendulum is regular: it swings back and forth with a steady rhythm. Adding the second arm changes everything.',
+          'Two numbers describe the position at any moment: the angle θ₁ of the upper arm and the angle θ₂ of the lower arm, both measured from straight down. Add the two angular speeds and you have four numbers that fully describe the state. Given those four numbers, the future is fixed by the laws of motion. Nothing is random.',
+        ],
+      },
+      {
+        h: 'The equations',
+        p: [
+          'The motion follows from the Lagrangian L, the kinetic energy T minus the potential energy V. The Euler-Lagrange equation gives one equation for each angle. For two arms of equal length l and equal mass, the energy terms have a compact form, where g is the acceleration of gravity.',
+          'The resulting equation for the upper arm is below. The lower arm has a similar one. Each angular acceleration depends on both angles and both speeds, with sines, cosines and squared speeds. The two arms push on each other, and that coupling is where the trouble starts.',
+        ],
+        f: 'L = T − V = ml²(θ̇₁² + ½θ̇₂² + θ̇₁θ̇₂·cos(θ₁ − θ₂)) + mgl(2cos θ₁ + cos θ₂)\nd/dt ∂L/∂θ̇ᵢ = ∂L/∂θᵢ,   i = 1, 2',
+      },
+      {
+        h: 'Why it is chaotic',
+        p: [
+          'The equations are non-linear: the angles appear inside sines and cosines, and the speeds are squared. For small swings, sin θ is close to θ and the system behaves almost like two simple springs. For large swings that shortcut fails, and the arms can flip over the top.',
+          'There is no friction in the ideal model, so the total energy never changes. The pendulum does not settle onto an attractor the way a damped system does. Instead it wanders through all the states its energy allows, and the path never repeats exactly. The guide to strange attractors covers the damped kind of chaos, where motion collapses onto a fractal shape.',
+        ],
+        f: 'E = T + V = constant',
+      },
+      {
+        h: 'Sensitivity to the starting point',
+        p: [
+          'Start two pendulums with angles that differ by a millionth of a radian and watch them. At first they move together. Then the gap grows, and after enough time they swing in unrelated ways. The gap grows roughly exponentially, at a rate called the Lyapunov exponent λ. A positive λ is the mathematical sign of chaos.',
+          'This has a practical meaning. To predict the pendulum for twice as long, you need the starting angles to far more digits, not merely twice as many. No measurement is exact, so long-range prediction fails, even though every step follows exact laws.',
+        ],
+        f: '|δ(t)| ≈ |δ₀|·e^(λ·t),   λ > 0',
+      },
+      {
+        h: 'One pixel, one pendulum',
+        p: [
+          'To see chaos rather than describe it, we let a whole grid of pendulums go. Every pixel is its own pendulum. The horizontal position of the pixel sets the starting angle θ₁, the vertical position sets θ₂, and all pendulums are released from rest. After a fixed time, the colour of the pixel records what that pendulum did.',
+          'In Flamingo, the colour shows the height h of the lower arm, with h = −(cos θ₁ + cos θ₂). The starting angles run from 0.2π to 0.9π for θ₁ and from 0.1π to π for θ₂, and every pendulum is followed for 6 seconds. That is 12,000,000 pendulums, one per pixel, with arms of equal length and mass.',
+        ],
+        f: 'h = −(cos θ₁ + cos θ₂)',
+        piece: 'chaos-1',
+        caption: 'Flamingo: 12,000,000 pendulums, θ₁ from 0.2π to 0.9π, θ₂ from 0.1π to π, T = 6 s, RK4.',
+      },
+      {
+        h: 'Folds where neighbours part ways',
+        p: [
+          'In some regions of the picture, neighbouring pixels have almost the same colour. Those pendulums behave alike. In other regions the colour changes from pixel to pixel with no pattern, because tiny differences in the start have already grown into large differences in the outcome.',
+          'Watercolor covers a wider range of starts, with θ₁ from 0 to π and θ₂ from 0 to 1.3π, again for 6 seconds. The folds you see are the places where pendulums that start a hair apart end up in completely different places.',
+        ],
+        piece: 'chaos-2',
+        caption: 'Watercolor: 12,000,000 pendulums, θ₁ from 0 to π, θ₂ from 0 to 1.3π, T = 6 s, RK4.',
+      },
+      {
+        h: 'The edge of chaos',
+        p: [
+          'If you start the pendulum with little energy, it swings calmly and regularly, and nearby starts stay nearby. With more energy, the arms can flip over and the motion turns chaotic. Between the two lies a boundary, and in the picture it appears as a sharp edge between smooth areas and noise.',
+          'Brushstroke is drawn along that boundary. Its starting angles run from −π to 0.2π for θ₁ and from −π to 0.5π for θ₂, followed for 5.5 seconds. On one side of the stroke neighbouring pendulums agree, and on the other no two do.',
+        ],
+        piece: 'chaos-3',
+        caption: 'Brushstroke: 12,000,000 pendulums, θ₁ from −π to 0.2π, θ₂ from −π to 0.5π, T = 5.5 s, RK4.',
+      },
+      {
+        h: 'How we solve it: Runge-Kutta',
+        p: [
+          'There is no general formula that gives θ₁ and θ₂ for any time t. The equations must be solved step by step on a computer. We use the fourth-order Runge-Kutta method, written RK4. It samples the slope four times per step and blends them, which is far more accurate than simply following the slope once.',
+          'Chaos makes accuracy matter. Any numerical error acts like a tiny change of the starting point, and chaos amplifies it. The small steps and the careful method keep the picture faithful to the equations.',
+        ],
+        f: 'yₙ₊₁ = yₙ + (h/6)·(k₁ + 2k₂ + 2k₃ + k₄)',
+      },
+      {
+        h: 'Our pendulum posters',
+        p: [
+          'The chaos series is made with code: a program written in JavaScript follows each pendulum with RK4 and colours the pixel from the result. The product pages list the equations, the ranges of the starting angles and the number of pendulums for every piece.',
+          'Nothing is painted by hand, and no photograph is involved. What you see is exactly the print you get, on fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'Why is a double pendulum chaotic?', a: 'Its equations are non-linear and the two arms push on each other, so tiny differences in the starting angles grow exponentially. After a short time two almost identical starts give completely different motion.' },
+      { q: 'What are the equations of a double pendulum?', a: 'They come from the Lagrangian L = T − V with one Euler-Lagrange equation for each angle. The result is two coupled second-order equations for θ₁ and θ₂ with no general closed-form solution.' },
+      { q: 'Can the motion of the pendulum be predicted?', a: 'Only for a short time. The laws are exact, but any error in the starting angles grows exponentially, so long-range prediction is impossible in practice.' },
+      { q: 'What does a pendulum chaos picture show?', a: 'Each pixel is one pendulum with its own starting angles, coloured by what it did after a fixed time. Smooth areas mean neighbours agree, and noisy areas mean the motion is chaotic.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
