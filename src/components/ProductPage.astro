@@ -34,7 +34,6 @@ const fullNameLc = p.sys ? `${name} - ${p.sys} poster`
 // What the piece is, without its name (image alt text): "Clifford Attractor poster".
 const kindLc = p.sys ? `${p.sys} poster` : fullNameLc.startsWith(name) ? fullNameLc.slice(name.length + 1) : fullNameLc;
 const related = productsBySeries(p.style).filter((x) => x.slug !== p.slug).slice(0, 4);
-const others = SERIES.filter((s) => s.key !== p.style);
 // "Also bought with": two pieces from other series, picked per product so they differ from page to page.
 const pool = PRODUCTS.filter((x: any) => x.style !== p.style);
 const also = [0, 1].map((i) => pool[(p.seed * 7 + i * Math.ceil(pool.length / 2)) % pool.length]);
@@ -325,10 +324,6 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
       </div>
       <div class="grid">
         {related.map((r, i) => <ProductCard product={r} lang={lang} delay={i * 90} />)}
-      </div>
-      <p class="label other-label">{tp.otherSeries}</p>
-      <div class="chips mono">
-        {others.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
       </div>
     </div>
   </section>

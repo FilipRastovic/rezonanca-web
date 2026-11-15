@@ -11,7 +11,7 @@ const en: typeof sr = {
   },
   nav: { home: 'Home', collection: 'Collection', series: 'Series', interiors: 'In a room', formats: 'Formats', order: 'Ordering', faq: 'FAQ', cta: 'Order' },
   hero: {
-    label: 'Math art posters · Ships worldwide',
+    label: 'Math art posters',
     title: 'REZONANCA',
     tagline: 'Sound, frozen in light.',
     lead: 'Strange attractors, fractals and sound waves drawn with code, line by line. Printed to order on fine art matte paper and shipped worldwide.',

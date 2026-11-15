@@ -50,20 +50,17 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
       <p class="lead">{current ? info!.desc : t.collection.lead}</p>
       {guide && <a class="guide mono" href={guideHref(guide.slug)}>{t.guide.read}: {guide.h1} →</a>}
 
-      {current && <div class="chips mono" role="list">
-        <a role="listitem" href={collectionHref(lang)} class:list={{ on: !current }}>{t.collection.all} <i>{PRODUCTS.length}</i></a>
-        {SERIES.map((s) => (
-          <a role="listitem" href={collectionHref(lang, s.slug)} class:list={{ on: current?.slug === s.slug }}>
-            {seriesShort(lang, s.key)} <i>{productsBySeries(s.key).length}</i>
-          </a>
-        ))}
-      </div>}
-      {current && <label class="pick"><span class="mono">{t.collection.filter.series}</span>
-        <select onchange="location.href=this.value">
-          <option value={collectionHref(lang)}>{t.collection.all} ({PRODUCTS.length})</option>
-          {SERIES.map((s) => <option value={collectionHref(lang, s.slug)} selected={current?.slug === s.slug}>{seriesShort(lang, s.key)} ({productsBySeries(s.key).length})</option>)}
-        </select>
-      </label>}
+      {current && <details class="sfilter">
+        <summary class="mono">{f.open} <i>{seriesShort(lang, current.key)}</i></summary>
+        <nav class="sbody mono" aria-label={f.series}>
+          <a href={collectionHref(lang)}>{t.collection.all} <i>{PRODUCTS.length}</i></a>
+          {SERIES.map((s) => (
+            <a href={collectionHref(lang, s.slug)} class:list={{ on: current.slug === s.slug }} aria-current={current.slug === s.slug ? 'page' : undefined}>
+              {seriesShort(lang, s.key)} <i>{productsBySeries(s.key).length}</i>
+            </a>
+          ))}
+        </nav>
+      </details>}
     </div>
   </section>
 
@@ -201,6 +198,19 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
   .lead { margin-top: 20px; }
   .guide { display: inline-block; margin-top: 20px; font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); text-decoration: underline; text-underline-offset: 5px; }
   .guide:hover { color: var(--cyan); }
+  /* Series page: every series under one Filters button (Filip 2026-11-15). */
+  .sfilter { margin-top: 40px; max-width: 420px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.6); }
+  .sfilter summary { list-style: none; cursor: pointer; padding: 14px 16px; font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ice); display: flex; justify-content: space-between; gap: 12px; }
+  .sfilter summary::-webkit-details-marker { display: none; }
+  .sfilter summary::after { content: '+'; color: var(--muted); }
+  .sfilter[open] summary::after { content: '−'; }
+  .sfilter summary i { font-style: normal; color: var(--muted); margin-left: auto; }
+  .sfilter[open] summary { border-bottom: 1px solid var(--line); }
+  .sbody { display: grid; padding: 6px 0; }
+  .sbody a { display: flex; justify-content: space-between; padding: 10px 16px; font-size: var(--fs-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
+  .sbody a:hover { color: var(--ice); background: rgba(18, 20, 23, 0.03); }
+  .sbody a.on { color: var(--ice); font-weight: 600; }
+  .sbody i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
   .chips a { display: inline-flex; align-items: center; gap: 10px; padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); transition: border-color 0.3s, color 0.3s, background 0.3s; }
   .chips a:hover { border-color: var(--line-strong); color: var(--ice); }
