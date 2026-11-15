@@ -15,6 +15,7 @@ import Footer from '../components/Footer.astro';
 import CartDrawer from '../components/CartDrawer.astro';
 import CartCatalog from '../components/CartCatalog.astro';
 import Consent from '../components/Consent.astro';
+import { ANALYTICS } from '../config';
 import { SALES_OPEN } from '../config';
 import { T, type Lang } from '../i18n';
 
@@ -72,6 +73,16 @@ const canonical = new URL(path, Astro.site);
     <CartCatalog lang={lang} />
     {SALES_OPEN && <CartDrawer lang={lang} />}
     <Consent lang={lang} />
+    {ANALYTICS.cfBeacon && (
+      <script is:inline define:vars={{ cfTok: ANALYTICS.cfBeacon }}>
+        // Cloudflare Web Analytics: cookieless visit count for everyone (no consent needed). Skipped on the owner's ?notrack browsers.
+        (function () {
+          try { if (localStorage.getItem('rz-notrack') === '1' || new URLSearchParams(location.search).has('notrack') && new URLSearchParams(location.search).get('notrack') !== 'off') return; } catch (e) {}
+          var s = document.createElement('script'); s.defer = true; s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+          s.setAttribute('data-cf-beacon', JSON.stringify({ token: cfTok })); document.body.appendChild(s);
+        })();
+      </script>
+    )}
     <script>
       // Scroll reveal.
       const io = new IntersectionObserver((entries) => {

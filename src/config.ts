@@ -45,6 +45,7 @@ export const ANALYTICS = {
   metaPixel: '28640408028947508', // Events Manager → dataset rezonanca.art
   ga4: 'G-FKNVF77VNE', // GA4 Measurement ID (property rezonanca.art)
   clarity: 'yzmig7kv3w', // Microsoft Clarity project ID (heatmaps + session recordings)
+  cfBeacon: '4bb20726f78c47f9b65983c4dda473e9', // Cloudflare Web Analytics token (cookieless, counts every visit, loads without consent)
 };
 
 // Product range 2026-10-30: only what Gelato prints (BUSINESS-PLAN.md section 5, "EN range on Gelato").
