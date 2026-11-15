@@ -112,6 +112,8 @@ const MORE = ['spirala', 'oreol', 'mandelbrotov-skup', 'drvo-signala'].map(findP
   .caps p { position: absolute; inset: 0 0 auto 0; margin: 0; opacity: 0; animation: show var(--cycle) infinite; animation-delay: calc(var(--i) * 5s - 0.01s); }
   .caps p:first-child { opacity: 1; }
   .caps b { color: var(--ice); font-weight: 500; margin-right: 10px; }
+  .caps p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 600px) { .caps span { display: none; } }
 
   /* Print facts strip */
   .facts { position: relative; z-index: 2; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }

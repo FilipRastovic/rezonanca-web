@@ -24,7 +24,7 @@ const en: typeof sr = {
     framed: 'Framed print · 30 × 40 cm',
     framedLg: 'Framed print · 45 × 60 cm',
     detail: 'print detail',
-    facts: ['Fine art matte paper', '300 DPI', 'Made to order', 'Ships worldwide'],
+    facts: ['Fine art matte paper', 'High quality', 'Made to order', 'Ships worldwide'],
   },
   manifesto: {
     label: '02 // MANIFESTO',

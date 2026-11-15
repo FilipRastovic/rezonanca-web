@@ -45,7 +45,7 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
         {current ? <><a href={collectionHref(lang)}>{t.collection.title}</a><span>/</span><span aria-current="page">{seriesShort(lang, current.key)}</span></>
                  : <span aria-current="page">{t.collection.title}</span>}
       </nav>
-      <p class="label">{current ? info!.code : t.collection.label}</p>
+      <p class="label">{current ? `${info!.code.split(' // ')[0]} // ${seriesShort(lang, current.key)}` : t.collection.label}</p>
       <h1>{current ? info!.seo.h1 : t.seo.collectionH1}</h1>
       <p class="lead">{current ? info!.desc : t.collection.lead}</p>
       {guide && <a class="guide mono" href={guideHref(guide.slug)}>{t.guide.read}: {guide.h1} →</a>}

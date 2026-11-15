@@ -195,3 +195,10 @@ main > section + section, main > section + * section:first-child { border-top: 1
   .js [data-reveal] { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
 }
+
+/* Breadcrumbs and labels stay on one line on phones (Filip, 2026-11-15): smaller, tighter, last crumb truncates. */
+@media (max-width: 600px) {
+  :root .crumbs.crumbs { flex-wrap: nowrap; white-space: nowrap; gap: 6px; font-size: 10px; letter-spacing: 0.06em; overflow: hidden; }
+  :root .crumbs.crumbs > :last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .label { white-space: nowrap; }
+}
