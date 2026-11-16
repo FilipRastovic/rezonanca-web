@@ -148,6 +148,13 @@ const en: typeof sr = {
       'Rezonanca brings the two together: the maths decides the shape, I choose the number, the colours and the framing. Every print is made to order on fine art matte paper and shipped worldwide.',
       'What you see on the site is exactly what arrives on your wall.',
     ],
+    earlyLabel: 'Where it started',
+    earlyAlt: 'A 2004 digital work by Filip: a grid of coloured boxes, each holding one sprayed curve, wave or loop, with FILIP written at the top',
+    earlyCap: 'One of my first digital works, around 2004.',
+    earlyBody: 'Around 2004 I was already obsessed with symbols, grids and shapes. This is one of my first digital works: a grid of boxes, each holding one curve, loop or wave. Twenty-two years later the curves are drawn by equations instead of by hand, but the habit is the same.',
+    pageTitle: 'About Filip Rastović, the artist behind Rezonanca',
+    pageDesc: 'Filip Rastović is a software engineer in Novi Sad who makes math art posters with code. Where Rezonanca comes from, starting with a grid of curves from 2004.',
+    more: 'More about me',
   },
   formats: {
     label: '04 // FORMATS',

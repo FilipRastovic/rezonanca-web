@@ -1,0 +1,27 @@
+---
+// About page (Filip, 2026-11-16): the home About section plus his early 2004 work, on its own URL.
+import Base from '../../layouts/Base.astro';
+import About from '../../components/About.astro';
+import { T, homeHref } from '../../i18n';
+const site = Astro.site!;
+const t = T.en.about;
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['About', '/about/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
+  { '@context': 'https://schema.org', '@type': 'ProfilePage', url: new URL('/about/', site).href, mainEntity: { '@type': 'Person', name: t.name, jobTitle: 'Software engineer', homeLocation: { '@type': 'Place', name: 'Novi Sad, Serbia' }, url: 'https://filiprastovic.com/', image: new URL('/about/filip.webp', site).href } },
+];
+---
+<Base lang="en" title={`${t.pageTitle} | Rezonanca`} description={t.pageDesc}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="top grid-bg">
+    <div class="wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href={homeHref()}>Home</a><span>/</span><span aria-current="page">About</span></nav>
+    </div>
+  </section>
+  <About lang="en" page />
+</Base>
+<style>
+  .top { padding: clamp(120px, 12vw, 170px) 0 0; background-color: var(--bg-0); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
+  .crumbs a:hover { color: var(--cyan); }
+  .crumbs [aria-current] { color: var(--ice); }
+</style>
