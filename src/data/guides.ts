@@ -909,6 +909,92 @@ export const GUIDES: Guide[] = [
       { q: 'How do you plot the Lorenz attractor?', a: 'Solve the three equations in small time steps, for example with the Runge-Kutta method, store every point, and project the 3D path onto a plane.' },
     ],
   },
+  {
+    slug: 'algorithmic-art',
+    series: '',
+    shop: ['drvo-signala', 'aurora', 'metropola', 'lorenc', 'klifordov-veo', 'tiha-oluja'],
+    title: 'Algorithmic Art: History, Methods and Examples',
+    desc: 'Algorithmic art is art made by following a written procedure. See how it began with Molnar, Nake and Mohr, what plotters did, and how code draws a poster.',
+    h1: 'Algorithmic art: history, methods and examples',
+    kicker: 'Guide // Art and code',
+    lead: 'Algorithmic art is art made by writing down a procedure, a finite list of exact steps, and letting it produce the image. This page covers where the idea comes from, the early artists who used it, what an algorithm adds to a drawing, and three of our own pieces taken apart rule by rule.',
+    updated: '2026-11-17',
+    sections: [
+      {
+        h: 'What an algorithm is',
+        p: [
+          'An algorithm is a finite sequence of unambiguous steps that turns an input into an output. The word comes from the name of the ninth-century mathematician al-Khwarizmi. A recipe is close to one, except that a recipe leaves room for judgement and an algorithm does not.',
+          'In art, the input is a set of numbers and rules, and the output is a picture. The artist decides the rules, the starting values and when to stop, and then the procedure does the drawing. That division of work is what separates this kind of art from sketching by hand.',
+        ],
+      },
+      {
+        h: 'The early artists',
+        p: [
+          'Vera Molnar, born in Budapest, began in the 1950s and 1960s by working out systematic variations of simple shapes on paper, a method she called the imaginary machine, before she had access to a computer. She went on to use computers from the late 1960s.',
+          'In Germany, the mathematician Frieder Nake and the engineer Georg Nees both showed plotter drawings in Stuttgart in 1965, among the first public exhibitions of computer art. Manfred Mohr, who trained as a jazz musician before turning to art, moved to programs in the late 1960s and spent decades on cubes and their rotations in higher dimensions.',
+          'What these artists share is that the program is part of the work. Changing one rule or one number gives a related but different image, so the artist is exploring a family of pictures rather than making one.',
+        ],
+      },
+      {
+        h: 'Plotters and screens',
+        p: [
+          'Early computers had no screens worth drawing on. The output device was a plotter: a pen held over paper that moved to coordinates sent by the program, drew a line to the next coordinates, and lifted. Every picture was a list of line segments.',
+          'Today the output is usually pixels, but the idea is unchanged. The program computes positions and colours, and a device draws them. Our posters are rendered by programs written in JavaScript and sent to print as finished images.',
+        ],
+      },
+      {
+        h: 'Rules that call themselves',
+        p: [
+          'One common method is a grammar: a rule says that one shape is replaced by other shapes, and the replacement is applied again and again. The Signal poster is built this way. A "spoke" either continues straight, splits into two smaller spokes, or ends in a node, and a random draw picks which rule applies at each step.',
+          'The three rules fire with probabilities of 73%, 20% and 5%. Applied until the program reaches its limit, they produce 5,396 primitives, of which 5,208 are boxes and 188 are nodes, growing from 15 rays. The guide to fractal flames covers another kind of repeated rule.',
+        ],
+        f: 'spoke → box · spoke(rz + θ, s × 0.8) · spoke(rz − θ, s × 0.8)   p = 20%',
+        piece: 'drvo-signala',
+        caption: 'Signal: a grammar with 15 rays and 5,396 primitives (5,208 boxes, 188 nodes).',
+      },
+      {
+        h: 'A signal that steers the drawing',
+        p: [
+          'An algorithm needs inputs, and the input does not have to be a picture. Several of our pieces share one control curve s(t) built from a few sine waves, called partials, multiplied by smooth swells. The curve then sets how tall, wide or bright something is at each point along the drawing.',
+          'It is the same sum of sines used to describe sound, which is why these pieces look like recordings. The guide to sound wave art explains waveforms and spectrograms. Here the curve is only a source of controlled variation, written as a formula so that it can be repeated exactly.',
+        ],
+        f: 's(t) = Σₖ aₖ·(½ + ½·sin(2π·fₖ·t + φₖ)) · Σⱼ bⱼ·e^(−((t − cⱼ)/wⱼ)²)',
+      },
+      {
+        h: 'A ribbon from one formula',
+        p: [
+          'The Aurora poster is one ribbon of 150 lines. Each point P of the ribbon is a centre line C(t) plus an offset that rotates around it by an angle θ(t). That angle grows steadily with t, so the ribbon twists, and a noise term makes the twists uneven.',
+          'The width h(t) depends on the control curve, so the ribbon swells where the signal is strong. The piece twists 2.376 times and is built from 105,150 samples. Nothing else is needed: one formula, a set of numbers and a loop over t.',
+        ],
+        f: 'θ(t) = 2π·k·t + θ₀ + 1.4·noise(3t)',
+        piece: 'aurora',
+        caption: 'Aurora: one ribbon, 150 lines, 2.376 twists, 105,150 samples.',
+      },
+      {
+        h: 'A city from a grid',
+        p: [
+          'The Metropolis poster uses a grid of 26 by 26 cells, which gives 676 towers. The index i is a frequency band and j is a time slice, so each tower is a spot on a spectrogram. Its height H(i, j) multiplies the control curve at i and at j, adds a little noise, and raises the result to the power 2.1, which makes tall towers rarer than short ones.',
+          'This is a typical use of an algorithm in art: a small formula evaluated at every cell of a grid. Change the grid size or the exponent and the skyline changes while the method stays the same.',
+        ],
+        f: 'H(i, j) = (0.75·s(i/G)·s(j/G) + 0.25·n(i, j))^2.1 · c(i, j)',
+        piece: 'metropola',
+        caption: 'Metropolis: a 26 × 26 grid, 676 towers, height from a formula.',
+      },
+      {
+        h: 'How our posters relate to algorithmic art',
+        p: [
+          'Every Rezonanca poster is made this way: equations or rules written in JavaScript, numbers chosen, and a program that draws the result. We call it Programmer Art. The product page for each piece lists its equations and parameters, so you can see the procedure behind the picture.',
+          'Nothing is painted by hand and no photograph is involved. You can run some of the same maps live in /play/. What you see is exactly the print you get, on fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is algorithmic art?', a: 'It is art produced by following a written procedure of exact steps, usually run by a computer. The artist chooses the rules and the numbers, and the program draws the image.' },
+      { q: 'Who were the first algorithmic artists?', a: 'Vera Molnar, Frieder Nake, Georg Nees and Manfred Mohr are among the best known early names. Nake and Nees showed plotter drawings in Stuttgart in 1965.' },
+      { q: 'Is algorithmic art the same as computer art?', a: 'Not exactly. Computer art is any art made with a computer, while algorithmic art stresses that the image comes from an explicit procedure written by the artist.' },
+      { q: 'Do you need to code to make algorithmic art?', a: 'Most of it is made by writing code, but you can start with a short script in JavaScript or Python that draws lines from a formula. The first results appear after a few lines.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
