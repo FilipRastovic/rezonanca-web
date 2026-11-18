@@ -80,7 +80,7 @@ const params = m ? [...(m.system ? [['system', m.system]] : []), ...m.params, ..
   .eq { --c: var(--cyan); }
   .k { display: block; margin-bottom: 18px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--cyan); }
   /* Equations as a code block: ink panel, numbered lines, monospace. */
-  .codebox { margin: 0; padding: 18px 0; background: #121417; color: #e9e6df; counter-reset: ln; overflow-x: auto; white-space: normal; }
+  .codebox { margin: 0; padding: 18px 0; background: var(--bg-1); border: 1px solid var(--line); color: var(--text); counter-reset: ln; overflow-x: auto; white-space: normal; }
   code { position: relative; display: block; padding: 6px 20px 6px 52px; font: 400 var(--fs-sm)/1.7 var(--f-code); color: #e9e6df; overflow-wrap: anywhere; counter-increment: ln; }
   code::before { content: counter(ln, decimal-leading-zero); position: absolute; left: 18px; color: #6b6f77; font-size: var(--fs-2xs); line-height: inherit; top: 7px; }
   code:last-child { border-bottom: none; }

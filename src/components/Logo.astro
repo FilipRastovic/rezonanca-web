@@ -6,12 +6,13 @@ const { size = 12, tag, tagClass } = Astro.props;
 <span class="logo" style={`--s:${size}px`}>
   <svg viewBox="0 0 40 20" aria-hidden="true"><path d="M1 12h6l2.5-6 4 13 4-18 4 15 3-7 2.5 4H39" /></svg>
   <span class="words">
-    <span class="name">REZONANCA</span>
+    <span class="name">REZONANCA<i class="cur" aria-hidden="true">_</i></span>
     {tag && <span class:list={['tag', tagClass]}>{tag}</span>}
   </span>
 </span>
 <style>
-  .logo { display: inline-flex; align-items: center; gap: 10px; font: 600 var(--s)/1 var(--f-display); letter-spacing: 0.3em; color: var(--ice); }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font: 800 var(--s)/1 var(--f-display); letter-spacing: 0.3em; color: var(--ice); }
+  .cur { font-style: normal; color: var(--cyan); }
   .words { display: inline-flex; flex-direction: column; gap: calc(var(--s) * 0.45); }
   @media (max-width: 400px) { .logo { letter-spacing: 0.2em; } .tag { letter-spacing: 0.04em; } }
   @media (max-width: 350px) { .nav-tag { display: none; } }

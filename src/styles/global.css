@@ -1,59 +1,63 @@
 /* LIGHT TEST (local branch light-test): warm white gallery, ink text, one deep blue accent.
    Brand tokens - matched to the poster palette (waveform-poster/sketch.js PAL). */
 :root {
-  --bg-0: #fbfaf7;
-  --bg-1: #f4f2ed;
-  --bg-card: #ffffff;
-  --deep: #2b2e34;
-  --blue: #121417;
-  --cyan: #121417;  /* accent = ink (monochrome UI; colour comes from the art) */
-  --ice: #121417;
-  --text: #3b3f46;
-  --muted: #5f636b;  /* ≥ 5.8:1 on the white, WCAG AA for small text */
-  --line: rgba(18, 20, 23, 0.09);
-  --line-strong: rgba(18, 20, 23, 0.32);
-  --glow: 0 24px 60px -28px rgba(18, 20, 23, 0.28);
+  /* TERMINAL (2026-11-18, Redesign round 2, Filip picked direction 1): the page is the poster's control panel.
+     Black-navy ground, ice-blue accent, amber for live/active bits, JetBrains Mono everywhere. */
+  --bg-0: #05080e;
+  --bg-1: #0a1019;
+  --bg-card: #0a1019;
+  --deep: #0e1622;
+  --blue: #8cb8ff;
+  --cyan: #8cb8ff;  /* accent: ice blue from the posters */
+  --ice: #e3ecf7;   /* headings / strong text */
+  --amber: #ffa546; /* live dots, cursor, prompt */
+  --text: #b9c6d8;
+  --muted: #7f8da3;  /* >= 5.5:1 on --bg-0 */
+  --dim: #3a4658;
+  --line: rgba(140, 184, 255, 0.14);
+  --line-strong: rgba(140, 184, 255, 0.34);
+  --glow: 0 0 0 1px rgba(140, 184, 255, 0.5);
 
-  --f-display: 'Unbounded', 'Verdana', sans-serif;
+  --f-display: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
   /* Type system: Unbounded = headings only; Inter = everything else (body, lead, small-caps labels/nav/buttons);
      JetBrains Mono = maths only (--f-code). --f-mono is kept as a name for the small-caps UI style. */
-  --f-mono: 'Inter', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
   --f-code: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
-  --f-body: 'Inter', system-ui, sans-serif;
+  --f-body: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
 
   /* Type scale - small, airy, premium. Tune the whole site from here. */
   --fs-2xs: 11px;      /* micro mono labels, codes, meta */
   --fs-xs: 11.5px;      /* nav, buttons, section labels */
   --fs-sm: 13px;      /* secondary text, captions */
-  --fs-body: 15px;      /* body copy */
-  --fs-lead: 18px;    /* intro paragraphs */
+  --fs-body: 14px;      /* body copy */
+  --fs-lead: 16px;    /* intro paragraphs */
   --fs-name: 15px;    /* product names on cards */
   --fs-h3: 16px;
   --fs-price: 19px;
-  --fs-h2: clamp(22px, 2.7vw, 36px);
-  --fs-h1: clamp(26px, 3.2vw, 44px);
+  --fs-h2: clamp(24px, 3vw, 40px);
+  --fs-h1: clamp(30px, 4vw, 56px);
   --fs-display: clamp(30px, 6.2vw, 92px);
   --track-label: 0.14em;
   --track-ui: 0.12em;
 
   /* Spacing scale — generous air around small type. */
-  --space-section: clamp(140px, 18vw, 280px);  /* between homepage sections */
-  --space-head: clamp(64px, 8vw, 128px);       /* section heading → content */
-  --space-block: clamp(96px, 11vw, 168px);     /* between series / big blocks */
+  --space-section: clamp(96px, 12vw, 180px);  /* between homepage sections */
+  --space-head: clamp(44px, 5vw, 80px);       /* section heading → content */
+  --space-block: clamp(72px, 8vw, 128px);     /* between series / big blocks */
   --space-md: clamp(48px, 6vw, 96px);          /* inside sections */
   --gap-col: clamp(20px, 3.2vw, 48px);         /* grid columns */
   --gap-row: clamp(48px, 5.5vw, 88px);         /* grid rows (cards with captions) */
 
   /* Framed-print look: thin black frame, off-white gallery mat, soft wall shadow. */
   --frame: #0d0d0f;
-  --mat: #eceae4;
+  --mat: #f1efea;
   --mat-pad: 7%;
   /* Layered shadow, light from top-left: contact, near and far shadow so the frame lifts off the wall. */
-  --frame-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 2px 4px 8px rgba(0, 0, 0, 0.12), 10px 22px 40px -12px rgba(0, 0, 0, 0.25);
+  --frame-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(140, 184, 255, 0.18), 10px 22px 40px -12px rgba(0, 0, 0, 0.7);
 
   --gutter: clamp(20px, 5vw, 80px);
   --max: 1280px;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -72,8 +76,17 @@ html { overflow-x: clip; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; }
-::selection { background: #121417; color: #fbfaf7; }
+::selection { background: var(--cyan); color: var(--bg-0); }
 :focus-visible { outline: 1px solid var(--cyan); outline-offset: 4px; }
+
+/* Terminal scan grid behind every page (fixed, very faint). */
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 120px 120px; opacity: 0.22; }
+body { isolation: isolate; }
+.cursor::after { content: '_'; color: var(--amber); animation: rz-blink 1s steps(1) infinite; }
+@keyframes rz-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cursor::after { animation: none; } }
 
 /* Film grain over everything, like the prints. */
 body::after {
@@ -123,12 +136,13 @@ body::after {
   color: var(--cyan);
   text-transform: uppercase;
 }
-.label::before { content: ''; width: 22px; height: 1px; background: var(--cyan); }
+.label { color: var(--muted); }
+.label::before { content: '>'; width: auto; height: auto; background: none; color: var(--amber); }
 .mono { font-family: var(--f-mono); letter-spacing: 0.06em; }
-h1, h2, h3 { font-family: var(--f-display); color: var(--ice); margin: 0; font-weight: 400; letter-spacing: 0.02em; }
+h1, h2, h3 { font-family: var(--f-display); color: var(--ice); margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 h2 { font-size: var(--fs-h2); line-height: 1.2; margin-top: 18px; max-width: 22ch; }
 h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
-.lead { font-size: var(--fs-lead); line-height: 1.6; color: var(--ice); max-width: 46ch; }
+.lead { font-size: var(--fs-lead); line-height: 1.7; color: var(--text); max-width: 50ch; }
 
 /* Buttons */
 .btn {
@@ -138,17 +152,17 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
   gap: 12px;
   padding: 14px 22px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.6);
+  background: transparent;
   color: var(--ice);
-  font: 500 var(--fs-xs)/1 var(--f-mono);
+  font: 600 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: var(--track-ui);
   text-transform: uppercase;
   cursor: pointer;
   transition: border-color 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
 }
-.btn:hover { border-color: var(--cyan); box-shadow: var(--glow); }
-.btn--solid { background: var(--cyan); color: var(--bg-0); border-color: var(--cyan); font-weight: 600; }
-.btn--solid:hover { background: var(--deep); border-color: var(--deep); }
+.btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn--solid { background: var(--cyan); color: var(--bg-0); border-color: var(--cyan); font-weight: 700; }
+.btn--solid:hover { background: transparent; color: var(--cyan); border-color: var(--cyan); }
 .btn .arrow { transition: transform 0.3s; }
 .btn:hover .arrow { transform: translateX(4px); }
 
@@ -159,7 +173,7 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
 .rail::-webkit-scrollbar { display: none; }
 .rail > * { flex: 0 0 calc((100% - 2 * var(--rail-gap)) / 3); scroll-snap-align: start; display: block !important; min-width: 0; }
 .rail-nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 4px; }
-.rail-nav button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.6);
+.rail-nav button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); background: transparent;
   color: var(--ice); font: 400 16px/1 var(--f-mono); cursor: pointer; transition: border-color 0.3s, color 0.3s, opacity 0.3s; }
 .rail-nav button:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
 .rail-nav button:disabled { opacity: 0.25; cursor: default; }
@@ -171,9 +185,9 @@ h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 500; }
 }
 
 /* Quantity stepper: − [n] + */
-.stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--line); background: rgba(251, 250, 247, 0.8); height: 52px; }
-.stepper .step { width: 44px; border: none; background: none; color: var(--ice); font: 400 20px/1 var(--f-body); cursor: pointer; transition: color 0.2s, background 0.2s; }
-.stepper .step:hover:not(:disabled) { color: var(--cyan); background: rgba(18, 20, 23, 0.03); }
+.stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--line-strong); background: transparent; height: 52px; }
+.stepper .step { width: 44px; border: none; background: none; color: var(--ice); font: 400 18px/1 var(--f-body); cursor: pointer; transition: color 0.2s, background 0.2s; }
+.stepper .step:hover:not(:disabled) { color: var(--cyan); background: rgba(140, 184, 255, 0.06); }
 .stepper .step:disabled { opacity: 0.3; cursor: default; }
 .stepper input { width: 48px !important; padding: 0 !important; border: none !important; border-left: 1px solid var(--line) !important; border-right: 1px solid var(--line) !important;
   background: none !important; color: var(--ice); font: 500 16px/1 var(--f-body) !important; text-align: center; -moz-appearance: textfield; box-shadow: none !important; }
@@ -183,7 +197,7 @@ section { position: relative; padding: var(--space-section) 0; }
 main > section + section, main > section + * section:first-child { border-top: 1px solid var(--line); }
 
 /* Boxed panel: a framed block inside a section. */
-.panel { position: relative; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.35)); padding: clamp(24px, 3.4vw, 52px); }
+.panel { position: relative; border: 1px solid var(--line); background: var(--bg-1); padding: clamp(24px, 3.4vw, 52px); }
 .panel::before { content: ''; position: absolute; left: -1px; top: -1px; width: 56px; height: 1px; background: var(--cyan); }
 .section-head { margin-bottom: var(--space-head); }
 .section-head .lead { margin-top: 28px; }

@@ -51,7 +51,7 @@ export function mountHeroLines(host: HTMLElement) {
       const base = top + k * span;
       // a few accent lines, the rest faint ink
       const accent = i % 9 === 4;
-      ctx.strokeStyle = accent ? 'rgba(18, 20, 23, 0.22)' : `rgba(18, 20, 23, ${0.04 + 0.06 * Math.sin(k * Math.PI)})`;
+      ctx.strokeStyle = accent ? 'rgba(140, 184, 255, 0.32)' : `rgba(140, 184, 255, ${0.04 + 0.07 * Math.sin(k * Math.PI)})`;
       ctx.lineWidth = accent ? 1.1 : 0.8;
       ctx.beginPath();
       let px = 0, py = 0;

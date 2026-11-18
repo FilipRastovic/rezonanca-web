@@ -22,7 +22,8 @@ const { compact = false } = Astro.props;
 )}
 <style>
   .paylogos { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 40px; }
-  .g { display: inline-flex; align-items: center; gap: 16px; }
+  /* Light chips: the bank's logos are drawn for a light ground and must stay legible (Prilog 1). */
+  .g { display: inline-flex; align-items: center; gap: 16px; padding: 8px 12px; background: #fff; border: 1px solid var(--line); }
   .g img { display: block; height: auto; }
   .cards { padding: 8px 12px; background: #fff; border: 1px solid var(--line); gap: 14px; }
   .compact { gap: 12px 24px; }

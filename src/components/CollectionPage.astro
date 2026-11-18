@@ -199,7 +199,7 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
   .guide { display: inline-block; margin-top: 20px; font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); text-decoration: underline; text-underline-offset: 5px; }
   .guide:hover { color: var(--cyan); }
   /* Series page: every series under one Filters button (Filip 2026-11-15). */
-  .sfilter { margin-top: 40px; max-width: 420px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.6); }
+  .sfilter { margin-top: 40px; max-width: 420px; border: 1px solid var(--line); background: var(--bg-1); }
   .sfilter summary { list-style: none; cursor: pointer; padding: 14px 16px; font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ice); display: flex; justify-content: space-between; gap: 12px; }
   .sfilter summary::-webkit-details-marker { display: none; }
   .sfilter summary::after { content: '+'; color: var(--muted); }
@@ -208,13 +208,13 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
   .sfilter[open] summary { border-bottom: 1px solid var(--line); }
   .sbody { display: grid; padding: 6px 0; }
   .sbody a { display: flex; justify-content: space-between; padding: 10px 16px; font-size: var(--fs-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
-  .sbody a:hover { color: var(--ice); background: rgba(18, 20, 23, 0.03); }
+  .sbody a:hover { color: var(--ice); background: rgba(140, 184, 255, 0.048); }
   .sbody a.on { color: var(--ice); font-weight: 600; }
   .sbody i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
   .chips a { display: inline-flex; align-items: center; gap: 10px; padding: 11px 16px; border: 1px solid var(--line); font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); transition: border-color 0.3s, color 0.3s, background 0.3s; }
   .chips a:hover { border-color: var(--line-strong); color: var(--ice); }
-  .chips a.on { border-color: var(--cyan); background: rgba(18, 20, 23, 0.048); color: var(--cyan); }
+  .chips a.on { border-color: var(--cyan); background: rgba(140, 184, 255, 0.077); color: var(--cyan); }
   .chips i { font-style: normal; color: var(--muted); font-size: var(--fs-2xs); }
   .list { background: linear-gradient(var(--bg-0), var(--bg-1) 60%, var(--bg-0)); padding-top: var(--space-head); }
   .series + .series { margin-top: clamp(28px, 3.5vw, 56px); }
@@ -231,7 +231,7 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
   @media (max-width: 899px) { .all { grid-template-columns: 1fr; } }
   @media (max-width: 600px) { .all .grid { grid-template-columns: 1fr; } }
   .item[hidden] { display: none; }
-  .filters { position: sticky; top: 110px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.6); }
+  .filters { position: sticky; top: 110px; border: 1px solid var(--line); background: var(--bg-1); }
   .filters summary { list-style: none; cursor: pointer; padding: 14px 16px; font-size: var(--fs-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ice); }
   .filters summary::-webkit-details-marker { display: none; }
   .filters summary i { font-style: normal; color: var(--cyan); margin-left: 6px; }

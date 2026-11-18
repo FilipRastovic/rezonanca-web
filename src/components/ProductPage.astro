@@ -559,14 +559,14 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .main { touch-action: pan-y; margin: 0; position: relative; aspect-ratio: 3 / 4; background-color: #000; border: 1px solid var(--line); padding: 0; overflow: hidden; --l: 22px; }
   .zoom { display: block; position: relative; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
   .main img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-  .zoom-ico { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 34px; height: 34px; color: var(--ice); background: rgba(251, 250, 247, 0.6); border: 1px solid var(--line); opacity: 0.75; transition: opacity 0.3s, border-color 0.3s; }
+  .zoom-ico { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 34px; height: 34px; color: var(--ice); background: rgba(5, 8, 14, 0.6); border: 1px solid var(--line); opacity: 0.75; transition: opacity 0.3s, border-color 0.3s; }
   .zoom:hover .zoom-ico, .zoom:focus-visible .zoom-ico { opacity: 1; border-color: var(--cyan); }
 
-  .lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(251, 250, 247, 0.96); color: var(--ice); overflow: hidden; }
-  .lightbox::backdrop { background: rgba(251, 250, 247, 0.9); }
+  .lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(5, 8, 14, 0.96); color: var(--ice); overflow: hidden; }
+  .lightbox::backdrop { background: rgba(5, 8, 14, 0.9); }
   .lightbox[open] { display: grid; place-items: center; }
   .lightbox img { max-width: calc(100vw - 32px); max-height: calc(100dvh - 96px); width: auto; height: auto; object-fit: contain; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
-  .lb-btn { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; color: var(--ice); background: rgba(251, 250, 247, 0.6); border: 1px solid var(--line); cursor: pointer; transition: border-color 0.3s, color 0.3s; }
+  .lb-btn { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; color: var(--ice); background: rgba(5, 8, 14, 0.6); border: 1px solid var(--line); cursor: pointer; transition: border-color 0.3s, color 0.3s; }
   .lb-btn:hover, .lb-btn:focus-visible { border-color: var(--cyan); color: var(--cyan); }
   .lb-close { top: 16px; right: 16px; }
   .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
@@ -576,11 +576,11 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .main[data-fit='poster'] { padding: var(--mat-pad); background: var(--mat); border: 8px solid var(--frame); box-shadow: var(--frame-shadow); }
   .main[data-fit='poster'] img { object-fit: contain; }
   /* Принт урамљен: Gelato's preview of the framed product (their frame, our print file) on a light wall. */
-  .main[data-fit='framed'] { padding: 5%; background: linear-gradient(160deg, #f3f1ec, #eeebe5 60%, #e9e6df); }
-  .main[data-fit='framed'] img { object-fit: contain; filter: drop-shadow(0 18px 30px rgba(18, 20, 23, 0.18)) drop-shadow(0 2px 4px rgba(18, 20, 23, 0.12)); }
+  .main[data-fit='framed'] { padding: 5%; background: linear-gradient(160deg, #111b29, #0c1420 60%, #090f18); }
+  .main[data-fit='framed'] img { object-fit: contain; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.54)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.36)); }
   /* Мини принт: the flat printed card on a dark wall. */
-  .main[data-fit='card'] { padding: 13%; background: radial-gradient(ellipse at 40% 30%, rgba(18, 20, 23, 0.11), transparent 65%), linear-gradient(160deg, #f3f1ec, #eeebe5 60%, #e9e6df); }
-  .main[data-fit='card'] img { object-fit: contain; filter: drop-shadow(0 18px 34px rgba(18, 20, 23, 0.16)) drop-shadow(0 2px 4px rgba(18, 20, 23, 0.12)); }
+  .main[data-fit='card'] { padding: 13%; background: radial-gradient(ellipse at 40% 30%, rgba(140, 184, 255, 0.176), transparent 65%), linear-gradient(160deg, #111b29, #0c1420 60%, #090f18); }
+  .main[data-fit='card'] img { object-fit: contain; filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.48)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.36)); }
   /* Per-format look of the poster view (set from the chosen format/frame). The image is the Gelato print sheet with its
      own white border, so no mat is drawn; Gelato frames sit straight on the sheet. */
   .main[data-fit='poster'] { transition: padding 0.35s, border-color 0.35s, background-color 0.35s; }
@@ -592,23 +592,23 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); grid-auto-flow: column; gap: 12px; margin-top: 12px; }
   .thumbs > * { min-width: 0; }
   .thumbs button { padding: 0; border: 1px solid var(--line); background: var(--bg-1); cursor: pointer; text-align: left; transition: border-color 0.3s; }
-  .thumbs button[aria-selected='true'] { border-color: var(--cyan); box-shadow: var(--glow); }
+  .thumbs button[aria-selected='true'] { border-color: var(--cyan); }
   .thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; }
   .thumbs span { display: block; padding: 8px 10px; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
   @media (max-width: 600px) { .thumbs { gap: 6px; } .thumbs span { display: none; } .order { white-space: nowrap; letter-spacing: 0.06em; padding: 0 12px; } }
 
-  /* Grey band straight after the product, same step down from the page white as Lucy Pittaway's (#fff -> #eee). */
-  .promise { background: #ebe9e3; padding-block: clamp(56px, 6vw, 88px); }
+  /* Band straight after the product, one step up from the page ground. */
+  .promise { background: var(--bg-1); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding-block: clamp(56px, 6vw, 88px); }
   .promise-in { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px clamp(24px, 4vw, 64px); text-align: center; }
   .pr { display: grid; justify-items: center; gap: 10px; }
-  .pr svg { color: var(--ice); margin-bottom: 14px; }
+  .pr svg { color: var(--cyan); margin-bottom: 14px; }
   .pr h2 { margin: 0; font-size: clamp(18px, 1.7vw, 24px); line-height: 1.25; text-wrap: balance; }
   .pr-sub { margin: 4px 0 0; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
-  .pr-body { margin: 0; max-width: 34ch; font-size: var(--fs-sm); line-height: 1.6; color: var(--ice); }
+  .pr-body { margin: 0; max-width: 34ch; font-size: var(--fs-sm); line-height: 1.6; color: var(--text); }
   @media (max-width: 800px) { .promise-in { grid-template-columns: minmax(0, 1fr); } }
   .story { background: var(--bg-0); border-top: 1px solid var(--line); padding: var(--space-md) 0; }
   .story-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: 16px var(--gap-col); align-items: baseline; }
-  .story-text { margin: 0; font: 300 clamp(17px, 1.6vw, 22px)/1.6 var(--f-display); color: var(--ice); max-width: 58ch; }
+  .story-text { margin: 0; font: 400 clamp(15px, 1.3vw, 18px)/1.75 var(--f-display); color: var(--ice); max-width: 62ch; }
   @media (max-width: 900px) { .story-in { grid-template-columns: minmax(0, 1fr); } }
   .info { position: sticky; top: var(--stick, 100px); }
   .stack { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
@@ -616,34 +616,36 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .stack img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
   @media (min-width: 901px) { .thumbs { display: none; } }
   .kicker { margin: 0; font: 500 var(--fs-2xs)/1.4 var(--f-body); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
-  h1 { font-size: clamp(24px, 2.3vw, 32px); line-height: 1.15; margin-top: 10px; }
-  .line { margin: 16px 0 0; font: 400 var(--fs-sm)/1.6 var(--f-body); color: var(--ice); max-width: 60ch; }
+  .kicker::before { content: '> '; color: var(--amber); }
+  h1 { font-size: clamp(36px, 4.4vw, 64px); font-weight: 800; line-height: 1; letter-spacing: -0.02em; margin-top: 14px; }
+  .line { margin: 18px 0 0; font: 400 var(--fs-sm)/1.7 var(--f-body); color: var(--text); max-width: 56ch; }
   .price { display: flex; flex-direction: column; gap: 6px; margin: 14px 0 0; }
   .price.soon strong { font: 400 clamp(20px, 2vw, 26px)/1.2 var(--f-display); }
   .badge { align-self: flex-start; padding: 5px 10px; background: var(--cyan); color: var(--bg-0); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
   .wait { margin-top: 28px; }
-  .price strong { font: 400 22px/1 var(--f-display); color: var(--ice); }
+  .price strong { font: 700 28px/1 var(--f-display); color: var(--ice); }
   .price .eur { display: flex; align-items: baseline; gap: 10px; margin: 0; }
   .price .eur span { color: var(--muted); font-size: var(--fs-body); }
   .price small { color: var(--muted); font-size: var(--fs-sm); }
 
   fieldset { border: none; padding: 0; margin: 24px 0 0; }
-  legend { font: 500 var(--fs-2xs)/1.4 var(--f-body); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ice); margin-bottom: 10px; padding: 0; }
+  legend { font: 500 var(--fs-2xs)/1.4 var(--f-body); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding: 0; }
   input[type='radio'] { position: absolute; opacity: 0; pointer-events: none; }
   .formats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .fmt .box { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border: 1px solid var(--line); cursor: pointer; transition: border-color 0.3s, background 0.3s; }
   .fmt .box strong { font: 500 var(--fs-body)/1.25 var(--f-body); color: var(--ice); }
   .fmt .box span { font-size: var(--fs-2xs); color: var(--muted); }
-  .fmt input:checked + .box { border-color: var(--cyan); background: rgba(18, 20, 23, 0.042); }
+  .fmt input:checked + .box { border-color: var(--cyan); background: rgba(140, 184, 255, 0.067); }
   .fmt input:focus-visible + .box, .pill input:focus-visible + span { outline: 1px solid var(--cyan); outline-offset: 3px; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; }
   .pill[hidden] { display: none !important; }
   .pill small { font-size: 0.85em; color: var(--muted); }
   .pill span { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border: 1px solid var(--line-strong); font-size: var(--fs-sm); color: var(--ice); cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
-  .pill span:hover { border-color: var(--ice); }
-  .pill input:checked + span { border-color: var(--ice); box-shadow: inset 0 0 0 1px var(--ice); }
+  .pill span:hover { border-color: var(--cyan); }
+  .pill input:checked + span { border-color: var(--cyan); color: var(--cyan); background: rgba(140, 184, 255, 0.1); }
+  .pill input:checked + span::before { content: '>'; margin-right: -2px; }
   .sw-black { background: #0b0b0d; } .sw-white { background: #f2f2ee; } .sw-oak { background: #dcc7a4; }
-  .fixed { margin: 24px 0 0; padding: 18px 20px; border: 1px solid var(--line-strong); background: rgba(18, 20, 23, 0.024); display: grid; gap: 6px; }
+  .fixed { margin: 24px 0 0; padding: 18px 20px; border: 1px solid var(--line-strong); background: rgba(140, 184, 255, 0.038); display: grid; gap: 6px; }
   .fixed p { margin: 0 0 4px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
   .fixed strong { font: 500 var(--fs-body)/1.3 var(--f-display); color: var(--ice); }
   .fixed span { font-size: var(--fs-xs); color: var(--muted); }
@@ -661,7 +663,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .acc summary::-webkit-details-marker { display: none; }
   .acc summary::after { content: '+'; color: var(--cyan); }
   .acc details[open] summary::after { content: '–'; }
-  .acc p { margin: 0 0 20px; color: var(--ice); font-size: var(--fs-sm); line-height: 1.65; }
+  .acc p { margin: 0 0 20px; color: var(--text); font-size: var(--fs-sm); line-height: 1.65; }
   .acc-link { text-decoration: underline; text-underline-offset: 3px; }
   .acc-link:hover { color: var(--cyan); }
   .also { margin-top: 44px; }
@@ -671,7 +673,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .also-media { position: relative; margin-bottom: 8px; }
   .also-img { display: block; background: var(--bg-1); border: 1px solid var(--line); }
   .also-img img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
-  .quick { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid var(--line); background: var(--bg-card); color: var(--ice); cursor: pointer; box-shadow: 0 4px 14px rgba(18, 20, 23, 0.1); }
+  .quick { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid var(--line); background: var(--bg-card); color: var(--ice); cursor: pointer; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
   .quick:hover { border-color: var(--ice); }
   .also-name { font: 400 var(--fs-body)/1.3 var(--f-body); color: var(--ice); }
   .also-price { font-size: var(--fs-sm); color: var(--muted); }

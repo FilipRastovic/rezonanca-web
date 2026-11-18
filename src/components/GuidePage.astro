@@ -115,11 +115,11 @@ const others = GUIDES.filter((x) => x.slug !== g.slug);
   h2 { display: flex; gap: 18px; align-items: baseline; font-size: var(--fs-h3); max-width: none; margin: 0; text-wrap: balance; }
   h2 .mono { font-size: var(--fs-2xs); color: var(--cyan); letter-spacing: var(--track-label); flex: none; }
   .sec p { margin: 18px 0 0; color: var(--text); font-size: var(--fs-body); line-height: 1.8; max-width: 68ch; }
-  .codebox { margin: 28px 0 0; padding: 18px 0; background: #121417; color: #e9e6df; counter-reset: ln; overflow-x: auto; white-space: normal; }
+  .codebox { margin: 28px 0 0; padding: 18px 0; background: var(--bg-1); border: 1px solid var(--line); color: var(--text); counter-reset: ln; overflow-x: auto; white-space: normal; }
   .codebox code { position: relative; display: block; padding: 6px 20px 6px 52px; font: 400 var(--fs-sm)/1.7 var(--f-code); color: #e9e6df; counter-increment: ln; white-space: pre; }
   .codebox code::before { content: counter(ln, decimal-leading-zero); position: absolute; left: 18px; top: 7px; color: #6b6f77; font-size: var(--fs-2xs); }
   figure { margin: 32px 0 0; max-width: 460px; }
-  figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; background: var(--bg-1); box-shadow: 0 18px 40px rgba(18, 20, 23, 0.12); }
+  figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; background: var(--bg-1); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36); }
   figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin-top: 14px; font-size: var(--fs-2xs); letter-spacing: 0.06em; color: var(--muted); }
   figcaption a { color: var(--ice); text-transform: uppercase; letter-spacing: var(--track-ui); }
   figcaption a:hover { color: var(--cyan); }
