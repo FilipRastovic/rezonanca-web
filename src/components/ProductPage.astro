@@ -643,7 +643,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
   .pill span { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border: 1px solid var(--line-strong); font-size: var(--fs-sm); color: var(--ice); cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
   .pill span:hover { border-color: var(--cyan); }
   .pill input:checked + span { border-color: var(--cyan); color: var(--cyan); background: rgba(140, 184, 255, 0.1); }
-  .pill input:checked + span::before { content: '>'; margin-right: -2px; }
+  @media (min-width: 601px) { .pill input:checked + span::before { content: '>'; margin-right: -2px; } }
   .sw-black { background: #0b0b0d; } .sw-white { background: #f2f2ee; } .sw-oak { background: #dcc7a4; }
   .fixed { margin: 24px 0 0; padding: 18px 20px; border: 1px solid var(--line-strong); background: rgba(140, 184, 255, 0.038); display: grid; gap: 6px; }
   .fixed p { margin: 0 0 4px; font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
