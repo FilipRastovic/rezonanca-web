@@ -995,6 +995,91 @@ export const GUIDES: Guide[] = [
       { q: 'Do you need to code to make algorithmic art?', a: 'Most of it is made by writing code, but you can start with a short script in JavaScript or Python that draws lines from a formula. The first results appear after a few lines.' },
     ],
   },
+  {
+    slug: 'gifts-for-programmers',
+    series: '',
+    shop: ['klifordov-veo', 'drvo-signala', 'metropola', 'lorenc'],
+    title: 'Gifts for Programmers: Art Made With Code',
+    desc: 'Gifts for programmers that skip the joke mug: posters drawn by short programs from real equations. See the loop or rule behind four pieces for a desk.',
+    h1: 'Gifts for programmers: art made with code',
+    kicker: 'Guide // Gifts',
+    lead: 'The best gifts for programmers are objects they can read: a poster where the picture is the output of a short program, and the rules are small enough to follow. This page takes four of our pieces and shows the loop, the rule or the formula behind each one, so you can pick the one that suits the person and say why.',
+    updated: '2026-11-18',
+    sections: [
+      {
+        h: 'What a programmer sees in a poster',
+        p: [
+          'Most programmer gifts are jokes about bugs, coffee or semicolons. They wear out fast. A picture that comes out of a real algorithm lasts longer, because the person can look at it and think about how it was computed.',
+          'Our posters are written in JavaScript. Each one starts from a few numbers and a rule, runs a loop, and draws the result. Four of them are described below by the rule that makes them, in the order of how much code you would need to reproduce them.',
+          'None of them needs a library or a trick. Each is a loop, a rule and a handful of constants, and the constants are listed on the product page. If the person you are buying for likes to take things apart, that is the part they will enjoy most.',
+          'The pieces also differ in kind. One is an iterated map, one is a numerical simulation, one is a recursive grammar and one is a formula evaluated over a grid. Together they cover most of the ways a program can draw, so the choice is really a question of which style of programming the person likes.',
+        ],
+      },
+      {
+        h: 'Cup: a two-line loop',
+        p: [
+          'Cup is a Clifford attractor. The whole program is a loop that takes a point (x, y), computes the next point from the two lines below, and plots it. The poster contains 3,372,754 iterations with a = 1.7, b = 1.7, c = 0.6 and d = 1.2.',
+          'Nothing in the loop is random. The same four constants always give the same picture, which is why the poster can be checked against the numbers printed on its product page. A small change to any constant gives a different fabric, so the person who receives it may want to try other values.',
+          'It suits the programmer who likes small programs with surprising output. The guide to the Clifford attractor explains what each constant does, and the /play/ page lets the person change them live.',
+        ],
+        f: 'xₙ₊₁ = sin(a·yₙ) + c·cos(a·xₙ)   yₙ₊₁ = sin(b·xₙ) + d·cos(b·yₙ)',
+        piece: 'klifordov-veo',
+        caption: 'Cup: a Clifford map, 3,372,754 iterations.',
+      },
+      {
+        h: 'Tightly Woven: a simulation stepped forward',
+        p: [
+          'Tightly Woven is the Lorenz system, three coupled differential equations. A program cannot solve them in closed form, so it steps forward in small time increments. This poster uses the fourth-order Runge-Kutta method (RK4) with a step of 0.004 and 260,000 steps, starting from a point near x = −6.353, y = −4.015, z = 27.645.',
+          'The step size matters. A crude method such as Euler drifts away from the true path quickly, and RK4 is the usual upgrade because it samples the slope four times per step. That is the kind of detail a numerical programmer will notice and enjoy.',
+          'It is the right gift for someone who has written a physics simulation, or wishes to. The guide to the Lorenz attractor covers the three parameters σ = 10, ρ = 28 and β = 8/3.',
+        ],
+        f: 'dx/dt = σ(y − x)   dy/dt = x(ρ − z) − y   dz/dt = xy − βz',
+        piece: 'lorenc',
+        caption: 'Tightly Woven: the Lorenz system, RK4, 260,000 steps.',
+      },
+      {
+        h: 'Signal: rules that call themselves',
+        p: [
+          'Signal is a recursive grammar. A "spoke" draws a box and then calls itself in one of three ways, chosen by a random draw: 73% continue straight, 20% split into two smaller spokes, and 5% end in a node and curl. Fifteen rays start the process and it produces 5,396 primitives.',
+          'The rules are listed in full on the product page, together with the control curve that sets the size of each box, so the structure can be traced by hand. The random draw is what stops the tree from looking like a template: the rules stay the same, and the choices vary along the way.',
+          'Anyone who has written a recursive function will see the structure straight away: a base case, a branch and a scale factor of 0.8 on each split. It is a good fit for the programmer who prefers algorithms to maths.',
+        ],
+        f: 'spoke → box · spoke(rz + θ, s × 0.8) · spoke(rz − θ, s × 0.8)   p = 20%',
+        piece: 'drvo-signala',
+        caption: 'Signal: 15 rays, 5,396 primitives from three rules.',
+      },
+      {
+        h: 'Metropolis: a nested loop over a grid',
+        p: [
+          'Metropolis is a double loop over a 26 by 26 grid, which gives 676 towers. For each cell the program evaluates one formula for the height, where i is a frequency band, j is a time slice, s is a control curve built from sine waves and n is noise.',
+          'It will feel familiar to anyone who has filled a 2D array. It also suits people who work with audio or data visualisation, since each tower is a cell of a spectrogram. The guide to sound wave art explains that idea.',
+        ],
+        f: 'H(i, j) = (0.75·s(i/G)·s(j/G) + 0.25·n(i, j))^2.1 · c(i, j)',
+        piece: 'metropola',
+        caption: 'Metropolis: a 26 × 26 grid, 676 towers.',
+      },
+      {
+        h: 'Choosing for a desk or an office wall',
+        p: [
+          'Dark pieces with bright lines, such as Cup and Tightly Woven, look sharp next to a monitor and do not compete with the screen. Metropolis is the most graphic of the four and reads well from across a room, which helps in an open office or a shared study. Signal is the most detailed, with thousands of small boxes, and rewards a closer look.',
+          'Sizes, frames and shipping are covered in the maths gifts guide, which also has picks for mathematicians and physicists. If you are unsure which piece to choose, take the one whose rule the person would most like to explain to a visitor.',
+        ],
+      },
+      {
+        h: 'How our posters relate to gifts for programmers',
+        p: [
+          'Every Rezonanca poster is a program written line by line in Novi Sad, with its numbers chosen by hand. We call it Programmer Art. The product page for each piece lists its equations, parameters and measurements, so the recipient can check the picture against the rule that made it.',
+          'Nothing is photographed or painted. What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is a good gift for a programmer who has everything?', a: 'Something they can read rather than use: a print of the output of a short program, such as a Clifford attractor or a recursive grammar, with its equations listed so they can see how it was made.' },
+      { q: 'What should I give a software engineer for their desk or office?', a: 'A poster is easier to place than a gadget and does not need a power outlet. A dark piece with fine lines sits well beside a monitor.' },
+      { q: 'Is there art that a programmer can understand and reproduce?', a: 'Yes. The Clifford attractor is two lines of iteration, and the Lorenz system is three equations stepped forward in time. Both can be drawn in a short script in JavaScript or Python.' },
+      { q: 'Which piece suits a programmer who does not like maths?', a: 'Signal. It is built from a recursive rule with a base case and a branch, which reads like code rather than like an equation.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
