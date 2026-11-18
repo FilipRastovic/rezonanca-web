@@ -368,6 +368,14 @@ async function sweep(env: Env, ctx: ExecutionContext) {
   // Paid orders Gelato hasn't taken yet (first attempt failed): retry for a day.
   const retry = await env.DB.prepare(`SELECT id FROM orders WHERE status = 'preauthorized' AND gelato_id IS NULL AND (gelato_status IS NULL OR gelato_status = 'error') AND created_at > ?`).bind(new Date(Date.now() - 86400e3).toISOString()).all<{ id: string }>();
   for (const r of retry.results) await placeGelato(env, r.id);
+  // Shipped orders: keep the stored Gelato status current (in_transit -> delivered) until delivery. Status only, no emails.
+  const moving = await env.DB.prepare(`SELECT id, gelato_id, gelato_status FROM orders WHERE status = 'preauthorized' AND gelato_id IS NOT NULL AND shipped_at IS NOT NULL AND (gelato_status IS NULL OR gelato_status NOT IN ('delivered', 'canceled', 'cancelled')) AND created_at > ?`).bind(new Date(Date.now() - 30 * 86400e3).toISOString()).all<{ id: string; gelato_id: string; gelato_status: string | null }>();
+  for (const m of moving.results) {
+    try {
+      const st: string = (await gelato(env, 'GET', `/${m.gelato_id}`)).fulfillmentStatus ?? '';
+      if (st && st !== m.gelato_status) await env.DB.prepare('UPDATE orders SET gelato_status = ? WHERE id = ?').bind(st, m.id).run();
+    } catch (e) { console.error('status', m.id, e); }
+  }
   // Placed and not shipped yet: ask Gelato. Warn Filip once at day 5 (the bank's capture limit is 7 days).
   const open = await env.DB.prepare(`SELECT * FROM orders WHERE status = 'preauthorized' AND gelato_id IS NOT NULL AND shipped_at IS NULL AND created_at > ?`).bind(new Date(Date.now() - 30 * 86400e3).toISOString()).all<Order>();
   for (const o of open.results) {
