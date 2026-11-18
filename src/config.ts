@@ -116,6 +116,7 @@ export const formatUsd = (eur: number) => `≈ $${usd(eur).toLocaleString('en-US
 export const formatRsd = (n: number) => `${n.toLocaleString('en-US')} RSD`;
 
 // Delivery countries (ISO 3166-1 alpha-2): everywhere Gelato ships, minus sanctioned destinations. Names come from Intl.DisplayNames.
-export const COUNTRIES = 'AD AE AL AM AR AT AU AZ BA BE BG BH BR CA CH CL CN CO CR CY CZ DE DK DO EC EE EG ES FI FR GB GE GR GT HK HR HU ID IE IL IN IS IT JO JP KE KR KW KZ LB LI LK LT LU LV MA MC MD ME MK MT MU MX MY NG NL NO NZ OM PA PE PH PK PL PR PT QA RO RS SA SE SG SI SK SM TH TN TR TW UA US UY VN ZA'.split(' ');
+// RS removed 2026-11-18: Gelato ships Serbia from Germany duties unpaid, the buyer pays ~4,600 RSD customs (see HANDOFF).
+export const COUNTRIES = 'AD AE AL AM AR AT AU AZ BA BE BG BH BR CA CH CL CN CO CR CY CZ DE DK DO EC EE EG ES FI FR GB GE GR GT HK HR HU ID IE IL IN IS IT JO JP KE KR KW KZ LB LI LK LT LU LV MA MC MD ME MK MT MU MX MY NG NL NO NZ OM PA PE PH PK PL PR PT QA RO SA SE SG SI SK SM TH TN TR TW UA US UY VN ZA'.split(' ');
 // Gelato needs a state/province for these.
 export const STATE_COUNTRIES = ['US', 'CA', 'AU'];
