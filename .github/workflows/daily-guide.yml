@@ -1,10 +1,10 @@
 name: Daily guide
 
 # Writes one new /guide/ page a day from seo/guide-queue.md (instructions: seo/daily-guide.md),
-# checks it, commits it and deploys the site. 08:00 UTC = 09:00 in Novi Sad (winter).
+# checks it, commits it and deploys the site. 06:17 UTC (07:17 in Novi Sad); off the hour because GitHub delays on-the-hour schedules.
 on:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '17 6 * * *'
   workflow_dispatch:
     inputs:
       force:
