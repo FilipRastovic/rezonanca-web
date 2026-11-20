@@ -1080,6 +1080,105 @@ export const GUIDES: Guide[] = [
       { q: 'Which piece suits a programmer who does not like maths?', a: 'Signal. It is built from a recursive rule with a base case and a branch, which reads like code rather than like an equation.' },
     ],
   },
+  {
+    slug: 'circle-inversion',
+    series: 'inversion',
+    title: 'Circle Inversion: How It Works and Why It Draws Fractals',
+    desc: 'Circle inversion swaps the inside and outside of a circle. See the formula, how lines become circles, and how repeating it draws lace-like fractals.',
+    h1: 'Circle inversion: how it works and why it draws fractals',
+    kicker: 'Guide // Inversion',
+    lead: 'Circle inversion is a map of the plane that turns a circle inside out: points near the centre fly far away, far points come close, and the circle itself stays put. Here is the rule, what it does to lines and circles, and how repeating it millions of times draws lace.',
+    updated: '2026-11-20',
+    sections: [
+      {
+        h: 'The rule',
+        p: [
+          'Draw a circle with centre O and radius r. Take any point P except O itself. Draw the ray from O through P. The inverse of P is the point P\' on that same ray whose distance from O satisfies one condition: the two distances multiply to r².',
+          'So the rule needs only a centre and a radius. Nothing else is chosen, and every point of the plane except the centre gets exactly one partner.',
+        ],
+        f: '|OP| · |OP\'| = r²',
+      },
+      {
+        h: 'Inside goes out, outside goes in',
+        p: [
+          'If P is close to O, then |OP| is small, so |OP\'| must be large. A point at a tenth of the radius lands at ten times the radius. A point at twice the radius lands at half the radius. The points on the circle itself have |OP| = r, so they map to themselves.',
+          'Apply the rule twice and you get the start back, because the partner of P\' is P. A map that undoes itself is called an involution. The centre O has no inverse at all: as P approaches O, P\' runs off to infinity, which is why mathematicians add a single point at infinity to make the picture complete.',
+        ],
+        f: '(P\')\' = P',
+      },
+      {
+        h: 'The formula with complex numbers',
+        p: [
+          'Put the centre at the origin and write each point as a complex number z = x + iy. The inverse keeps the direction of z and changes its length from |z| to r²/|z|. That is the formula below, where |z|² = x² + y².',
+          'In coordinates this reads x\' = r²x / (x² + y²) and y\' = r²y / (x² + y²). It is a rational formula with a single division, cheap enough to evaluate for millions of points. If you have met the complex plane in the Mandelbrot set guide, this is another simple rule on the same plane.',
+        ],
+        f: 'z → r²·z / |z|²\nx\' = r²x / (x² + y²),   y\' = r²y / (x² + y²)',
+      },
+      {
+        h: 'Lines become circles',
+        p: [
+          'Inversion does not keep straight lines straight. A line that does not pass through the centre becomes a circle that does pass through the centre. A circle through the centre becomes a line. A circle that avoids the centre becomes another circle.',
+          'A small example with r = 1: the vertical line x = 1 maps to the circle below, which has centre (½, 0), radius ½, and passes through the origin. Lines through the centre are the only ones that stay lines, because they map onto themselves.',
+        ],
+        f: 'x = 1   →   (u − ½)² + v² = ¼',
+      },
+      {
+        h: 'Angles survive',
+        p: [
+          'Although lines bend into circles, the angle at which two curves cross is unchanged by inversion. A map with this property is called conformal. Tiny shapes keep their form and are only scaled and mirrored, so a small square stays a small square and does not shear into a parallelogram.',
+          'That is why patterns made with inversion look orderly rather than smeared. Round shapes meet round shapes at the same angles they had before, and the result keeps the look of soft, tidy curves.',
+        ],
+      },
+      {
+        h: 'Repeating the map',
+        p: [
+          'One inversion is a simple move. Repeating inversions in several circles is where it gets rich. In the 1880s Henri Poincaré and Felix Klein studied shapes built from repeated inversions in circles, and found that their edges are endlessly detailed. In 2002 David Mumford, Caroline Series and David Wright published the book Indra\'s Pearls, which draws these fractals by computer.',
+          'Each pass maps a copy of the picture into the gaps left by the last pass, so the same pattern shows up inside itself at smaller and smaller scales. The fractal art guide explains more about shapes with detail at every scale.',
+        ],
+      },
+      {
+        h: 'Our recipe: fold, invert, repeat',
+        p: [
+          'Our inversion series uses three steps for every pixel. First the point is folded back into the square from −1 to 1, like folding a sheet of paper until it fits. Then it is inverted in the unit circle and scaled by a number s. These two moves are repeated 14 times, and the colour of the pixel records how much the point was stretched along the way.',
+          'In Flower the scale is s = 1.18, the offset is 0.3, 0.3, the rotation is 0.3 and the zoom is 1.6. Blue lace grows wherever the stretch piles up. Lines are drawn only until the detail gets smaller than one pixel, so the lace stays sharp on paper.',
+        ],
+        f: 'x, y → fold into [−1, 1]\nz → s·z / |z|²\ncolour = total stretch',
+        piece: 'inversion-1',
+        caption: 'Flower: s = 1.18, offset 0.3, 0.3, rotation 0.3, zoom 1.6, 14 repeats, 12,000,000 pixels.',
+      },
+      {
+        h: 'Changing the numbers',
+        p: [
+          'The scale s decides how strongly each pass stretches the plane. Eternity uses s = 1.3, with offset 0.2, 0.1, no rotation and zoom 1. The change of numbers gives a very different image: a cross of cream and blue where the pattern repeats inside itself, scale after scale.',
+          'The fold and the inversion are the same as in Flower, and so is the count of 14 repeats. Only four numbers moved, and the picture changed completely. That sensitivity to the parameters is typical of repeated maps.',
+        ],
+        piece: 'inversion-2',
+        caption: 'Eternity: s = 1.3, offset 0.2, 0.1, rotation 0, zoom 1, 14 repeats, 12,000,000 pixels.',
+      },
+      {
+        h: 'Same maths, different colour',
+        p: [
+          'Holes is computed with the same numbers as Flower: s = 1.18, offset 0.3, 0.3, rotation 0.3, zoom 1.6 and 14 repeats. Only the colouring differs. Gold lace surrounds deep navy pools, which are the regions where the stretch stays small.',
+          'This shows what the colour stands for. The geometry is fixed by the equations, and the palette is a choice about how to show the total stretch.',
+        ],
+        piece: 'inversion-3',
+        caption: 'Holes: s = 1.18, offset 0.3, 0.3, rotation 0.3, zoom 1.6, 14 repeats, 12,000,000 pixels.',
+      },
+      {
+        h: 'Our inversion posters',
+        p: [
+          'The inversion series is made with code: a program written in JavaScript applies the fold and the inversion 14 times to each of 12,000,000 pixels and colours the pixel from the result. The product pages list the equations and the parameters of every piece.',
+          'Nothing is painted by hand, and no photograph is involved. What you see is exactly the print you get, on fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is inversion in a circle?', a: 'It is a map that sends each point P to the point on the same ray from the centre whose distance satisfies |OP|·|OP\'| = r². Points inside the circle go outside, points outside go inside, and points on the circle stay where they are.' },
+      { q: 'What is the formula for inversion?', a: 'With the centre at the origin and z = x + iy, the inverse is r²·z / |z|². In coordinates, x\' = r²x / (x² + y²) and y\' = r²y / (x² + y²).' },
+      { q: 'What does inversion do to a line?', a: 'A line that does not pass through the centre becomes a circle through the centre, and a circle through the centre becomes a line. A line through the centre maps to itself.' },
+      { q: 'How can inversion make a fractal?', a: 'Repeating inversions and folds maps copies of the picture into its own gaps, so the same pattern appears at smaller and smaller scales. Poincaré and Klein studied such shapes in the 1880s.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));

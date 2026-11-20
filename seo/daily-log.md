@@ -5,3 +5,4 @@
 2026-11-16 | lorenz-attractor | Lorenz Attractor: Equations and Parameters | 903 words | published
 2026-11-17 | algorithmic-art | Algorithmic Art: History, Methods and Examples | 940 words | published
 2026-11-18 | gifts-for-programmers | Gifts for Programmers: Art Made With Code | 947 words | published
+2026-11-20 | circle-inversion | Circle Inversion: How It Works and Why It Draws Fractals | ~1,000 words | published
