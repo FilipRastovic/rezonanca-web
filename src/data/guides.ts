@@ -1179,6 +1179,99 @@ export const GUIDES: Guide[] = [
       { q: 'How can inversion make a fractal?', a: 'Repeating inversions and folds maps copies of the picture into its own gaps, so the same pattern appears at smaller and smaller scales. Poincaré and Klein studied such shapes in the 1880s.' },
     ],
   },
+  {
+    slug: 'chaos-theory-art',
+    series: '',
+    shop: ['lorenc', 'tomas', 'chaos-1', 'chaos-2', 'chaos-3', 'halvorsen', 'resler', 'klifordov-veo'],
+    title: 'Chaos Theory Art: Maths You Can Hang on a Wall',
+    desc: 'Chaos theory art draws systems that follow exact equations yet cannot be predicted. See three kinds of chaos we plot: flows, maps and pendulums.',
+    h1: 'Chaos theory art: maths you can hang on a wall',
+    kicker: 'Guide // Chaos theory art',
+    lead: 'Chaos theory art is made by drawing a system that follows exact rules but whose long-term behaviour cannot be predicted, so the picture is the rules made visible. This page explains what chaos means in maths, then shows three kinds we draw: flows, maps and pendulums.',
+    updated: '2026-11-21',
+    sections: [
+      {
+        h: 'What chaos means in maths',
+        p: [
+          'In everyday speech chaos means mess. In maths it means something narrower: a system with fixed rules and no randomness, whose future depends so sharply on its starting point that the smallest change grows into a large one. The system is deterministic, but in practice unpredictable.',
+          'A picture of such a system is not random noise. It has structure, often a very particular one. That is why the topic suits art: the rules are simple, and the result is rich and still exact. For the theory of the shapes these systems settle onto, see the guide on strange attractors.',
+        ],
+      },
+      {
+        h: 'The three ingredients',
+        p: [
+          'A system needs three things to be chaotic. It must be non-linear, so the effect of a change is not proportional to the change. It must stay bounded, so the path does not simply run off to infinity. And it must be sensitive: two paths that start close together must separate.',
+          'The speed of separation is measured by the Lyapunov exponent λ. If λ is positive, a gap between two paths grows roughly like e^(λt). A positive value is the usual test for chaos, and our program estimates it while it draws.',
+        ],
+        f: '|δ(t)| ≈ |δ₀|·e^(λ·t),   λ > 0',
+      },
+      {
+        h: 'Kind one: flows',
+        p: [
+          'A flow is a system where a point moves continuously through space, and the equations give its velocity at every position. A program follows the point in tiny time steps and draws the path. After many steps the path fills out a shape called an attractor.',
+          'The Lorenz system is the best known flow. Its three equations, with σ = 10, ρ = 28 and β = 8/3, were written down by Edward Lorenz in 1963 as a simple model of convection. The full line-by-line explanation is in the guide to the Lorenz attractor.',
+        ],
+        f: 'dx/dt = σ(y − x)\ndy/dt = x(ρ − z) − y\ndz/dt = xy − βz',
+      },
+      {
+        h: 'A flow on paper: Tightly Woven',
+        p: [
+          'Tightly Woven is the Lorenz system drawn with σ = 10, ρ = 28 and β = 2.666667. The path starts at x, y, z = −6.353, −4.015, 27.645 and is followed for 260,000 steps of size 0.004 with the RK4 method. The program measures a Lyapunov exponent of 0.907.',
+          'The path winds around two centres and switches between them in an order that never repeats. The thickness of the weave comes from one curve looping back over itself, not from many curves.',
+        ],
+        piece: 'lorenc',
+        caption: 'Tightly Woven: the Lorenz system, σ = 10, ρ = 28, β = 2.666667, 260,000 steps, RK4, Lyapunov exponent 0.907.',
+      },
+      {
+        h: 'Another flow with a different feel: Together',
+        p: [
+          'Not every chaotic flow looks like wings. Together is drawn from the Thomas system, where each coordinate is driven by the sine of the next one, and a single damping number b pulls the path back toward the centre.',
+          'Here b = 0.18, the path starts at 4.107, 0.76, −1.164 and runs for 420,000 steps of size 0.03. The measured Lyapunov exponent is 0.034, far gentler than the Lorenz value, so nearby paths separate slowly. Chaos comes in degrees, and the picture shows a calmer kind.',
+        ],
+        f: 'dx/dt = sin y − bx\ndy/dt = sin z − by\ndz/dt = sin x − bz',
+        piece: 'tomas',
+        caption: 'Together: the Thomas system, b = 0.18, 420,000 steps, RK4, Lyapunov exponent 0.034.',
+      },
+      {
+        h: 'Kind two: maps',
+        p: [
+          'A map has no continuous motion. It is a rule that takes a point and gives the next point, applied again and again. The result is a cloud of dots rather than a smooth curve, and the cloud has a structure of its own.',
+          'The Clifford attractor is a famous example, built from sines and cosines of the previous coordinates. The guide to the Clifford attractor shows the two-line rule and lets you try the parameters live, and the play page does the same in the browser. Maps are the cheapest chaos to compute, so they can be drawn with very many points.',
+        ],
+        f: 'xₙ₊₁ = f(xₙ, yₙ)\nyₙ₊₁ = g(xₙ, yₙ)',
+      },
+      {
+        h: 'Kind three: a pendulum for every pixel',
+        p: [
+          'The third kind turns the picture inside out. Instead of one path drawn many times, every pixel is its own experiment. In Flamingo each pixel is a double pendulum released from rest with its own pair of starting angles, θ₁ from 0.2π to 0.9π and θ₂ from 0.1π to π. After 6 seconds the colour records the height of the lower arm.',
+          'There are 12,000,000 pendulums, one per pixel. Where neighbouring pixels share a colour, the pendulums behave alike. Where the colour jumps from pixel to pixel, tiny differences in the start have already grown large. The chaos is visible as texture. The guide to the double pendulum has the equations.',
+        ],
+        f: 'h = −(cos θ₁ + cos θ₂)',
+        piece: 'chaos-1',
+        caption: 'Flamingo: 12,000,000 double pendulums, θ₁ from 0.2π to 0.9π, θ₂ from 0.1π to π, T = 6 s, RK4.',
+      },
+      {
+        h: 'Why chaos looks good',
+        p: [
+          'Chaotic systems are bounded but never repeat, so a long path covers its shape densely without crossing itself exactly. That gives fine detail at every scale, from the overall form down to single lines.',
+          'The shapes are also not chosen by a person. Once the equations and the numbers are set, the picture is fixed. A change of one parameter can turn a loop into a tangle, and the artist works by searching for the numbers where this happens, then choosing the view and the colours.',
+        ],
+      },
+      {
+        h: 'Our chaos posters',
+        p: [
+          'Our attractors, maps and pendulum pictures are made with code: a program written in JavaScript follows the equations step by step and draws the result. The product pages list the equations, the parameters and the measured numbers for every piece, such as the Lyapunov exponent.',
+          'Nothing is painted by hand, and no photograph is involved. What you see is exactly the print you get, on fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is chaos theory in simple terms?', a: 'It studies systems with exact rules whose long-term behaviour cannot be predicted, because tiny differences in the start grow exponentially. Nothing in them is random.' },
+      { q: 'Is chaos the same as randomness?', a: 'No. A chaotic system is fully determined by its equations and starting point. It looks unpredictable only because any error in the start grows very fast.' },
+      { q: 'How is chaos theory turned into art?', a: 'A program follows the equations step by step and draws the path or colours each pixel by what its starting point did. The picture is the rules made visible.' },
+      { q: 'What does a positive Lyapunov exponent mean?', a: 'It means two nearby paths separate exponentially fast. A positive value is the standard sign that a system is chaotic.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
