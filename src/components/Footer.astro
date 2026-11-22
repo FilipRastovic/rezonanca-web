@@ -4,6 +4,7 @@ import { SHOP, SELLER } from '../config';
 import PaymentLogos from './PaymentLogos.astro';
 import { SERIES } from '../data/products.js';
 import { GUIDES } from '../data/guides';
+import { GROUPS } from '../data/groups';
 import { T, collectionHref, seriesShort, legalHref, guideHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -24,6 +25,7 @@ const BARS = Array.from({ length: 140 }, (_, i) => Math.round(20 + 80 * Math.abs
     <div class="contact mono">
       <span class="k">{T[lang].nav.collection}</span>
       <a href={collectionHref(lang)}>{T[lang].collection.all}</a>
+      {GROUPS.map((g) => <a href={collectionHref(lang, g.slug)}>{g.name}</a>)}
       {SERIES.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
     </div>
     <div class="contact mono">

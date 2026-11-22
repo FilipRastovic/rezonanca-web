@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import ProductCard from './ProductCard.astro';
 import { GUIDES } from '../data/guides';
+import { groupForGuide } from '../data/groups';
 import { PRODUCTS, productsBySeries, SERIES } from '../data/products.js';
 import { T, homeHref, collectionHref, productHref, guideHref, seriesShort, nounLc } from '../i18n';
 interface Props { slug: string }
@@ -27,8 +28,11 @@ const jsonLd = [
 const pieces = g.shop ? g.shop.map(byKey) : productsBySeries(g.series);
 const shopLabel = s ? t.series[g.series as 'attractor'].code : t.guide.giftLabel;
 const shopH2 = s ? t.series[g.series as 'attractor'].seo.h1 : t.guide.giftH2;
-const allHref = s ? collectionHref('en', s.slug) : collectionHref('en');
-const allText = s ? `${t.guide.allIn} ${seriesShort('en', s.key)} (${pieces.length})` : `${t.guide.allPosters} (${PRODUCTS.length})`;
+// A guide with a theme page (src/data/groups.ts) sends buyers there: button under the lead + the shop link at the end.
+const grp = groupForGuide(g.slug);
+const grpN = grp ? grp.series.flatMap((k) => productsBySeries(k)).length : 0;
+const allHref = grp ? collectionHref('en', grp.slug) : s ? collectionHref('en', s.slug) : collectionHref('en');
+const allText = grp ? `${grp.cta} (${grpN})` : s ? `${t.guide.allIn} ${seriesShort('en', s.key)} (${pieces.length})` : `${t.guide.allPosters} (${PRODUCTS.length})`;
 const others = GUIDES.filter((x) => x.slug !== g.slug);
 ---
 <Base lang="en" title={`${g.title} | Rezonanca`} description={g.desc} image={`/posters/${firstPiece}-en-lg.webp`}>
@@ -42,6 +46,7 @@ const others = GUIDES.filter((x) => x.slug !== g.slug);
         <p class="label">{g.kicker}</p>
         <h1>{g.h1}</h1>
         <p class="lead">{g.lead}</p>
+        {grp && <a class="buy mono" href={allHref}>{grp.cta} ({grpN}) →</a>}
         <ol class="toc mono">
           {g.sections.map((x, i) => <li><a href={`#s${i + 1}`}><span>{String(i + 1).padStart(2, '0')}</span>{x.h}</a></li>)}
         </ol>
@@ -67,6 +72,8 @@ const others = GUIDES.filter((x) => x.slug !== g.slug);
           </section>
         );
       })}
+
+      {grp && <p class="sec"><a class="buy mono" href={allHref}>{grp.cta} ({grpN}) →</a></p>}
 
       <section class="sec faq">
         <h2><span class="mono">FAQ</span>{t.guide.faq}</h2>
@@ -106,6 +113,8 @@ const others = GUIDES.filter((x) => x.slug !== g.slug);
   .crumbs [aria-current] { color: var(--ice); }
   h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; text-wrap: balance; }
   .lead { margin-top: 24px; font-size: var(--fs-body); line-height: 1.75; color: var(--text); max-width: 65ch; }
+  .buy { display: inline-block; margin-top: 28px; padding: 14px 22px; border: 1px solid var(--cyan); color: var(--cyan); font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; transition: background 0.2s, color 0.2s; }
+  .buy:hover { background: var(--cyan); color: var(--bg-0); }
   .toc { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 2px; font-size: var(--fs-xs); }
   .toc a { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--text); transition: color 0.2s; }
   .toc a:hover { color: var(--ice); }

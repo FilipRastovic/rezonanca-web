@@ -3,11 +3,17 @@
 // On a product page the posts of that piece come first, then the latest ones.
 import POSTS from '../data/instagram.json';
 import { SHOP } from '../config';
+import { PRODUCTS } from '../data/products.js';
 import { T, type Lang } from '../i18n';
 interface Props { lang: Lang; slug?: string; limit?: number }
 const { lang, slug, limit = 4 } = Astro.props;
 const t = T[lang].social;
 const mine = slug ? POSTS.filter((x) => x.slugs.includes(slug)) : [];
+// Alt text: the pieces in the post, so the image means something to search and screen readers.
+const altOf = (x: { slugs: string[]; type: string }) => {
+  const names = x.slugs.map((sl) => PRODUCTS.find((p) => p.slug === sl)?.name.en).filter(Boolean);
+  return `Rezonanca ${x.type === 'reel' ? 'Instagram reel' : 'Instagram post'}${names.length ? `: ${names.join(', ')} poster${names.length > 1 ? 's' : ''}` : ''}`;
+};
 const posts = [...mine, ...POSTS.filter((x) => !mine.includes(x))].slice(0, limit);
 const links = [
   { name: 'Instagram', href: SHOP.instagram, d: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm5.2-1.6a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z' },
@@ -36,7 +42,7 @@ const links = [
     <div class="posts">
       {posts.map((x) => (
         <a class="post" href={x.url} rel="noopener" target="_blank" aria-label={`${t.open} (${x.type === 'reel' ? 'Reel' : 'Instagram'})`}>
-          <img src={x.img} alt="" width="600" height="750" loading="lazy" decoding="async" />
+          <img src={x.img} alt={altOf(x)} width="600" height="750" loading="lazy" decoding="async" />
           {x.type !== 'image' && <span class="badge" aria-hidden="true">{x.type === 'reel'
             ? <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z" /></svg>
             : <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 8h11v11H8z" /><path d="M5 16V5h11" /></svg>}</span>}

@@ -1,6 +1,7 @@
 // /llms.txt: a plain summary of the shop for answer engines (ChatGPT search, Perplexity, Claude, Gemini), per llmstxt.org.
 import { PRODUCTS, SERIES, productsBySeries } from '../data/products.js';
 import { GUIDES } from '../data/guides';
+import { GROUPS } from '../data/groups';
 import { T, guideHref, collectionHref, productHref, interiorsHref, legalHref } from '../i18n';
 import { PRICES, SIZES, ACTIVE_FORMATS, SHOP } from '../config';
 
@@ -30,6 +31,7 @@ export const GET = ({ site }: { site: URL }) => {
 ## Main pages
 - [Home](${u('/')})
 - [Collection, all works](${u(collectionHref('en'))})
+${GROUPS.map((g) => `- [${g.h1}: ${g.series.map((k) => (t.series as Record<string, { name: string }>)[k].name).join(', ')}](${u(collectionHref('en', g.slug))})`).join('\n')}
 - [In a room: the posters in interiors](${u(interiorsHref())})
 - [Guides: the maths behind the art](${u(guideHref())})
 - [Free strange attractor phone wallpapers](${u('/wallpapers/')})

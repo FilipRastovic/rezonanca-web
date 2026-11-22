@@ -1,11 +1,12 @@
 // Sitemap for search engines: the English pages plus the Serbian legal texts.
 import { PRODUCTS, SERIES } from '../data/products.js';
 import { GUIDES } from '../data/guides';
+import { GROUPS } from '../data/groups';
 import { guideHref, homeHref, collectionHref, productHref, interiorsHref, legalHref } from '../i18n';
 
 export const GET = ({ site }: { site: URL }) => {
   const paths = [
-    homeHref(), collectionHref('en'), ...SERIES.map((s) => collectionHref('en', s.slug)), interiorsHref(),
+    homeHref(), collectionHref('en'), ...SERIES.map((s) => collectionHref('en', s.slug)), ...GROUPS.map((g) => collectionHref('en', g.slug)), interiorsHref(),
     guideHref(), ...GUIDES.map((g) => guideHref(g.slug)), '/wallpapers/', '/play/', '/about/',
     ...PRODUCTS.map((p) => productHref('en', p.slug)),
     legalHref('en', 'terms'), legalHref('en', 'privacy'), legalHref('sr', 'terms'), legalHref('sr', 'privacy'),

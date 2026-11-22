@@ -209,7 +209,7 @@ const en: typeof sr = {
   guide: { allPosters: 'All posters', giftLabel: 'GIFT IDEAS', giftH2: 'Posters for people who love equations', title: 'Guides', seePoster: 'See the poster', faq: 'Questions', allIn: 'All', more: 'More guides', read: 'Read the guide', label: 'GUIDES // THE MATHS', h1: 'The maths behind the posters', lead: 'Plain-English guides to the maths our posters are drawn from: the equations, the history and how each picture is computed.', metaTitle: 'Math Art Guides - Chaos, Fractals and 4D Geometry', metaDesc: 'Plain-English guides to strange attractors, chaos theory and the Mandelbrot set, with the real equations behind our math art posters.' },
   social: { label: 'Follow along', open: 'Open on Instagram' },
   seo: {
-    homeTitle: 'Math Art Posters & Prints, Drawn in Code | Rezonanca',
+    homeTitle: 'Fractal & Math Art Prints - Made with code | Rezonanca',
     homeDesc: 'Math art posters drawn in code: strange attractors, Mandelbrot fractals, fractal flames and sound waves on fine art matte paper. Free shipping worldwide.',
     collectionTitle: 'Math Art Posters - All 58 Designs | Rezonanca',
     collectionH1: 'Math art posters',

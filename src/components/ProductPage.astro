@@ -66,8 +66,9 @@ const galleryFor = (tone: string) => {
   return [
     { src: `/posters/${k}-${lang}-lg.webp`, thumb: `/posters/${k}-${lang}.webp`, alt: `${name}${suffix} - ${kindLc}`, fit: 'poster' },
     // Room shots: the exact print in three mockup scenes (scripts/render-rooms.py).
-    ...['', '-2', '-3'].map((n) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[1]}`, fit: 'room' })),
-    { src: `/details/${k}.webp`, thumb: `/details/${k}-sm.webp`, alt: `${name}${suffix} - ${tp.gallery[2]}`, fit: 'square' },
+    // Alt text names the piece + what the photo shows, for Google Images (SEO 2026-11-22).
+    ...['', '-2', '-3'].map((n, j) => ({ src: `/rooms/${k}-${lang}${n}.webp`, thumb: `/rooms/${k}-${lang}${n}-sm.webp`, alt: `${name}${suffix} - ${kindLc}, ${['framed in black on a living room wall', 'framed in black in a room', 'shown in a room'][j]}`, fit: 'room' })),
+    { src: `/details/${k}.webp`, thumb: `/details/${k}-sm.webp`, alt: `${name}${suffix} - ${kindLc}, close-up of the print detail`, fit: 'square' },
   ];
 };
 const galleries = Object.fromEntries(tones.map((tone) => [tone || 'orig', galleryFor(tone)]));
@@ -159,8 +160,8 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
           </div>
           <div class="thumbs" role="tablist">
             {gallery.map((g, i) => (
-              <button role="tab" aria-label={g.alt} aria-selected={i === 0 ? 'true' : 'false'} data-src={g.src} data-alt={g.alt} data-fit={g.fit}>
-                <img src={g.thumb} alt="" loading="lazy" width="200" height="200" />
+              <button role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-src={g.src} data-alt={g.alt} data-fit={g.fit}>
+                <img src={g.thumb} alt={g.alt} loading="lazy" width="200" height="200" />
                 <span class="mono">{tp.gallery[g.fit === 'poster' ? 0 : g.fit === 'room' ? 1 : 2]}</span>
               </button>
             ))}
@@ -458,7 +459,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
     const g = galleries[tone] || galleries.orig;
     thumbs.forEach((b, i) => {
       Object.assign(b.dataset, { src: g[i].src, alt: g[i].alt });
-      (b.querySelector('img') as HTMLImageElement).src = g[i].thumb;
+      Object.assign(b.querySelector('img') as HTMLImageElement, { src: g[i].thumb, alt: g[i].alt });
     });
     stack.forEach((b) => Object.assign(b.querySelector('img')!, { src: g[+b.dataset.i!].src, alt: g[+b.dataset.i!].alt }));
     show(current);

@@ -14,6 +14,7 @@ const links = [
 ];
 const path = Astro.url.pathname;
 const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
+import { GROUPS } from '../data/groups';
 ---
 <header class="nav" id="nav">
   <div class="status" aria-hidden="true"><div class="wrap status-in">
@@ -44,6 +45,7 @@ const menuLabel = lang === 'sr' ? 'Мени' : 'Menu';
         ))}
       </ol>
       <div class="series mono">
+        {GROUPS.map((g) => <a href={collectionHref(lang, g.slug)}>{g.name}</a>)}
         {SERIES.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
       </div>
       <div class="menu-foot">
