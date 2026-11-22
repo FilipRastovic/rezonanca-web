@@ -7,3 +7,4 @@
 2026-11-18 | gifts-for-programmers | Gifts for Programmers: Art Made With Code | 947 words | published
 2026-11-20 | circle-inversion | Circle Inversion: How It Works and Why It Draws Fractals | ~1,000 words | published
 2026-11-21 | chaos-theory-art | Chaos Theory Art: Maths You Can Hang on a Wall | ~1,050 words | published
+2026-11-22 | julia-set | Julia Set vs Mandelbrot Set: How They Connect | ~1,000 words | published

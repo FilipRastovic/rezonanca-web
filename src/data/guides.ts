@@ -1272,6 +1272,98 @@ export const GUIDES: Guide[] = [
       { q: 'What does a positive Lyapunov exponent mean?', a: 'It means two nearby paths separate exponentially fast. A positive value is the standard sign that a system is chaotic.' },
     ],
   },
+  {
+    slug: 'julia-set',
+    series: '',
+    shop: ['mandelbrotov-skup', 'dolina-morskih-konjica', 'spirala', 'mali-mandelbrot', 'vitica', 'morska-zvezda'],
+    title: 'Julia Set vs Mandelbrot Set: How They Connect',
+    desc: 'A Julia set fixes c and varies the start z; the Mandelbrot set varies c and fixes z at 0. See how the two fractals relate and why one is a map of the other.',
+    h1: 'Julia set vs Mandelbrot set: how they connect',
+    kicker: 'Guide // Julia set',
+    lead: 'A Julia set is the boundary between starting points z that escape to infinity and those that stay bounded, when the rule zₙ₊₁ = zₙ² + c is repeated with one fixed value of c. The Mandelbrot set uses the same rule but fixes the start and varies c, and this page shows how the two pictures fit together.',
+    updated: '2026-11-22',
+    sections: [
+      {
+        h: 'Same rule, different question',
+        p: [
+          'Both fractals come from one rule: square a complex number and add a constant c. Repeat it and watch whether the numbers stay small or grow without limit. The only difference is which quantity you hold still and which one you vary.',
+          'For the Julia picture you pick one c and test every possible starting point z. For the Mandelbrot picture you always start at z = 0 and test every possible c. One image has a fixed rule and many starts. The other has a fixed start and many rules.',
+        ],
+        f: 'zₙ₊₁ = zₙ² + c',
+      },
+      {
+        h: 'Fixed c, varying z',
+        p: [
+          'Choose a value of c, for example c = −0.4 + 0.6i. Every pixel of the image is a starting value z₀. The program repeats the rule for that pixel and counts how many steps it takes for |z| to pass 2, the same escape radius used for the Mandelbrot set.',
+          'The pixels that never escape form the filled set. Its edge is the curve named after Gaston Julia, who studied the iteration of such functions in a long paper published in 1918. Pierre Fatou worked on the same problems at the same time. Colouring the escaping pixels by their step count gives the glowing filaments around the edge.',
+        ],
+        f: 'z₀ = pixel,   c fixed,   |zₙ| > 2  ⇒  z₀ escapes',
+      },
+      {
+        h: 'Fixed z, varying c',
+        p: [
+          'The Mandelbrot set turns this around. Each pixel is a value of c, and the start is always z₀ = 0. The point z = 0 matters because it is the critical point of the rule: the one place where the squaring step folds the plane onto itself. Its fate decides the shape of every Julia picture.',
+          'So the Mandelbrot set is one image about one starting point, while there is a separate Julia picture for every single c. The full explanation of the Mandelbrot side is in the Mandelbrot set guide.',
+        ],
+        f: 'z₀ = 0,   c = pixel,   |zₙ| > 2  ⇒  c ∉ M',
+        piece: 'mandelbrotov-skup',
+        caption: 'Brot: the whole Mandelbrot set, centred at −0.6986 + 0.0016i, 400 steps per pixel.',
+      },
+      {
+        h: 'The dichotomy: connected or dust',
+        p: [
+          'Here is the link between the two. If c is inside the Mandelbrot set, the Julia picture for that c is one connected piece. If c is outside, the picture falls apart into infinitely many separate points, a cloud often called Cantor dust.',
+          'The reason is the critical point. When the path of z = 0 stays bounded, the Julia curve cannot break up. When that path escapes, the curve shatters. This is why the Mandelbrot set is sometimes described as a map of all the Julia pictures: it records, for every c, which of the two cases holds.',
+        ],
+        f: 'c ∈ M  ⇔  connected\nc ∉ M  ⇔  dust',
+      },
+      {
+        h: 'Simple examples',
+        p: [
+          'Take c = 0. The rule is then just squaring, so any start with |z| below 1 shrinks toward 0 and any start above 1 grows. The Julia curve is the unit circle, a plain smooth loop.',
+          'Take c = −2, at the far left tip of the Mandelbrot set. The curve becomes the straight line segment from −2 to 2. Take c = i and you get a thin, branching tree with no inside at all, still connected because i lies in the Mandelbrot set. Between these cases the curves wrinkle, pinch and spiral.',
+        ],
+        f: 'c = 0: unit circle\nc = −2: segment from −2 to 2',
+      },
+      {
+        h: 'Reading the map: where c sits',
+        p: [
+          'Inside the main heart-shaped body of the Mandelbrot set, the Julia curve is a slightly deformed circle. In the round bulb on its left, it pinches into two lobes touching at a point. Each smaller bulb gives a Julia curve with more lobes, matching the length of the cycle the numbers fall into.',
+          'Near the edge of the Mandelbrot set the Julia curves become the most intricate, with spirals and branches. The two pictures are tied: zoom into the edge of the Mandelbrot set near a given c, and the local shape resembles the Julia curve for that c.',
+        ],
+        piece: 'dolina-morskih-konjica',
+        caption: 'Seahorse Valley: centred at −0.7454 + 0.1127i, 477× zoom, 900 steps per pixel.',
+      },
+      {
+        h: 'Edge detail you can compare',
+        p: [
+          'The deep Mandelbrot zooms are windows onto the boundary where the two pictures meet. The Far Out There piece is a window 0.0035 wide, centred at −0.7616 − 0.0848i, about 886 times closer than the full view, with 1,400 steps per pixel.',
+          'Spirals like these are the same kind of structure that appear in the Julia curves for values of c at that place. To see a rule with a fixed shape rather than a fixed constant, the guide to fractal art and the live /play/ page are good next stops.',
+        ],
+        piece: 'spirala',
+        caption: 'Far Out There: 886× zoom, centred at −0.7616 − 0.0848i, 1,400 steps per pixel.',
+      },
+      {
+        h: 'How we draw them',
+        p: [
+          'Our Mandelbrot posters are drawn by a program written in JavaScript. It tests about 1.5 million points for each image, repeats the rule for every point and maps the escape count to colour. The product page lists the centre, zoom and steps used, so you can find the same window yourself.',
+          'Because each image is one fixed start with many values of c, our posters show the Mandelbrot side of the pair. The Julia pictures for any c in those windows follow from the same rule, with the roles of z and c swapped.',
+        ],
+      },
+      {
+        h: 'Our posters and this maths',
+        p: [
+          'The Mandelbrot series puts the boundary of the set on paper, from the full view to deep zooms of its spirals and tendrils. Each page lists the exact numbers used, with nothing painted by hand. What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is the difference between the Julia set and the Mandelbrot set?', a: 'Both use zₙ₊₁ = zₙ² + c. A Julia set fixes c and tests every starting z, while the Mandelbrot set fixes the start at 0 and tests every c.' },
+      { q: 'How many Julia sets are there?', a: 'There is one for every complex number c, so infinitely many. The Mandelbrot set shows which c give a connected one.' },
+      { q: 'When is a Julia set connected?', a: 'It is connected exactly when c lies inside the Mandelbrot set. For any c outside, it breaks into disconnected dust.' },
+      { q: 'Who discovered Julia sets?', a: 'Gaston Julia published his work on iterating functions in 1918, and Pierre Fatou studied the same problems at the same time. The pictures came much later, with computers.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
