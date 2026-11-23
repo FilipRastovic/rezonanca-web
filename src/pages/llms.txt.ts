@@ -34,6 +34,7 @@ export const GET = ({ site }: { site: URL }) => {
 ${GROUPS.map((g) => `- [${g.h1}: ${g.series.map((k) => (t.series as Record<string, { name: string }>)[k].name).join(', ')}](${u(collectionHref('en', g.slug))})`).join('\n')}
 - [In a room: the posters in interiors](${u(interiorsHref())})
 - [Guides: the maths behind the art](${u(guideHref())})
+- [How a Mandelbox is made: the 3D fractal behind the Diskont collection](${u('/journal/mandelbox/')})
 - [Free strange attractor phone wallpapers](${u('/wallpapers/')})
 - [Play with the equation: Clifford attractor drawn live](${u('/play/')})
 - [About Filip Rastović, the artist](${u('/about/')})

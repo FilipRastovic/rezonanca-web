@@ -31,6 +31,7 @@ const BARS = Array.from({ length: 140 }, (_, i) => Math.round(20 + 80 * Math.abs
     <div class="contact mono">
       <span class="k">{T[lang].guide.title}</span>
       {GUIDES.map((g) => <a href={guideHref(g.slug)}>{g.h1}</a>)}
+      {lang === 'en' && <a href="/journal/mandelbox/">How a Mandelbox is made</a>}
       {lang === 'en' && <a href="/wallpapers/">Free wallpapers</a>}
       {lang === 'en' && <a href="/play/">Play with the equation</a>}
       {lang === 'en' && <a href="/about/">About me</a>}
