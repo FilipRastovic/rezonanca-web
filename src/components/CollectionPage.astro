@@ -4,7 +4,7 @@ import ProductCard from './ProductCard.astro';
 import SeriesHeader from './SeriesHeader.astro';
 import SeriesMath from './SeriesMath.astro';
 import History from './History.astro';
-import { SERIES, PRODUCTS, productsBySeries } from '../data/products.js';
+import { SERIES, PRODUCTS, productsBySeries, LATEST } from '../data/products.js';
 import { guideFor, GUIDES } from '../data/guides';
 import { groupFor, groupsWith } from '../data/groups';
 import { T, homeHref, collectionHref, guideHref, productHref, seriesShort, type Lang } from '../i18n';
@@ -34,7 +34,10 @@ if (group) jsonLd.push({
 const FEATURED = ['attractor', 'mandelbrot', 'flame', 'structure', 'flux', 'orbit', 'city', 'ridges', 'hopf', 'chaos', 'inversion', 'mandelbox', 'object'];
 const lists = FEATURED.map((k) => productsBySeries(k));
 const flat: any[] = [];
-for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l[i]) flat.push(l[i]);
+// The newest collection (LATEST) leads the grid as a block; the rest stays interleaved.
+if (LATEST) flat.push(...productsBySeries(LATEST.key));
+const restLists = LATEST ? lists.filter((_, i) => FEATURED[i] !== LATEST.key) : lists;
+for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of restLists) if (l[i]) flat.push(l[i]);
 const PALETTES = ['cyan', 'ice', 'violet', 'aurora', 'ember', 'gold', 'red'] as const;
 const f = t.collection.filter;
 // Pink colourway cards: hidden until the Розе colour filter is on.

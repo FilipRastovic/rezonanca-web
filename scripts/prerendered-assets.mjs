@@ -6,7 +6,7 @@
 // rooms    ← scripts/render-rooms.py <keys>; then og-images + swatches for everything
 import sharp from 'sharp';
 import { execFileSync } from 'node:child_process';
-import { readdirSync, existsSync, writeFileSync, copyFileSync } from 'node:fs';
+import { readdirSync, existsSync, writeFileSync, copyFileSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { PRODUCTS } from '../src/data/products.js';
 
@@ -21,8 +21,14 @@ const ROOT = '../print-files/gelato/';
 const DIRS = readdirSync(ROOT).filter((d) => d.startsWith('SPREMNO-')).sort().reverse().map((d) => ROOT + d + '/');
 // Close-up: a square from the art opening (30x40 sheet: 4 mm bleed + 30 mm border, art 240 × 340 mm), where it is busiest.
 const FOCUS = { 'chaos-1': [0.62, 0.3], 'chaos-2': [0.62, 0.3], 'chaos-3': [0.36, 0.5], 'inversion-1': [0.5, 0.5], 'inversion-2': [0.5, 0.5], 'inversion-3': [0.5, 0.5] };
-// Diskont: the art sits in the upper part of the opening (poster title + code block below it).
-for (const p of PRODUCTS) if (p.style === 'mandelbox') FOCUS[p.slug] = [0.5, 0.36];
+// Collections released with release/release.mjs: close-up focus from the manifest (series.focus), maths written by
+// release/web-codegen.mjs, so this script leaves their src/data/math files alone.
+const MANIFESTS = existsSync('../collections') ? readdirSync('../collections').filter((f) => f.endsWith('.json')).map((f) => JSON.parse(readFileSync('../collections/' + f, 'utf8'))) : [];
+const RELEASED = new Set();
+for (const m of MANIFESTS) for (const pc of m.pieces) {
+  const slug = `${m.name}-${pc.n}-${pc.key}`; RELEASED.add(slug);
+  FOCUS[slug] = pc.focus ?? m.series.focus ?? [0.5, 0.5];
+}
 const mm = (v) => Math.round((v / 25.4) * 300);
 for (const k of keys) {
   const src = DIRS.find((d) => existsSync(d + `${k}-30x40.jpg`)) + `${k}-30x40.jpg`;
@@ -38,17 +44,8 @@ for (const k of keys) {
 const CHAOS = { 'chaos-1': [6, '0.2π … 0.9π', '0.1π … π'], 'chaos-2': [6, '0 … π', '0 … 1.3π'], 'chaos-3': [5.5, '−π … 0.2π', '−π … 0.5π'] };
 const INV = { 'inversion-1': [1.18, '0.3, 0.3', 0.3, 1.6], 'inversion-2': [1.3, '0.2, 0.1', 0, 1], 'inversion-3': [1.18, '0.3, 0.3', 0.3, 1.6] };
 for (const p of list) {
-  // Diskont: scale + view per piece from touchdesigner-rezonanca/mandelbox/finals.py.
-  const MB = { '01': ['-2.5', 'isometric, near corner'], '02': ['-3', 'isometric, top face'], '03': ['-3', '24 mm lens, inside the near corner'],
-    '04': ['-2.5', 'isometric, left face'], '05': ['-3', 'isometric, near corner'], '06': ['-3', 'isometric, top face'], '07': ['-3', '24 mm lens, inside the near corner'],
-    '08': ['-3', 'isometric, very close on the near corner'], '09': ['-3', 'isometric, left face'], '10': ['-3', 'isometric, near corner'],
-    '11': ['-3', 'isometric, bottom corner'], '12': ['-3', '24 mm lens, inside the near corner'], '13': ['-3', 'isometric, top face'] };
-  const mb = p.style === 'mandelbox' ? MB[p.slug.split('-')[1]] : null;
-  const m = mb
-    ? { kind: 'mandelbox', style: 'mandelbox', equations: ['x, y, z → fold into [−1, 1]', 'z → s · z / clamp(|z|², 0.25, 1) + c', 'repeat 12×, ray march to the surface'],
-        params: [['s', mb[0]], ['repeats', 12], ['view', mb[1]], ['light', 'key + blue fill + amber rim + warm core']],
-        stats: [['render', 'tiles joined to 2550 × 2700 px']] }
-    : p.style === 'chaos'
+  if (RELEASED.has(p.slug)) continue;
+  const m = p.style === 'chaos'
     ? { kind: 'pendulum', style: 'chaos', equations: ['L = T − V', 'd/dt ∂L/∂θ̇ᵢ = ∂L/∂θᵢ', 'h = −(cos θ₁ + cos θ₂)'],
         params: [['arms', 'equal length and mass'], ['start θ₁', CHAOS[p.slug][1]], ['start θ₂', CHAOS[p.slug][2]], ['time T', `${CHAOS[p.slug][0]} s`], ['integrator', 'RK4']],
         stats: [['pendulums', '12 000 000 (one per pixel)']] }

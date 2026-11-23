@@ -2,7 +2,7 @@
 import Logo from './Logo.astro';
 import { SALES_OPEN } from '../config';
 import { T, homeHref, collectionHref, interiorsHref, seriesShort, cartHref, type Lang } from '../i18n';
-import { SERIES, PRODUCTS } from '../data/products.js';
+import { SERIES, PRODUCTS, LATEST } from '../data/products.js';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang].nav;
@@ -46,7 +46,7 @@ import { GROUPS } from '../data/groups';
       </ol>
       <div class="series mono">
         {GROUPS.map((g) => <a href={collectionHref(lang, g.slug)}>{g.name}</a>)}
-        {SERIES.map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}</a>)}
+        {(LATEST ? [SERIES.find((x) => x.key === LATEST.key)!, ...SERIES.filter((x) => x.key !== LATEST.key)] : SERIES).map((s) => <a href={collectionHref(lang, s.slug)}>{seriesShort(lang, s.key)}{LATEST?.key === s.key && ' · New'}</a>)}
       </div>
       <div class="menu-foot">
         {SALES_OPEN ? <a class="btn btn--solid" href={cartHref(lang)}>{T[lang].cart.nav} <span class="arrow">→</span></a>

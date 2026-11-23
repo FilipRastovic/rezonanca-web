@@ -1,14 +1,14 @@
 ---
 import { T, collectionHref, type Lang } from '../i18n';
 import { productsBySeries } from '../data/products.js';
-interface Props { lang: Lang; series: { key: string; slug: string }; link?: boolean; as?: 'h1' | 'h3' }
-const { lang, series, link = true, as: Tag = 'h3' } = Astro.props;
+interface Props { lang: Lang; series: { key: string; slug: string }; link?: boolean; as?: 'h1' | 'h3'; isNew?: boolean }
+const { lang, series, link = true, as: Tag = 'h3', isNew = false } = Astro.props;
 const t = T[lang].series;
 const info = t[series.key as 'structure'];
 const n = productsBySeries(series.key).length;
 ---
 <header class="series-head" data-reveal>
-  <Tag class="name">{info.name}</Tag>
+  <Tag class="name">{info.name}{isNew && <span class="tag mono">New</span>}</Tag>
   <div class="side">
     <p>{info.desc}</p>
     {link && <a class="btn more" href={collectionHref(lang, series.slug)}>{t.viewAll} <span class="arrow">→</span></a>}
@@ -18,6 +18,7 @@ const n = productsBySeries(series.key).length;
   .series-head { display: grid; grid-template-columns: auto 1fr; gap: 8px 40px; align-items: end; margin-bottom: clamp(36px, 4vw, 64px); padding-bottom: 24px; border-bottom: 1px solid var(--line); }
   .name { font: 700 clamp(24px, 2.8vw, 38px)/1.15 var(--f-display); letter-spacing: -0.01em; color: var(--ice); margin: 0; }
   .side { justify-self: end; max-width: 52ch; }
+  .tag { display: inline-block; margin-left: 14px; padding: 4px 8px; vertical-align: middle; font: 500 var(--fs-2xs)/1 var(--f-code, monospace); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--bg-0); background: var(--amber, #ffa546); }
   .side p { margin: 0; color: var(--muted); }
   .more { margin-top: 20px; padding: 12px 18px; font-size: var(--fs-2xs); }
   @media (max-width: 860px) { .series-head { grid-template-columns: 1fr; } .side { justify-self: start; } }

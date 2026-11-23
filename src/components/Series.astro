@@ -1,7 +1,7 @@
 ---
 import ProductCard from './ProductCard.astro';
 import SeriesHeader from './SeriesHeader.astro';
-import { SERIES, homePicks } from '../data/products.js';
+import { SERIES, homePicks, LATEST } from '../data/products.js';
 import { GROUPS } from '../data/groups';
 import { SHOP } from '../config';
 import { T, collectionHref, type Lang } from '../i18n';
@@ -16,9 +16,9 @@ const t = T[lang].series;
       <h2 data-reveal>{t.title}</h2>
     </div>
 
-    {SERIES.map((s, si) => (
+    {(LATEST ? [SERIES.find((x) => x.key === LATEST.key)!, ...SERIES.filter((x) => x.key !== LATEST.key)] : SERIES).map((s, si) => (
       <div class="series">
-        <SeriesHeader lang={lang} series={s} />
+        <SeriesHeader lang={lang} series={s} isNew={LATEST?.key === s.key} />
         <div class="grid">
           {homePicks(s.key).map((p, i) => (
             <ProductCard product={p} lang={lang} eager={si === 0 && i < 3} delay={Math.min(i, 2) * 100} wide />
