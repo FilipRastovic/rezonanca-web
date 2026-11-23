@@ -1364,6 +1364,93 @@ export const GUIDES: Guide[] = [
       { q: 'Who discovered Julia sets?', a: 'Gaston Julia published his work on iterating functions in 1918, and Pierre Fatou studied the same problems at the same time. The pictures came much later, with computers.' },
     ],
   },
+  {
+    slug: 'fractal-dimension',
+    series: '',
+    shop: ['vitica', 'lorenc', 'perje', 'mandelbrotov-skup', 'dolina-morskih-konjica', 'dim'],
+    title: 'Fractal Dimension: What It Is and How to Measure It',
+    desc: 'Fractal dimension tells how fast a shape fills space as you zoom in. See the scaling formula, the box counting method and why a curve can have dimension 1.26.',
+    h1: 'Fractal dimension: what it is and how to measure it',
+    kicker: 'Guide // Fractal dimension',
+    lead: 'Fractal dimension is a number that says how quickly a shape fills space as you look at it in finer detail, and for a fractal it is not a whole number. A smooth line has dimension 1, a flat surface has 2, and a crinkled curve can land anywhere between, such as 1.26. This page shows the formula, the box counting method, and the values for some well-known shapes and for our own pieces.',
+    updated: '2026-11-23',
+    sections: [
+      {
+        h: 'Dimension as a scaling rule',
+        p: [
+          'For ordinary shapes, dimension is the number of independent directions you can move in. A line has one, a sheet has two, a solid has three. There is a second way to see the same number: how the size of a shape changes when you scale it.',
+          'Double the length of a line and you need 2 copies of the old one to cover it. Double the sides of a square and you need 4 copies. Double the edges of a cube and you need 8. The count of copies is 2 raised to the dimension, so the dimension is the exponent.',
+        ],
+        f: 'N = sⁿ   ⇒   D = log N / log s',
+      },
+      {
+        h: 'When the exponent is a fraction',
+        p: [
+          'Now apply the rule to a shape built from smaller copies of itself. The Koch curve is made of 4 copies of itself, each one third the size. So the scale factor is 3 and the copy count is 4, and the exponent is not a whole number.',
+          'The Sierpinski triangle is made of 3 copies at half size, which gives a dimension near 1.58. The Cantor set, made of 2 copies at one third size, has dimension near 0.63 and is thinner than a line. These shapes are exactly self-similar, so the formula gives their dimension in one step.',
+        ],
+        f: 'Koch curve: D = log 4 / log 3 ≈ 1.262\nSierpinski: D = log 3 / log 2 ≈ 1.585\nCantor set: D = log 2 / log 3 ≈ 0.631',
+      },
+      {
+        h: 'Box counting for shapes that are not exact copies',
+        p: [
+          'Most real shapes, and most pictures from a computer, are not made of neat smaller copies. For those, the standard method is box counting. Lay a grid of square boxes of side ε over the shape and count how many boxes touch it. Then shrink the boxes and count again.',
+          'For a fractal the count grows as a power of 1/ε. Plot log N against log(1/ε) for several box sizes, and the points fall close to a straight line. The slope of that line is the box counting dimension. A line gives slope 1, a filled area gives slope 2, and a fractal gives something in between.',
+        ],
+        f: 'N(ε) ∝ ε⁻ᴰ   ⇒   D = lim log N(ε) / log(1/ε)',
+      },
+      {
+        h: 'A boundary with dimension 2',
+        p: [
+          'The Mandelbrot set shows how far the idea can go. Its boundary is a curve, yet it is so crumpled that its dimension is 2, the same as a filled area. Mitsuhiro Shishikura proved this in 1998 for the Hausdorff dimension, a close relative of box counting that Felix Hausdorff introduced in 1918.',
+          'That does not mean the boundary fills the plane. It means that no matter how far you zoom, it never smooths out into a simple line. The full story of the set is in the Mandelbrot set guide, and the zoom below shows the kind of edge detail involved.',
+        ],
+        f: 'zₙ₊₁ = zₙ² + c',
+        piece: 'vitica',
+        caption: 'Snowflake: a window 0.006 wide on the Mandelbrot boundary, centred at −0.1012 + 0.9563i, 517× zoom, 1,200 steps per pixel.',
+      },
+      {
+        h: 'Strange attractors sit between 2 and 3',
+        p: [
+          'A path in three dimensions that never repeats and never crosses itself can fill out a shape that is more than a surface and less than a solid. The Lorenz attractor has a dimension of about 2.06, so it is a surface that has been folded into thin layers.',
+          'The equations and the meaning of each parameter are in the Lorenz attractor guide. Our Tightly Woven piece uses the classic values and follows the path for 260,000 steps with the fourth-order Runge-Kutta method.',
+        ],
+        f: 'dx/dt = σ(y − x)\ndy/dt = x(ρ − z) − y\ndz/dt = xy − βz',
+        piece: 'lorenc',
+        caption: 'Tightly Woven: σ = 10, ρ = 28, β = 2.666667, 260,000 RK4 steps, Lyapunov exponent 0.907.',
+      },
+      {
+        h: 'Coastlines and measuring length',
+        p: [
+          'Benoit Mandelbrot asked in a 1967 paper how long the coast of Britain is. His point was that the answer depends on the ruler. A shorter ruler follows more bays and gives a longer total, and the length keeps growing as the ruler shrinks.',
+          'This is the same scaling law again. The measured length grows as the ruler gets smaller at a rate set by the dimension of the coast. A smooth curve gives a fixed length, and a fractal one does not. Real coastlines are only fractal over a limited range of scales, so the number describes that range and not an infinite process.',
+        ],
+        f: 'L(ε) ∝ ε^(1 − D)',
+      },
+      {
+        h: 'What the number can and cannot tell you',
+        p: [
+          'Dimension measures roughness, or how much detail a shape packs into a region. It does not say what the shape looks like. Very different pictures can share a dimension, and the same picture can give slightly different values with different methods.',
+          'Two practical cautions follow. A picture has a smallest scale, its pixel, so box counting on an image only works over the range between the pixel size and the picture size. And a fit needs several box sizes, because two sizes always make a straight line.',
+        ],
+      },
+      {
+        h: 'Our posters and this maths',
+        p: [
+          'Each of our posters shows a shape with detail at many scales. The Feathers piece is a fractal flame, drawn by a program that plays about 10 million points through a set of randomly chosen rules, and the Mandelbrot and attractor pieces are drawn by the equations above. The product pages list the numbers behind each one.',
+          'We do not print a dimension on any poster, because none of these images is infinitely fine. What you see is exactly the print you get, fine art matte paper.',
+        ],
+        piece: 'perje',
+        caption: 'Feathers: a fractal flame, about 10,000,000 particles, seed 1.',
+      },
+    ],
+    faq: [
+      { q: 'What is fractal dimension in simple terms?', a: 'It is a number that says how much space a shape fills as you zoom in. A line is 1, a surface is 2, and a fractal falls between whole numbers.' },
+      { q: 'How do you calculate the fractal dimension?', a: 'For exact copies, divide log of the copy count by log of the scale factor. For other shapes, count the boxes of side ε that touch it and fit the slope of log N against log(1/ε).' },
+      { q: 'What is the fractal dimension of the Koch snowflake?', a: 'Its edge is made of 4 copies at one third size, so D = log 4 / log 3, about 1.262.' },
+      { q: 'Can a fractal dimension be a whole number?', a: 'Yes. The boundary of the Mandelbrot set has dimension 2, and a smooth curve has dimension 1. The number is not required to be a fraction.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
