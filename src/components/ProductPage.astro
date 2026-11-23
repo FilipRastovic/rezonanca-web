@@ -40,7 +40,9 @@ const also = [0, 1].map((i) => pool[(p.seed * 7 + i * Math.ceil(pool.length / 2)
 const fmt = t.formats.items;
 const hasFrames = FRAMES.length > 1 && ACTIVE_FORMATS.some((f) => f === 'framed' || f === 'edition');
 // Sizes offered by at least one active format; each pill lists the formats it belongs to.
-const shownSizes = SIZES.filter((s) => ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f].includes(s)));
+// p.sizes limits a piece to the sizes it has print files for (e.g. Diskont: 30x40 only).
+const sizeOk = (s: string) => !p.sizes || p.sizes.includes(s);
+const shownSizes = SIZES.filter((s) => sizeOk(s) && ACTIVE_FORMATS.some((f) => FORMAT_SIZES[f].includes(s)));
 // Picker order: cheapest first; every page opens on Принт неурамљен in its cheapest size.
 const PICK = [...ACTIVE_FORMATS].sort((a, b) => minPrice(a) - minPrice(b));
 const F0 = PICK.includes('print') ? 'print' : PICK[0]; // opens on the unframed poster (Принт неурамљен), cheapest size
@@ -96,9 +98,9 @@ const jsonLd = [{
     '@type': 'AggregateOffer',
     priceCurrency: SHOP.currency,
     lowPrice: MIN_PRICE,
-    highPrice: MAX_PRICE,
+    highPrice: p.sizes ? Math.max(...ACTIVE_FORMATS.flatMap((f) => FORMAT_SIZES[f].filter(sizeOk).map((s) => PRICES[f][s] ?? 0))) : MAX_PRICE,
     // One offer per format and size on sale (print / framed x 30x40 / 45x60).
-    offerCount: ACTIVE_FORMATS.reduce((n, f) => n + FORMAT_SIZES[f].filter((s) => PRICES[f][s] != null).length, 0),
+    offerCount: ACTIVE_FORMATS.reduce((n, f) => n + FORMAT_SIZES[f].filter((s) => sizeOk(s) && PRICES[f][s] != null).length, 0),
     // Made to order once sales open; until then the page takes waitlist sign-ups.
     availability: SALES_OPEN ? 'https://schema.org/MadeToOrder' : 'https://schema.org/PreOrder',
     url,
@@ -264,7 +266,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
                 <div><dt>{tp.palette}</dt><dd>{t.palettes[p.palette as 'cyan']}</dd></div>
               </dl>
             </details>
-            <details><summary>{tp.sizingTitle}</summary><p>{tp.sizingBody}</p></details>
+            <details><summary>{tp.sizingTitle}</summary><p>{p.sizes?.length === 1 ? tp.sizingBody.replace(' or 45 × 60 cm (18 × 24 in)', '') : tp.sizingBody}</p></details>
             <details><summary>{tp.printTitle}</summary><p>{tp.printBody}</p></details>
             <details><summary>{tp.shipTitle}</summary><p>{tp.shipBody}</p></details>
           </div>

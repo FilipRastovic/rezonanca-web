@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import { readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { PRODUCTS } from '../src/data/products.js';
-import { gelatoProduct } from '../src/config.ts';
+import { gelatoProduct, SHOP } from '../src/config.ts';
 
 const key = readFileSync(homedir() + '/.config/rezonanca/gelato-api-key', 'utf8').trim();
 const token = readFileSync(homedir() + '/.config/rezonanca/print-file-token', 'utf8').trim();
@@ -28,7 +28,7 @@ for (let i = 0; i < jobs.length; i += 10) {
     orderType: 'draft', orderReferenceId: `RZ-PREVIEW-${i}`, customerReferenceId: 'rz-previews', currency: 'EUR',
     items: batch.map(({ k, fr }) => ({ itemReferenceId: `${k}|${fr}`, productUid: gelatoProduct('framed', '30x40', fr), quantity: 1,
       files: [{ type: 'default', url: `https://rezonanca-files.filiporastovic.workers.dev/f/${token}/${k}-30x40.pdf` }] })),
-    shippingAddress: { firstName: 'Preview', lastName: 'Draft', addressLine1: 'Alexanderplatz 1', city: 'Berlin', postCode: '10178', country: 'DE', email: 'filiporastovic@gmail.com' },
+    shippingAddress: { firstName: 'Preview', lastName: 'Draft', addressLine1: 'Alexanderplatz 1', city: 'Berlin', postCode: '10178', country: 'DE', email: SHOP.email },
   });
   try {
     let left = new Set(batch.map((b) => `${b.k}|${b.fr}`));

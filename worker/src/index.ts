@@ -93,6 +93,7 @@ const describe = (l: Line, lang: Lang) => {
 function validLine(l: any): l is Line {
   if (!l || typeof l.slug !== 'string' || !product(l.slug)) return false;
   if (!ACTIVE_FORMATS.includes(l.format) || !(FORMAT_SIZES as any)[l.format]?.includes(l.size) || !unit(l)) return false;
+  if (product(l.slug).sizes && !product(l.slug).sizes.includes(l.size)) return false; // e.g. Diskont: 30x40 only
   if (l.frame && !(FRAMES as readonly string[]).includes(l.frame)) return false;
   if (l.tone && !(product(l.slug).tones ?? []).includes(l.tone)) return false;
   return Number.isInteger(l.qty) && l.qty >= 1 && l.qty <= 20;

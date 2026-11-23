@@ -15,6 +15,7 @@ export const SERIES = [
   { key: 'hopf', slug: 'hopf-fibrations', old: 'hopf' },
   { key: 'chaos', slug: 'double-pendulum', old: 'double-pendulum' },
   { key: 'inversion', slug: 'circle-inversion', old: 'circle-inversion' },
+  { key: 'mandelbox', slug: 'mandelbox', old: 'mandelbox' },
   { key: 'object', slug: 'objects', old: 'objekti' },
 ];
 
@@ -224,6 +225,33 @@ export const PRODUCTS = [
     'A cross of cream and blue where the pattern repeats inside itself, scale after scale.'),
   pr('inversion-3', 'inversion', 3, 'inversion', 'gold', 'Holes',
     'The same fourteen folds as Flower, in gold lace around deep navy pools.'),
+  // Diskont: 3D Mandelbox close-ups (touchdesigner-rezonanca/mandelbox/finals.py, Filip 2026-11-23). 30x40 only until 45x60 files exist.
+  pr('diskont-01-diskont', 'mandelbox', 1, 'mandelbox', 'ember', 'Diskont',
+    'The near corner of the box up close: blue halls and stairs folding into each other, with amber light deep inside.'),
+  pr('diskont-02-plaza', 'mandelbox', 2, 'mandelbox', 'violet', 'Plaza',
+    'The top face from above: a square plaza inside a ring of violet arches, pink light rising from below.'),
+  pr('diskont-03-furnace', 'mandelbox', 3, 'mandelbox', 'red', 'Furnace',
+    'Inside the near corner through a 24 mm lens: three arcs of light cross over a glowing core.'),
+  pr('diskont-04-portal', 'mandelbox', 4, 'mandelbox', 'ember', 'Portal',
+    'The left face: a blue oval gate around a grid of smaller boxes, amber light behind it.'),
+  pr('diskont-05-orchid', 'mandelbox', 5, 'mandelbox', 'violet', 'Orchid',
+    'The near corner in violet and pink, petals of lace opening around the centre.'),
+  pr('diskont-06-altar', 'mandelbox', 6, 'mandelbox', 'red', 'Altar',
+    'The top face in red: a raised square inside a ring of arches, lit from within.'),
+  pr('diskont-07-hallway', 'mandelbox', 7, 'mandelbox', 'ember', 'Hallway',
+    'Down the corridor in pale gold and blue: three bright arcs meet over a small cube at the centre.'),
+  pr('diskont-08-coral', 'mandelbox', 8, 'mandelbox', 'violet', 'Coral',
+    'Very close on the near corner: violet branches and pink light, folded over and over.'),
+  pr('diskont-09-vault', 'mandelbox', 9, 'mandelbox', 'ember', 'Vault',
+    'The left face from deeper in: a blue gate turned on its side, a lattice of rooms behind it.'),
+  pr('diskont-10-ember', 'mandelbox', 10, 'mandelbox', 'red', 'Ember',
+    'The near corner in red and amber, like coals with rooms inside them.'),
+  pr('diskont-11-basement', 'mandelbox', 11, 'mandelbox', 'ember', 'Basement',
+    'The bottom corner: blue towers hang over a warm glow in the dark below.'),
+  pr('diskont-12-chapel', 'mandelbox', 12, 'mandelbox', 'violet', 'Chapel',
+    'The corridor in pink and violet: arcs of light like a rose window around the core.'),
+  pr('diskont-13-rooftop', 'mandelbox', 13, 'mandelbox', 'ember', 'Rooftop',
+    'The top face in blue: a square courtyard in a ring of terraces, amber light in the gaps.'),
   // Објекти: particle worlds rendered by explore/kiber/kiber.html (mode=objekat), not by waveform-poster.
   p('stanica', 'object', 8, 'objekat', 'ember', 'Станица', 'Station',
     'Хексагонални свет у плавом сјају, са ћилибарним прстеном прашине и месецима на ивици орбите.',
@@ -327,13 +355,28 @@ export const URL_SLUG = {
   'inversion-1': 'flower-circle-inversion',
   'inversion-2': 'eternity-circle-inversion',
   'inversion-3': 'holes-circle-inversion',
+  'diskont-01-diskont': 'diskont-mandelbox',
+  'diskont-02-plaza': 'plaza-mandelbox',
+  'diskont-03-furnace': 'furnace-mandelbox',
+  'diskont-04-portal': 'portal-mandelbox',
+  'diskont-05-orchid': 'orchid-mandelbox',
+  'diskont-06-altar': 'altar-mandelbox',
+  'diskont-07-hallway': 'hallway-mandelbox',
+  'diskont-08-coral': 'coral-mandelbox',
+  'diskont-09-vault': 'vault-mandelbox',
+  'diskont-10-ember': 'ember-mandelbox',
+  'diskont-11-basement': 'basement-mandelbox',
+  'diskont-12-chapel': 'chapel-mandelbox',
+  'diskont-13-rooftop': 'rooftop-mandelbox',
 };
+// Sizes per piece: Diskont only has 30x40 print files so far (others: every size in FORMAT_SIZES).
+for (const x of PRODUCTS) if (x.style === 'mandelbox') x.sizes = ['30x40'];
 for (const x of PRODUCTS) x.url = URL_SLUG[x.slug] ?? x.slug; // new piece without an entry: its key is the address
 
 export const TONES = ['roza', 'tus'];
 const NO_TONE = {
-  roza: ['chaos-1', 'chaos-2', 'chaos-3', 'inversion-1', 'inversion-2', 'inversion-3', 'resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'],
-  tus: ['chaos-1', 'chaos-2', 'chaos-3', 'inversion-1', 'inversion-2', 'inversion-3', 'magla', 'nulta-orbita', 'pomracenje', 'oreol', 'crvotocina'], // weak on white paper (Filip 2026-10-21)
+  roza: ['diskont-01-diskont', 'diskont-02-plaza', 'diskont-03-furnace', 'diskont-04-portal', 'diskont-05-orchid', 'diskont-06-altar', 'diskont-07-hallway', 'diskont-08-coral', 'diskont-09-vault', 'diskont-10-ember', 'diskont-11-basement', 'diskont-12-chapel', 'diskont-13-rooftop', 'chaos-1', 'chaos-2', 'chaos-3', 'inversion-1', 'inversion-2', 'inversion-3', 'resler', 'cen', 'dadras', 'sprot', 'rabinovic', 'cetiri-krila', 'snop', 'dvojstvo', 'vrtlog', 'caura', 'perje', 'dim', 'ruza', 'vetrenjaca', 'stanica', 'anomalija', 'prvi-signal', 'tiha-oluja', 'severni-signal', 'magla', 'de-zong', 'crvotocina'],
+  tus: ['diskont-01-diskont', 'diskont-02-plaza', 'diskont-03-furnace', 'diskont-04-portal', 'diskont-05-orchid', 'diskont-06-altar', 'diskont-07-hallway', 'diskont-08-coral', 'diskont-09-vault', 'diskont-10-ember', 'diskont-11-basement', 'diskont-12-chapel', 'diskont-13-rooftop', 'chaos-1', 'chaos-2', 'chaos-3', 'inversion-1', 'inversion-2', 'inversion-3', 'magla', 'nulta-orbita', 'pomracenje', 'oreol', 'crvotocina'], // weak on white paper (Filip 2026-10-21)
 };
 for (const x of PRODUCTS) x.tones = TONES.filter((t) => !NO_TONE[t].includes(x.slug));
 // Image file key for a product in a colourway ('' = original).

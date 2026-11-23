@@ -1,0 +1,33 @@
+{
+  "kind": "mandelbox",
+  "style": "mandelbox",
+  "equations": [
+    "x, y, z → fold into [−1, 1]",
+    "z → s · z / clamp(|z|², 0.25, 1) + c",
+    "repeat 12×, ray march to the surface"
+  ],
+  "params": [
+    [
+      "s",
+      "-3"
+    ],
+    [
+      "repeats",
+      12
+    ],
+    [
+      "view",
+      "isometric, bottom corner"
+    ],
+    [
+      "light",
+      "key + blue fill + amber rim + warm core"
+    ]
+  ],
+  "stats": [
+    [
+      "render",
+      "tiles joined to 2550 × 2700 px"
+    ]
+  ]
+}
