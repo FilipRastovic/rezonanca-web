@@ -369,8 +369,8 @@ export const URL_SLUG = {
   'diskont-12-chapel': 'chapel-mandelbox',
   'diskont-13-rooftop': 'rooftop-mandelbox',
 };
-// Sizes per piece: Diskont only has 30x40 print files so far (others: every size in FORMAT_SIZES).
-for (const x of PRODUCTS) if (x.style === 'mandelbox') x.sizes = ['30x40'];
+// Sizes per piece: set x.sizes = ['30x40'] on a piece that only has print files in some sizes (none now;
+// Diskont got its 45x60 files 2026-11-23). Without it a piece gets every size in FORMAT_SIZES.
 for (const x of PRODUCTS) x.url = URL_SLUG[x.slug] ?? x.slug; // new piece without an entry: its key is the address
 
 export const TONES = ['roza', 'tus'];
