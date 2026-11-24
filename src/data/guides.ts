@@ -1451,6 +1451,93 @@ export const GUIDES: Guide[] = [
       { q: 'Can a fractal dimension be a whole number?', a: 'Yes. The boundary of the Mandelbrot set has dimension 2, and a smooth curve has dimension 1. The number is not required to be a fraction.' },
     ],
   },
+  {
+    slug: 'fractals-in-nature',
+    series: '',
+    shop: ['perje', 'vitica', 'dolina-morskih-konjica', 'drvo-signala', 'mandelbrotov-skup', 'lorenc'],
+    title: 'Fractals in Nature: Examples and Why They Form',
+    desc: 'Ferns, coastlines, lightning and rivers repeat their pattern across scales. See the best-known natural fractals, the rules behind them and their limits.',
+    h1: 'Fractals in nature: examples and why they form',
+    kicker: 'Guide // Fractals in nature',
+    lead: 'Fractals in nature are natural shapes, such as ferns, coastlines, lightning and river networks, whose pattern repeats at smaller and smaller scales. This page goes through the best-known examples, the simple rules that produce them, and where the comparison with maths stops being exact.',
+    updated: '2026-11-24',
+    sections: [
+      {
+        h: 'What counts as a fractal in nature',
+        p: [
+          'A mathematical fractal repeats forever. A natural one cannot: a fern leaflet is made of cells, and cells are not small ferns. What nature offers instead is a shape that looks similar over several orders of size, from a whole branch down to a twig.',
+          'Natural fractals are also statistical rather than exact. The small part resembles the whole in how rough and how branched it is, not point for point. The definition of fractal dimension and how it is measured are covered in the fractal dimension guide, and the wider idea is in the fractal art guide.',
+        ],
+      },
+      {
+        h: 'Ferns and the rule of a few maps',
+        p: [
+          'A fern frond is a stem with leaflets, and each leaflet is a smaller copy of the frond. That is easy to describe as a program. The Barnsley fern, named after the mathematician Michael Barnsley, draws a fern with four affine maps: one for the stem, one for the main body and one each for the lowest left and right leaflets.',
+          'A point starts anywhere and is moved by one of the maps, picked at random with fixed probabilities. Repeat this many thousands of times and the points settle onto a fern shape. The rule is tiny, and the whole detail comes from applying it again and again.',
+        ],
+        f: '(x, y) → (a·x + b·y + e, c·x + d·y + f)',
+      },
+      {
+        h: 'Trees, lightning, rivers and blood vessels',
+        p: [
+          'Branching is the most common natural fractal. A trunk splits into limbs, limbs into branches, branches into twigs. Lightning, river deltas, and the vessels in a lung or a retina follow the same pattern: one channel splits into smaller ones to reach more space.',
+          'The reason is practical. A branching network can carry something, whether water, air, blood or charge, to or from a large area at low cost. A rule such as "split into two thinner branches at an angle" is enough to build one, and a little randomness makes it look natural.',
+          'Our Signal piece is drawn this way, with a grammar that grows spokes. It is a made-up structure, not a tree, but its rules are the same kind as a plant\'s: a spoke continues straight most of the time and sometimes splits in two at a smaller size.',
+        ],
+        f: 'spoke → box · spoke(rz + θ, s × 0.8) · spoke(rz − θ, s × 0.8)   p = 20%',
+        piece: 'drvo-signala',
+        caption: 'Signal: 15 rays and 5,396 primitives (5,208 boxes, 188 nodes), grown by rules that continue or split.',
+      },
+      {
+        h: 'Coastlines and rivers',
+        p: [
+          'Lewis Fry Richardson noticed that the length of a border depends on the length of the ruler used to measure it. Benoit Mandelbrot made the point famous in his 1967 paper on the coast of Britain: a shorter ruler follows more of the inlets and gives a longer total.',
+          'For a smooth curve the measured length settles down. For a coastline it keeps growing as the ruler shrinks, at a rate set by the fractal dimension D. The west coast of Britain gives a value of about 1.25. Rivers behave similarly: a basin is drained by streams, which are fed by smaller streams, all the way down to tiny gullies.',
+        ],
+        f: 'L(ε) ∝ ε^(1 − D)',
+      },
+      {
+        h: 'Romanesco, clouds and mountains',
+        p: [
+          'Romanesco broccoli is the plant people most often show as a fractal. Its florets are cones made of smaller cones in a spiral pattern, repeated over about three or four levels you can see with the eye. Clouds and mountain ranges are rough at every scale you look at, which is why Mandelbrot used them in his 1982 book The Fractal Geometry of Nature.',
+          'None of these has an exact scaling rule. They are rough in a consistent way, and that consistency is what the fractal dimension captures.',
+        ],
+      },
+      {
+        h: 'Where nature stops being a fractal',
+        p: [
+          'Be careful with the claim that everything in nature is a fractal. Each example above has a smallest and a largest scale, and the fractal description only works between them. A coastline stops being rough at the size of a grain of sand, and a tree stops branching at its buds.',
+          'An exact fractal has no such limits. The Mandelbrot set is defined by repeating one equation, and zooming in never reaches a smallest detail. Our Seahorse Valley piece looks into the boundary of that set and shows spirals made of smaller spirals.',
+        ],
+        f: 'zₙ₊₁ = zₙ² + c',
+        piece: 'dolina-morskih-konjica',
+        caption: 'Seahorse Valley: a window 0.0065 wide on the Mandelbrot boundary, centred at −0.7454 + 0.1127i, 477× zoom, 900 steps per pixel.',
+      },
+      {
+        h: 'Random rules that grow organic shapes',
+        p: [
+          'The fern rule above hints at a wider method: pick a few transformations, apply them at random, and let a picture build up. Fractal flames take this much further, adding curved transformations and colouring by how often each pixel is hit. The fractal flame guide explains the method.',
+          'The result often looks soft and organic, with feather, smoke or flame shapes, even though no one drew a curve. That is the same effect as in nature: a short rule repeated many times gives detail that nobody placed by hand.',
+        ],
+        f: 'F(x) = Σ wⱼ·Vⱼ(Ax + b)',
+        piece: 'perje',
+        caption: 'Feathers: a fractal flame, about 10,000,000 particles, seed 1.',
+      },
+      {
+        h: 'How our posters relate to natural fractals',
+        p: [
+          'We do not draw ferns or coastlines. Our posters are made with code from equations: Mandelbrot zooms, strange attractors, fractal flames and rule-based structures. They share with natural fractals the property of having detail at many scales, so you can step close and keep finding something.',
+          'The product page of each piece lists its equations and parameters. What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What are examples of fractals in nature?', a: 'Ferns, trees, lightning, river networks, coastlines, blood vessels, Romanesco broccoli, clouds and mountain ranges. Each shows similar structure over several scales.' },
+      { q: 'Are fractals in nature really fractals?', a: 'Only over a limited range of scales and only in a statistical sense. A coastline or a tree is rough and branched in a consistent way between a smallest and a largest size, unlike a mathematical fractal that continues forever.' },
+      { q: 'Why do fractals appear in nature?', a: 'Simple repeated rules, such as splitting a branch into two thinner ones, produce shapes that cover a large area at low cost. Growth, erosion and electrical discharge all repeat such rules at every scale.' },
+      { q: 'What is the most famous fractal in nature?', a: 'Romanesco broccoli and the fern are the most cited, because their repeated pattern is easy to see. Coastlines are the classic example in maths, from Mandelbrot\'s 1967 paper.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
