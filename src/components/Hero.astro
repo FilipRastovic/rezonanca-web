@@ -25,7 +25,7 @@ const MORE = (L ? [8, 9, 10, 11].map(pick) : ['spirala', 'oreol', 'mandelbrotov-
 
   <div class="wrap grid">
     <div class="content">
-      {LATEST && <a class="new mono" href={collectionHref(lang, LATEST.slug)}><i aria-hidden="true"></i>New collection // {LATEST.name} · {productsBySeries(LATEST.key).length} prints <span class="arrow">→</span></a>}
+      {LATEST && <a class="new mono" href={collectionHref(lang, LATEST.slug)}><i aria-hidden="true"></i><span>New collection // {LATEST.name}</span><span class="n"> · {productsBySeries(LATEST.key).length} prints</span> <span class="arrow">→</span></a>}
       <h1 class="h1">
         <span class="label">{t.label}</span>
         <span class="title" role="text" aria-label={t.title}>{[...t.title].map((ch, i) => <span style={`--i:${i}`} aria-hidden="true">{ch}</span>)}<span class="cur" aria-hidden="true" style={`--i:${t.title.length}`}>_</span></span>
@@ -100,7 +100,8 @@ const MORE = (L ? [8, 9, 10, 11].map(pick) : ['spirala', 'oreol', 'mandelbrotov-
   .new { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; padding: 8px 14px; border: 1px solid var(--line-strong); font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); background: var(--bg-1); }
   .new i { width: 7px; height: 7px; border-radius: 50%; background: var(--amber, #ffa546); box-shadow: 0 0 10px var(--amber, #ffa546); }
   .new:hover { border-color: var(--cyan); color: var(--cyan); }
-  @media (max-width: 600px) { .new { white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; } }
+  .new span { white-space: nowrap; }
+  @media (max-width: 600px) { .new { max-width: 100%; letter-spacing: 0.08em; padding: 8px 12px; gap: 8px; } .new .n { display: none; } }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
   /* Collage: side column (tilted framed print + a second room shot) and the big room shot, bottoms aligned. */
