@@ -220,7 +220,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
             <legend class="mono">{tp.format}</legend>
             <div class="pills">
               {PICK.map((f) => (
-                <label class="pill"><input type="radio" name="format" value={f} checked={f === F0} /><span>{fmt[f].t}</span></label>
+                <label class="pill"><input type="radio" name="format" value={f} checked={f === F0} /><span>{/ print$/.test(fmt[f].t) ? <>{fmt[f].t.replace(/ print$/, '')}<i class="fw">&nbsp;print</i></> : fmt[f].t}</span></label>
               ))}
             </div>
           </fieldset>
@@ -552,6 +552,9 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
 </script>
 
 <style>
+  /* Narrow phones: format pills read "Unframed" / "Framed" so each stays on one line (the FORMAT label says print). */
+  .fw { font-style: normal; }
+  @media (max-width: 400px) { .fw { display: none; } }
   .product { padding: clamp(112px, 10vw, 144px) 0 var(--space-md); background-color: var(--bg-0); }
   .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
   .crumbs a:hover { color: var(--cyan); }
