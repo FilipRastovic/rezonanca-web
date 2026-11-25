@@ -7,7 +7,7 @@ import { guideHref, homeHref, collectionHref, productHref, interiorsHref, legalH
 export const GET = ({ site }: { site: URL }) => {
   const paths = [
     homeHref(), collectionHref('en'), ...SERIES.map((s) => collectionHref('en', s.slug)), ...GROUPS.map((g) => collectionHref('en', g.slug)), interiorsHref(),
-    guideHref(), ...GUIDES.map((g) => guideHref(g.slug)), '/wallpapers/', '/play/', '/about/', '/journal/mandelbox/',
+    guideHref(), ...GUIDES.map((g) => guideHref(g.slug)), '/wallpapers/', '/play/', '/about/', '/press/', '/journal/mandelbox/',
     ...PRODUCTS.map((p) => productHref('en', p.slug)),
     legalHref('en', 'terms'), legalHref('en', 'privacy'), legalHref('sr', 'terms'), legalHref('sr', 'privacy'),
   ];

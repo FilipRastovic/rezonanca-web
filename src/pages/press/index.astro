@@ -1,0 +1,254 @@
+---
+// Press page (Social → Web, 2026-11-22). Copy from marketing/press-kit/press-kit.txt; files in public/press/
+// (same names as the kit, previews in public/press/preview/). Counts and prices are live, not typed.
+import Base from '../../layouts/Base.astro';
+import { PRODUCTS, SERIES } from '../../data/products.js';
+import { PRICES, SHOP } from '../../config';
+import { homeHref, collectionHref, seriesShort } from '../../i18n';
+const site = Astro.site!;
+const n = PRODUCTS.length;
+const s = SERIES.length;
+const min = PRICES.print['30x40'];
+const max = PRICES.framed['45x60'];
+
+const WORKS = [
+  { file: '01-rezonanca-waves-strange-attractor', name: 'Waves', sys: 'Halvorsen attractor', line: 'Three wings folded around each other, a symmetry breaking in every instant.', url: '/poster/halvorsen-attractor/' },
+  { file: '02-rezonanca-cup-clifford-attractor', name: 'Cup', sys: 'Clifford attractor', line: 'Millions of points, each computed from the last. Together they draw a fabric no one designed.', url: '/poster/clifford-attractor/' },
+  { file: '03-rezonanca-brot-mandelbrot-set', name: 'Brot', sys: 'The Mandelbrot set', line: 'z² + c. The most famous shape in mathematics, an infinite coastline around a single island.', url: '/poster/mandelbrot-set/' },
+  { file: '04-rezonanca-smoke-fractal-flame', name: 'Smoke', sys: 'Fractal flame', line: 'A threefold cloud of smoke around a bright core, with the symmetry of a triangle.', url: '/poster/smoke/' },
+  { file: '05-rezonanca-fiber-hopf-fibration', name: 'Fiber', sys: 'Hopf fibration', line: 'Nested tori of hundreds of circles, where every circle is linked with every other.', url: '/poster/hopf-fibration/' },
+  { file: '06-rezonanca-flamingo-double-pendulum', name: 'Flamingo', sys: 'Double pendulum', line: 'Each pixel is a double pendulum let go from rest; blue and amber show how high its lower arm swings after six seconds.', url: '/poster/flamingo-double-pendulum/' },
+  { file: '07-rezonanca-flower-circle-inversion', name: 'Flower', sys: 'Circle inversion', line: 'Fold into a square, turn inside out in a circle, fourteen times over: blue lace grows wherever the stretch piles up.', url: '/poster/flower-circle-inversion/' },
+  { file: '08-rezonanca-tightly-woven-lorenz-attractor', name: 'Tightly Woven', sys: 'Lorenz attractor', line: 'The butterfly that started a storm. Three equations for the atmosphere, and no path ever repeats.', url: '/poster/lorenz-attractor/' },
+];
+const ROOMS = [
+  { file: '01-waves-living-room', alt: 'Waves print in a living room' },
+  { file: '02-smoke-living-room', alt: 'Smoke print in a living room' },
+  { file: '03-cup-framed-bar', alt: 'Cup, framed, in a bar' },
+];
+const LOGOS = [
+  { file: 'rezonanca-wordmark-dark', ext: 'png', label: 'Wordmark, dark', bg: 'dark' },
+  { file: 'rezonanca-wordmark-light', ext: 'png', label: 'Wordmark, light', bg: 'light' },
+  { file: 'rezonanca-mark-dark', ext: 'svg', label: 'Mark, dark', bg: 'dark' },
+  { file: 'rezonanca-mark-light', ext: 'svg', label: 'Mark, light', bg: 'light' },
+];
+const FACTS: [string, string][] = [
+  ['Name', 'Rezonanca'],
+  ['Artist', 'Filip Rastović'],
+  ['Founded', '2026, Novi Sad'],
+  ['Works', `${n} in ${s} series`],
+  ['Series', SERIES.map((x) => seriesShort('en', x.key)).join(', ')],
+  ['Colourways', 'Original, Rose, Ink (black on white)'],
+  ['Sizes', '30 x 40 cm and 45 x 60 cm'],
+  ['Formats', 'unframed print, or framed ready to hang in black or natural wood'],
+  ['Paper', 'fine art matte, 300 DPI'],
+  ['Prices', `from EUR ${min} (print 30 x 40) to EUR ${max} (framed 45 x 60), free shipping`],
+  ['Shipping', 'made to order, ships worldwide'],
+];
+const ZIP = '/press/rezonanca-press-kit.zip';
+const title = 'Press Kit - Rezonanca Math Art Prints | Rezonanca';
+const desc = `Press kit for Rezonanca, math art prints made with code by Filip Rastović in Novi Sad: ${n} works in ${s} series. Images, logos, facts and contact.`;
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', homeHref()], ['Press', '/press/']].map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) },
+  { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Rezonanca press kit', description: desc, url: new URL('/press/', site).href,
+    about: { '@type': 'Organization', name: 'Rezonanca', url: site.href, founder: { '@type': 'Person', name: 'Filip Rastović' }, foundingDate: '2026', foundingLocation: { '@type': 'Place', name: 'Novi Sad, Serbia' }, email: SHOP.email } },
+];
+---
+<Base lang="en" title={title} description={desc}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="top grid-bg">
+    <div class="wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href={homeHref()}>Home</a><span>/</span><span aria-current="page">Press</span></nav>
+      <p class="label">Press kit</p>
+      <h1>Press</h1>
+      <p class="lead one">Rezonanca is a series of math art prints by Filip Rastović, a software engineer in Novi Sad who writes code that turns equations into pictures.</p>
+      <p class="lead">Rezonanca turns real mathematics into wall art. Strange attractors, the Mandelbrot set, fractal flames, double pendulums and the Hopf fibration are computed point by point in code and drawn as prints. Every piece comes from a seed and a few equations. The same seed always draws the same picture.</p>
+      <a class="btn btn--solid big" href={ZIP} download data-press="zip">Download press kit <span class="mono">ZIP, 9.6 MB</span></a>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap two">
+      <div>
+        <p class="label">01 // About Rezonanca</p>
+        <h2>Programmer Art</h2>
+      </div>
+      <div class="body">
+        <p>Rezonanca is Programmer Art: posters where the maths decides the shape and the artist chooses the number, the colours and the framing.</p>
+        <p>Each piece starts with a seed and a handful of equations. The program computes them hundreds of thousands or millions of times and draws the picture from the result. A Lorenz attractor is a single path that never repeats. Each pixel of a double pendulum piece is its own pendulum, let go from rest. The Mandelbrot set is one line of maths, z² + c, with an infinite coastline.</p>
+        <p>Filip Rastović writes the code himself, line by line. He has been programming for more than ten years and builds e-commerce systems for brands around the world.</p>
+        <p>The collection has {n} works in {s} series. Every print is made to order on fine art matte paper and ships worldwide. What you see on the site is exactly what arrives on your wall.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="wrap two">
+      <div class="who">
+        <img src="/about/filip.webp" alt="Filip Rastović" width="600" height="600" loading="lazy" decoding="async" />
+        <a class="dl-link mono" href="/press/artist/filip-rastovic-portrait.jpg" download>Portrait JPG ↓</a>
+      </div>
+      <div class="body">
+        <p class="label">02 // About the artist</p>
+        <h2>Filip Rastović</h2>
+        <p>Software engineer based in Novi Sad, Serbia, programming for more than ten years. Around 2004 he made one of his first digital works, a grid of boxes each holding one curve, loop or wave. Twenty-two years later the curves are drawn by equations instead of by hand.</p>
+        <blockquote>"In a garden you set the conditions, soil, light and water, let it grow, then choose what stays. I work the same way with code."</blockquote>
+        <div class="row">
+          <a class="link" href="/about/">More about Filip →</a>
+          <a class="link" href="/press/artist/filip-first-digital-work-2004.jpg" download>First digital work, 2004 ↓</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap two">
+      <div>
+        <p class="label">03 // Quick facts</p>
+        <h2>Facts</h2>
+      </div>
+      <dl class="facts">
+        {FACTS.map(([k, v]) => (<div><dt class="mono">{k}</dt><dd>{v}</dd></div>))}
+        <div><dt class="mono">Website</dt><dd><a href="https://rezonanca.art/">rezonanca.art</a></dd></div>
+        {SHOP.etsy && <div><dt class="mono">Also on</dt><dd><a href={SHOP.etsy} target="_blank" rel="noopener">Etsy ↗</a></dd></div>}
+        <div><dt class="mono">Try</dt><dd><a href="/play/">Play with the equation</a>, <a href="/wallpapers/">free phone wallpapers</a>, <a href="/guide/">guides to the maths</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="wrap">
+      <p class="label">04 // Featured works</p>
+      <h2>Eight prints</h2>
+      <p class="note">Full size 2250 x 3000 px JPG, exactly as they ship (white border included).</p>
+      <div class="works">
+        {WORKS.map((w, i) => (
+          <article class="card">
+            <a class="shot" href={w.url}><img src={`/press/preview/${w.file}-600.webp`} alt={`${w.name}, ${w.sys} print`} width="600" height="800" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" /></a>
+            <span class="k mono">{String(i + 1).padStart(2, '0')} // {w.sys}</span>
+            <h3><a href={w.url}>{w.name}</a></h3>
+            <p class="line">{w.line}</p>
+            <a class="dl-link mono" href={`/press/artwork/${w.file}.jpg`} download>Full size JPG ↓</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="label">05 // In a room</p>
+      <h2>Room shots</h2>
+      <p class="note">2000 x 2667 px JPG.</p>
+      <div class="rooms">
+        {ROOMS.map((r) => (
+          <figure>
+            <a href={`/press/rooms/${r.file}.jpg`} download><img src={`/press/preview/${r.file}-600.webp`} alt={r.alt} width="600" height="800" loading="lazy" decoding="async" /></a>
+            <figcaption><a class="dl-link mono" href={`/press/rooms/${r.file}.jpg`} download>{r.alt} ↓</a></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="wrap">
+      <p class="label">06 // Logos</p>
+      <h2>Logos</h2>
+      <div class="logos">
+        {LOGOS.map((l) => (
+          <figure>
+            <a class:list={['chip', l.bg]} href={`/press/logo/${l.file}.${l.ext}`} download>
+              <img src={l.ext === 'svg' ? `/press/logo/${l.file}.svg` : `/press/preview/${l.file}-600.webp`} alt={`Rezonanca ${l.label.toLowerCase()}`} loading="lazy" decoding="async" />
+            </a>
+            <figcaption><a class="dl-link mono" href={`/press/logo/${l.file}.${l.ext}`} download>{l.label}, {l.ext.toUpperCase()} ↓</a></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap two">
+      <div>
+        <p class="label">07 // Use + contact</p>
+        <h2>Contact</h2>
+      </div>
+      <div class="body">
+        <p>Images may be used for editorial coverage of Rezonanca. Please credit "Filip Rastović / Rezonanca".</p>
+        <p class="contact mono">
+          Filip Rastović<br />
+          <a href={`mailto:${SHOP.email}`}>{SHOP.email}</a><br />
+          {SHOP.instagram && <a href={SHOP.instagram} target="_blank" rel="noopener">Instagram ↗</a>}
+          {SHOP.tiktok && <> · <a href={SHOP.tiktok} target="_blank" rel="noopener">TikTok ↗</a></>}
+        </p>
+        <div class="row">
+          <a class="btn btn--solid" href={ZIP} download data-press="zip">Download press kit <span class="mono">ZIP, 9.6 MB</span></a>
+          <a class="btn" href={collectionHref('en')}>See all prints</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('a[download]').forEach((a) =>
+    a.addEventListener('click', () => (window as any).rzTrack?.('file_download', { content_name: a.getAttribute('href')?.split('/').pop() })));
+</script>
+<style>
+  .top { padding: clamp(140px, 14vw, 200px) 0 var(--space-md); background-color: var(--bg-0); border-bottom: 1px solid var(--line); }
+  .crumbs { display: flex; gap: 10px; flex-wrap: wrap; font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+  .crumbs a:hover { color: var(--cyan); }
+  .crumbs [aria-current] { color: var(--ice); }
+  h1 { font-size: var(--fs-h1); line-height: 1.1; margin-top: 20px; }
+  .lead { margin-top: 20px; max-width: 64ch; }
+  .lead.one { color: var(--ice); }
+  .big { margin-top: 32px; gap: 10px; }
+  .btn .mono { font-size: var(--fs-2xs); opacity: 0.75; }
+  .band { background: var(--bg-0); padding-block: var(--space-md); border-bottom: 1px solid var(--line); }
+  .band.alt { background: var(--bg-1); }
+  .two { display: grid; grid-template-columns: 4fr 8fr; gap: clamp(28px, 5vw, 96px); align-items: start; }
+  @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  h2 { margin-top: 10px; }
+  .body p { margin: 0 0 18px; max-width: 64ch; color: var(--text); }
+  .body .label { margin-bottom: 0; }
+  .body h2 { margin-bottom: 18px; }
+  blockquote { margin: 8px 0 22px; padding-left: 18px; border-left: 2px solid var(--line-strong); color: var(--ice); max-width: 60ch; }
+  .who { display: grid; gap: 12px; justify-items: start; }
+  .who img { width: min(220px, 60%); aspect-ratio: 1; object-fit: cover; filter: grayscale(1) contrast(1.05); }
+  @media (max-width: 800px) { .who img { width: 120px; } }
+  .row { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; margin-top: 8px; }
+  .link { font-size: var(--fs-xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--ice); border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; }
+  .link:hover { border-color: var(--ice); }
+  .dl-link { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); }
+  .dl-link:hover { color: var(--cyan); }
+  .facts { margin: 0; display: grid; }
+  .facts div { display: grid; grid-template-columns: 9em 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .facts div:first-child { border-top: 1px solid var(--line); }
+  @media (max-width: 560px) { .facts div { grid-template-columns: 1fr; gap: 4px; } }
+  .facts dt { font-size: var(--fs-2xs); letter-spacing: var(--track-ui); text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  .facts dd { margin: 0; color: var(--text); overflow-wrap: anywhere; }
+  .facts a, .contact a { color: var(--ice); border-bottom: 1px solid var(--line-strong); }
+  .facts a:hover, .contact a:hover { color: var(--cyan); }
+  .note { margin: 8px 0 0; color: var(--muted); font-size: var(--fs-sm); }
+  .works { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(24px, 2.5vw, 40px); margin-top: var(--space-sm); }
+  @media (max-width: 1000px) { .works { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .works { grid-template-columns: 1fr; } }
+  .card { display: grid; gap: 8px; align-content: start; }
+  .shot img, .rooms img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; background: var(--bg-0); margin-bottom: 8px; }
+  .k { font-size: var(--fs-2xs); letter-spacing: var(--track-label); color: var(--muted); }
+  .card h3 { font-size: var(--fs-h3); margin: 0; }
+  .card h3 a:hover { color: var(--cyan); }
+  .line { margin: 0; font-size: var(--fs-sm); color: var(--text); }
+  .rooms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 2.5vw, 40px); margin-top: var(--space-sm); }
+  @media (max-width: 560px) { .rooms { grid-template-columns: 1fr; } }
+  figure { margin: 0; }
+  .logos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 2vw, 32px); margin-top: var(--space-sm); }
+  @media (max-width: 900px) { .logos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .logos { grid-template-columns: 1fr; } }
+  .chip { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 12%; border: 1px solid var(--line); margin-bottom: 10px; }
+  .chip.dark { background: #05080e; }
+  .chip.light { background: #fff; }
+  .chip img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
+  .chip:has(img[src$='.svg']) img { height: 64px; }
+  .contact { line-height: 1.9; }
+</style>
