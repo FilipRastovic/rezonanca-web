@@ -7,7 +7,7 @@ import History from './History.astro';
 import { SERIES, PRODUCTS, productsBySeries, LATEST } from '../data/products.js';
 import { guideFor, GUIDES } from '../data/guides';
 import { groupFor, groupsWith } from '../data/groups';
-import { T, homeHref, collectionHref, guideHref, productHref, seriesShort, type Lang } from '../i18n';
+import { T, counts, homeHref, collectionHref, guideHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang; seriesSlug?: string; groupSlug?: string }
 const { lang, seriesSlug, groupSlug } = Astro.props;
 // Theme page (src/data/groups.ts): pieces from several series under one name, e.g. /collection/fractal-art/.
@@ -20,8 +20,8 @@ const shown = current ? [current] : SERIES;
 const guide = current ? guideFor(current.key) : groupGuide;
 const themes = current ? groupsWith(current.key) : []; // e.g. Mandelbrot links up to Fractal art
 const info = current ? t.series[current.key as 'structure'] : null;
-const title = group ? group.title : current ? `${info!.seo.title} | Rezonanca` : t.seo.collectionTitle;
-const description = group ? group.desc : info ? info.seo.desc : t.seo.collectionDesc;
+const title = group ? group.title : current ? `${info!.seo.title} | Rezonanca` : counts(t.seo.collectionTitle);
+const description = group ? group.desc : info ? info.seo.desc : counts(t.seo.collectionDesc);
 const site = Astro.site!;
 const crumbs = [[t.product.home, homeHref(lang)], [t.collection.title, collectionHref(lang)], ...(current ? [[seriesShort(lang, current.key), collectionHref(lang, current.slug)]] : []), ...(group ? [[group.name, collectionHref(lang, group.slug)]] : [])];
 const jsonLd: any[] = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, site).href })) }];
@@ -60,9 +60,9 @@ const heroName = PRODUCTS.find((p) => p.slug === HERO[heroKey])?.name[lang];
          : current ? <><a href={collectionHref(lang)}>{t.collection.title}</a><span>/</span><span aria-current="page">{seriesShort(lang, current.key)}</span></>
                  : <span aria-current="page">{t.collection.title}</span>}
       </nav>
-      <p class="label">{group ? group.label : current ? `${info!.code.split(' // ')[0]} // ${seriesShort(lang, current.key)}` : t.collection.label}</p>
+      <p class="label">{group ? group.label : current ? `${info!.code.split(' // ')[0]} // ${seriesShort(lang, current.key)}` : counts(t.collection.label)}</p>
       <h1>{group ? group.h1 : current ? info!.seo.h1 : t.seo.collectionH1}</h1>
-      {group ? group.lead.map((x) => <p class="lead">{x}</p>) : <p class="lead">{current ? info!.desc : t.collection.lead}</p>}
+      {group ? group.lead.map((x) => <p class="lead">{x}</p>) : <p class="lead">{current ? info!.desc : counts(t.collection.lead)}</p>}
       {group && <nav class="glinks mono" aria-label={t.collection.filter.series}>
         {group.series.map((k) => <a href={collectionHref(lang, SERIES.find((s) => s.key === k)!.slug)}>{seriesShort(lang, k)} <i>{productsBySeries(k).length}</i></a>)}
       </nav>}

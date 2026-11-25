@@ -1,6 +1,6 @@
 import sr from './sr';
 import en from './en';
-import { URL_SLUG } from '../data/products.js';
+import { URL_SLUG, PRODUCTS, SERIES } from '../data/products.js';
 
 export type Lang = 'sr' | 'en';
 export const T = { sr, en };
@@ -27,3 +27,6 @@ export const legalHref = (lang: Lang, page: 'terms' | 'privacy') =>
 
 // Series noun in running text: lower case, but names stay capitalised ("Mandelbrot fractal poster").
 export const nounLc = (noun: string) => noun.replace(/\b(?!Mandelbrot|Hopf|Lorenz|Thomas)[A-Z][a-z-]*/g, (w) => w.toLowerCase());
+
+// Live counts in copy: '{n}' = number of works, '{s}' = number of series (never type them).
+export const counts = (str: string) => str.replace(/\{n\}/g, String(PRODUCTS.length)).replace(/\{s\}/g, String(SERIES.length));

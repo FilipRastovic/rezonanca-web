@@ -3,7 +3,7 @@
 // so it differs from the collection cards), each linking to its product.
 import Base from '../layouts/Base.astro';
 import { SERIES, PRODUCTS, productsBySeries } from '../data/products.js';
-import { T, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
+import { T, counts, homeHref, collectionHref, productHref, seriesShort, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = T[lang];
@@ -14,7 +14,7 @@ const lists = FEATURED.map((k) => productsBySeries(k));
 const flat: any[] = [];
 for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l[i]) flat.push(l[i]);
 ---
-<Base lang={lang} title={`${ti.page} | Rezonanca`} description={ti.allLead}>
+<Base lang={lang} title={`${ti.page} | Rezonanca`} description={counts(ti.allLead)}>
   <section class="top">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
@@ -41,7 +41,7 @@ for (let i = 0; flat.length < PRODUCTS.length; i++) for (const l of lists) if (l
     <div class="wrap">
       <div class="head">
         <h2>{ti.all}</h2>
-        <p>{ti.allLead}</p>
+        <p>{counts(ti.allLead)}</p>
       </div>
       <div class="grid">
         {flat.map((p, i) => {

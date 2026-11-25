@@ -24,7 +24,7 @@ import { GROUPS } from '../data/groups';
     <span class="hide-s" data-clock>00:00:00 UTC</span>
   </div></div>
   <div class="wrap inner">
-    <a href={home} aria-label="Rezonanca" class="home"><Logo tag={lang === 'sr' ? 'принтови нацртани кодом' : 'prints drawn in code'} tagClass="nav-tag" /></a>
+    <a href={home} aria-label="Rezonanca" class="home"><Logo tag={lang === 'sr' ? 'принтови нацртани кодом' : 'prints made with code'} tagClass="nav-tag" /></a>
     <nav aria-label="Main">
       {links.map(([href, label], i) => <a href={href} class:list={{ on: href === path }}><b>0{i + 1}</b>{label}</a>)}
     </nav>

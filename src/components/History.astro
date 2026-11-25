@@ -1,11 +1,13 @@
 ---
 // Timeline: the history behind a series (plus Perlin noise where the series uses it).
 import { T, type Lang } from '../i18n';
-interface Props { lang: Lang; series: string; compact?: boolean }
-const { lang, series, compact = false } = Astro.props;
+interface Props { lang: Lang; series: string; variant?: string; compact?: boolean }
+const { lang, series, variant, compact = false } = Astro.props;
 const t = T[lang];
 const usesNoise = t.noise.uses.includes(series);
-const nature = (t.nature as Record<string, string>)[series];
+// A piece-specific note (e.g. 'attractor-lorenz') wins over the series note.
+const notes = t.nature as Record<string, string>;
+const nature = (variant && notes[`${series}-${variant}`]) || notes[series];
 const own = t.history[series as 'structure'] ?? [];
 const groups = [{ title: t.series[series as 'structure'].name.split(' · ')[lang === 'sr' ? 0 : 1] ?? '', items: own }];
 if (usesNoise) groups.push({ title: t.noise.label, items: t.history.perlin });

@@ -317,7 +317,7 @@ const cfg = JSON.stringify({ prices: PRICES_VISIBLE ? PRICES : {}, rsd: SALES_OP
     </section>
   )}
   <ProductMath lang={lang} slug={p.slug} style={p.style} />
-  <History lang={lang} series={p.style} compact />
+  <History lang={lang} series={p.style} variant={p.variant} compact />
 
   <SocialFeed lang={lang} slug={p.slug} />
 

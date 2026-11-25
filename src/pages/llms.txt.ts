@@ -16,7 +16,7 @@ export const GET = ({ site }: { site: URL }) => {
   }).join('\n\n');
   const body = `# Rezonanca
 
-> Rezonanca sells maths art posters drawn in code: strange attractors, fractal flames, the Mandelbrot set, Hopf fibrations and more. ${PRODUCTS.length} original designs in ${SERIES.length} series, written line by line in JavaScript in Novi Sad, Serbia. Each design comes from its own seed number and equations; the print you receive is exactly the image on the site.
+> Rezonanca sells maths art posters made with code: strange attractors, fractal flames, the Mandelbrot set, Hopf fibrations and more. ${PRODUCTS.length} original designs in ${SERIES.length} series, written line by line in JavaScript in Novi Sad, Serbia. Each design comes from its own seed number and equations; the print you receive is exactly the image on the site.
 
 ## Shop facts
 - Formats: unframed fine art print (${price('print')}); framed print, black or natural wood, ready to hang (${price('framed')}).
