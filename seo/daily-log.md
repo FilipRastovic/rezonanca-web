@@ -10,3 +10,4 @@
 2026-11-22 | julia-set | Julia Set vs Mandelbrot Set: How They Connect | ~1,000 words | published
 2026-11-23 | fractal-dimension | Fractal Dimension: What It Is and How to Measure It | ~1,090 words | published
 2026-11-24 | fractals-in-nature | Fractals in Nature: Examples and Why They Form | ~1,000 words | published
+2026-11-25 | seahorse-valley | Seahorse Valley: Where It Is in the Mandelbrot Set | ~915 words | published

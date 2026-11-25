@@ -1538,6 +1538,91 @@ export const GUIDES: Guide[] = [
       { q: 'What is the most famous fractal in nature?', a: 'Romanesco broccoli and the fern are the most cited, because their repeated pattern is easy to see. Coastlines are the classic example in maths, from Mandelbrot\'s 1967 paper.' },
     ],
   },
+  {
+    slug: 'seahorse-valley',
+    series: '',
+    shop: ['dolina-morskih-konjica', 'mandelbrotov-skup', 'morska-zvezda', 'spirala', 'mali-mandelbrot', 'vitica'],
+    title: 'Seahorse Valley: Where It Is in the Mandelbrot Set',
+    desc: 'Seahorse Valley is the gap between the two largest parts of the Mandelbrot set, near −0.75 + 0.1i. Coordinates, why spirals form there, and how to zoom in.',
+    h1: 'Seahorse valley: where it is in the Mandelbrot set',
+    kicker: 'Guide // Seahorse valley',
+    lead: 'Seahorse Valley is the narrow gap in the Mandelbrot set between the main heart-shaped body and the round bulb to its left, centred near c = −0.75 + 0.1i. This page gives its coordinates, explains why the edge curls into spirals there and shows what a window into it looks like.',
+    updated: '2026-11-25',
+    sections: [
+      {
+        h: 'The rule behind the map',
+        p: [
+          'The Mandelbrot set is the set of complex numbers c for which the rule below, started at z = 0 and repeated, never escapes to infinity. In practice a program repeats it for each pixel and stops when |z| passes 2, because after that the numbers can only grow.',
+          'Everything on this page is a location on that map. The full definition is in the Mandelbrot set guide, and the guide on the Julia set shows how each point of the map is linked to a second fractal.',
+        ],
+        f: 'zₙ₊₁ = zₙ² + c,   z₀ = 0,   |zₙ| > 2  ⇒  c ∉ M',
+      },
+      {
+        h: 'Where the valley is',
+        p: [
+          'The set has two large parts on the real axis. The main body is a cardioid, and just to its left sits a round bulb, a disc of radius 1/4 centred at −1. The two touch at exactly one point, c = −3/4.',
+          'The valley is the V-shaped gap above (and, by symmetry, below) that touching point. Its centre is usually quoted as about −0.75 + 0.1i. The set is symmetric about the real axis, so there is a mirror valley at −0.75 − 0.1i.',
+          'On the full view of the set the gap looks like a small notch. It only becomes a valley when you zoom in, because the notch is lined with hundreds of tiny bulbs that are too small to see at normal size. Each of them is a copy of the idea of the main body, shrunk and attached at a different angle.',
+        ],
+        f: 'cardioid: c = λ/2 − λ²/4,  |λ| < 1\nbulb: |c + 1| < 1/4\ntouching point: c = −3/4',
+      },
+      {
+        h: 'Why the edge curls into spirals',
+        p: [
+          'Along the edge of the cardioid, each point has its own number: how far the numbers rotate around a fixed point on each step. Where that rotation is a simple fraction, a bulb is attached. The bulb to the left, where the numbers alternate between two values, belongs to the fraction 1/2.',
+          'Near the touching point, many smaller bulbs crowd into the gap, with ever longer cycles. Each one has its own antenna and its own filaments. Their positions shift steadily as you move along the gap, and that steady shift is what bends the boundary into a spiral. Two arms of the gap wind around the same centre and give the pair of curls that looks like a seahorse tail.',
+        ],
+      },
+      {
+        h: 'A window into the valley',
+        p: [
+          'Our piece Seahorse Valley is a window 0.0065 wide on the complex plane, centred at −0.7454 + 0.1127i. That is about 477 times closer than the full view of the set, rotated about 15 degrees, with up to 900 steps per pixel.',
+          'The window is only 0.0046 to the right of the touching point and about 0.11 above the real axis. About 5.4 percent of its pixels never escape within 900 steps, and the average pixel escapes after about 156 steps. Those are the black and slowly escaping regions inside the curls.',
+        ],
+        f: 'centre = −0.7454 + 0.1127i\nwidth = 0.0065\nzoom ≈ 477,   steps ≤ 900',
+        piece: 'dolina-morskih-konjica',
+        caption: 'Seahorse Valley: centred at −0.7454 + 0.1127i, 477× zoom, 900 steps per pixel.',
+      },
+      {
+        h: 'A strange fact: pi in the gap',
+        p: [
+          'Pick points on the vertical line above the touching point, c = −0.75 + εi, where ε is a small positive number. Count how many steps the rule needs before |z| passes 2. The smaller ε is, the longer it takes, and the count multiplied by ε gets closer and closer to π.',
+          'That means the number of steps grows like π divided by ε. It is a checkable result you can reproduce with a few lines of code, and it is one reason the valley is a popular place to test deep zoom software: the cost of each pixel rises quickly as you approach the point.',
+        ],
+        f: 'c = −0.75 + εi:   steps × ε → π   as ε → 0',
+      },
+      {
+        h: 'Spirals in other places',
+        p: [
+          'The valley is not the only place with spirals. Spirals appear wherever the boundary turns around a point where a cycle changes, and the set has endless such points.',
+          'Our Starfish piece looks at a different region, centred at −0.3740 + 0.6598i with a window 0.0025 wide, about 1,240 times closer than the full view and 1,500 steps per pixel. Every pixel in that window escapes, so the picture is made of the escape count alone. Compare it with the valley and you see the same family of shapes at a different address. For the full set, the Mandelbrot set guide shows where the tendrils and minibrots sit, and our Mini piece looks at one of those minibrots near −1.757 on the real axis, at 46 times zoom and 900 steps per pixel.',
+        ],
+        piece: 'morska-zvezda',
+        caption: 'Starfish: centred at −0.3740 + 0.6598i, 1,240× zoom, 1,500 steps per pixel.',
+      },
+      {
+        h: 'How to zoom in yourself',
+        p: [
+          'Choose a centre, a width and a step limit. Divide the width by the number of pixels to get the size of one pixel, run the rule for each pixel, and colour it by the step count at which it escapes. A deeper zoom needs a higher step limit, because the detail near the edge takes longer to settle.',
+          'There is also a hard limit. Ordinary double precision numbers carry about 16 digits, so below a width of roughly 10⁻¹³ neighbouring pixels start to share the same value and the image turns blocky. Deeper zooms need higher precision arithmetic. The live /play/ page lets you try the same kind of rule with your own parameters, and the fractal dimension guide explains why the edge keeps its detail at every scale.',
+        ],
+        f: 'pixel size = width / image width\nc = centre + (x, y) · pixel size',
+      },
+      {
+        h: 'Our posters and this place',
+        p: [
+          'The valley poster is drawn by a program written in JavaScript from the numbers in the equation block above, and its product page lists the same centre, width and step limit. Nothing is painted by hand and the colours come only from the escape counts.',
+          'The other Mandelbrot posters in the shop are windows at other addresses on the same map. What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'Where is seahorse valley in the Mandelbrot set?', a: 'It is the gap between the main cardioid and the round bulb on its left, near c = −0.75 + 0.1i. A mirror copy lies below the real axis.' },
+      { q: 'Why is it called seahorse valley?', a: 'The spirals along the gap have curled tails that resemble seahorses, and the gap itself forms a valley between the two largest parts of the set.' },
+      { q: 'Why does pi appear near c = −0.75?', a: 'For c = −0.75 + εi, the number of steps before escape multiplied by ε approaches π as ε shrinks to zero.' },
+      { q: 'How deep can you zoom into the Mandelbrot set?', a: 'There is no smallest detail in the maths, but ordinary 64-bit numbers run out of precision near a width of about 10⁻¹³, so deeper zooms need higher precision arithmetic.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
