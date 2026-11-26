@@ -1623,6 +1623,94 @@ export const GUIDES: Guide[] = [
       { q: 'How deep can you zoom into the Mandelbrot set?', a: 'There is no smallest detail in the maths, but ordinary 64-bit numbers run out of precision near a width of about 10⁻¹³, so deeper zooms need higher precision arithmetic.' },
     ],
   },
+  {
+    slug: 'mandelbrot-zoom',
+    series: '',
+    shop: ['spirala', 'morska-zvezda', 'mali-mandelbrot', 'mandelbrotov-skup', 'dolina-morskih-konjica', 'vitica'],
+    title: 'Mandelbrot Zoom: How Deep Zooms Work and Where They End',
+    desc: 'A Mandelbrot zoom recomputes the set in a smaller window. See how zoom is measured, why deeper views need more steps and where 64-bit precision runs out.',
+    h1: 'Mandelbrot zoom: how deep zooms work and where they end',
+    kicker: 'Guide // Mandelbrot zoom',
+    lead: 'A Mandelbrot zoom is a new calculation of the set in a smaller window, not an enlarged picture: the program picks a centre and a width and repeats z² + c for every pixel again. This page explains how zoom is measured, why deeper views need more steps and where ordinary computer numbers stop being precise enough.',
+    updated: '2026-11-26',
+    sections: [
+      {
+        h: 'A zoom is a window, not a magnifier',
+        p: [
+          'To zoom, you do not stretch an existing image. You choose a new window on the complex plane, given by a centre and a width, and the program runs the rule for each pixel of that window. Because the rule can be evaluated at any point, the new image has real detail that the old one never showed.',
+          'The full view of the set is about 3.1 units wide, so the zoom factor is that width divided by the width of the window. Our Starfish piece uses a window 0.0025 wide, which is a zoom of about 1,240.',
+        ],
+        f: 'zoom = 3.1 / width\n0.0025 → 3.1 / 0.0025 ≈ 1,240',
+      },
+      {
+        h: 'Why the detail never ends',
+        p: [
+          'The boundary of the set is a fractal, so a smaller window on it always contains new structure: spirals, filaments and tiny copies of the whole set called minibrots. There is no deepest level in the mathematics. The only end is the one set by the computer.',
+          'The Mandelbrot set guide covers the shapes themselves, and the fractal dimension guide explains why the edge cannot be smoothed out by zooming.',
+        ],
+      },
+      {
+        h: 'Why deeper views need more steps',
+        p: [
+          'Each pixel is tested by repeating the rule until |z| passes 2, or until a step limit is reached. Pixels close to the boundary take the longest to escape, and in a deep window almost every pixel is close to the boundary. A low limit marks them all as inside the set and the image fills with flat black.',
+          'So deeper zooms use a higher limit. The full view of the set in our shop uses 400 steps per pixel. The 477 times zoom of Seahorse Valley uses 900, the 886 times zoom below uses 1,400 and the 1,240 times Starfish uses 1,500.',
+          'The numbers also show that depth is not the only factor. The Far Out There window has a mean escape count of 147.6 steps and 2.22 percent of its pixels never escape. Starfish is deeper, yet its mean is 90.8 and none of its pixels stay inside. Location on the boundary matters as much as the zoom factor.',
+        ],
+        f: 'step limit reached  ⇒  pixel treated as inside\n|zₙ| > 2 first at n  ⇒  colour from n',
+        piece: 'spirala',
+        caption: 'Far Out There: 886× zoom, centred at −0.7616 − 0.0848i, 1,400 steps per pixel, mean escape 147.6 steps.',
+      },
+      {
+        h: 'Where 64-bit numbers run out',
+        p: [
+          'Most programs store numbers as 64-bit floating point values. These carry 53 binary digits, which is about 16 decimal digits. Near 1, the gap between one representable number and the next is about 2.2 × 10⁻¹⁶.',
+          'As the window shrinks, the distance between neighbouring pixels shrinks with it. When that distance approaches the gap between representable numbers, several pixels receive the same value of c and the image turns into blocks. For a window about 1,500 pixels wide this happens near a width of 10⁻¹³, which is a zoom of roughly 10¹³. Our pieces stay far inside that limit, with the deepest at about 1,240.',
+        ],
+        f: 'pixel spacing ≈ width / image width\nlimit: spacing ≈ 2⁻⁵² ≈ 2.2 × 10⁻¹⁶',
+        piece: 'morska-zvezda',
+        caption: 'Starfish: centred at −0.3740 + 0.6598i, 1,240× zoom, 1,500 steps per pixel, no pixel inside the set.',
+      },
+      {
+        h: 'Going deeper: more digits and perturbation',
+        p: [
+          'The direct fix is arbitrary precision arithmetic, where numbers have as many digits as the zoom needs. It works, but every multiplication gets slower as the number grows, and it must be done for every pixel and every step.',
+          'Deep zoom programs avoid most of that cost with perturbation. They compute one reference orbit at high precision. Every other pixel is then described by a small difference from that orbit, and the small differences can be stored in ordinary numbers. The update below follows from expanding (zₙ + δₙ)² + c + δc.',
+          'The method can produce glitches in pixels whose behaviour differs from the reference orbit, and programs then choose another reference for those pixels. Deep zooms also need far more steps, so even with this trick they take long to render.',
+        ],
+        f: 'orbit:  zₙ₊₁ = zₙ² + c\ndifference:  δₙ₊₁ = 2·zₙ·δₙ + δₙ² + δc',
+      },
+      {
+        h: 'Smooth colour from step counts',
+        p: [
+          'A whole number of steps gives hard bands of colour. A common remedy is to use a fractional count, which uses how far past 2 the last value of |z| landed, so that neighbouring pixels blend instead of jumping from one band to the next. The count grows by one for each extra step and varies smoothly in between.',
+          'This is only about colour. The zoom itself and its limits do not change.',
+        ],
+        f: 'ν = n + 1 − log₂( ln |zₙ| )',
+      },
+      {
+        h: 'Where to point the zoom',
+        p: [
+          'Zooms are interesting only where the boundary is. A window placed deep inside the set or far outside it shows a flat colour at every depth. Good targets are places where bulbs meet the main body, such as the gap in the Seahorse Valley guide, and the tips of filaments, where minibrots sit.',
+          'Our Mini piece is a window 0.068 wide near −1.7574 on the real axis, at about 46 times zoom and 900 steps per pixel. About 10.6 percent of its pixels never escape, because a window that wide still contains most of a minibrot. The live /play/ page lets you try a related escape-time rule with your own parameters.',
+        ],
+        piece: 'mali-mandelbrot',
+        caption: 'Mini: centred at −1.7574, 46× zoom, 900 steps per pixel, 10.62 percent of pixels inside.',
+      },
+      {
+        h: 'Our posters and these limits',
+        p: [
+          'Each Mandelbrot poster is one window, drawn by a program written in JavaScript. It tests about 1.5 million points, repeats the rule for each and maps the escape counts to colour. The product page lists the centre, the zoom and the step limit, so you can reproduce the same view yourself.',
+          'Nothing is painted by hand. What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'How does a Mandelbrot zoom work?', a: 'The program chooses a smaller window on the complex plane and runs z² + c again for every pixel in it, so the zoomed image holds new detail instead of enlarged pixels.' },
+      { q: 'Can you zoom into the Mandelbrot set forever?', a: 'In mathematics, yes: the boundary has detail at every scale. In practice you are limited by number precision and by the time needed for the extra steps.' },
+      { q: 'Why does a Mandelbrot zoom turn blocky?', a: 'Ordinary 64-bit numbers hold about 16 digits. When neighbouring pixels differ by less than that, they share one value and the image becomes blocks.' },
+      { q: 'Why do deep zooms need more iterations?', a: 'Points near the boundary take many steps to escape, and a deep window is almost all boundary, so a low step limit would mark them as inside and leave the image flat.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
