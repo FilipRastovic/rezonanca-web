@@ -586,6 +586,7 @@ export default {
     firstName: '',
     lastName: '',
     country: '',
+    customs: '',
     address2: '',
     state: '',
     phone: 'Телефон',

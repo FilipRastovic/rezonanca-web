@@ -589,6 +589,7 @@ const en: typeof sr = {
     firstName: 'First name',
     lastName: 'Last name',
     country: 'Country',
+    customs: 'Orders to Serbia come by DHL. Import VAT, duty and a DHL fee may be charged on delivery; DHL contacts you before it arrives.',
     address2: 'Apartment, suite (optional)',
     state: 'State / province',
     phone: 'Phone',

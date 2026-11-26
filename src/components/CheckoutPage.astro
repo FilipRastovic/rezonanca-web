@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Waitlist from './Waitlist.astro';
 import { SALES_OPEN, PAYMENTS } from '../config';
 import PaymentLogos from './PaymentLogos.astro';
-import { SHOP, COUNTRIES, STATE_COUNTRIES } from '../config';
+import { SHOP, COUNTRIES, STATE_COUNTRIES, CUSTOMS_NOTE_COUNTRIES } from '../config';
 import { T, homeHref, cartHref, collectionHref, legalHref, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -38,6 +38,7 @@ const countries = COUNTRIES.map((cc) => [cc, dn.of(cc) ?? cc]).sort((a, b) => a[
               <option value="" disabled selected></option>
               {countries.map(([cc, n]) => <option value={cc}>{n}</option>)}
             </select></label>
+            <p class="full customs" id="co-customs" data-cc={CUSTOMS_NOTE_COUNTRIES.join(',')} hidden>{o.customs}</p>
             <label class="full">{o.address}<input name="address" required autocomplete="address-line1" /></label>
             <label class="full">{o.address2}<input name="address2" autocomplete="address-line2" /></label>
             <label>{o.city}<input name="city" required autocomplete="address-level2" /></label>
@@ -83,7 +84,8 @@ const countries = COUNTRIES.map((cc) => [cc, dn.of(cc) ?? cc]).sort((a, b) => a[
   // Preselect the visitor's country from the browser language (e.g. en-GB -> GB), if we ship there.
   const guess = (navigator.languages || [navigator.language]).map((l) => l.split('-')[1]?.toUpperCase()).find((cc) => cc && [...country.options].some((o) => o.value === cc));
   if (guess) country.value = guess;
-  const syncState = () => { const need = states.includes(country.value); stateBox.hidden = !need; stateIn.required = need; };
+  const customs = document.getElementById('co-customs')!, customsCc = customs.dataset.cc!.split(',');
+  const syncState = () => { const need = states.includes(country.value); stateBox.hidden = !need; stateIn.required = need; customs.hidden = !customsCc.includes(country.value); };
   country.addEventListener('change', syncState); syncState();
 
   const render = () => {
@@ -222,4 +224,5 @@ const countries = COUNTRIES.map((cc) => [cc, dn.of(cc) ?? cc]).sort((a, b) => a[
   @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
   .cardinfo { display: grid; gap: 14px; margin-top: 6px; padding: 16px; border: 1px solid var(--line); background: var(--bg-1); }
   .cardinfo p { margin: 0; font-size: var(--fs-sm); color: var(--text); }
+  .customs { margin: -4px 0 0; font-size: var(--fs-2xs); line-height: 1.6; color: var(--amber, #ffa546); }
 </style>
