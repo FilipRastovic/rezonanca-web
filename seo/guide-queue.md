@@ -20,7 +20,7 @@ Claude may add new lines at the end from Search Console queries (positions 5-30 
 - [x] seahorse-valley | seahorse valley mandelbrot | dolina-morskih-konjica | where it is, coordinates, why spirals form - DONE 2026-11-25 https://rezonanca.art/guide/seahorse-valley/
 - [-] chaos-game | chaos game, sierpinski triangle chaos game | perje, dim | random jumps that draw a fractal; leads into fractal flames guide - SKIPPED 2026-11-26: the what-is-a-fractal-flame guide is titled 'The Chaos Game Explained' and already covers the chaos game, Sierpinski triangle and IFS
 - [x] mandelbrot-zoom | mandelbrot zoom, deep zoom mandelbrot, infinite zoom | spirala, mali-mandelbrot, morska-zvezda | how deep zooms work, precision limits, why the detail never ends - DONE 2026-11-26 https://rezonanca.art/guide/mandelbrot-zoom/
-- [ ] barnsley-fern | barnsley fern, iterated function system | perje, ruza | four affine maps draw a fern
+- [x] barnsley-fern | barnsley fern, iterated function system | perje, ruza | four affine maps draw a fern - DONE 2026-11-27 https://rezonanca.art/guide/barnsley-fern/
 - [ ] koch-snowflake | koch snowflake | vitica | the first fractal curve, perimeter vs area
 - [ ] complex-numbers-mandelbrot | complex numbers explained, complex plane | mandelbrotov-skup, spirala | the arithmetic behind z² + c
 - [ ] benoit-mandelbrot | benoit mandelbrot | mandelbrotov-skup | life, IBM, the 1982 book

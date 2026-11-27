@@ -13,3 +13,4 @@
 2026-11-25 | seahorse-valley | Seahorse Valley: Where It Is in the Mandelbrot Set | ~915 words | published
 2026-11-26 | chaos-game | skipped: already covered by what-is-a-fractal-flame (The Chaos Game Explained)
 2026-11-26 | mandelbrot-zoom | Mandelbrot Zoom: How Deep Zooms Work and Where They End | ~980 words | published
+2026-11-27 | barnsley-fern | Barnsley Fern: Four Maps That Draw a Fern | ~930 words | published

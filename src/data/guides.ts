@@ -1711,6 +1711,96 @@ export const GUIDES: Guide[] = [
       { q: 'Why do deep zooms need more iterations?', a: 'Points near the boundary take many steps to escape, and a deep window is almost all boundary, so a low step limit would mark them as inside and leave the image flat.' },
     ],
   },
+  {
+    slug: 'barnsley-fern',
+    series: '',
+    shop: ['perje', 'dim', 'ruza', 'vetrenjaca', 'vitica', 'drvo-signala'],
+    title: 'Barnsley Fern: Four Maps That Draw a Fern',
+    desc: 'The Barnsley fern is a fractal drawn by four affine maps and a random choice. See the four maps, their probabilities and why the points land on a fern.',
+    h1: 'Barnsley fern: four maps that draw a fern',
+    kicker: 'Guide // Iterated function systems',
+    lead: 'The Barnsley fern is a fractal fern drawn by repeating one of four fixed maps, picked at random, on a single point. This page lists the four maps with their numbers, shows what each one draws and explains why the result is a fern and not a cloud.',
+    updated: '2026-11-27',
+    sections: [
+      {
+        h: 'The idea in one paragraph',
+        p: [
+          'Start with a point at (0, 0). Pick one of four rules at random, move the point with it, and mark the new position. Repeat a hundred thousand times. The marks form a detailed fern, with a stem, a main frond and smaller leaflets that look like the whole.',
+          'The shape is named after the mathematician Michael Barnsley, who described it in his 1988 book Fractals Everywhere. The method behind it is an iterated function system, or IFS, which the guide to fractal flames introduces together with the chaos game.',
+        ],
+      },
+      {
+        h: 'What an affine map does',
+        p: [
+          'Each of the four rules is an affine map: it takes a point (x, y) and returns a new point by a linear change plus a shift. Such a map can scale, rotate, shear and move the plane, but it always sends straight lines to straight lines.',
+          'Six numbers define a map. The first four (a, b, d, e) set the scaling and turning, and the last two (c, f) set the shift. The fern uses four sets of these six numbers.',
+        ],
+        f: 'x′ = a·x + b·y + c\ny′ = d·x + e·y + f',
+      },
+      {
+        h: 'The four maps',
+        p: [
+          'These are the standard values from Barnsley\'s book. Each map has a probability, the chance that it is picked on a given step. The numbers are small, so a short table in text is enough.',
+          'Map 1 is the stem. Map 2 shrinks the whole fern slightly and lifts it, so it builds the main body. Maps 3 and 4 make the lowest left and right leaflets.',
+        ],
+        f: 'f₁ (1%):   x′ = 0,   y′ = 0.16·y\nf₂ (85%):  x′ = 0.85·x + 0.04·y,   y′ = −0.04·x + 0.85·y + 1.6\nf₃ (7%):   x′ = 0.20·x − 0.26·y,   y′ = 0.23·x + 0.22·y + 1.6\nf₄ (7%):   x′ = −0.15·x + 0.28·y,   y′ = 0.26·x + 0.24·y + 0.44',
+      },
+      {
+        h: 'Why the points land on a fern',
+        p: [
+          'Look at map 2. It maps the whole fern onto a copy that is 85 percent as large, turned slightly and moved up the stem. Maps 3 and 4 map the whole fern onto a leaflet on the left and on the right. Map 1 squashes the fern onto the stem line.',
+          'The fern is the one shape that is exactly the union of these four smaller copies of itself. Starting from any point, the first few jumps may land anywhere, but later ones are pulled onto this shape, so the early points hardly matter. John Hutchinson proved this kind of result for iterated function systems in 1981.',
+        ],
+        f: 'F = f₁(F) ∪ f₂(F) ∪ f₃(F) ∪ f₄(F)',
+      },
+      {
+        h: 'Why the probabilities are uneven',
+        p: [
+          'Map 2 is picked 85 percent of the time because it builds the long main frond, where most of the points belong. Maps 3 and 4 are picked 7 percent of the time each, and map 1 only 1 percent, since the stem has very little area.',
+          'The probabilities change how fast the picture fills in, not which shape appears. If you set all four to 25 percent, the same fern appears, but the leaflets fill in early and the long frond stays sparse for far longer. The weights are chosen to match the area each part covers.',
+        ],
+        piece: 'perje',
+        caption: 'Feathers: a fractal flame, seed 1, about 10 million points. A related method, not a fern.',
+      },
+      {
+        h: 'Size and shape of the result',
+        p: [
+          'With these numbers the fern spreads from about −2.2 to 2.7 across and from 0 to about 10 in height, so it is roughly twice as tall as it is wide. To fit it on a screen, a program scales those ranges to the pixel grid.',
+          'Changing a single number changes the plant. A larger turning angle in map 3 curls the left leaflets, and a smaller scale in map 2 gives a short, wide fern. This is why the same few lines of code can draw many species of fern, and why the Barnsley fern is a popular first fractal program.',
+        ],
+      },
+      {
+        h: 'Drawing it yourself',
+        p: [
+          'The whole program is short: set a point, loop many times, draw a random number, pick the map by comparing the number with 0.01, 0.86 and 0.93, apply it, and plot the point. A hundred thousand steps already show the leaflets, and a million show the fine veins.',
+          'Because the rule is so small, the fern is a good starting point before more complex maps. The live /play/ page lets you try other rule-based pictures with your own parameters.',
+        ],
+        f: 'r = random(0, 1)\nr < 0.01 → f₁;   r < 0.86 → f₂;   r < 0.93 → f₃;   otherwise f₄',
+      },
+      {
+        h: 'From fern to flame',
+        p: [
+          'A flame keeps the same loop but changes three things. The maps gain a curved step after the affine one, the picture counts hits on each pixel instead of marking them, and colour follows the rule used. The result looks like smoke and feathers, not leaves.',
+          'Our Rose piece shows this. It uses seed 4 and about 10 million points, with a rotation that repeats the pattern around the centre. The fractals in nature guide looks at how real ferns compare with this maths.',
+        ],
+        piece: 'ruza',
+        caption: 'Rose: a fractal flame, seed 4, about 10 million points.',
+      },
+      {
+        h: 'How our posters relate to the fern',
+        p: [
+          'We do not sell a Barnsley fern. Our flame posters use the same loop, a point jumping between random rules, with curved maps and log-density brightness. Each is drawn by a program written in JavaScript, and the product page lists its equations.',
+          'What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is the Barnsley fern?', a: 'It is a fractal shaped like a fern, drawn by applying one of four affine maps, chosen at random with fixed probabilities, to a point many thousands of times.' },
+      { q: 'What are the Barnsley fern equations?', a: 'Four maps of the form x′ = a·x + b·y + c, y′ = d·x + e·y + f, with probabilities 1, 85, 7 and 7 percent. The standard values are listed on this page.' },
+      { q: 'Who invented the Barnsley fern?', a: 'Michael Barnsley described it in his 1988 book Fractals Everywhere, building on the iterated function systems of John Hutchinson from 1981.' },
+      { q: 'Why does the fern look like a real fern?', a: 'A real frond is made of smaller copies of itself, and the four maps encode exactly that: a stem, a main body and two lower leaflets, each a reduced copy of the whole.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
