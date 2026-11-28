@@ -1801,6 +1801,93 @@ export const GUIDES: Guide[] = [
       { q: 'Why does the fern look like a real fern?', a: 'A real frond is made of smaller copies of itself, and the four maps encode exactly that: a stem, a main body and two lower leaflets, each a reduced copy of the whole.' },
     ],
   },
+  {
+    slug: 'mandelbox',
+    series: '',
+    shop: ['diskont-01-diskont', 'diskont-02-plaza', 'diskont-03-furnace', 'diskont-04-portal', 'diskont-05-orchid', 'diskont-06-altar', 'diskont-08-coral', 'diskont-12-chapel'],
+    title: 'Mandelbox Fractal: Formula, Folds and Scale Explained',
+    desc: 'The Mandelbox is a 3D fractal built from a box fold, a sphere fold and a scale. See the formula step by step and what the scale parameter does to the shape.',
+    h1: 'Mandelbox fractal: formula, folds and scale explained',
+    kicker: 'Guide // Mandelbox',
+    lead: 'The Mandelbox is a three-dimensional fractal made by repeating three operations on a point in space: a box fold, a sphere fold, and a scaling followed by adding the starting point. This page writes out each step as an equation, explains what the scale parameter does and shows how the Mandelbox differs from the Mandelbrot set.',
+    updated: '2026-11-28',
+    sections: [
+      {
+        h: 'A 3D fractal built from folds',
+        p: [
+          'The Mandelbrot set lives on a flat plane and uses complex numbers. People looked for a true 3D version for years, and in 2010 Tom Lowe published one that works differently: the Mandelbox. It does not use complex numbers at all. A point in space is a triple (x, y, z), and the rule moves that triple by folding space over itself.',
+          'The rule has three steps, applied in the same order every time: fold into a box, fold through a sphere, then scale and shift. The next three sections take them one at a time.',
+        ],
+      },
+      {
+        h: 'Step 1: the box fold',
+        p: [
+          'Each coordinate is treated separately. If it lies between −1 and 1, it stays. If it lies outside, it is reflected back across the nearest wall of the cube, like paper folded over an edge. A value of 1.3 becomes 0.7, and a value of −1.8 becomes −0.2.',
+          'The fold is what produces the flat walls, straight edges and right angles you see in the pictures.',
+        ],
+        f: 'x → 2·clamp(x, −1, 1) − x\n(the same for y and z)',
+      },
+      {
+        h: 'Step 2: the sphere fold',
+        p: [
+          'Now the distance r from the centre matters. A point outside the unit sphere is left alone. A point inside it is inverted: its distance from the centre is replaced by 1 divided by that distance, so a point at half the radius moves to twice the radius. The idea is the same as in the circle inversion guide, in one dimension more.',
+          'Inversion alone would send points near the centre to infinity, so the sphere fold uses a fixed push inside a small radius. Below r² = 0.25 every point is simply multiplied by 4. This is what produces the round arches and lace among the straight walls.',
+        ],
+        f: 'z → z / clamp(|z|², 0.25, 1)\n|z|² < 0.25:  z → 4·z\n0.25 ≤ |z|² < 1:  z → z / |z|²\n|z|² ≥ 1:  z → z',
+        piece: 'diskont-02-plaza',
+        caption: 'Plaza: isometric view of the top face, scale −3, 12 repeats. Straight walls come from the box fold, the arches from the sphere fold.',
+      },
+      {
+        h: 'Step 3: scale and add the starting point',
+        p: [
+          'After both folds, the point is multiplied by a number s, the scale, and the original point c is added back. The last part is the same idea as the Mandelbrot set, where c is also added on every step. Each point in space is its own c, and the result is tested to see whether the sequence of points stays close or flies away.',
+          'Written as one formula, a single Mandelbox step is the box fold, then the sphere fold, then the scaling. The folds are the same for every point, so all of the variety in the shape comes from s and from the position of c.',
+        ],
+        f: 'zₙ₊₁ = s · sphere( box( zₙ ) ) + c\nsphere(z) = z / clamp(|z|², 0.25, 1)\nbox(z) = 2·clamp(z, −1, 1) − z',
+      },
+      {
+        h: 'What the scale parameter does',
+        p: [
+          'The scale s sets how strongly each step stretches space before the starting point is added. The shape of the Mandelbox changes a lot with s, and the sign matters too. A negative scale mirrors space through the origin on every step, which is why the structure looks symmetric from every side.',
+          'Our pieces use two values. Diskont and Portal use s = −2.5, and the other pieces in the collection listed here use s = −3. All of them use 12 repeats of the rule. Both values are negative and larger than 1 in size, so each step expands space as it folds it.',
+          'The same loop at a different scale gives a different building. The corridors and plazas of one set of values do not appear at another, and the live /play/ page lets you try other rule-based pictures with your own numbers.',
+        ],
+        piece: 'diskont-04-portal',
+        caption: 'Portal: isometric view of the left face, scale −2.5, 12 repeats.',
+      },
+      {
+        h: 'How it differs from the Mandelbrot set',
+        p: [
+          'The Mandelbrot set repeats z² + c on complex numbers, so every step squares a number. The Mandelbox never squares anything. Its steps are folds, which are reflections and inversions, plus one multiplication by a constant. A fold is a piecewise simple operation, but repeating it twelve times builds structure at every scale.',
+          'The Mandelbrot set is also drawn as a flat map of colours on a plane. The Mandelbox is a solid: a set of points in space whose sequences stay bounded, with a surface where staying turns into escaping. The Mandelbrot set explained guide covers the flat case, and the Mandelbrot zoom guide shows how a deep window is computed.',
+        ],
+        f: 'Mandelbrot:  zₙ₊₁ = zₙ² + c      (complex numbers, a plane)\nMandelbox:   zₙ₊₁ = s·sphere(box(zₙ)) + c      (points in space)',
+      },
+      {
+        h: 'How a Mandelbox is drawn',
+        p: [
+          'A 3D set has no list of pixels to colour, so the picture is built from rays. Each pixel sends a ray into space. The fold gives an estimate of how far the ray is from the nearest surface, so the ray steps forward by that distance and repeats until it is closer than one pixel. This technique is called ray marching, and no polygons are involved.',
+          'Each pixel needs the rule applied twelve times at every step of its ray, which is why a single large render takes far longer than a flat Mandelbrot window. Our renders are made in tiles and joined afterwards, and the parallel camera lets the tiles meet without a seam. The close-up views also matter: seen whole, a Mandelbox looks like a small cube, and the corridors and plazas only appear when the camera moves in.',
+          'Light and colour then come from the maths. While a point is folded, the program remembers how close it came to the centre, and that value decides the colour. The step-by-step account of how our prints were made is in the journal at /journal/mandelbox/.',
+        ],
+        piece: 'diskont-03-furnace',
+        caption: 'Furnace: 24 mm lens, inside the near corner, scale −3, 12 repeats.',
+      },
+      {
+        h: 'Our posters and the Mandelbox',
+        p: [
+          'The Diskont collection is 13 close-ups of one Mandelbox, drawn by one shader. Some are isometric views of a face or corner, and three use a 24 mm lens from inside a corridor. The product page for each lists the equations above and its own scale and view.',
+          'Nothing is painted or retouched by hand. What you see is exactly the print you get, fine art matte paper.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is a Mandelbox?', a: 'It is a 3D fractal defined by repeating a box fold, a sphere fold and a scaling on a point in space. The set is the points whose sequence stays bounded.' },
+      { q: 'What is the Mandelbox formula?', a: 'One step is zₙ₊₁ = s · sphere(box(zₙ)) + c, where box folds each coordinate into [−1, 1], sphere inverts points inside the unit sphere and s is the scale.' },
+      { q: 'Who discovered the Mandelbox?', a: 'Tom Lowe published it in 2010 as a 3D relative of the Mandelbrot set.' },
+      { q: 'How is a Mandelbox different from the Mandelbrot set?', a: 'The Mandelbrot set squares complex numbers on a plane. The Mandelbox works on points in space and uses folds and a scale instead of squaring.' },
+    ],
+  },
 ];
 
 export const guideFor = (series: string) => GUIDES.find((g) => (g.series && g.series === series) || g.also?.includes(series));
