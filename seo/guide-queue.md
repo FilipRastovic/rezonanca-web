@@ -21,6 +21,7 @@ Claude may add new lines at the end from Search Console queries (positions 5-30 
 - [-] chaos-game | chaos game, sierpinski triangle chaos game | perje, dim | random jumps that draw a fractal; leads into fractal flames guide - SKIPPED 2026-11-26: the what-is-a-fractal-flame guide is titled 'The Chaos Game Explained' and already covers the chaos game, Sierpinski triangle and IFS
 - [x] mandelbrot-zoom | mandelbrot zoom, deep zoom mandelbrot, infinite zoom | spirala, mali-mandelbrot, morska-zvezda | how deep zooms work, precision limits, why the detail never ends - DONE 2026-11-26 https://rezonanca.art/guide/mandelbrot-zoom/
 - [x] barnsley-fern | barnsley fern, iterated function system | perje, ruza | four affine maps draw a fern - DONE 2026-11-27 https://rezonanca.art/guide/barnsley-fern/
+- [ ] mandelbox | mandelbox, mandelbox fractal, mandelbox formula, 3d fractal | diskont pieces (series slug mandelbox in src/data/products.js) | box fold + sphere fold + scale, what the scale parameter does, why it is a 3D fractal, how it differs from the Mandelbrot set; link to /journal/mandelbox/ (how the prints were made) and the Diskont collection; also the landing page for Reddit fractal posts. Never name any software, say 'one shader'.
 - [ ] koch-snowflake | koch snowflake | vitica | the first fractal curve, perimeter vs area
 - [ ] complex-numbers-mandelbrot | complex numbers explained, complex plane | mandelbrotov-skup, spirala | the arithmetic behind z² + c
 - [ ] benoit-mandelbrot | benoit mandelbrot | mandelbrotov-skup | life, IBM, the 1982 book
